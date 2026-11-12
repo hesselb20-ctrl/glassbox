@@ -1,0 +1,127 @@
+{
+ "id": "E0019",
+ "primitive": "steering",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "direction": {
+   "artifact": "A0002_diffmeans"
+  },
+  "sites": [
+   "resid_post.9"
+  ],
+  "alphas": [
+   -2,
+   -1,
+   0,
+   1,
+   2,
+   4
+  ],
+  "clean": {
+   "prompts": [
+    "The key to the cabinets",
+    "The author of the books",
+    "The teacher near the doors",
+    "The picture by the windows",
+    "The letter from the students",
+    "The boy behind the cars",
+    "The girl with the dogs",
+    "The doctor near the tables",
+    "The farmer behind the houses",
+    "The driver of the cars",
+    "The student with the books",
+    "The player from the schools",
+    "The book about the teachers",
+    "The dog near the trees",
+    "The car behind the buildings",
+    "The window above the doors"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " is",
+    " is",
+    " is",
+    " is",
+    " is",
+    " is",
+    " is",
+    " is",
+    " is",
+    " is",
+    " is",
+    " is",
+    " is",
+    " is",
+    " is",
+    " is"
+   ],
+   "incorrect": [
+    " are",
+    " are",
+    " are",
+    " are",
+    " are",
+    " are",
+    " are",
+    " are",
+    " are",
+    " are",
+    " are",
+    " are",
+    " are",
+    " are",
+    " are",
+    " are"
+   ]
+  }
+ },
+ "summary": {
+  "sites": [
+   "resid_post.9"
+  ],
+  "alphas": [
+   -2.0,
+   -1.0,
+   0.0,
+   1.0,
+   2.0,
+   4.0
+  ],
+  "scale": "relative",
+  "residual_norm_at_site": {
+   "resid_post.9": 154.743164
+  },
+  "metric_type": "logit_diff",
+  "metric_by_alpha": {
+   "-2.0": 24.211859,
+   "-1.0": 15.882891,
+   "0.0": 3.255642,
+   "1.0": -19.145805,
+   "2.0": -24.224442,
+   "4.0": -31.25408
+  },
+  "n": 16,
+  "slope_metric_per_alpha": -10.117214
+ },
+ "data": {
+  "metric": [
+   24.211859,
+   15.882891,
+   3.255642,
+   -19.145805,
+   -24.224442,
+   -31.25408
+  ]
+ },
+ "plot": "experiments/E0019_steering.png",
+ "seconds": 0.52,
+ "timestamp": "2026-11-12T23:38:53"
+}

@@ -1,0 +1,394 @@
+{
+ "id": "E0010",
+ "primitive": "path_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "senders": [
+   "2.2",
+   "2.9",
+   "3.7",
+   "4.3",
+   "4.11"
+  ],
+  "receiver": {
+   "heads": [
+    "6.0",
+    "7.4",
+    "8.5"
+   ],
+   "input": "v"
+  },
+  "clean": {
+   "prompts": [
+    "The key to the cabinets",
+    "The keys to the cabinet",
+    "The author of the books",
+    "The authors of the book",
+    "The teacher near the doors",
+    "The teachers near the door",
+    "The picture by the windows",
+    "The pictures by the window",
+    "The letter from the students",
+    "The letters from the student",
+    "The boy behind the cars",
+    "The boys behind the car",
+    "The girl with the dogs",
+    "The girls with the dog",
+    "The doctor near the tables",
+    "The doctors near the table",
+    "The farmer behind the houses",
+    "The farmers behind the house",
+    "The driver of the cars",
+    "The drivers of the car",
+    "The student with the books",
+    "The students with the book",
+    "The player from the schools",
+    "The players from the school",
+    "The book about the teachers",
+    "The books about the teacher",
+    "The dog near the trees",
+    "The dogs near the tree",
+    "The car behind the buildings",
+    "The cars behind the building",
+    "The window above the doors",
+    "The windows above the door"
+   ]
+  },
+  "corrupt": {
+   "prompts": [
+    "The keys to the cabinets",
+    "The key to the cabinet",
+    "The authors of the books",
+    "The author of the book",
+    "The teachers near the doors",
+    "The teacher near the door",
+    "The pictures by the windows",
+    "The picture by the window",
+    "The letters from the students",
+    "The letter from the student",
+    "The boys behind the cars",
+    "The boy behind the car",
+    "The girls with the dogs",
+    "The girl with the dog",
+    "The doctors near the tables",
+    "The doctor near the table",
+    "The farmers behind the houses",
+    "The farmer behind the house",
+    "The drivers of the cars",
+    "The driver of the car",
+    "The students with the books",
+    "The student with the book",
+    "The players from the schools",
+    "The player from the school",
+    "The books about the teachers",
+    "The book about the teacher",
+    "The dogs near the trees",
+    "The dog near the tree",
+    "The cars behind the buildings",
+    "The car behind the building",
+    "The windows above the doors",
+    "The window above the door"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are"
+   ],
+   "incorrect": [
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is"
+   ]
+  }
+ },
+ "summary": {
+  "receiver": {
+   "heads": [
+    "6.0",
+    "7.4",
+    "8.5"
+   ],
+   "input": "v"
+  },
+  "direction": "denoise",
+  "metric_base": -4.355858,
+  "metric_source": 3.340267,
+  "n": 32,
+  "top": [
+   {
+    "component": "4.3",
+    "effect": 0.038534
+   },
+   {
+    "component": "3.7",
+    "effect": 0.024776
+   },
+   {
+    "component": "4.11",
+    "effect": 0.01403
+   },
+   {
+    "component": "2.9",
+    "effect": 0.01238
+   },
+   {
+    "component": "2.2",
+    "effect": 0.007008
+   },
+   {
+    "component": "0.0",
+    "effect": 0.0
+   },
+   {
+    "component": "0.1",
+    "effect": 0.0
+   },
+   {
+    "component": "0.2",
+    "effect": 0.0
+   }
+  ]
+ },
+ "data": {
+  "effect": [
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.007008,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.01238,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.024776,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.038534,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.01403
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  ]
+ },
+ "plot": "experiments/E0010_path_patching.png",
+ "seconds": 0.49,
+ "timestamp": "2026-11-12T23:36:29"
+}

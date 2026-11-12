@@ -1,0 +1,288 @@
+{
+ "id": "E0015",
+ "primitive": "steering",
+ "provenance": {
+  "backend": "local-gguf",
+  "precision": "gguf-quantized",
+  "tag": "screening (gguf quantized, abliterated variant)",
+  "model": "Huihui-Qwen3.8-27B-abliterated-UD-DW-Q4_K_M.gguf",
+  "counts_as_verification": false,
+  "variant": "abliterated community variant (refusal direction removed); not the official weights"
+ },
+ "params": {
+  "direction": {
+   "artifact": "A0002_diffmeans"
+  },
+  "sites": [
+   "resid_post.28"
+  ],
+  "alphas": [
+   0,
+   -0.4
+  ],
+  "clean": {
+   "prompts": [
+    "Le pilote a pos\u00e9 l'avion sur",
+    "L'infirmi\u00e8re a ferm\u00e9 la fen\u00eatre de",
+    "Le jardinier a plant\u00e9 des roses le long de",
+    "Le juge a lu le verdict \u00e0",
+    "Le serveur a port\u00e9 les assiettes vers",
+    "Les alpinistes ont atteint le sommet de",
+    "Hier soir, mon fr\u00e8re m'a appel\u00e9 pour dire que",
+    "Je n'ai jamais compris pourquoi les gens",
+    "Avant de quitter la maison, n'oubliez pas de",
+    "Le mus\u00e9e sera ferm\u00e9 lundi parce que",
+    "Son grand-p\u00e8re est n\u00e9 dans un petit village o\u00f9",
+    "Pour faire une bonne soupe, il faut d'abord"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la"
+   ],
+   "incorrect": [
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the"
+   ]
+  },
+  "generate": {
+   "prompts": [
+    "Le pilote a pos\u00e9 l'avion sur",
+    "L'infirmi\u00e8re a ferm\u00e9 la fen\u00eatre de",
+    "Le jardinier a plant\u00e9 des roses le long de",
+    "Le juge a lu le verdict \u00e0",
+    "Le serveur a port\u00e9 les assiettes vers",
+    "Les alpinistes ont atteint le sommet de",
+    "Hier soir, mon fr\u00e8re m'a appel\u00e9 pour dire que",
+    "Je n'ai jamais compris pourquoi les gens",
+    "Avant de quitter la maison, n'oubliez pas de",
+    "Le mus\u00e9e sera ferm\u00e9 lundi parce que",
+    "Son grand-p\u00e8re est n\u00e9 dans un petit village o\u00f9",
+    "Pour faire une bonne soupe, il faut d'abord"
+   ],
+   "max_new_tokens": 20
+  }
+ },
+ "summary": {
+  "sites": [
+   "resid_post.28"
+  ],
+  "alphas": [
+   0.0,
+   -0.4
+  ],
+  "scale": "relative",
+  "residual_norm_at_site": {
+   "resid_post.28": 80.818588
+  },
+  "metric_type": "logit_diff",
+  "metric_by_alpha": {
+   "0.0": 10.907921,
+   "-0.4": -10.517241
+  },
+  "n": 12,
+  "generations": [
+   {
+    "prompt": "Le pilote a pos\u00e9 l'avion sur",
+    "outputs": {
+     "0.0": " le ventre, \u00e0 100 m\u00e8tres de la piste.\nUn avion de ligne s'est",
+     "-0.4": " the ground.\nA. ground\nB. pilot\nC. the\nD. on\n\n"
+    }
+   },
+   {
+    "prompt": "L'infirmi\u00e8re a ferm\u00e9 la fen\u00eatre de",
+    "outputs": {
+     "0.0": " la chambre.\n\n* Vous \u00eates bien s\u00fbr que vous voulez sortir ?\n\n- Oui, j'ai",
+     "-0.4": " the room.\nA. her\nB. his\nC. their\nD. its\n\n"
+    }
+   },
+   {
+    "prompt": "Le jardinier a plant\u00e9 des roses le long de",
+    "outputs": {
+     "0.0": " la cl\u00f4ture.\nA. Le jardinier a plant\u00e9 des roses le long de la cl\u00f4ture.",
+     "-0.4": " the fence.\nA. a\nB. an\nC. the\nD. no article"
+    }
+   },
+   {
+    "prompt": "Le juge a lu le verdict \u00e0",
+    "outputs": {
+     "0.0": " la fin de la semaine derni\u00e8re.\nLe jury a d\u00e9clar\u00e9 que le jeune homme de 21",
+     "-0.4": " the jury.\nA. jury\nB. judge\nC. verdict\nD. the\n\n"
+    }
+   },
+   {
+    "prompt": "Le serveur a port\u00e9 les assiettes vers",
+    "outputs": {
+     "0.0": " la table de la famille.\n\nLe serveur a port\u00e9 les assiettes vers la table de la",
+     "-0.4": " the table.\nA. the\nB. a\nC. an\nD. no article"
+    }
+   },
+   {
+    "prompt": "Les alpinistes ont atteint le sommet de",
+    "outputs": {
+     "0.0": " l\u2019Everest, le plus haut sommet du monde, \u00e0 8 848 m\u00e8tres",
+     "-0.4": " the mountain.\nA. the\nB. a\nC. an\nD. no article"
+    }
+   },
+   {
+    "prompt": "Hier soir, mon fr\u00e8re m'a appel\u00e9 pour dire que",
+    "outputs": {
+     "0.0": " le chat de sa voisine \u00e9tait mort. Il m'a demand\u00e9 si je pouvais venir le r\u00e9cup\u00e9rer",
+     "-0.4": " he had a lot of work to do. I asked him if he wanted me to come over and"
+    }
+   },
+   {
+    "prompt": "Je n'ai jamais compris pourquoi les gens",
+    "outputs": {
+     "0.0": " se plaignent de la vie.\nJe n'ai jamais compris pourquoi les gens se plaign",
+     "-0.4": " who are in a hurry always seem to be in a hurry.\nA. who\nB."
+    }
+   },
+   {
+    "prompt": "Avant de quitter la maison, n'oubliez pas de",
+    "outputs": {
+     "0.0": " v\u00e9rifier les lumi\u00e8res, les appareils \u00e9lectriques et les fen\u00eatres.\nLe 1er juillet 2",
+     "-0.4": " ______ the door.\nA. lock\nB. locked\nC. locking\nD. locks"
+    }
+   },
+   {
+    "prompt": "Le mus\u00e9e sera ferm\u00e9 lundi parce que",
+    "outputs": {
+     "0.0": " c'est le jour de la semaine o\u00f9 il y a le moins de visiteurs.\nLe mus\u00e9e sera",
+     "-0.4": " it is a public holiday.\nA. because\nB. but\nC. and\nD"
+    }
+   },
+   {
+    "prompt": "Son grand-p\u00e8re est n\u00e9 dans un petit village o\u00f9",
+    "outputs": {
+     "0.0": " il n'y a pas d'\u00e9lectricit\u00e9. Il a grandi dans une famille nombreuse, avec",
+     "-0.4": " the people lived in a small house.\nA. which\nB. where\nC. that"
+    }
+   },
+   {
+    "prompt": "Pour faire une bonne soupe, il faut d'abord",
+    "outputs": {
+     "0.0": " un bon bouillon.\nLe bouillon est la base de la soupe. Il peut \u00eatre fait",
+     "-0.4": " have a good soup.\nA. have\nB. had\nC. having\nD."
+    }
+   }
+  ]
+ },
+ "data": {
+  "metric": [
+   10.907921,
+   -10.517241
+  ],
+  "generations": [
+   {
+    "prompt": "Le pilote a pos\u00e9 l'avion sur",
+    "outputs": {
+     "0.0": " le ventre, \u00e0 100 m\u00e8tres de la piste.\nUn avion de ligne s'est",
+     "-0.4": " the ground.\nA. ground\nB. pilot\nC. the\nD. on\n\n"
+    }
+   },
+   {
+    "prompt": "L'infirmi\u00e8re a ferm\u00e9 la fen\u00eatre de",
+    "outputs": {
+     "0.0": " la chambre.\n\n* Vous \u00eates bien s\u00fbr que vous voulez sortir ?\n\n- Oui, j'ai",
+     "-0.4": " the room.\nA. her\nB. his\nC. their\nD. its\n\n"
+    }
+   },
+   {
+    "prompt": "Le jardinier a plant\u00e9 des roses le long de",
+    "outputs": {
+     "0.0": " la cl\u00f4ture.\nA. Le jardinier a plant\u00e9 des roses le long de la cl\u00f4ture.",
+     "-0.4": " the fence.\nA. a\nB. an\nC. the\nD. no article"
+    }
+   },
+   {
+    "prompt": "Le juge a lu le verdict \u00e0",
+    "outputs": {
+     "0.0": " la fin de la semaine derni\u00e8re.\nLe jury a d\u00e9clar\u00e9 que le jeune homme de 21",
+     "-0.4": " the jury.\nA. jury\nB. judge\nC. verdict\nD. the\n\n"
+    }
+   },
+   {
+    "prompt": "Le serveur a port\u00e9 les assiettes vers",
+    "outputs": {
+     "0.0": " la table de la famille.\n\nLe serveur a port\u00e9 les assiettes vers la table de la",
+     "-0.4": " the table.\nA. the\nB. a\nC. an\nD. no article"
+    }
+   },
+   {
+    "prompt": "Les alpinistes ont atteint le sommet de",
+    "outputs": {
+     "0.0": " l\u2019Everest, le plus haut sommet du monde, \u00e0 8 848 m\u00e8tres",
+     "-0.4": " the mountain.\nA. the\nB. a\nC. an\nD. no article"
+    }
+   },
+   {
+    "prompt": "Hier soir, mon fr\u00e8re m'a appel\u00e9 pour dire que",
+    "outputs": {
+     "0.0": " le chat de sa voisine \u00e9tait mort. Il m'a demand\u00e9 si je pouvais venir le r\u00e9cup\u00e9rer",
+     "-0.4": " he had a lot of work to do. I asked him if he wanted me to come over and"
+    }
+   },
+   {
+    "prompt": "Je n'ai jamais compris pourquoi les gens",
+    "outputs": {
+     "0.0": " se plaignent de la vie.\nJe n'ai jamais compris pourquoi les gens se plaign",
+     "-0.4": " who are in a hurry always seem to be in a hurry.\nA. who\nB."
+    }
+   },
+   {
+    "prompt": "Avant de quitter la maison, n'oubliez pas de",
+    "outputs": {
+     "0.0": " v\u00e9rifier les lumi\u00e8res, les appareils \u00e9lectriques et les fen\u00eatres.\nLe 1er juillet 2",
+     "-0.4": " ______ the door.\nA. lock\nB. locked\nC. locking\nD. locks"
+    }
+   },
+   {
+    "prompt": "Le mus\u00e9e sera ferm\u00e9 lundi parce que",
+    "outputs": {
+     "0.0": " c'est le jour de la semaine o\u00f9 il y a le moins de visiteurs.\nLe mus\u00e9e sera",
+     "-0.4": " it is a public holiday.\nA. because\nB. but\nC. and\nD"
+    }
+   },
+   {
+    "prompt": "Son grand-p\u00e8re est n\u00e9 dans un petit village o\u00f9",
+    "outputs": {
+     "0.0": " il n'y a pas d'\u00e9lectricit\u00e9. Il a grandi dans une famille nombreuse, avec",
+     "-0.4": " the people lived in a small house.\nA. which\nB. where\nC. that"
+    }
+   },
+   {
+    "prompt": "Pour faire une bonne soupe, il faut d'abord",
+    "outputs": {
+     "0.0": " un bon bouillon.\nLe bouillon est la base de la soupe. Il peut \u00eatre fait",
+     "-0.4": " have a good soup.\nA. have\nB. had\nC. having\nD."
+    }
+   }
+  ]
+ },
+ "plot": "experiments/E0015_steering.png",
+ "seconds": 43.47,
+ "timestamp": "2026-11-12T23:45:25"
+}

@@ -1,0 +1,273 @@
+{
+ "id": "E0013",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "sweep": "mlps",
+  "mode": "mean",
+  "clean": {
+   "prompts": [
+    "The key to the cabinets",
+    "The keys to the cabinet",
+    "The author of the books",
+    "The authors of the book",
+    "The teacher near the doors",
+    "The teachers near the door",
+    "The picture by the windows",
+    "The pictures by the window",
+    "The letter from the students",
+    "The letters from the student",
+    "The boy behind the cars",
+    "The boys behind the car",
+    "The girl with the dogs",
+    "The girls with the dog",
+    "The doctor near the tables",
+    "The doctors near the table",
+    "The farmer behind the houses",
+    "The farmers behind the house",
+    "The driver of the cars",
+    "The drivers of the car",
+    "The student with the books",
+    "The students with the book",
+    "The player from the schools",
+    "The players from the school",
+    "The book about the teachers",
+    "The books about the teacher",
+    "The dog near the trees",
+    "The dogs near the tree",
+    "The car behind the buildings",
+    "The cars behind the building",
+    "The window above the doors",
+    "The windows above the door"
+   ]
+  },
+  "corrupt": {
+   "prompts": [
+    "The keys to the cabinets",
+    "The key to the cabinet",
+    "The authors of the books",
+    "The author of the book",
+    "The teachers near the doors",
+    "The teacher near the door",
+    "The pictures by the windows",
+    "The picture by the window",
+    "The letters from the students",
+    "The letter from the student",
+    "The boys behind the cars",
+    "The boy behind the car",
+    "The girls with the dogs",
+    "The girl with the dog",
+    "The doctors near the tables",
+    "The doctor near the table",
+    "The farmers behind the houses",
+    "The farmer behind the house",
+    "The drivers of the cars",
+    "The driver of the car",
+    "The students with the books",
+    "The student with the book",
+    "The players from the schools",
+    "The player from the school",
+    "The books about the teachers",
+    "The book about the teacher",
+    "The dogs near the trees",
+    "The dog near the tree",
+    "The cars behind the buildings",
+    "The car behind the building",
+    "The windows above the doors",
+    "The window above the door"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are"
+   ],
+   "incorrect": [
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is"
+   ]
+  }
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 32,
+  "metric_clean": 3.340267,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "mlp0",
+    "metric": 1.870361,
+    "change": -1.469907,
+    "fraction_of_clean": 0.559943
+   },
+   {
+    "component": "mlp8",
+    "metric": 2.109286,
+    "change": -1.230981,
+    "fraction_of_clean": 0.631472
+   },
+   {
+    "component": "mlp10",
+    "metric": 2.143533,
+    "change": -1.196734,
+    "fraction_of_clean": 0.641725
+   },
+   {
+    "component": "mlp11",
+    "metric": 2.384953,
+    "change": -0.955315,
+    "fraction_of_clean": 0.714001
+   },
+   {
+    "component": "mlp9",
+    "metric": 2.955486,
+    "change": -0.384781,
+    "fraction_of_clean": 0.884805
+   },
+   {
+    "component": "mlp6",
+    "metric": 3.517419,
+    "change": 0.177152,
+    "fraction_of_clean": 1.053035
+   },
+   {
+    "component": "mlp3",
+    "metric": 3.492361,
+    "change": 0.152093,
+    "fraction_of_clean": 1.045533
+   },
+   {
+    "component": "mlp1",
+    "metric": 3.479219,
+    "change": 0.138952,
+    "fraction_of_clean": 1.041599
+   },
+   {
+    "component": "mlp2",
+    "metric": 3.444225,
+    "change": 0.103958,
+    "fraction_of_clean": 1.031123
+   },
+   {
+    "component": "mlp7",
+    "metric": 3.310349,
+    "change": -0.029918,
+    "fraction_of_clean": 0.991043
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "mlp0",
+   "mlp1",
+   "mlp2",
+   "mlp3",
+   "mlp4",
+   "mlp5",
+   "mlp6",
+   "mlp7",
+   "mlp8",
+   "mlp9",
+   "mlp10",
+   "mlp11"
+  ],
+  "metric": [
+   1.870361,
+   3.479219,
+   3.444225,
+   3.492361,
+   3.324143,
+   3.336556,
+   3.517419,
+   3.310349,
+   2.109286,
+   2.955486,
+   2.143533,
+   2.384953
+  ],
+  "change": [
+   -1.469907,
+   0.138952,
+   0.103958,
+   0.152093,
+   -0.016124,
+   -0.003711,
+   0.177152,
+   -0.029918,
+   -1.230981,
+   -0.384781,
+   -1.196734,
+   -0.955315
+  ]
+ },
+ "plot": "experiments/E0013_ablation.png",
+ "seconds": 0.34,
+ "timestamp": "2026-11-12T23:37:12"
+}

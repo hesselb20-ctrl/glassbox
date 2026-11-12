@@ -1,0 +1,225 @@
+{
+ "id": "E0008",
+ "primitive": "steering",
+ "provenance": {
+  "backend": "local-gguf",
+  "precision": "gguf-quantized",
+  "tag": "screening (gguf quantized, abliterated variant)",
+  "model": "Huihui-Qwen3.8-27B-abliterated-UD-DW-Q4_K_M.gguf",
+  "counts_as_verification": false,
+  "variant": "abliterated community variant (refusal direction removed); not the official weights"
+ },
+ "params": {
+  "direction": {
+   "artifact": "A0002_diffmeans"
+  },
+  "sites": [
+   "resid_post.28"
+  ],
+  "alphas": [
+   0,
+   -0.1,
+   -0.2,
+   -0.4
+  ],
+  "clean": {
+   "prompts": [
+    "Le boulanger a ouvert la porte de",
+    "Les enfants jouaient dans",
+    "La scientifique a publi\u00e9 ses r\u00e9sultats dans",
+    "Le fermier marchait lentement vers",
+    "Le musicien a jou\u00e9 toute la nuit pour",
+    "Le journaliste a \u00e9crit un article sur",
+    "Le voleur a cach\u00e9 l'argent dans",
+    "Les p\u00eacheurs sont revenus de"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la"
+   ],
+   "incorrect": [
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the"
+   ]
+  },
+  "generate": {
+   "prompts": [
+    "Le boulanger a ouvert la porte de",
+    "Les enfants jouaient dans",
+    "La scientifique a publi\u00e9 ses r\u00e9sultats dans",
+    "Le fermier marchait lentement vers",
+    "Le musicien a jou\u00e9 toute la nuit pour",
+    "Le journaliste a \u00e9crit un article sur",
+    "Le voleur a cach\u00e9 l'argent dans",
+    "Les p\u00eacheurs sont revenus de"
+   ],
+   "max_new_tokens": 20
+  }
+ },
+ "summary": {
+  "sites": [
+   "resid_post.28"
+  ],
+  "alphas": [
+   0.0,
+   -0.1,
+   -0.2,
+   -0.4
+  ],
+  "scale": "relative",
+  "residual_norm_at_site": {
+   "resid_post.28": 86.081276
+  },
+  "metric_type": "logit_diff",
+  "metric_by_alpha": {
+   "0.0": 10.455055,
+   "-0.1": 8.757113,
+   "-0.2": -9.38774,
+   "-0.4": -12.08261
+  },
+  "n": 8,
+  "slope_metric_per_alpha": 62.167987,
+  "generations": [
+   {
+    "prompt": "Le boulanger a ouvert la porte de",
+    "outputs": {
+     "0.0": " son fournil. Il a sorti un pain de seigle, encore ti\u00e8de, et l",
+     "-0.4": " the bakery.\nA. bakery\nB. baker\nC. bread\nD. baker's"
+    }
+   },
+   {
+    "prompt": "Les enfants jouaient dans",
+    "outputs": {
+     "0.0": " le jardin.\n**Analyse :**\n- Sujet : Les enfants\n- Verbe : jou",
+     "-0.4": " the garden.\nA. garden\nB. children\nC. in\nD. the\n\n"
+    }
+   },
+   {
+    "prompt": "La scientifique a publi\u00e9 ses r\u00e9sultats dans",
+    "outputs": {
+     "0.0": " la revue\n*Science Advances*.\n\u00ab\n*Les r\u00e9sultats de cette \u00e9tude sont tr\u00e8s encourageants",
+     "-0.4": " the journal Nature.\nA. a\nB. an\nC. the\nD. /"
+    }
+   },
+   {
+    "prompt": "Le fermier marchait lentement vers",
+    "outputs": {
+     "0.0": " la maison, sa silhouette se d\u00e9coupant sur le ciel cr\u00e9pusculaire. Il portait un",
+     "-0.4": " the barn.\nA. the\nB. a\nC. an\nD. no article"
+    }
+   },
+   {
+    "prompt": "Le musicien a jou\u00e9 toute la nuit pour",
+    "outputs": {
+     "0.0": " les 100 ans de la maison de retraite.\nLe 28 juin, la",
+     "-0.4": " the band.\nA. The\nB. The\nC. The\nD. The\n\n"
+    }
+   },
+   {
+    "prompt": "Le journaliste a \u00e9crit un article sur",
+    "outputs": {
+     "0.0": " la politique de la ville.\nLe journaliste a \u00e9crit un article sur la politique de la ville.",
+     "-0.4": " the new discovery.\nA. a\nB. an\nC. the\nD. no"
+    }
+   },
+   {
+    "prompt": "Le voleur a cach\u00e9 l'argent dans",
+    "outputs": {
+     "0.0": " un trou.\nA. dans\nB. un\nC. voleur\nD. l",
+     "-0.4": " a hole in the wall.\nA. hole\nB. wall\nC. money\nD"
+    }
+   },
+   {
+    "prompt": "Les p\u00eacheurs sont revenus de",
+    "outputs": {
+     "0.0": " la mer avec un beau lot de poissons.\nLe poisson est un aliment riche en prot\u00e9ines,",
+     "-0.4": " the sea with a good catch.\nA. fish\nB. fisherman\nC. fishing"
+    }
+   }
+  ]
+ },
+ "data": {
+  "metric": [
+   10.455055,
+   8.757113,
+   -9.38774,
+   -12.08261
+  ],
+  "generations": [
+   {
+    "prompt": "Le boulanger a ouvert la porte de",
+    "outputs": {
+     "0.0": " son fournil. Il a sorti un pain de seigle, encore ti\u00e8de, et l",
+     "-0.4": " the bakery.\nA. bakery\nB. baker\nC. bread\nD. baker's"
+    }
+   },
+   {
+    "prompt": "Les enfants jouaient dans",
+    "outputs": {
+     "0.0": " le jardin.\n**Analyse :**\n- Sujet : Les enfants\n- Verbe : jou",
+     "-0.4": " the garden.\nA. garden\nB. children\nC. in\nD. the\n\n"
+    }
+   },
+   {
+    "prompt": "La scientifique a publi\u00e9 ses r\u00e9sultats dans",
+    "outputs": {
+     "0.0": " la revue\n*Science Advances*.\n\u00ab\n*Les r\u00e9sultats de cette \u00e9tude sont tr\u00e8s encourageants",
+     "-0.4": " the journal Nature.\nA. a\nB. an\nC. the\nD. /"
+    }
+   },
+   {
+    "prompt": "Le fermier marchait lentement vers",
+    "outputs": {
+     "0.0": " la maison, sa silhouette se d\u00e9coupant sur le ciel cr\u00e9pusculaire. Il portait un",
+     "-0.4": " the barn.\nA. the\nB. a\nC. an\nD. no article"
+    }
+   },
+   {
+    "prompt": "Le musicien a jou\u00e9 toute la nuit pour",
+    "outputs": {
+     "0.0": " les 100 ans de la maison de retraite.\nLe 28 juin, la",
+     "-0.4": " the band.\nA. The\nB. The\nC. The\nD. The\n\n"
+    }
+   },
+   {
+    "prompt": "Le journaliste a \u00e9crit un article sur",
+    "outputs": {
+     "0.0": " la politique de la ville.\nLe journaliste a \u00e9crit un article sur la politique de la ville.",
+     "-0.4": " the new discovery.\nA. a\nB. an\nC. the\nD. no"
+    }
+   },
+   {
+    "prompt": "Le voleur a cach\u00e9 l'argent dans",
+    "outputs": {
+     "0.0": " un trou.\nA. dans\nB. un\nC. voleur\nD. l",
+     "-0.4": " a hole in the wall.\nA. hole\nB. wall\nC. money\nD"
+    }
+   },
+   {
+    "prompt": "Les p\u00eacheurs sont revenus de",
+    "outputs": {
+     "0.0": " la mer avec un beau lot de poissons.\nLe poisson est un aliment riche en prot\u00e9ines,",
+     "-0.4": " the sea with a good catch.\nA. fish\nB. fisherman\nC. fishing"
+    }
+   }
+  ]
+ },
+ "plot": "experiments/E0008_steering.png",
+ "seconds": 31.37,
+ "timestamp": "2026-11-12T23:39:38"
+}

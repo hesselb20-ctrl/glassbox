@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 122" width="100%" font-family="Consolas, DejaVu Sans Mono, monospace">
+<defs><filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3df5d0"/></marker></defs>
+<rect width="920" height="122" fill="#070b1a" rx="10"/>
+<path d="M178,61 C174,61 174,61 168,61" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="174" y="55" fill="#8793c2" font-size="11" text-anchor="middle">language readable from layer 0 (E0002)</text>
+<path d="M321,61 C317,61 317,61 311,61" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="317" y="55" fill="#8793c2" font-size="11" text-anchor="middle">push at L6 carries through (E0007); mechanism not measured</text>
+<path d="M464,61 C460,61 460,61 453,61" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="460" y="55" fill="#8793c2" font-size="11" text-anchor="middle">push at L28 carries through (E0006, E0008); mechanism not measured</text>
+<path d="M606,61 C603,61 603,61 596,61" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="603" y="55" fill="#8793c2" font-size="11" text-anchor="middle">push at L54/L58 still gives sentences (E0005, E0016)</text>
+<path d="M749,61 C746,61 746,61 739,61" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="746" y="55" fill="#8793c2" font-size="11" text-anchor="middle">token-level only (E0013)</text>
+<rect x="28" y="39" width="150" height="44" rx="8" fill="#0e1530" stroke="#8793c2" stroke-width="1.5"/>
+<text x="103" y="65" fill="#e6ebff" font-size="12" text-anchor="middle">Prompt tokens (EN or F</text>
+<rect x="171" y="39" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="246" y="65" fill="#e6ebff" font-size="12" text-anchor="middle">FR-EN direction, layer</text>
+<rect x="314" y="39" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="389" y="65" fill="#e6ebff" font-size="12" text-anchor="middle">FR-EN direction, layer</text>
+<rect x="456" y="39" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="531" y="65" fill="#e6ebff" font-size="12" text-anchor="middle">FR-EN direction, layer</text>
+<rect x="599" y="39" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="674" y="65" fill="#e6ebff" font-size="12" text-anchor="middle">Layers ~62-63: output-</text>
+<rect x="742" y="39" width="150" height="44" rx="8" fill="#0e1530" stroke="#8793c2" stroke-width="1.5"/>
+<text x="817" y="65" fill="#e6ebff" font-size="12" text-anchor="middle">Next token in the prom</text>
+</svg>

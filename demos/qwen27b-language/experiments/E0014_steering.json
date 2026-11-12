@@ -1,0 +1,288 @@
+{
+ "id": "E0014",
+ "primitive": "steering",
+ "provenance": {
+  "backend": "local-gguf",
+  "precision": "gguf-quantized",
+  "tag": "screening (gguf quantized, abliterated variant)",
+  "model": "Huihui-Qwen3.8-27B-abliterated-UD-DW-Q4_K_M.gguf",
+  "counts_as_verification": false,
+  "variant": "abliterated community variant (refusal direction removed); not the official weights"
+ },
+ "params": {
+  "direction": {
+   "artifact": "A0002_diffmeans"
+  },
+  "sites": [
+   "resid_post.28"
+  ],
+  "alphas": [
+   0,
+   0.4
+  ],
+  "clean": {
+   "prompts": [
+    "The pilot landed the plane on",
+    "The nurse closed the window of",
+    "The gardener planted roses along",
+    "The judge read the verdict to",
+    "The waiter carried the plates to",
+    "The climbers reached the top of",
+    "Yesterday evening my brother called me to say that",
+    "I have never understood why people",
+    "Before leaving the house, do not forget to",
+    "The museum will be closed on Monday because",
+    "Her grandfather was born in a small village where",
+    "To make a good soup, you first need"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the"
+   ],
+   "incorrect": [
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la"
+   ]
+  },
+  "generate": {
+   "prompts": [
+    "The pilot landed the plane on",
+    "The nurse closed the window of",
+    "The gardener planted roses along",
+    "The judge read the verdict to",
+    "The waiter carried the plates to",
+    "The climbers reached the top of",
+    "Yesterday evening my brother called me to say that",
+    "I have never understood why people",
+    "Before leaving the house, do not forget to",
+    "The museum will be closed on Monday because",
+    "Her grandfather was born in a small village where",
+    "To make a good soup, you first need"
+   ],
+   "max_new_tokens": 20
+  }
+ },
+ "summary": {
+  "sites": [
+   "resid_post.28"
+  ],
+  "alphas": [
+   0.0,
+   0.4
+  ],
+  "scale": "relative",
+  "residual_norm_at_site": {
+   "resid_post.28": 85.377441
+  },
+  "metric_type": "logit_diff",
+  "metric_by_alpha": {
+   "0.0": 11.026882,
+   "0.4": -10.751132
+  },
+  "n": 12,
+  "generations": [
+   {
+    "prompt": "The pilot landed the plane on",
+    "outputs": {
+     "0.0": " the runway.\nThe pilot landed the plane on the runway.\nThe pilot landed the plane on",
+     "0.4": " la piste de l'a\u00e9rodrome de Saint-Exup\u00e9ry.\nA. l'a"
+    }
+   },
+   {
+    "prompt": "The nurse closed the window of",
+    "outputs": {
+     "0.0": " the room.\nThe nurse closed the window of the room.\nThe nurse closed the window of",
+     "0.4": " la chambre 104.\n\nLa chambre 104 \u00e9tait une chambre d'h\u00f4"
+    }
+   },
+   {
+    "prompt": "The gardener planted roses along",
+    "outputs": {
+     "0.0": " the fence. The roses are 2 feet apart. The fence is 20 feet long.",
+     "0.4": " un chemin de 100 m\u00e8tres. Il a plant\u00e9 une rose tous les 5 m\u00e8tres"
+    }
+   },
+   {
+    "prompt": "The judge read the verdict to",
+    "outputs": {
+     "0.0": " the jury.\nThe jury read the verdict to the judge.\nWhich one is correct?\n\n",
+     "0.4": " la femme, qui \u00e9tait assise sur une chaise pliante, les mains attach\u00e9es derri\u00e8re le"
+    }
+   },
+   {
+    "prompt": "The waiter carried the plates to",
+    "outputs": {
+     "0.0": " the table.\nThe waiter carried the plates to the table.\nThe waiter carried the plates to",
+     "0.4": " la table.\nA. table\nB. assiette\nC. fourchette\nD."
+    }
+   },
+   {
+    "prompt": "The climbers reached the top of",
+    "outputs": {
+     "0.0": " the mountain at 6 a.m. and began their descent. They descended at a constant rate of",
+     "0.4": " la Grande Jorasse, un sommet de 3658 m\u00e8tres situ\u00e9 dans le massif du"
+    }
+   },
+   {
+    "prompt": "Yesterday evening my brother called me to say that",
+    "outputs": {
+     "0.0": " he was going to the hospital to see his mother. He said that she was in the hospital for",
+     "0.4": " il y a un probl\u00e8me avec le chauffage.\nJe me suis pr\u00e9cipit\u00e9e chez lui.\n"
+    }
+   },
+   {
+    "prompt": "I have never understood why people",
+    "outputs": {
+     "0.0": " are so obsessed with the idea of \"the perfect body.\" It seems to me that the human body",
+     "0.4": " separent les deux.\nLe premier est un\n**outil** pour les d\u00e9veloppeurs, qui"
+    }
+   },
+   {
+    "prompt": "Before leaving the house, do not forget to",
+    "outputs": {
+     "0.0": " check the weather forecast.\nThe most common problems that concern Kenwood KRC-500",
+     "0.4": " prendre votre carte de fid\u00e9lit\u00e9.\n## Qu\u2019est-ce qu\u2019une carte de fid\u00e9lit\u00e9 ?\n"
+    }
+   },
+   {
+    "prompt": "The museum will be closed on Monday because",
+    "outputs": {
+     "0.0": " of the renovation.\nThe museum will be closed on Monday because of the renovation.\nThe museum",
+     "0.4": " il y a un probl\u00e8me avec le chauffage.\nA. True\nB. False\n\n<think>\n"
+    }
+   },
+   {
+    "prompt": "Her grandfather was born in a small village where",
+    "outputs": {
+     "0.0": " the air smelled of pine and woodsmoke, and he still remembered the way the church bell rang",
+     "0.4": " les gens parlaient encore le fran\u00e7ais avec un accent qui faisait trembler les voyelles. Il avait"
+    }
+   },
+   {
+    "prompt": "To make a good soup, you first need",
+    "outputs": {
+     "0.0": " to make a good stock.\nStock is the base of many soups, sauces, and st",
+     "0.4": " un bon bouillon.\nLe bouillon est la base de la plupart des soupes. Il"
+    }
+   }
+  ]
+ },
+ "data": {
+  "metric": [
+   11.026882,
+   -10.751132
+  ],
+  "generations": [
+   {
+    "prompt": "The pilot landed the plane on",
+    "outputs": {
+     "0.0": " the runway.\nThe pilot landed the plane on the runway.\nThe pilot landed the plane on",
+     "0.4": " la piste de l'a\u00e9rodrome de Saint-Exup\u00e9ry.\nA. l'a"
+    }
+   },
+   {
+    "prompt": "The nurse closed the window of",
+    "outputs": {
+     "0.0": " the room.\nThe nurse closed the window of the room.\nThe nurse closed the window of",
+     "0.4": " la chambre 104.\n\nLa chambre 104 \u00e9tait une chambre d'h\u00f4"
+    }
+   },
+   {
+    "prompt": "The gardener planted roses along",
+    "outputs": {
+     "0.0": " the fence. The roses are 2 feet apart. The fence is 20 feet long.",
+     "0.4": " un chemin de 100 m\u00e8tres. Il a plant\u00e9 une rose tous les 5 m\u00e8tres"
+    }
+   },
+   {
+    "prompt": "The judge read the verdict to",
+    "outputs": {
+     "0.0": " the jury.\nThe jury read the verdict to the judge.\nWhich one is correct?\n\n",
+     "0.4": " la femme, qui \u00e9tait assise sur une chaise pliante, les mains attach\u00e9es derri\u00e8re le"
+    }
+   },
+   {
+    "prompt": "The waiter carried the plates to",
+    "outputs": {
+     "0.0": " the table.\nThe waiter carried the plates to the table.\nThe waiter carried the plates to",
+     "0.4": " la table.\nA. table\nB. assiette\nC. fourchette\nD."
+    }
+   },
+   {
+    "prompt": "The climbers reached the top of",
+    "outputs": {
+     "0.0": " the mountain at 6 a.m. and began their descent. They descended at a constant rate of",
+     "0.4": " la Grande Jorasse, un sommet de 3658 m\u00e8tres situ\u00e9 dans le massif du"
+    }
+   },
+   {
+    "prompt": "Yesterday evening my brother called me to say that",
+    "outputs": {
+     "0.0": " he was going to the hospital to see his mother. He said that she was in the hospital for",
+     "0.4": " il y a un probl\u00e8me avec le chauffage.\nJe me suis pr\u00e9cipit\u00e9e chez lui.\n"
+    }
+   },
+   {
+    "prompt": "I have never understood why people",
+    "outputs": {
+     "0.0": " are so obsessed with the idea of \"the perfect body.\" It seems to me that the human body",
+     "0.4": " separent les deux.\nLe premier est un\n**outil** pour les d\u00e9veloppeurs, qui"
+    }
+   },
+   {
+    "prompt": "Before leaving the house, do not forget to",
+    "outputs": {
+     "0.0": " check the weather forecast.\nThe most common problems that concern Kenwood KRC-500",
+     "0.4": " prendre votre carte de fid\u00e9lit\u00e9.\n## Qu\u2019est-ce qu\u2019une carte de fid\u00e9lit\u00e9 ?\n"
+    }
+   },
+   {
+    "prompt": "The museum will be closed on Monday because",
+    "outputs": {
+     "0.0": " of the renovation.\nThe museum will be closed on Monday because of the renovation.\nThe museum",
+     "0.4": " il y a un probl\u00e8me avec le chauffage.\nA. True\nB. False\n\n<think>\n"
+    }
+   },
+   {
+    "prompt": "Her grandfather was born in a small village where",
+    "outputs": {
+     "0.0": " the air smelled of pine and woodsmoke, and he still remembered the way the church bell rang",
+     "0.4": " les gens parlaient encore le fran\u00e7ais avec un accent qui faisait trembler les voyelles. Il avait"
+    }
+   },
+   {
+    "prompt": "To make a good soup, you first need",
+    "outputs": {
+     "0.0": " to make a good stock.\nStock is the base of many soups, sauces, and st",
+     "0.4": " un bon bouillon.\nLe bouillon est la base de la plupart des soupes. Il"
+    }
+   }
+  ]
+ },
+ "plot": "experiments/E0014_steering.png",
+ "seconds": 43.29,
+ "timestamp": "2026-11-12T23:44:41"
+}

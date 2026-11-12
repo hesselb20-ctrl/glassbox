@@ -1,0 +1,51 @@
+{
+ "title": "GPT-2 small: ' a' vs ' an' before an unproduced noun - behaviour not present",
+ "label": "negative result: behaviour absent, no mechanism claimed",
+ "behavior": "Claimed: GPT-2 small picks ' an' over ' a' when the upcoming (not yet produced) noun starts with a vowel, e.g. 'I climbed up the pear tree and picked a pear. I climbed up the apple tree and picked' -> ' an'. Metric: logit(' an') - logit(' a') on hand-written, position-aligned clean (vowel noun) / corrupt (consonant noun) pairs.",
+ "summary": "On local-full gpt2 (full precision) the behaviour does not occur. Across 36 hand-written clean prompts in 7 prompt styles, ' a' beats ' an' every time (accuracy 0/36). The user's own example sentence scores -3.54 logits (predicts ' a'). There is a consistent sub-threshold sensitivity: swapping the consonant noun for a vowel noun raises the an-a logit diff in 36/36 pairs, by about +0.5 to +1.0 logits on average, but never enough to flip the choice. Following the protocol, the investigation stopped after the baseline stage. No mechanism experiments and no verification were run; nothing about the mechanism is claimed.",
+ "pseudocode": "def predict(tokens, prompt):\n    # E0001, E0002: on every tested prompt the model prefers ' a' regardless of the cue noun.\n    # This is a description of the measured output, not a recovered mechanism. Not run through verify_hypothesis.\n    return ' a'",
+ "claims": [
+  {
+   "text": "On the three original-style templates (tree / seller / box), including the user's example sentence, the clean an-a logit diff is -3.01 +/- 0.53 and ' an' wins in 0/18 prompts (local-full, full precision).",
+   "evidence": [
+    "E0001"
+   ]
+  },
+  {
+   "text": "The failure is not template-specific: in four stronger styles (comma-separated parallel list, 'Want X: I want', few-shot with both articles in context, short declaratives) the clean logit diff is negative in 18/18 prompts (mean -2.37, best single prompt -0.71).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The model is weakly sensitive to the cue noun: clean exceeds corrupt in 36/36 pairs, mean shift +0.53 (E0001) and +0.96 (E0002) logits. Few-shot context with an 'an' example gets closest (clean mean -1.33 vs corrupt -2.40).",
+   "evidence": [
+    "E0001",
+    "E0002"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0001",
+  "E0002"
+ ],
+ "limitations": [
+  "Only 36 hand-written pairs, mostly food nouns; a prompt family where gpt2 does choose ' an' may exist but was not found in 7 styles.",
+  "No mechanism experiments were run, so the source of the +0.5 to +1.0 logit sensitivity is unmeasured.",
+  "verify_hypothesis was not run; the pseudocode is a description of baseline outputs only.",
+  "Token alignment of pairs was not reported explicitly by the baseline tool; no mismatch error was raised, but it was not independently confirmed."
+ ],
+ "open_questions": [
+  "Which components produce the sub-threshold shift toward ' an' in gpt2? Patchable with the same pairs, using corrupt-to-clean logit-diff recovery as metric instead of accuracy.",
+  "Does gpt2-medium (available on local-full) actually flip to ' an' on these prompts?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 negative result: behaviour absent, no mechanism claimed",
+ "cited": [
+  "E0001",
+  "E0002"
+ ]
+}

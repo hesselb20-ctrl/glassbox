@@ -1,0 +1,221 @@
+{
+ "id": "E0011",
+ "primitive": "steering",
+ "provenance": {
+  "backend": "local-gguf",
+  "precision": "gguf-quantized",
+  "tag": "screening (gguf quantized, abliterated variant)",
+  "model": "Huihui-Qwen3.8-27B-abliterated-UD-DW-Q4_K_M.gguf",
+  "counts_as_verification": false,
+  "variant": "abliterated community variant (refusal direction removed); not the official weights"
+ },
+ "params": {
+  "direction": {
+   "artifact": "A0002_diffmeans"
+  },
+  "sites": [
+   "resid_post.28"
+  ],
+  "alphas": [
+   0,
+   0.2,
+   0.4
+  ],
+  "clean": {
+   "prompts": [
+    "My favourite season is autumn because",
+    "When I was young, my mother always told me that",
+    "The best way to learn a new skill is",
+    "Scientists have recently discovered that",
+    "After dinner, we usually",
+    "The price of bread has",
+    "If it rains tomorrow, we will",
+    "In the middle of the city there is"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the"
+   ],
+   "incorrect": [
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la"
+   ]
+  },
+  "generate": {
+   "prompts": [
+    "My favourite season is autumn because",
+    "When I was young, my mother always told me that",
+    "The best way to learn a new skill is",
+    "Scientists have recently discovered that",
+    "After dinner, we usually",
+    "The price of bread has",
+    "If it rains tomorrow, we will",
+    "In the middle of the city there is"
+   ],
+   "max_new_tokens": 20
+  }
+ },
+ "summary": {
+  "sites": [
+   "resid_post.28"
+  ],
+  "alphas": [
+   0.0,
+   0.2,
+   0.4
+  ],
+  "scale": "relative",
+  "residual_norm_at_site": {
+   "resid_post.28": 84.084763
+  },
+  "metric_type": "logit_diff",
+  "metric_by_alpha": {
+   "0.0": 8.705421,
+   "0.2": -5.958967,
+   "0.4": -8.824815
+  },
+  "n": 8,
+  "slope_metric_per_alpha": -43.825591,
+  "generations": [
+   {
+    "prompt": "My favourite season is autumn because",
+    "outputs": {
+     "0.0": " it is cool and the leaves change colour.\nThe leaves turn red, orange and yellow.\n",
+     "0.4": " c'est la saison des couleurs. Les feuilles changent de couleur, passant du vert au jaune,"
+    }
+   },
+   {
+    "prompt": "When I was young, my mother always told me that",
+    "outputs": {
+     "0.0": " I should be a good person. She said that being good meant being kind, honest, and helpful",
+     "0.4": " les enfants ne doivent pas \u00eatre trop intelligents. Elle disait que si j'\u00e9tais trop malin"
+    }
+   },
+   {
+    "prompt": "The best way to learn a new skill is",
+    "outputs": {
+     "0.0": " to practice it.\nThe best way to learn a new skill is to practice it.\nThe",
+     "0.4": " de la pratiquer.\n**Apprendre \u00e0 coder** n\u2019est pas une exception.\n"
+    }
+   },
+   {
+    "prompt": "Scientists have recently discovered that",
+    "outputs": {
+     "0.0": " the brain's hippocampus, a region crucial for memory formation, is not as rigid as previously thought",
+     "0.4": " les-10% des Fran\u00e7ais sont allergiques \u00e0 la p\u00e9nicilline, ce qui est"
+    }
+   },
+   {
+    "prompt": "After dinner, we usually",
+    "outputs": {
+     "0.0": " take a walk around the park.\nA. After dinner, we usually take a walk around the",
+     "0.4": " regard le dessert comme un moment de d\u00e9tente et de plaisir. C\u2019est l\u2019occasion de se r\u00e9g"
+    }
+   },
+   {
+    "prompt": "The price of bread has",
+    "outputs": {
+     "0.0": " risen by 20%, and the price of butter has risen by 10%. A consumer",
+     "0.4": " augment\u00e9 de 10 % depuis le d\u00e9but de l\u2019ann\u00e9e.\n  * Les export"
+    }
+   },
+   {
+    "prompt": "If it rains tomorrow, we will",
+    "outputs": {
+     "0.0": " stay at home.\nA. If it will rain tomorrow\nB. If it rains tomorrow\n",
+     "0.4": " rester \u00e0 la maison.\nA. rester\nB. rest\u00e9\nC. restera\n"
+    }
+   },
+   {
+    "prompt": "In the middle of the city there is",
+    "outputs": {
+     "0.0": " a square, and in the middle of the square there is a fountain. The square is 1",
+     "0.4": " un espace vert, un parc, un jardin, un square, un jardin public, un jardin urbain"
+    }
+   }
+  ]
+ },
+ "data": {
+  "metric": [
+   8.705421,
+   -5.958967,
+   -8.824815
+  ],
+  "generations": [
+   {
+    "prompt": "My favourite season is autumn because",
+    "outputs": {
+     "0.0": " it is cool and the leaves change colour.\nThe leaves turn red, orange and yellow.\n",
+     "0.4": " c'est la saison des couleurs. Les feuilles changent de couleur, passant du vert au jaune,"
+    }
+   },
+   {
+    "prompt": "When I was young, my mother always told me that",
+    "outputs": {
+     "0.0": " I should be a good person. She said that being good meant being kind, honest, and helpful",
+     "0.4": " les enfants ne doivent pas \u00eatre trop intelligents. Elle disait que si j'\u00e9tais trop malin"
+    }
+   },
+   {
+    "prompt": "The best way to learn a new skill is",
+    "outputs": {
+     "0.0": " to practice it.\nThe best way to learn a new skill is to practice it.\nThe",
+     "0.4": " de la pratiquer.\n**Apprendre \u00e0 coder** n\u2019est pas une exception.\n"
+    }
+   },
+   {
+    "prompt": "Scientists have recently discovered that",
+    "outputs": {
+     "0.0": " the brain's hippocampus, a region crucial for memory formation, is not as rigid as previously thought",
+     "0.4": " les-10% des Fran\u00e7ais sont allergiques \u00e0 la p\u00e9nicilline, ce qui est"
+    }
+   },
+   {
+    "prompt": "After dinner, we usually",
+    "outputs": {
+     "0.0": " take a walk around the park.\nA. After dinner, we usually take a walk around the",
+     "0.4": " regard le dessert comme un moment de d\u00e9tente et de plaisir. C\u2019est l\u2019occasion de se r\u00e9g"
+    }
+   },
+   {
+    "prompt": "The price of bread has",
+    "outputs": {
+     "0.0": " risen by 20%, and the price of butter has risen by 10%. A consumer",
+     "0.4": " augment\u00e9 de 10 % depuis le d\u00e9but de l\u2019ann\u00e9e.\n  * Les export"
+    }
+   },
+   {
+    "prompt": "If it rains tomorrow, we will",
+    "outputs": {
+     "0.0": " stay at home.\nA. If it will rain tomorrow\nB. If it rains tomorrow\n",
+     "0.4": " rester \u00e0 la maison.\nA. rester\nB. rest\u00e9\nC. restera\n"
+    }
+   },
+   {
+    "prompt": "In the middle of the city there is",
+    "outputs": {
+     "0.0": " a square, and in the middle of the square there is a fountain. The square is 1",
+     "0.4": " un espace vert, un parc, un jardin, un square, un jardin public, un jardin urbain"
+    }
+   }
+  ]
+ },
+ "plot": "experiments/E0011_steering.png",
+ "seconds": 30.02,
+ "timestamp": "2026-11-12T23:41:55"
+}

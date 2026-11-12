@@ -1,0 +1,221 @@
+{
+ "id": "E0012",
+ "primitive": "steering",
+ "provenance": {
+  "backend": "local-gguf",
+  "precision": "gguf-quantized",
+  "tag": "screening (gguf quantized, abliterated variant)",
+  "model": "Huihui-Qwen3.8-27B-abliterated-UD-DW-Q4_K_M.gguf",
+  "counts_as_verification": false,
+  "variant": "abliterated community variant (refusal direction removed); not the official weights"
+ },
+ "params": {
+  "direction": {
+   "artifact": "A0002_diffmeans"
+  },
+  "sites": [
+   "resid_post.28"
+  ],
+  "alphas": [
+   0,
+   -0.2,
+   -0.4
+  ],
+  "clean": {
+   "prompts": [
+    "Ma saison pr\u00e9f\u00e9r\u00e9e est l'automne parce que",
+    "Quand j'\u00e9tais jeune, ma m\u00e8re me disait toujours que",
+    "La meilleure fa\u00e7on d'apprendre une nouvelle comp\u00e9tence est",
+    "Les scientifiques ont r\u00e9cemment d\u00e9couvert que",
+    "Apr\u00e8s le d\u00eener, nous avons l'habitude de",
+    "Le prix du pain a",
+    "S'il pleut demain, nous allons",
+    "Au milieu de la ville, il y a"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la"
+   ],
+   "incorrect": [
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the"
+   ]
+  },
+  "generate": {
+   "prompts": [
+    "Ma saison pr\u00e9f\u00e9r\u00e9e est l'automne parce que",
+    "Quand j'\u00e9tais jeune, ma m\u00e8re me disait toujours que",
+    "La meilleure fa\u00e7on d'apprendre une nouvelle comp\u00e9tence est",
+    "Les scientifiques ont r\u00e9cemment d\u00e9couvert que",
+    "Apr\u00e8s le d\u00eener, nous avons l'habitude de",
+    "Le prix du pain a",
+    "S'il pleut demain, nous allons",
+    "Au milieu de la ville, il y a"
+   ],
+   "max_new_tokens": 20
+  }
+ },
+ "summary": {
+  "sites": [
+   "resid_post.28"
+  ],
+  "alphas": [
+   0.0,
+   -0.2,
+   -0.4
+  ],
+  "scale": "relative",
+  "residual_norm_at_site": {
+   "resid_post.28": 83.280746
+  },
+  "metric_type": "logit_diff",
+  "metric_by_alpha": {
+   "0.0": 9.453424,
+   "-0.2": -5.941896,
+   "-0.4": -8.730116
+  },
+  "n": 8,
+  "slope_metric_per_alpha": 45.458848,
+  "generations": [
+   {
+    "prompt": "Ma saison pr\u00e9f\u00e9r\u00e9e est l'automne parce que",
+    "outputs": {
+     "0.0": " c'est la saison des couleurs.\nJ'adore les couleurs de l'automne.\nJ",
+     "-0.4": " it's the season of the harvest.\nA. autumn\nB. winter\nC. spring"
+    }
+   },
+   {
+    "prompt": "Quand j'\u00e9tais jeune, ma m\u00e8re me disait toujours que",
+    "outputs": {
+     "0.0": " je devais manger mes l\u00e9gumes. Elle me disait que c'\u00e9tait bon pour moi, que \u00e7a me",
+     "-0.4": " I should eat my vegetables.\nA. I should eat my vegetables.\nB. I should"
+    }
+   },
+   {
+    "prompt": "La meilleure fa\u00e7on d'apprendre une nouvelle comp\u00e9tence est",
+    "outputs": {
+     "0.0": " de pratiquer.\nLa meilleure fa\u00e7on d'apprendre une nouvelle comp\u00e9tence est de pratiquer.",
+     "-0.4": " to practice it.\nA. to\nB. of\nC. for\nD. in"
+    }
+   },
+   {
+    "prompt": "Les scientifiques ont r\u00e9cemment d\u00e9couvert que",
+    "outputs": {
+     "0.0": " les cellules souches du foie peuvent se transformer en cellules pancr\u00e9atiques, ce qui pourrait",
+     "-0.4": " the brain of a person who is a genius is different from the brain of a person who is not"
+    }
+   },
+   {
+    "prompt": "Apr\u00e8s le d\u00eener, nous avons l'habitude de",
+    "outputs": {
+     "0.0": " nous retrouver dans le salon pour un moment de d\u00e9tente.\nLe salon est une pi\u00e8ce de vie,",
+     "-0.4": " take a walk.\nA. to take\nB. taking\nC. to taking\nD"
+    }
+   },
+   {
+    "prompt": "Le prix du pain a",
+    "outputs": {
+     "0.0": " augment\u00e9 de 10% en moyenne dans les boulangeries de la r\u00e9gion de Tanger-T",
+     "-0.4": " risen by 10% in the last year.\nA. risen\nB. rose\n"
+    }
+   },
+   {
+    "prompt": "S'il pleut demain, nous allons",
+    "outputs": {
+     "0.0": " \u00e0 la plage.\nA. Vrai\nB. Faux\n\n<think>\nThe user is",
+     "-0.4": " to the beach.\nA. go\nB. going\nC. to go\nD."
+    }
+   },
+   {
+    "prompt": "Au milieu de la ville, il y a",
+    "outputs": {
+     "0.0": " un grand arbre.\nSous l'arbre, il y a un banc.\nSur le",
+     "-0.4": " a big square.\nA. a\nB. an\nC. the\nD. no"
+    }
+   }
+  ]
+ },
+ "data": {
+  "metric": [
+   9.453424,
+   -5.941896,
+   -8.730116
+  ],
+  "generations": [
+   {
+    "prompt": "Ma saison pr\u00e9f\u00e9r\u00e9e est l'automne parce que",
+    "outputs": {
+     "0.0": " c'est la saison des couleurs.\nJ'adore les couleurs de l'automne.\nJ",
+     "-0.4": " it's the season of the harvest.\nA. autumn\nB. winter\nC. spring"
+    }
+   },
+   {
+    "prompt": "Quand j'\u00e9tais jeune, ma m\u00e8re me disait toujours que",
+    "outputs": {
+     "0.0": " je devais manger mes l\u00e9gumes. Elle me disait que c'\u00e9tait bon pour moi, que \u00e7a me",
+     "-0.4": " I should eat my vegetables.\nA. I should eat my vegetables.\nB. I should"
+    }
+   },
+   {
+    "prompt": "La meilleure fa\u00e7on d'apprendre une nouvelle comp\u00e9tence est",
+    "outputs": {
+     "0.0": " de pratiquer.\nLa meilleure fa\u00e7on d'apprendre une nouvelle comp\u00e9tence est de pratiquer.",
+     "-0.4": " to practice it.\nA. to\nB. of\nC. for\nD. in"
+    }
+   },
+   {
+    "prompt": "Les scientifiques ont r\u00e9cemment d\u00e9couvert que",
+    "outputs": {
+     "0.0": " les cellules souches du foie peuvent se transformer en cellules pancr\u00e9atiques, ce qui pourrait",
+     "-0.4": " the brain of a person who is a genius is different from the brain of a person who is not"
+    }
+   },
+   {
+    "prompt": "Apr\u00e8s le d\u00eener, nous avons l'habitude de",
+    "outputs": {
+     "0.0": " nous retrouver dans le salon pour un moment de d\u00e9tente.\nLe salon est une pi\u00e8ce de vie,",
+     "-0.4": " take a walk.\nA. to take\nB. taking\nC. to taking\nD"
+    }
+   },
+   {
+    "prompt": "Le prix du pain a",
+    "outputs": {
+     "0.0": " augment\u00e9 de 10% en moyenne dans les boulangeries de la r\u00e9gion de Tanger-T",
+     "-0.4": " risen by 10% in the last year.\nA. risen\nB. rose\n"
+    }
+   },
+   {
+    "prompt": "S'il pleut demain, nous allons",
+    "outputs": {
+     "0.0": " \u00e0 la plage.\nA. Vrai\nB. Faux\n\n<think>\nThe user is",
+     "-0.4": " to the beach.\nA. go\nB. going\nC. to go\nD."
+    }
+   },
+   {
+    "prompt": "Au milieu de la ville, il y a",
+    "outputs": {
+     "0.0": " un grand arbre.\nSous l'arbre, il y a un banc.\nSur le",
+     "-0.4": " a big square.\nA. a\nB. an\nC. the\nD. no"
+    }
+   }
+  ]
+ },
+ "plot": "experiments/E0012_steering.png",
+ "seconds": 29.72,
+ "timestamp": "2026-11-12T23:42:24"
+}

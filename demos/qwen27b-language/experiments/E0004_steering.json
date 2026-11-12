@@ -1,0 +1,229 @@
+{
+ "id": "E0004",
+ "primitive": "steering",
+ "provenance": {
+  "backend": "local-gguf",
+  "precision": "gguf-quantized",
+  "tag": "screening (gguf quantized, abliterated variant)",
+  "model": "Huihui-Qwen3.8-27B-abliterated-UD-DW-Q4_K_M.gguf",
+  "counts_as_verification": false,
+  "variant": "abliterated community variant (refusal direction removed); not the official weights"
+ },
+ "params": {
+  "direction": {
+   "artifact": "A0002_diffmeans"
+  },
+  "sites": [
+   "resid_post.54"
+  ],
+  "alphas": [
+   0,
+   0.5,
+   1,
+   2,
+   4
+  ],
+  "clean": {
+   "prompts": [
+    "The baker opened the door of",
+    "The children were playing in",
+    "The scientist published her results in",
+    "The farmer walked slowly toward",
+    "The musician played all night for",
+    "The journalist wrote an article about",
+    "The thief hid the money in",
+    "The fishermen came back from"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the"
+   ],
+   "incorrect": [
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la"
+   ]
+  },
+  "generate": {
+   "prompts": [
+    "The baker opened the door of",
+    "The children were playing in",
+    "The scientist published her results in",
+    "The farmer walked slowly toward",
+    "The musician played all night for",
+    "The journalist wrote an article about",
+    "The thief hid the money in",
+    "The fishermen came back from"
+   ],
+   "max_new_tokens": 16
+  }
+ },
+ "summary": {
+  "sites": [
+   "resid_post.54"
+  ],
+  "alphas": [
+   0.0,
+   0.5,
+   1.0,
+   2.0,
+   4.0
+  ],
+  "scale": "relative",
+  "residual_norm_at_site": {
+   "resid_post.54": 201.334991
+  },
+  "metric_type": "logit_diff",
+  "metric_by_alpha": {
+   "0.0": 12.86509,
+   "0.5": -11.772314,
+   "1.0": -16.054928,
+   "2.0": -17.018669,
+   "4.0": -16.758173
+  },
+  "n": 8,
+  "slope_metric_per_alpha": -4.990262,
+  "generations": [
+   {
+    "prompt": "The baker opened the door of",
+    "outputs": {
+     "0.0": " the oven and pulled out the bread.\nThe baker opened the door of the",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   },
+   {
+    "prompt": "The children were playing in",
+    "outputs": {
+     "0.0": " the garden.\nThe children were playing in the garden.\nThe children were",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   },
+   {
+    "prompt": "The scientist published her results in",
+    "outputs": {
+     "0.0": " a journal.\nA. The scientist published her results in a journal.\n",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   },
+   {
+    "prompt": "The farmer walked slowly toward",
+    "outputs": {
+     "0.0": " the barn, his boots crunching on the gravel path. He paused at the",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   },
+   {
+    "prompt": "The musician played all night for",
+    "outputs": {
+     "0.0": " the crowd.\nQuestion: What will the musician want to do next?\n",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   },
+   {
+    "prompt": "The journalist wrote an article about",
+    "outputs": {
+     "0.0": " the new bridge. The article was published in the local newspaper. The journalist received",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   },
+   {
+    "prompt": "The thief hid the money in",
+    "outputs": {
+     "0.0": " a _______ place, so it was hard to find.\nA. obvious",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   },
+   {
+    "prompt": "The fishermen came back from",
+    "outputs": {
+     "0.0": " the sea with a big catch.\nThe fishermen came back from the sea with",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   }
+  ]
+ },
+ "data": {
+  "metric": [
+   12.86509,
+   -11.772314,
+   -16.054928,
+   -17.018669,
+   -16.758173
+  ],
+  "generations": [
+   {
+    "prompt": "The baker opened the door of",
+    "outputs": {
+     "0.0": " the oven and pulled out the bread.\nThe baker opened the door of the",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   },
+   {
+    "prompt": "The children were playing in",
+    "outputs": {
+     "0.0": " the garden.\nThe children were playing in the garden.\nThe children were",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   },
+   {
+    "prompt": "The scientist published her results in",
+    "outputs": {
+     "0.0": " a journal.\nA. The scientist published her results in a journal.\n",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   },
+   {
+    "prompt": "The farmer walked slowly toward",
+    "outputs": {
+     "0.0": " the barn, his boots crunching on the gravel path. He paused at the",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   },
+   {
+    "prompt": "The musician played all night for",
+    "outputs": {
+     "0.0": " the crowd.\nQuestion: What will the musician want to do next?\n",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   },
+   {
+    "prompt": "The journalist wrote an article about",
+    "outputs": {
+     "0.0": " the new bridge. The article was published in the local newspaper. The journalist received",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   },
+   {
+    "prompt": "The thief hid the money in",
+    "outputs": {
+     "0.0": " a _______ place, so it was hard to find.\nA. obvious",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   },
+   {
+    "prompt": "The fishermen came back from",
+    "outputs": {
+     "0.0": " the sea with a big catch.\nThe fishermen came back from the sea with",
+     "4.0": " la la la la la la la la la la la la la la la la"
+    }
+   }
+  ]
+ },
+ "plot": "experiments/E0004_steering.png",
+ "seconds": 27.34,
+ "timestamp": "2026-11-12T23:36:38"
+}

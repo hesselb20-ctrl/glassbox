@@ -1,0 +1,16 @@
+{
+ "benchmark": "gpt2-a-an",
+ "prompt_arguments": "local-full gpt2 \"GPT-2 small chooses between the articles ' a' and ' an' according to the word that will come next, a word it has not produced yet. Example: 'I climbed up the pear tree and picked a pear. I climbed up the apple tree and picked' is continued with ' an'. How does it decide? There is no built-in dataset task for this: write your own position-aligned clean and corrupt prompt pairs (the same number of tokens in each pair, check it with the baseline), and use the logit difference between ' an' and ' a' as the metric.\" budget=40 investigation=gpt2-a-an",
+ "wall_clock_seconds": 122.1,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 86.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 15,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: negative result, stopped at the baseline.** GPT-2 small on `local-full` (full precision) does not do this behaviour, so there is no mechanism to explain and nothing was verified.\n\n**What I measured**\n\n| Experiment | Prompts | Clean `an − a` (vowel noun) | Corrupt (consonant noun) | ' an' wins |\n|---|---|---|---|---|\n| E0001 | 18 pairs in tree / seller / box templates, including your example | −3.01 ± 0.53 | −3.54 | 0/18 |\n| E0002 | 18 pairs in four stronger styles | −2.37 ± 1.13 | −3.33 | 0/18 |\n\n- **Your example:** \"…I climbed up the apple tree and picked\" scores −3.54, so the model prefers ' a'.\n- **Closest style:** few-shot prompts that already contain an \"an\" example reach a clean mean of −1.33 (best single prompt −0.71), still on the ' a' side.\n- **Weak signal:** the vowel noun raises the logit difference in 36/36 pairs, by +0.53 (E0001) and +0.96 (E0002) on average. The model is sensitive to the cue but never flips.\n\n**Algorithm:** none recovered. The only honest description is \"outputs ' a' regardless of the cue noun\"; where the small shift comes from is unmeasured.\n\n**Verification:** not run. Both hypotheses (behaviour exists; behaviour exists under stronger context) are marked rejected in the notebook.\n\n**Budget:** 2 of 40 experiments used, 38 left.\n\n**Caveats**\n- The baseline tool raised no token-count mismatch, but it also did not explicitly confirm that each pair is aligned.\n\n**Report:** `open_cases\\gpt2-a-an\\report\\report.md` (and `report.html` next to it)\n\n**How do you want to continue?**\n1. **Same question on `gpt2-medium`** (available on `local-full`, full precision): baseline first to see whether it actually flips to ' an', then the full loop. This is my recommendation, since it is the question you asked.\n2. **Stay on gpt2 and study the weak shift:** patch the same pairs to find which components produce the ~+0.5–1.0 logits. This is doable with the remaining budget, but it explains a sensitivity, not a decision.",
+ "redacted": "lines about the owner's private note system were removed"
+}

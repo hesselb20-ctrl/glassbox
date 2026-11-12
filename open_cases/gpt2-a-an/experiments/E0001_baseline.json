@@ -1,0 +1,137 @@
+{
+ "id": "E0001",
+ "primitive": "baseline",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "clean": {
+   "prompts": [
+    "I climbed up the pear tree and picked a pear. I climbed up the apple tree and picked",
+    "I climbed up the pear tree and picked a pear. I climbed up the orange tree and picked",
+    "I climbed up the pear tree and picked a pear. I climbed up the olive tree and picked",
+    "I climbed up the plum tree and picked a plum. I climbed up the apple tree and picked",
+    "I climbed up the plum tree and picked a plum. I climbed up the orange tree and picked",
+    "I climbed up the fig tree and picked a fig. I climbed up the apple tree and picked",
+    "The pear seller sold me a pear. The apple seller sold me",
+    "The pear seller sold me a pear. The orange seller sold me",
+    "The pear seller sold me a pear. The egg seller sold me",
+    "The pear seller sold me a pear. The onion seller sold me",
+    "The pear seller sold me a pear. The olive seller sold me",
+    "The plum seller sold me a plum. The egg seller sold me",
+    "In the pear box there was a pear. In the apple box there was",
+    "In the pear box there was a pear. In the orange box there was",
+    "In the pear box there was a pear. In the egg box there was",
+    "In the pear box there was a pear. In the onion box there was",
+    "In the pear box there was a pear. In the envelope box there was",
+    "In the pear box there was a pear. In the umbrella box there was"
+   ]
+  },
+  "corrupt": {
+   "prompts": [
+    "I climbed up the pear tree and picked a pear. I climbed up the lemon tree and picked",
+    "I climbed up the pear tree and picked a pear. I climbed up the peach tree and picked",
+    "I climbed up the pear tree and picked a pear. I climbed up the cherry tree and picked",
+    "I climbed up the plum tree and picked a plum. I climbed up the banana tree and picked",
+    "I climbed up the plum tree and picked a plum. I climbed up the lemon tree and picked",
+    "I climbed up the fig tree and picked a fig. I climbed up the peach tree and picked",
+    "The pear seller sold me a pear. The lemon seller sold me",
+    "The pear seller sold me a pear. The banana seller sold me",
+    "The pear seller sold me a pear. The melon seller sold me",
+    "The pear seller sold me a pear. The carrot seller sold me",
+    "The pear seller sold me a pear. The cherry seller sold me",
+    "The plum seller sold me a plum. The potato seller sold me",
+    "In the pear box there was a pear. In the peach box there was",
+    "In the pear box there was a pear. In the lemon box there was",
+    "In the pear box there was a pear. In the carrot box there was",
+    "In the pear box there was a pear. In the potato box there was",
+    "In the pear box there was a pear. In the magazine box there was",
+    "In the pear box there was a pear. In the blanket box there was"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " an"
+   ],
+   "incorrect": [
+    " a"
+   ]
+  }
+ },
+ "summary": {
+  "n": 18,
+  "metric_type": "logit_diff",
+  "clean_metric_mean": -3.006057,
+  "clean_metric_std": 0.533963,
+  "clean_accuracy": 0.0,
+  "example_predictions": [
+   {
+    "predicted": " a",
+    "expected": " an"
+   },
+   {
+    "predicted": " a",
+    "expected": " an"
+   },
+   {
+    "predicted": " a",
+    "expected": " an"
+   },
+   {
+    "predicted": " a",
+    "expected": " an"
+   }
+  ],
+  "corrupt_metric_mean": -3.538564
+ },
+ "data": {
+  "clean_metric": [
+   -3.535907,
+   -3.353821,
+   -3.548812,
+   -3.902624,
+   -3.796237,
+   -3.874545,
+   -2.674345,
+   -2.475767,
+   -2.725301,
+   -2.406658,
+   -2.680573,
+   -3.169588,
+   -2.685096,
+   -2.518847,
+   -2.589535,
+   -2.353903,
+   -2.753697,
+   -3.063766
+  ],
+  "corrupt_metric": [
+   -4.047926,
+   -3.966239,
+   -4.450418,
+   -4.218267,
+   -4.480864,
+   -4.179686,
+   -3.213658,
+   -3.224093,
+   -3.176582,
+   -3.182366,
+   -3.593278,
+   -3.585663,
+   -3.012435,
+   -2.997286,
+   -3.122014,
+   -3.026921,
+   -2.895128,
+   -3.321339
+  ]
+ },
+ "plot": "experiments/E0001_baseline.png",
+ "seconds": 0.83,
+ "timestamp": "2026-11-12T23:20:47"
+}

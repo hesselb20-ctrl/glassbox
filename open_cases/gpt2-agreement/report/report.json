@@ -1,0 +1,231 @@
+{
+ "title": "GPT-2 small: subject-verb number agreement across a distractor noun",
+ "label": "partial (causal checks pass on held-out prompts; top-1 agreement check fails)",
+ "behavior": "On 'The {subject} {prep} the {distractor}' with a distractor of the opposite number, gpt2 (local-full, full precision) gives a higher logit to the verb form that agrees with the subject (' is' vs ' are'). Metric: logit(correct verb) - logit(incorrect verb) at the last token. Clean/corrupt pairs are hand-written, position-aligned (6 tokens incl. BOS); the corrupt prompt flips only the subject's number.",
+ "summary": "All numbers are from the local-full backend (full precision). The model prefers the subject-agreeing verb form on 32/32 development prompts (mean logit diff +3.34) and on 96/96 held-out prompts, but is/are is the top-1 token on only ~17% of prompts: this is a preference between verb forms, not a top-1 prediction. Mechanism found: the subject's number sits at the subject token through layer 2; by layer 5 about half of the causal signal has also been written onto the preposition token; a small set of attention heads then moves it to the last token in two parallel groups: 5.2/6.0/7.4/8.5 (layers 5-8, attending mostly to the preposition) and 10.5/10.9/11.10 (layers 10-11, attending mostly to the subject noun). These heads write the verb preference partly directly (about 45% of the logit diff is direct head output) and the rest goes through MLPs, with MLPs 8-11 each mattering individually. Mean-ablating the 8 heads removes 94% of the effect; mean-ablating all other 136 heads leaves 74% on held-out prompts. MLPs 1-7 are individually dispensable but jointly needed. Two verification rounds: the first circuit (8 heads + 5 MLPs) was necessary but not sufficient (28%); the revised circuit (8 heads + all MLPs) passes both causal checks. The tool's top-1 agreement check fails in both rounds (0.167), so the status is partial, not verified.",
+ "pseudocode": "def predict(tokens, prompt):\n    # 'The {subject} {prep} the {distractor}' -> preferred verb form (is vs are), NOT necessarily top-1 (E0001, V0001, E0027)\n    # 1. number lives at the subject token, layers 0-2 (E0003)\n    # 2. layers 2-5: ~half of it is also written onto the preposition; distributed, MLPs 1-7 jointly needed (E0003, E0010, E0022)\n    # 3. heads 5.2/6.0/7.4/8.5 read mostly the preposition, heads 10.5/10.9/11.10 mostly the subject,\n    #    and move number to the last token (E0004, E0007, E0008, E0015); the two groups are parallel (E0012)\n    # 4. the heads (direct, E0011/E0021) and MLPs 8-11 (E0006/E0013) write the verb form; the distractor is ignored\n    subject = prompt.strip().split()[1]\n    return ' are' if subject.endswith('s') else ' is'",
+ "claims": [
+  {
+   "text": "Behaviour exists as a preference: logit diff is positive on 32/32 development prompts (mean +3.34) and flips sign on 32/32 subject-flipped prompts (mean -4.36); on fresh held-out nouns it is 48/48 positive (mean +3.12) and 48/48 negative after flipping. is/are is top-1 on only 17-19% of prompts.",
+   "evidence": [
+    "E0001",
+    "E0027",
+    "V0002"
+   ]
+  },
+  {
+   "text": "Position of the causal signal (exact resid patching, fraction of gap restored): subject token 1.00 in layers 0-2, falling to 0.46 by layer 5 and 0.03 at layer 11; preposition token rising to 0.49 at layer 5, gone by layer 9; determiner <= 0.06; last token 0.18 at layer 7, 0.55 at layer 8, 0.75 at layer 9, 0.97 at layer 11. The first-order attribution screen missed most of this and was not relied on.",
+   "evidence": [
+    "E0003",
+    "E0002"
+   ]
+  },
+  {
+   "text": "Eight heads carry the attention side: exact single-head patching gives 7.4 0.25, 8.5 0.21, 10.9 0.17, 6.0 0.11, 10.5 0.08, 4.3 0.06, 11.10 0.055, 5.2 0.05, everything else < 0.025; single mean-ablations rank them identically. Jointly mean-ablating the eight leaves 6% of the logit diff, while eight control heads with strong attention to the subject leave 100%.",
+   "evidence": [
+    "E0004",
+    "E0014",
+    "E0015",
+    "E0016"
+   ]
+  },
+  {
+   "text": "The other 136 heads are largely dispensable: the 66 non-circuit heads in layers 6-11 leave 103% when jointly mean-ablated, the 70 in layers 0-5 leave 84%, and on held-out prompts ablating all 136 at once leaves 73.7%.",
+   "evidence": [
+    "E0024",
+    "E0023",
+    "V0002"
+   ]
+  },
+  {
+   "text": "From the last token, heads 5.2/6.0/7.4/8.5 attend more to the preposition (0.18-0.33) than to the subject (0.03-0.12); heads 10.5/10.9/11.10 attend more to the subject (0.22-0.25) than to the preposition (0.07-0.13). The late heads do not depend on the mid heads through their queries (path effect <= 0.001), so the two groups are parallel routes.",
+   "evidence": [
+    "E0007",
+    "E0008",
+    "E0012"
+   ]
+  },
+  {
+   "text": "The heads write the verb preference partly directly: direct-path effects are 10.9 0.107, 7.4 0.079, 8.5 0.064 (of total effects 0.171, 0.252, 0.208); direct logit attribution of all heads sums to 1.52 of 3.34 logits, the rest is written by non-head components.",
+   "evidence": [
+    "E0011",
+    "E0021",
+    "E0004"
+   ]
+  },
+  {
+   "text": "MLPs: MLP 8-11 matter individually (exact patching 0.13, 0.22, 0.33, 0.24; mean-ablation leaves 63%, 88%, 64%, 71%). MLPs 1-7 are individually dispensable and so is each block (MLP 1-3: 107%, MLP 4-7: 92%), but ablating all seven leaves 59%: a redundant group.",
+   "evidence": [
+    "E0006",
+    "E0013",
+    "E0022",
+    "E0025",
+    "E0026"
+   ]
+  },
+  {
+   "text": "The relay onto the preposition is distributed: many layer 2-4 heads attend from the preposition to the subject (4.11 1.00, 2.9 0.80, 2.2 0.71, 3.7 0.70, 4.3 0.67), but their path into the values of 6.0/7.4/8.5 carries only ~0.1 in total (4.3 0.039, 3.7 0.025), far less than the 0.49 present at the preposition.",
+   "evidence": [
+    "E0009",
+    "E0010",
+    "E0003"
+   ]
+  },
+  {
+   "text": "A 'plural subject' direction at the last token is causally sufficient: adding one natural unit of the plural-minus-singular mean difference at resid_post.9 moves the is-minus-are logit diff on singular-subject prompts from +3.26 to -3.77, monotonically in the dose. A linear probe at the last token decodes subject number at 0.85 by layer 7-9 and 1.00 from layer 10, but with only 20 test prompts this is weak support.",
+   "evidence": [
+    "E0020",
+    "E0018",
+    "E0017"
+   ]
+  },
+  {
+   "text": "Verification round 1 (8 heads + MLP 0, 8-11) failed sufficiency: circuit ablated -9%, everything else ablated 28% (threshold 70%), random controls 96-106%. Round 2 (8 heads + all MLPs, fresh nouns) passes the causal checks: circuit alone 73.7%, circuit ablated -2.5%, random controls 96-100%. Both rounds fail the top-1 agreement check (0.167), so the tool status is not-verified.",
+   "evidence": [
+    "V0001",
+    "V0002"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "subj",
+    "label": "subject token: number (embedding + MLP0)",
+    "layer": 0,
+    "kind": "input"
+   },
+   {
+    "id": "prep",
+    "label": "preposition token: copy of number (layers 2-5, distributed)",
+    "layer": 4,
+    "kind": "residual"
+   },
+   {
+    "id": "early",
+    "label": "heads 4.3, 3.7 (+ others) and MLPs 1-7 (redundant group)",
+    "layer": 3,
+    "kind": "heads+mlp"
+   },
+   {
+    "id": "mid",
+    "label": "heads 5.2, 6.0, 7.4, 8.5",
+    "layer": 7,
+    "kind": "heads"
+   },
+   {
+    "id": "late",
+    "label": "heads 10.5, 10.9, 11.10",
+    "layer": 10,
+    "kind": "heads"
+   },
+   {
+    "id": "mlps",
+    "label": "MLPs 8-11 at last token",
+    "layer": 10,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "logit(' is') vs logit(' are')",
+    "layer": 12,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "subj",
+    "dst": "early",
+    "label": "prep attends to subject (E0009)"
+   },
+   {
+    "src": "early",
+    "dst": "prep",
+    "label": "writes number at prep (E0003; only ~0.1 traced, E0010)"
+   },
+   {
+    "src": "prep",
+    "dst": "mid",
+    "label": "value input, attention 0.18-0.33 (E0008, E0010)"
+   },
+   {
+    "src": "subj",
+    "dst": "late",
+    "label": "attention 0.22-0.25 (E0007)"
+   },
+   {
+    "src": "mid",
+    "dst": "out",
+    "label": "direct, about 1/3 of their effect (E0011, E0021)"
+   },
+   {
+    "src": "late",
+    "dst": "out",
+    "label": "direct, most of their effect (E0011, E0021)"
+   },
+   {
+    "src": "mid",
+    "dst": "mlps",
+    "label": "inferred, not measured (E0011, E0012, E0013)"
+   },
+   {
+    "src": "mlps",
+    "dst": "out",
+    "label": "E0006, E0013"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0003",
+  "E0004",
+  "E0015",
+  "E0020"
+ ],
+ "limitations": [
+  "Status is partial: the tool's agreement check compares predict() with the model's top-1 token and scores 0.167 in V0001 and V0002, because is/are is rarely top-1. Preference-level agreement is 96/96 on held-out prompts (E0027), but that is my own reading of a baseline, not the tool's verification check.",
+  "The verified circuit keeps all 12 MLPs. The sparsity claim is about attention only (8 of 144 heads). 'Circuit ablated' in V0002 removes every MLP and would break nearly any behaviour; the informative necessity results are E0015 and V0001.",
+  "Circuit-alone performance is 73.7%, just above the 70% threshold; a quarter of the effect lives in the 136 other heads (mostly layers 0-5, E0023).",
+  "The link 'mid heads -> late MLPs' is inferred, not measured: path patching with MLP receivers is not supported by the tool (the attempt raised KeyError and produced no experiment).",
+  "One prompt template only: 'The N prep the N', one-token regular nouns with plural in -s, verbs is/are, a single distractor adjacent to the verb position. Longer distractor phrases, irregular plurals, other verbs and relative clauses were not tested.",
+  "Layer-level attn_out/mlp_out patching was not split by position (E0005, E0006), and the steering output does not confirm that E0020 was restricted to the last position. E0019 used an 8x overdose and is not evidence for natural-scale behaviour.",
+  "Single-component denoising effects are not additive here (E0005 vs E0003), so the fractions should not be summed.",
+  "The probe (E0017) has 20 test prompts and a noisy control; the diff-of-means direction separates held-out prompts poorly before layer 10 (E0018)."
+ ],
+ "open_questions": [
+  "Which components write the subject's number onto the preposition? The early prep->subject heads explain ~0.1 of 0.49, and MLPs 1-7 matter only as a group.",
+  "Do MLPs 8-11 read the output of heads 6.0/7.4/8.5 at the last token, as the indirect-effect numbers suggest?",
+  "Why are MLP 1-3 and MLP 4-7 mutually redundant (107% and 92% alone, 59% together)?",
+  "Does the same head set handle longer attractor phrases, several distractors, or other verbs (was/were, has/have)?",
+  "What is in the 26% that is lost when the 136 non-circuit heads are ablated?"
+ ],
+ "overall_status": "partial / not verified \u00b7 partial (causal checks pass on held-out prompts; top-1 agreement check fails)",
+ "cited": [
+  "E0001",
+  "E0002",
+  "E0003",
+  "E0004",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0013",
+  "E0014",
+  "E0015",
+  "E0016",
+  "E0017",
+  "E0018",
+  "E0020",
+  "E0021",
+  "E0022",
+  "E0023",
+  "E0024",
+  "E0025",
+  "E0026",
+  "E0027",
+  "V0001",
+  "V0002"
+ ]
+}

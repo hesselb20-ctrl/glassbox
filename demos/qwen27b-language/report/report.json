@@ -1,0 +1,197 @@
+{
+ "title": "Continuation language in Huihui-Qwen3.8-27B-abliterated (Q4_K_M GGUF): one steerable direction, effective from layer 6 to about layer 58",
+ "label": "SCREENING ONLY - quantized (Q4_K_M, about 4.8 bpw), abliterated community variant, llama.cpp - not verified",
+ "behavior": "The model continues plain text in the language the text is written in: English sentence beginnings get English continuations, French ones get French continuations. Tested on hand-written prompts: 32 EN + 32 FR translation pairs for extraction, plus two further unseen sets (8+8 and 12+12) for testing. No chat template.",
+ "summary": "All numbers come from the local-gguf backend on a quantized, abliterated variant, so everything here is a screening result. Nothing was verified at full precision and verify_hypothesis could not run on this data (it needs position-aligned inputs and this backend cannot ablate or patch).\n\nWhat was found. (1) The behaviour is there: the prompt-language article beats the other-language article on 64/64 prompts, mean logit difference 11.9 (E0001). (2) Language is linearly readable at every layer including layer 0, so a probe cannot localise it (E0002). (3) The mean difference between French and English last-token activations gives one direction per layer. Along it the two languages separate moderately in layers 4-18, poorly in layers 21-33, and very cleanly in layers 50-63 (E0003). (4) That read-out profile does not predict where steering works. Adding the direction at layer 6, 28, 54 or 58, at 0.4 to 0.45 of the residual norm, turns English prompts into French continuations on 8/8 prompts each time, and layer 28, the worst layer for read-out, flips at the lowest dose (E0005, E0006, E0007, E0016). At layer 62 the same direction only produces 'la la la' (E0013), as does a 10x overdose at layer 54 (E0004). (5) Subtracting it turns French prompts into English continuations, 8/8 (E0008). (6) A control direction of the same size, built the same way from a language-balanced split, changes nothing (E0009, E0010). (7) The effect holds on two prompt sets never used to build the direction, with different topics and stopping points: 8/8 and 12/12 in each direction (E0011, E0012, E0014, E0015).\n\nAnswer to the question. Yes, there is a direction for the continuation language, and it is causal in both directions in this model variant. There is no narrow layer where it lives: a push anywhere from layer 6 to about layer 58 is picked up and turned into a coherent continuation in the other language, while in the last few layers (62) the direction has become a push on specific output tokens. Two predictions of mine were wrong and are kept in the notebook: that the separation would peak in the middle layers, and that steering would work best where separation is cleanest.",
+ "pseudocode": "def predict(tokens, prompt):\n    # Behavioural rule only. Screening evidence, quantized abliterated variant.\n    # E0001: next token is in the prompt's language (64/64).\n    # E0006/E0008/E0011/E0012/E0014/E0015: which language is set by the sign of the\n    #   residual stream along one direction d (A0002_diffmeans = mean_FR - mean_EN).\n    lang = 'fr' if project(resid, d) > threshold else 'en'   # read-out reliable only late (E0003)\n    # steering: resid += alpha * |resid| * d_hat at any layer 6..58, alpha ~ +0.4 -> 'fr', -0.4 -> 'en'\n    #   (E0005-E0008, E0016); at layer 62 this only biases the token ' la' (E0013)\n    return next_word_in(lang, context=prompt)   # content is kept, language is swapped (E0012, E0014)\n",
+ "claims": [
+  {
+   "text": "SCREENING (local-gguf, Q4_K_M, abliterated). The model does the behaviour: logit of the prompt-language article minus the other-language article is positive on 64/64 prompts, mean 11.88, min 7.16.",
+   "evidence": [
+    "E0001"
+   ]
+  },
+  {
+   "text": "SCREENING. Language is linearly decodable at the last token at every layer (held-out probe accuracy 0.80-1.0, already 1.0 at layer 0), so probing does not localise the continuation language. The shuffled-label control is noisy with 20 test items (0.15-0.95).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "SCREENING. Along the single FR-minus-EN mean-difference direction, held-out separation is moderate in layers 4-18 (d' 2-3), weak in layers 21-33 (d' 0.77-1.1, accuracy 0.63-0.69) and strong in layers 50-63 (d' 3.4 to 14.6, accuracy 0.97-1.0). In early and middle layers the language mean difference is no longer than an arbitrary sentence-set mean difference (L28: 14.5 vs 15.9); late it is much longer (L63: 411 vs 121).",
+   "evidence": [
+    "E0003",
+    "E0009"
+   ]
+  },
+  {
+   "text": "SCREENING. Adding the direction to English prompts gives French continuations on 8/8 prompts at layers 6, 28, 54 (alpha 0.4 of the residual norm) and 58 (alpha 0.45), with the metric going from +12.9 to between -9.5 and -10.7. Layer 28 flips at the lowest relative dose (already -8.7 at alpha 0.2, where layers 6 and 54 are still at +7). At layer 58 two of eight outputs are degraded (a loop and a nonsense sentence).",
+   "evidence": [
+    "E0005",
+    "E0006",
+    "E0007",
+    "E0016"
+   ]
+  },
+  {
+   "text": "SCREENING. Subtracting the direction from French prompts at layer 28 gives English continuations on 8/8 prompts; metric +10.5 to -12.1, with the same flip threshold as the forward direction (between |alpha| 0.1 and 0.2).",
+   "evidence": [
+    "E0008"
+   ]
+  },
+  {
+   "text": "SCREENING. The effect is specific to this direction: a control direction of the same relative size, built from a language-balanced split of the same prompts, leaves the metric unchanged (+12.87 to +12.85) and the text English on 8/8.",
+   "evidence": [
+    "E0009",
+    "E0010"
+   ]
+  },
+  {
+   "text": "SCREENING. The direction is a language direction and not only an 'article comes next' direction: on prompts never used to build it, with other topics and stopping points, layer-28 steering switches the language on 8/8 and 12/12 prompts EN to FR and 8/8 and 12/12 FR to EN, often keeping the content (\"ma m\u00e8re me disait toujours que\" -> \" I should eat my vegetables.\").",
+   "evidence": [
+    "E0011",
+    "E0012",
+    "E0014",
+    "E0015"
+   ]
+  },
+  {
+   "text": "SCREENING. Near the output the direction is token-level: at layer 62 a dose of about 1.1x the EN-FR distance gives ' la la la ...' on 6/8 prompts and no coherent French on any, and a 10x overdose at layer 54 gives the same. The upper edge of the range where steering switches the language lies between layers 58 and 62.",
+   "evidence": [
+    "E0013",
+    "E0004",
+    "E0016"
+   ]
+  },
+  {
+   "text": "SCREENING. Steering has a side effect on text genre: 11/12 steered French-to-English outputs fall into a multiple-choice quiz format versus 1/12 unsteered.",
+   "evidence": [
+    "E0015"
+   ]
+  },
+  {
+   "text": "Rejected predictions, kept for the record: (a) that single-direction separation would peak in the middle layers (it is weakest there, E0003); (b) that steering would work best where separation is cleanest and worst in the trough (the trough layer 28 is the most sensitive, E0006 vs E0005 and E0007).",
+   "evidence": [
+    "E0003",
+    "E0005",
+    "E0006",
+    "E0007"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "tokens",
+    "label": "Prompt tokens (EN or FR words)",
+    "layer": 0,
+    "kind": "input"
+   },
+   {
+    "id": "dir_early",
+    "label": "FR-EN direction, layers 6-18: steerable, moderate read-out",
+    "layer": 6,
+    "kind": "direction"
+   },
+   {
+    "id": "dir_mid",
+    "label": "FR-EN direction, layers 21-33: most sensitive to steering, poor read-out",
+    "layer": 28,
+    "kind": "direction"
+   },
+   {
+    "id": "dir_late",
+    "label": "FR-EN direction, layers 50-58: steerable, clean read-out",
+    "layer": 54,
+    "kind": "direction"
+   },
+   {
+    "id": "dir_out",
+    "label": "Layers ~62-63: output-token push (' la' vs ' the')",
+    "layer": 62,
+    "kind": "direction"
+   },
+   {
+    "id": "logits",
+    "label": "Next token in the prompt's language",
+    "layer": 64,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "tokens",
+    "dst": "dir_early",
+    "label": "language readable from layer 0 (E0002)"
+   },
+   {
+    "src": "dir_early",
+    "dst": "dir_mid",
+    "label": "push at L6 carries through (E0007); mechanism not measured"
+   },
+   {
+    "src": "dir_mid",
+    "dst": "dir_late",
+    "label": "push at L28 carries through (E0006, E0008); mechanism not measured"
+   },
+   {
+    "src": "dir_late",
+    "dst": "dir_out",
+    "label": "push at L54/L58 still gives sentences (E0005, E0016)"
+   },
+   {
+    "src": "dir_out",
+    "dst": "logits",
+    "label": "token-level only (E0013)"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0003",
+  "E0006",
+  "E0008",
+  "E0010",
+  "E0013"
+ ],
+ "limitations": [
+  "Screening only: every number is from a Q4_K_M quantized, abliterated community variant run through llama.cpp. Nothing was checked on the official weights or at full precision.",
+  "No formal verification: verify_hypothesis failed twice on token-length alignment and produced no V-id. The held-out replications (E0011, E0012, E0014, E0015) are a substitute, not a verification.",
+  "No patching or ablation on this backend, so necessity was not tested. The results show the direction is sufficient to switch the language, not that the model needs it or that it is the only such direction.",
+  "Steering is added at every token position and an early push travels through all later layers. 'Works from layer 6' therefore means the model can pick the language up downstream of layer 6, not that the language is decided there. The edges in the diagram between bands are inferred from this, not measured.",
+  "Layer coverage is five points (6, 28, 54, 58, 62). Layers below 6, between these points, and 59-61 were not tested. Layer 62 was read at one dose only.",
+  "Whether generated text is French or English, and whether it is coherent, was judged by reading it; there is no automatic language classifier in the loop. Samples are small (8 or 12 prompts per condition), greedy-looking continuations of 20 tokens.",
+  "The tool prints generated text only for the largest alpha in a run, so dose-response for text is known at one dose per run; the dose-response curves are for the article logit metric only.",
+  "The logit metric uses one token pair (' the' vs ' la'). At high dose or at layer 62 the metric flips while the text is degenerate, so the metric alone overstates success.",
+  "The direction was extracted at the last token of sentences ending before an article, from 32 pairs. Only one control direction was tested, at one layer, in one steering direction.",
+  "Only English and French. Nothing here says the same direction handles other languages.",
+  "Steered text drifts toward a multiple-choice quiz format (11/12 vs 1/12 in E0015), so the direction is not purely about language.",
+  "Alpha is relative to the residual norm, so the same alpha is a different multiple of the EN-FR distance at each layer (about 3x at L6, 2.4x at L28, 1x at L54). Layer comparisons depend on which unit is used."
+ ],
+ "open_questions": [
+  "Does the same direction and layer range hold on the official Qwen3.8-27B weights at full precision (ndif or local-full)? That is the run that could verify this.",
+  "Is the direction necessary? Projecting it out or patching it between an English and a French prompt needs a patching backend.",
+  "Why is the middle band the most sensitive to steering while being the worst for read-out along the same direction?",
+  "Where exactly does the direction turn from 'language' into 'output token' between layers 58 and 62, and where is the lower edge below layer 6?",
+  "Is it one EN-FR axis or a general language space? Test with a third language.",
+  "Is the quiz-format drift part of the direction or a property of the extraction prompts?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 SCREENING ONLY - quantized (Q4_K_M, about 4.8 bpw), abliterated community variant, llama.cpp - not verified",
+ "cited": [
+  "E0001",
+  "E0002",
+  "E0003",
+  "E0004",
+  "E0005",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0013",
+  "E0014",
+  "E0015",
+  "E0016"
+ ]
+}

@@ -1,0 +1,137 @@
+{
+ "id": "E0002",
+ "primitive": "baseline",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "clean": {
+   "prompts": [
+    "The pear tree gave me a pear, the lemon tree gave me a lemon, and the apple tree gave me",
+    "The pear tree gave me a pear, the lemon tree gave me a lemon, and the orange tree gave me",
+    "The pear tree gave me a pear, the plum tree gave me a plum, and the olive tree gave me",
+    "The pear seller sold me a pear, the lemon seller sold me a lemon, and the egg seller sold me",
+    "Want pear: I want a pear. Want lemon: I want a lemon. Want apple: I want",
+    "Want pear: I want a pear. Want lemon: I want a lemon. Want orange: I want",
+    "Want pear: I want a pear. Want lemon: I want a lemon. Want egg: I want",
+    "Want pear: I want a pear. Want lemon: I want a lemon. Want onion: I want",
+    "word: pear, phrase: a pear. word: egg, phrase: an egg. word: lemon, phrase: a lemon. word: apple, phrase:",
+    "word: pear, phrase: a pear. word: egg, phrase: an egg. word: lemon, phrase: a lemon. word: orange, phrase:",
+    "word: pear, phrase: a pear. word: apple, phrase: an apple. word: lemon, phrase: a lemon. word: onion, phrase:",
+    "word: pear, phrase: a pear. word: apple, phrase: an apple. word: lemon, phrase: a lemon. word: egg, phrase:",
+    "word: pear, phrase: a pear. word: orange, phrase: an orange. word: lemon, phrase: a lemon. word: umbrella, phrase:",
+    "word: pear, phrase: a pear. word: orange, phrase: an orange. word: lemon, phrase: a lemon. word: elephant, phrase:",
+    "This is the apple. It is",
+    "This is the orange. It is",
+    "My favourite fruit is the apple. Every day I eat",
+    "My favourite fruit is the orange. Every day I eat"
+   ]
+  },
+  "corrupt": {
+   "prompts": [
+    "The pear tree gave me a pear, the lemon tree gave me a lemon, and the peach tree gave me",
+    "The pear tree gave me a pear, the lemon tree gave me a lemon, and the cherry tree gave me",
+    "The pear tree gave me a pear, the plum tree gave me a plum, and the banana tree gave me",
+    "The pear seller sold me a pear, the lemon seller sold me a lemon, and the potato seller sold me",
+    "Want pear: I want a pear. Want lemon: I want a lemon. Want peach: I want",
+    "Want pear: I want a pear. Want lemon: I want a lemon. Want banana: I want",
+    "Want pear: I want a pear. Want lemon: I want a lemon. Want carrot: I want",
+    "Want pear: I want a pear. Want lemon: I want a lemon. Want potato: I want",
+    "word: pear, phrase: a pear. word: egg, phrase: an egg. word: lemon, phrase: a lemon. word: peach, phrase:",
+    "word: pear, phrase: a pear. word: egg, phrase: an egg. word: lemon, phrase: a lemon. word: banana, phrase:",
+    "word: pear, phrase: a pear. word: apple, phrase: an apple. word: lemon, phrase: a lemon. word: carrot, phrase:",
+    "word: pear, phrase: a pear. word: apple, phrase: an apple. word: lemon, phrase: a lemon. word: potato, phrase:",
+    "word: pear, phrase: a pear. word: orange, phrase: an orange. word: lemon, phrase: a lemon. word: blanket, phrase:",
+    "word: pear, phrase: a pear. word: orange, phrase: an orange. word: lemon, phrase: a lemon. word: monkey, phrase:",
+    "This is the lemon. It is",
+    "This is the peach. It is",
+    "My favourite fruit is the lemon. Every day I eat",
+    "My favourite fruit is the peach. Every day I eat"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " an"
+   ],
+   "incorrect": [
+    " a"
+   ]
+  }
+ },
+ "summary": {
+  "n": 18,
+  "metric_type": "logit_diff",
+  "clean_metric_mean": -2.366981,
+  "clean_metric_std": 1.129891,
+  "clean_accuracy": 0.0,
+  "example_predictions": [
+   {
+    "predicted": " a",
+    "expected": " an"
+   },
+   {
+    "predicted": " a",
+    "expected": " an"
+   },
+   {
+    "predicted": " a",
+    "expected": " an"
+   },
+   {
+    "predicted": " a",
+    "expected": " an"
+   }
+  ],
+  "corrupt_metric_mean": -3.330028
+ },
+ "data": {
+  "clean_metric": [
+   -2.389282,
+   -2.198723,
+   -2.245899,
+   -2.844564,
+   -3.824862,
+   -4.079672,
+   -4.546446,
+   -4.230064,
+   -1.099638,
+   -1.052139,
+   -1.280508,
+   -0.711115,
+   -2.186372,
+   -1.669409,
+   -2.034664,
+   -2.039255,
+   -2.084893,
+   -2.088144
+  ],
+  "corrupt_metric": [
+   -3.378461,
+   -4.18329,
+   -3.547684,
+   -3.248764,
+   -5.23542,
+   -5.478489,
+   -5.567688,
+   -5.464527,
+   -2.08582,
+   -2.353345,
+   -2.184344,
+   -1.950186,
+   -2.730416,
+   -3.078501,
+   -2.231943,
+   -2.243296,
+   -2.607753,
+   -2.370576
+  ]
+ },
+ "plot": "experiments/E0002_baseline.png",
+ "seconds": 0.36,
+ "timestamp": "2026-11-12T23:21:18"
+}

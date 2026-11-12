@@ -1,0 +1,259 @@
+{
+ "id": "E0006",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "component": "mlp_out",
+  "clean": {
+   "prompts": [
+    "The key to the cabinets",
+    "The keys to the cabinet",
+    "The author of the books",
+    "The authors of the book",
+    "The teacher near the doors",
+    "The teachers near the door",
+    "The picture by the windows",
+    "The pictures by the window",
+    "The letter from the students",
+    "The letters from the student",
+    "The boy behind the cars",
+    "The boys behind the car",
+    "The girl with the dogs",
+    "The girls with the dog",
+    "The doctor near the tables",
+    "The doctors near the table",
+    "The farmer behind the houses",
+    "The farmers behind the house",
+    "The driver of the cars",
+    "The drivers of the car",
+    "The student with the books",
+    "The students with the book",
+    "The player from the schools",
+    "The players from the school",
+    "The book about the teachers",
+    "The books about the teacher",
+    "The dog near the trees",
+    "The dogs near the tree",
+    "The car behind the buildings",
+    "The cars behind the building",
+    "The window above the doors",
+    "The windows above the door"
+   ]
+  },
+  "corrupt": {
+   "prompts": [
+    "The keys to the cabinets",
+    "The key to the cabinet",
+    "The authors of the books",
+    "The author of the book",
+    "The teachers near the doors",
+    "The teacher near the door",
+    "The pictures by the windows",
+    "The picture by the window",
+    "The letters from the students",
+    "The letter from the student",
+    "The boys behind the cars",
+    "The boy behind the car",
+    "The girls with the dogs",
+    "The girl with the dog",
+    "The doctors near the tables",
+    "The doctor near the table",
+    "The farmers behind the houses",
+    "The farmer behind the house",
+    "The drivers of the cars",
+    "The driver of the car",
+    "The students with the books",
+    "The student with the book",
+    "The players from the schools",
+    "The player from the school",
+    "The books about the teachers",
+    "The book about the teacher",
+    "The dogs near the trees",
+    "The dog near the tree",
+    "The cars behind the buildings",
+    "The car behind the building",
+    "The windows above the doors",
+    "The window above the door"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are"
+   ],
+   "incorrect": [
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is",
+    " are",
+    " is"
+   ]
+  }
+ },
+ "summary": {
+  "component": "mlp_out",
+  "direction": "denoise",
+  "metric_base": -4.355858,
+  "metric_source": 3.340267,
+  "n": 32,
+  "top": [
+   {
+    "component": "mlp_out.0 @ pos all",
+    "effect": 0.987905
+   },
+   {
+    "component": "mlp_out.10 @ pos all",
+    "effect": 0.332056
+   },
+   {
+    "component": "mlp_out.11 @ pos all",
+    "effect": 0.242991
+   },
+   {
+    "component": "mlp_out.9 @ pos all",
+    "effect": 0.219952
+   },
+   {
+    "component": "mlp_out.8 @ pos all",
+    "effect": 0.127425
+   },
+   {
+    "component": "mlp_out.3 @ pos all",
+    "effect": 0.03536
+   },
+   {
+    "component": "mlp_out.6 @ pos all",
+    "effect": 0.033825
+   },
+   {
+    "component": "mlp_out.4 @ pos all",
+    "effect": 0.032671
+   }
+  ],
+  "forward_passes": 15
+ },
+ "data": {
+  "effect": [
+   [
+    0.987905
+   ],
+   [
+    0.00837
+   ],
+   [
+    0.025307
+   ],
+   [
+    0.03536
+   ],
+   [
+    0.032671
+   ],
+   [
+    0.032249
+   ],
+   [
+    0.033825
+   ],
+   [
+    0.017876
+   ],
+   [
+    0.127425
+   ],
+   [
+    0.219952
+   ],
+   [
+    0.332056
+   ],
+   [
+    0.242991
+   ]
+  ],
+  "layers": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "columns": [
+   "all"
+  ]
+ },
+ "plot": "experiments/E0006_activation_patching.png",
+ "seconds": 0.54,
+ "timestamp": "2026-11-12T23:35:43"
+}

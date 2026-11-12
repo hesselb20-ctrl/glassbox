@@ -1,0 +1,225 @@
+{
+ "id": "E0007",
+ "primitive": "steering",
+ "provenance": {
+  "backend": "local-gguf",
+  "precision": "gguf-quantized",
+  "tag": "screening (gguf quantized, abliterated variant)",
+  "model": "Huihui-Qwen3.8-27B-abliterated-UD-DW-Q4_K_M.gguf",
+  "counts_as_verification": false,
+  "variant": "abliterated community variant (refusal direction removed); not the official weights"
+ },
+ "params": {
+  "direction": {
+   "artifact": "A0002_diffmeans"
+  },
+  "sites": [
+   "resid_post.6"
+  ],
+  "alphas": [
+   0,
+   0.1,
+   0.2,
+   0.4
+  ],
+  "clean": {
+   "prompts": [
+    "The baker opened the door of",
+    "The children were playing in",
+    "The scientist published her results in",
+    "The farmer walked slowly toward",
+    "The musician played all night for",
+    "The journalist wrote an article about",
+    "The thief hid the money in",
+    "The fishermen came back from"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the",
+    " the"
+   ],
+   "incorrect": [
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la",
+    " la"
+   ]
+  },
+  "generate": {
+   "prompts": [
+    "The baker opened the door of",
+    "The children were playing in",
+    "The scientist published her results in",
+    "The farmer walked slowly toward",
+    "The musician played all night for",
+    "The journalist wrote an article about",
+    "The thief hid the money in",
+    "The fishermen came back from"
+   ],
+   "max_new_tokens": 20
+  }
+ },
+ "summary": {
+  "sites": [
+   "resid_post.6"
+  ],
+  "alphas": [
+   0.0,
+   0.1,
+   0.2,
+   0.4
+  ],
+  "scale": "relative",
+  "residual_norm_at_site": {
+   "resid_post.6": 29.249647
+  },
+  "metric_type": "logit_diff",
+  "metric_by_alpha": {
+   "0.0": 12.86509,
+   "0.1": 12.779957,
+   "0.2": 7.629641,
+   "0.4": -9.503657
+  },
+  "n": 8,
+  "slope_metric_per_alpha": -58.942508,
+  "generations": [
+   {
+    "prompt": "The baker opened the door of",
+    "outputs": {
+     "0.0": " the oven and pulled out the bread.\nThe baker opened the door of the oven and pulled out",
+     "0.4": " la boulangerie.\nA. la\nB. de\nC. la boulangerie"
+    }
+   },
+   {
+    "prompt": "The children were playing in",
+    "outputs": {
+     "0.0": " the garden.\nThe children were playing in the garden.\nThe children were playing in the garden",
+     "0.4": " le parc.\nA. le\nB.\nC. le\nD. les\n\n<think>"
+    }
+   },
+   {
+    "prompt": "The scientist published her results in",
+    "outputs": {
+     "0.0": " a journal.\nA. The scientist published her results in a journal.\nB. The scientist",
+     "0.4": " la revue Nature.\nA.\nB.\nC.\nD.\n\n<think>\n\n</think>"
+    }
+   },
+   {
+    "prompt": "The farmer walked slowly toward",
+    "outputs": {
+     "0.0": " the barn, his boots crunching on the gravel path. He paused at the gate, looking back",
+     "0.4": " la maison, les mains dans les poches de son manteau. Il avait l' air d"
+    }
+   },
+   {
+    "prompt": "The musician played all night for",
+    "outputs": {
+     "0.0": " the crowd.\nQuestion: What will the musician want to do next?\nA. go home",
+     "0.4": " les clients du restaurant.\nA. les\nB. pour\nC. \u00e0\nD."
+    }
+   },
+   {
+    "prompt": "The journalist wrote an article about",
+    "outputs": {
+     "0.0": " the new bridge. The article was published in the local newspaper. The journalist received a letter from a",
+     "0.4": " la vie de la reine Elizabeth II. Il a \u00e9crit que la reine a v\u00e9cu une vie tr\u00e8s int\u00e9ress"
+    }
+   },
+   {
+    "prompt": "The thief hid the money in",
+    "outputs": {
+     "0.0": " a _______ place, so it was hard to find.\nA. obvious\nB. hidden",
+     "0.4": " un endroit o\u00f9 il ne serait pas facile de la trouver.\nA.\nB.\nC"
+    }
+   },
+   {
+    "prompt": "The fishermen came back from",
+    "outputs": {
+     "0.0": " the sea with a big catch.\nThe fishermen came back from the sea with a big catch.",
+     "0.4": " la mer avec leurs filets pleins de poissons.\nLe p\u00eacheur est revenu de la mer"
+    }
+   }
+  ]
+ },
+ "data": {
+  "metric": [
+   12.86509,
+   12.779957,
+   7.629641,
+   -9.503657
+  ],
+  "generations": [
+   {
+    "prompt": "The baker opened the door of",
+    "outputs": {
+     "0.0": " the oven and pulled out the bread.\nThe baker opened the door of the oven and pulled out",
+     "0.4": " la boulangerie.\nA. la\nB. de\nC. la boulangerie"
+    }
+   },
+   {
+    "prompt": "The children were playing in",
+    "outputs": {
+     "0.0": " the garden.\nThe children were playing in the garden.\nThe children were playing in the garden",
+     "0.4": " le parc.\nA. le\nB.\nC. le\nD. les\n\n<think>"
+    }
+   },
+   {
+    "prompt": "The scientist published her results in",
+    "outputs": {
+     "0.0": " a journal.\nA. The scientist published her results in a journal.\nB. The scientist",
+     "0.4": " la revue Nature.\nA.\nB.\nC.\nD.\n\n<think>\n\n</think>"
+    }
+   },
+   {
+    "prompt": "The farmer walked slowly toward",
+    "outputs": {
+     "0.0": " the barn, his boots crunching on the gravel path. He paused at the gate, looking back",
+     "0.4": " la maison, les mains dans les poches de son manteau. Il avait l' air d"
+    }
+   },
+   {
+    "prompt": "The musician played all night for",
+    "outputs": {
+     "0.0": " the crowd.\nQuestion: What will the musician want to do next?\nA. go home",
+     "0.4": " les clients du restaurant.\nA. les\nB. pour\nC. \u00e0\nD."
+    }
+   },
+   {
+    "prompt": "The journalist wrote an article about",
+    "outputs": {
+     "0.0": " the new bridge. The article was published in the local newspaper. The journalist received a letter from a",
+     "0.4": " la vie de la reine Elizabeth II. Il a \u00e9crit que la reine a v\u00e9cu une vie tr\u00e8s int\u00e9ress"
+    }
+   },
+   {
+    "prompt": "The thief hid the money in",
+    "outputs": {
+     "0.0": " a _______ place, so it was hard to find.\nA. obvious\nB. hidden",
+     "0.4": " un endroit o\u00f9 il ne serait pas facile de la trouver.\nA.\nB.\nC"
+    }
+   },
+   {
+    "prompt": "The fishermen came back from",
+    "outputs": {
+     "0.0": " the sea with a big catch.\nThe fishermen came back from the sea with a big catch.",
+     "0.4": " la mer avec leurs filets pleins de poissons.\nLe p\u00eacheur est revenu de la mer"
+    }
+   }
+  ]
+ },
+ "plot": "experiments/E0007_steering.png",
+ "seconds": 30.32,
+ "timestamp": "2026-11-12T23:38:33"
+}
