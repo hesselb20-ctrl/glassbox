@@ -47,6 +47,18 @@ def _edit_inplace(x, op, val, pos, head):
     x[idx] = new
 
 
+# On NDIF the trace body runs on a server that does not have glassbox installed, so anything the
+# body touches from this module (the edit helper above) must travel by value, not by import path.
+try:
+    import sys as _sys
+
+    import cloudpickle as _cloudpickle
+
+    _cloudpickle.register_pickle_by_value(_sys.modules[__name__])
+except Exception:  # noqa: BLE001
+    pass
+
+
 class NNsightBackend(Backend):
     """Common machinery. Subclasses set ``name`` and ``remote`` and implement ``list_models`` / ``load``."""
 
@@ -95,16 +107,32 @@ class NNsightBackend(Backend):
         }
         if style == "gpt2":
             self._layers = base.h
-            self._attn = lambda l: l.attn
-            self._proj = lambda l: l.attn.c_proj
+            n = self.cfg["n_layers"]
+            self._attn_names, self._proj_names = ["attn"] * n, ["c_proj"] * n
+            self._heads = [self.cfg["n_heads"]] * n
             self._norm, self._embed = base.ln_f, base.wte
         else:
             self._layers = base.layers
-            self._attn = lambda l: l.self_attn
-            self._proj = lambda l: l.self_attn.o_proj
+            n = self.cfg["n_layers"]
+            # Hybrid models (Qwen3.5 / 3.8) alternate ordinary attention with "linear attention" layers that have a
+            # different module name and a different number of heads. Record both per layer.
+            types = list(getattr(text_cfg, "layer_types", None) or ["full_attention"] * n)
+            linear_heads = getattr(text_cfg, "linear_num_value_heads", None)
+            self._attn_names = ["linear_attn" if t == "linear_attention" else "self_attn" for t in types]
+            self._proj_names = ["out_proj" if t == "linear_attention" else "o_proj" for t in types]
+            self._heads = [linear_heads if t == "linear_attention" else self.cfg["n_heads"] for t in types]
+            if "linear_attention" in types:
+                self.cfg["layer_types"] = types
+                self.cfg["full_attention_layers"] = [i for i, t in enumerate(types) if t == "full_attention"]
+                self.cfg["heads_per_layer"] = {"full_attention": self.cfg["n_heads"], "linear_attention": linear_heads}
             self._norm, self._embed = base.norm, base.embed_tokens
-        self._mlp = lambda l: l.mlp
         self._head = m.lm_head
+
+    def attach(self, model: Any, model_id: str) -> dict[str, Any]:
+        """Use an already constructed nnsight model (for tests and custom loading)."""
+        self.model, self.model_id = model, model_id
+        self._adapt()
+        return self.info()
 
     def info(self) -> dict[str, Any]:
         return {**self.provenance(), **self.cfg, "attn_only": False, "has_tokenizer": True,
@@ -159,7 +187,7 @@ class NNsightBackend(Backend):
         if grad_metric is not None and self.remote:
             raise UnsupportedPrimitive("gradients are not offered on ndif in v1; run attribution patching on "
                                        "local-full or local-4bit, or use activation_patching here")
-        H = self.cfg["n_heads"]
+        heads = list(self._heads)
         canon = {s: self._canon(s) for s in list(read) + list(grad_sites) + [e.site for e in edits]}
         plan: dict[tuple, dict] = {}
         for s in list(read) + list(grad_sites):
@@ -168,7 +196,8 @@ class NNsightBackend(Backend):
             plan.setdefault(canon[e.site], {"edits": [], "names": []})["edits"].append((e.op, e.value, e.pos, e.head))
         order = sorted(plan, key=lambda k: ((-1 if k[1] is None else k[1]), ORDER[k[0]]))
         grad_set = set(grad_sites)
-        layers, attn, proj, mlp, embed, head = self._layers, self._attn, self._proj, self._mlp, self._embed, self._head
+        layers, embed, head = self._layers, self._embed, self._head
+        attn_names, proj_names = list(self._attn_names), list(self._proj_names)   # plain data: the trace body must not capture glassbox objects
         want_grad = grad_metric is not None
         edit_fn = _edit_inplace
         import nnsight
@@ -187,14 +216,15 @@ class NNsightBackend(Backend):
                 elif kind == "resid_pre":
                     x = layers[L].input
                 elif kind == "head_out":
-                    z = proj(layers[L]).input
-                    x = z.view(z.shape[0], z.shape[1], H, -1)
+                    z = getattr(getattr(layers[L], attn_names[L]), proj_names[L]).input
+                    x = z.view(z.shape[0], z.shape[1], heads[L], -1)
                 elif kind == "attn_out":
-                    x = attn(layers[L]).output[0]
+                    ao = getattr(layers[L], attn_names[L]).output
+                    x = ao[0] if isinstance(ao, tuple) else ao
                 elif kind == "mlp_out":
-                    x = mlp(layers[L]).output
+                    x = layers[L].mlp.output
                 elif kind == "resid_mid":
-                    x = mlp(layers[L]).input
+                    x = layers[L].mlp.input
                 else:
                     out = layers[L].output
                     x = out[0] if isinstance(out, tuple) else out
@@ -220,7 +250,7 @@ class NNsightBackend(Backend):
         for s in grad_sites:
             g = grads[s]
             if canon[s][0] == "head_out":
-                g = g.view(g.shape[0], g.shape[1], H, -1)
+                g = g.view(g.shape[0], g.shape[1], heads[canon[s][1]], -1)
             out_grads[s] = g if read_pos is None else g[:, read_pos]
         return Run(logits=logits, acts=acts, grads=out_grads)
 
@@ -231,8 +261,8 @@ class NNsightBackend(Backend):
         norm, head = self._norm, self._head
         dummy = torch.tensor([[self.model.tokenizer.eos_token_id or 0]])
         with self.model.trace(dummy, remote=self.remote):
-            w = head.weight
-            out = head(norm(x.to(device=w.device, dtype=w.dtype))).detach().float().cpu().save()
+            ref = norm.input                       # a real activation: tells us the device and dtype to use
+            out = head(norm(x.to(device=ref.device, dtype=ref.dtype))).detach().float().cpu().save()
         return out.reshape(*shape[:-1], -1)
 
     def generate(self, prompt: str, max_new_tokens: int = 40, edits: Sequence[Edit] = ()) -> str:
@@ -244,7 +274,7 @@ class NNsightBackend(Backend):
         layers = self._layers
         with self.model.generate(ids, max_new_tokens=int(max_new_tokens), do_sample=False, remote=self.remote) as tracer:
             if steer:
-                for _step in tracer.iter[:]:
+                for _step in tracer.iter[:int(max_new_tokens)]:
                     for L, v in sorted(steer, key=lambda t: t[0]):
                         out = layers[L].output
                         x = out[0] if isinstance(out, tuple) else out

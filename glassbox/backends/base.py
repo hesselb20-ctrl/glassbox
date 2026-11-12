@@ -65,7 +65,7 @@ BACKENDS: dict[str, dict[str, Any]] = {
         "precision": "4bit",
         "tag": "screening (4-bit)",
         "verifies": False,
-        "features": {"read", "read_heads", "edit", "steer", "grad", "unembed", "weights", "generate"},
+        "features": {"read", "read_heads", "edit", "steer", "grad", "unembed", "generate"},
         "summary": "nnsight + bitsandbytes 4-bit across both GPUs. Full patching, quantization noise.",
     },
     "ndif": {

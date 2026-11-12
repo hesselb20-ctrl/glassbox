@@ -23,7 +23,6 @@ dependencies = [
 [project.optional-dependencies]
 gguf = ["gguf"]
 fourbit = ["bitsandbytes", "accelerate"]
-api = ["anthropic"]
 dev = ["pytest"]
 
 [project.scripts]

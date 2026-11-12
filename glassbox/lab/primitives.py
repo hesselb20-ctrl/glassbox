@@ -123,6 +123,11 @@ def activation_patching(lab: Lab, params: dict):
         lab.backend.require("activation_patching", ["read_heads"])
         pos = params.get("positions")
         cache = lab.fwd(src, read=[f"head_out.{l}" for l in layers]).acts
+        n_h = [cache[f"head_out.{l}"].shape[2] for l in layers]
+        if len(set(n_h)) != 1:
+            raise ValueError(f"layers {layers} have different numbers of heads {sorted(set(n_h))}; sweep one layer type at a time "
+                             f"(see 'full_attention_layers' in the model info)")
+        info = {**info, "n_heads": n_h[0]}
         eff = torch.zeros(len(layers), info["n_heads"])
         for i, l in enumerate(layers):
             for h in range(info["n_heads"]):

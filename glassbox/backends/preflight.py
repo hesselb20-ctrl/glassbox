@@ -33,6 +33,26 @@ def gpu_preflight() -> dict:
 
 
 def gpu_report() -> list[dict]:
+    """Memory per GPU as the driver sees it across all processes.
+
+    nvidia-smi is asked first: on Windows, CUDA's own free-memory query does not reliably count what other
+    processes hold, and glassbox needs the machine-wide picture.
+    """
+    import shutil
+    import subprocess
+
+    if shutil.which("nvidia-smi"):
+        try:
+            rows = subprocess.run(["nvidia-smi", "--query-gpu=index,name,memory.total,memory.used", "--format=csv,noheader,nounits"],
+                                  capture_output=True, text=True, timeout=15).stdout.strip().splitlines()
+            out = []
+            for row in rows:
+                i, name, total, used = [x.strip() for x in row.split(",")]
+                out.append({"index": int(i), "name": name, "total_gb": round(float(total) / 1024, 1),
+                            "free_gb": round((float(total) - float(used)) / 1024, 1)})
+            return out
+        except Exception:  # noqa: BLE001
+            pass
     import torch
 
     out = []
@@ -40,10 +60,6 @@ def gpu_report() -> list[dict]:
         return out
     for i in range(torch.cuda.device_count()):
         free, total = torch.cuda.mem_get_info(i)
-        out.append({
-            "index": i,
-            "name": torch.cuda.get_device_name(i),
-            "total_gb": round(total / 2**30, 1),
-            "free_gb": round(free / 2**30, 1),
-        })
+        out.append({"index": i, "name": torch.cuda.get_device_name(i), "total_gb": round(total / 2**30, 1),
+                    "free_gb": round(free / 2**30, 1)})
     return out

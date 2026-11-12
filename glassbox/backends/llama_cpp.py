@@ -90,6 +90,9 @@ class Llama:
                 "(the one that contains llama-server).")
         if win:
             os.add_dll_directory(str(d))
+            # The GPU backend (ggml-cuda.dll) is loaded later by ggml itself with a plain LoadLibrary, which looks for
+            # its dependencies (cublas, cudart) on PATH, not next to the DLL. Without this the model silently runs on CPU.
+            os.environ["PATH"] = str(d) + os.pathsep + os.environ.get("PATH", "")
         self.L = L = C.CDLL(str(d / names[0]))
         self.G = G = C.CDLL(str(d / names[1]))
         self.GG = C.CDLL(str(d / names[2]))
@@ -146,6 +149,8 @@ class Llama:
         self.n_head = L.llama_model_n_head(self.model)
         self.n_vocab = L.llama_vocab_n_tokens(self.vocab)
         self.n_ctx = n_ctx
+        sig(L, "llama_supports_gpu_offload", c_bool)
+        self.gpu_offload = bool(L.llama_supports_gpu_offload())
 
         self.want: set[str] = set()          # tensor names to capture on the next decode
         self.seen: dict[str, tuple] = {}     # every tensor name seen -> shape (for discovery)
@@ -274,7 +279,7 @@ def _serve(address: tuple[str, int], authkey: bytes) -> None:
                        "arch": arch, "name": m.meta("general.name"),
                        "expert_count": m.meta(f"{arch}.expert_count"),
                        "rms_eps": m.meta(f"{arch}.attention.layer_norm_rms_epsilon"),
-                       "file_type": m.meta("general.file_type")}
+                       "file_type": m.meta("general.file_type"), "gpu_offload_available": m.gpu_offload}
             elif cmd == "tokenize":
                 out = [m.tokenize(t, a.get("add_special", True)) for t in a["texts"]]
             elif cmd == "pieces":

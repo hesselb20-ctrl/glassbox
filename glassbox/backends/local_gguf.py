@@ -24,7 +24,7 @@ import torch
 
 from .base import Backend, Edit, Run, UnsupportedPrimitive, backends_supporting, parse_site
 from .llama_cpp import Worker, default_lib_dir
-from .preflight import gpu_preflight
+from .preflight import gpu_preflight, gpu_report
 
 #: glassbox site kind -> candidate llama.cpp tensor names (architectures name them differently)
 TENSOR_NAMES = {
@@ -78,8 +78,12 @@ class LocalGGUF(Backend):
         if not path.exists():
             raise FileNotFoundError(f"no GGUF file '{model_id}' (looked in {gguf_dir()})")
         self.path = path
+        before = {g["index"]: g["free_gb"] for g in gpu_report()}
         self.worker = Worker()
         self.meta = self.worker.call("load", model_path=str(path), n_ctx=n_ctx, n_gpu_layers=n_gpu_layers)
+        # where did the weights actually go? measured, not assumed
+        self.vram_gb = {g["name"]: round(before[g["index"]] - g["free_gb"], 1) for g in gpu_report()}
+        self.on_gpu = sum(self.vram_gb.values()) > 0.5 * path.stat().st_size / 2**30
         self.model_id = path.name
         self.wrap = tuple(wrap) if wrap else ("", "")
         seen = self.worker.call("names", tokens=self.worker.call("tokenize", texts=["a b"])[0])
@@ -115,6 +119,9 @@ class LocalGGUF(Backend):
             "attn_only": False,
             "architecture": "MoE" if m.get("expert_count") not in (None, "", "0") else "dense",
             "llama_cpp_arch": m.get("arch"), "gguf_name": m.get("name"), "file": self.model_id,
+            "vram_used_gb": getattr(self, "vram_gb", {}),
+            "device": "GPU (llama.cpp offload)" if getattr(self, "on_gpu", False) else
+                      "CPU (the llama.cpp GPU backend did not load; check that its CUDA DLLs are next to llama.dll)",
             "readable_site_kinds": sites,
             "steerable": "resid_post.L for L >= 1, all positions (llama.cpp control vectors)",
             "prompt_wrap": list(self.wrap),
