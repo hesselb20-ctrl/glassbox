@@ -119,7 +119,18 @@ def activation_patching(lab: Lab, params: dict):
     layers = _layers(lab, params)
     npos = base.shape[1]
 
-    if comp == "head":
+    if comp == "heads_all":
+        # All heads of a layer patched together at their pre-projection site. The projection is linear, so this equals
+        # patching the attention block's output, and it avoids reading that output (which some sharded deployments reject).
+        lab.backend.require("activation_patching", ["read_heads"])
+        pos = params.get("positions")
+        variants = [[Edit(f"head_out.{l}", "copy", None, pos)] for l in layers]
+        eff = ((lab.fwd_variants(base, variants, d.metric, source=src) - m_base) / denom).reshape(len(layers), 1)
+        xl = ["all heads"]
+        top = _top(torch.nan_to_num(eff), layers, xl, fmt="attention of layer {r}")
+        fig = plots.heatmap(lab, torch.nan_to_num(eff), f"Activation patching: all heads of a layer ({direction})", "", "layer", xl, layers,
+                            cbar="normalised effect")
+    elif comp == "head":
         lab.backend.require("activation_patching", ["read_heads"])
         pos = params.get("positions")
         n_h = lab.backend.heads_in_layers(layers)
@@ -150,9 +161,12 @@ def activation_patching(lab: Lab, params: dict):
         fig = plots.heatmap(lab, eff, f"Activation patching: {comp} ({direction})", "position", "layer", xl, layers,
                             cbar="normalised effect")
     else:
-        raise ValueError("component must be one of resid_pre, resid_post, attn_out, mlp_out, head")
+        raise ValueError("component must be one of resid_pre, resid_post, attn_out, mlp_out, head, heads_all")
     summary = {"component": comp, "direction": direction, "metric_base": m_base, "metric_source": m_src,
-               "n": d.n, "top": top, "forward_passes": int(eff.numel()) + 3}
+               "n": d.n, "top": top, "variants": int(eff.numel())}
+    if lab.failed_variants:
+        summary["variants_that_could_not_run"] = {"count": len(lab.failed_variants), "example": lab.failed_variants[0]}
+        lab.failed_variants = []
     return summary, {"effect": eff, "layers": layers, "columns": xl}, fig
 
 

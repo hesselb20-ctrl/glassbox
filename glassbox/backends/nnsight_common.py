@@ -12,7 +12,7 @@ import torch
 
 from .base import Backend, Edit, Run, UnsupportedPrimitive, parse_site
 
-ORDER = {"embed": -1, "resid_pre": 0, "head_out": 1, "attn_out": 2, "resid_mid": 3, "mlp_out": 4, "resid_post": 5}
+ORDER = {"embed": -1, "resid_pre": 0, "head_out": 1, "attn_out": 2, "mlp_out": 4, "resid_post": 5}
 
 
 def _edit_inplace(x, op, val, pos, head, rows=None):
@@ -235,8 +235,6 @@ class NNsightBackend(Backend):
                     x = ao[0] if isinstance(ao, tuple) else ao
                 elif kind == "mlp_out":
                     x = layers[L].mlp.output
-                elif kind == "resid_mid":
-                    x = layers[L].mlp.input
                 else:
                     out = layers[L].output
                     x = out[0] if isinstance(out, tuple) else out

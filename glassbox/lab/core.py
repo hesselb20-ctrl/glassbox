@@ -130,6 +130,7 @@ class Lab:
         self.backend = backend
         self.out_dir = Path(out_dir)
         self.batch_size = batch_size
+        self.failed_variants: list[str] = []
         (self.out_dir / "experiments").mkdir(parents=True, exist_ok=True)
         (self.out_dir / "artifacts").mkdir(parents=True, exist_ok=True)
 
@@ -302,7 +303,15 @@ class Lab:
             batch = tokens.repeat(k, 1)
             if source is not None:
                 batch = torch.cat([batch, source])
-            run = self.backend.forward(batch, edits=edits)
+            try:
+                run = self.backend.forward(batch, edits=edits)
+            except Exception as err:  # noqa: BLE001
+                if k == 1:                      # this one variant cannot be run on this backend/deployment: mark it, keep going
+                    self.failed_variants.append(str(err).strip().splitlines()[-1][:200])
+                    out.append(torch.full((1,), float("nan")))
+                    continue
+                out.append(torch.cat([self.fwd_variants(tokens, [v], metric, source, max_rows) for v in chunk]))
+                continue
             m = metric(run.logits[: k * n], torch.arange(n).repeat(k)).detach().float().cpu()
             out.append(m.reshape(k, n).mean(1))
         return torch.cat(out)
