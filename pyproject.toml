@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "glassbox-interp"
+version = "0.1.0"
+description = "Glassbox: an autonomous interpretability lab. Turn black boxes into glass boxes."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+dependencies = [
+    "torch>=2.2",
+    "numpy",
+    "einops",
+    "matplotlib",
+    "scikit-learn",
+    "transformer-lens>=2.0",
+    "nnsight>=0.5",
+    "mcp>=1.2",
+]
+
+[project.optional-dependencies]
+gguf = ["gguf"]
+fourbit = ["bitsandbytes", "accelerate"]
+api = ["anthropic"]
+dev = ["pytest"]
+
+[project.scripts]
+glassbox-mcp = "glassbox.mcp.server:main"
+glassbox = "glassbox.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["glassbox*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
