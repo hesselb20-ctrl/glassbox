@@ -15,10 +15,17 @@ from .base import Backend, Edit, Run, UnsupportedPrimitive, parse_site
 ORDER = {"embed": -1, "resid_pre": 0, "head_out": 1, "attn_out": 2, "resid_mid": 3, "mlp_out": 4, "resid_post": 5}
 
 
-def _edit_inplace(x, op, val, pos, head):
+def _edit_inplace(x, op, val, pos, head, rows=None):
     """Apply one edit in place on a real activation tensor. Pure torch, so it also runs server-side on NDIF."""
     import torch as _t
 
+    if op == "copy":                          # take the value from other rows of this same forward pass
+        val = x[list(val)].clone()
+        op = "replace"
+    full = None
+    if rows is not None:                      # edit only some batch rows: work on a copy of them, write back at the end
+        full, rows = x, list(rows)
+        x = full[rows]
     if isinstance(pos, int):
         pos = [pos]
     idx = [slice(None), slice(None) if pos is None else list(pos)]
@@ -45,6 +52,8 @@ def _edit_inplace(x, op, val, pos, head):
         inside = ((tgt - mean) @ basis.T) @ basis
         new = tgt - inside if op == "project_out" else mean + inside
     x[idx] = new
+    if full is not None:
+        full[rows] = x
 
 
 # On NDIF the trace body runs on a server that does not have glassbox installed, so anything the
@@ -134,6 +143,9 @@ class NNsightBackend(Backend):
         self._adapt()
         return self.info()
 
+    def heads_in_layers(self, layers: Sequence[int]) -> list[int]:
+        return [self._heads[l] for l in layers]
+
     def info(self) -> dict[str, Any]:
         return {**self.provenance(), **self.cfg, "attn_only": False, "has_tokenizer": True,
                 "d_head": (self.cfg["d_model"] // self.cfg["n_heads"]) if self.cfg.get("n_heads") else None,
@@ -193,7 +205,7 @@ class NNsightBackend(Backend):
         for s in list(read) + list(grad_sites):
             plan.setdefault(canon[s], {"edits": [], "names": []})["names"].append(s)
         for e in edits:
-            plan.setdefault(canon[e.site], {"edits": [], "names": []})["edits"].append((e.op, e.value, e.pos, e.head))
+            plan.setdefault(canon[e.site], {"edits": [], "names": []})["edits"].append((e.op, e.value, e.pos, e.head, e.rows))
         order = sorted(plan, key=lambda k: ((-1 if k[1] is None else k[1]), ORDER[k[0]]))
         grad_set = set(grad_sites)
         layers, embed, head = self._layers, self._embed, self._head
@@ -228,8 +240,8 @@ class NNsightBackend(Backend):
                 else:
                     out = layers[L].output
                     x = out[0] if isinstance(out, tuple) else out
-                for op, val, pos, hd in item["edits"]:
-                    edit_fn(x, op, val, pos, hd)
+                for op, val, pos, hd, rws in item["edits"]:
+                    edit_fn(x, op, val, pos, hd, rws)
                 for name in item["names"]:
                     if name in grad_set:
                         grefs[name] = z if kind == "head_out" else x

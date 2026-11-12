@@ -278,6 +278,35 @@ class Lab:
             logits=stitch(logits_out) if keep_logits else None,
         )
 
+    def fwd_variants(self, tokens: torch.Tensor, variants: Sequence[Sequence[Edit]], metric: Metric,
+                     source: torch.Tensor | None = None, max_rows: int | None = None) -> torch.Tensor:
+        """Mean metric for each of several edit sets, packed into as few forward passes as possible.
+
+        The batch is tiled once per variant and every edit is confined to its own block of rows. If ``source`` is
+        given it rides along as one extra block, and edits with op ``copy`` take their value from it. So a whole
+        patching sweep is a few forward passes with nothing uploaded, which is what makes it practical on NDIF.
+        """
+        n = len(tokens)
+        max_rows = max_rows or getattr(self.backend, "max_rows", 512)
+        per = max(1, max_rows // n - (1 if source is not None else 0))
+        out = []
+        for start in range(0, len(variants), per):
+            chunk = variants[start:start + per]
+            k = len(chunk)
+            src_rows = list(range(k * n, (k + 1) * n))
+            edits = []
+            for j, es in enumerate(chunk):
+                for e in es:
+                    rows = list(range(j * n, (j + 1) * n))
+                    edits.append(dataclasses.replace(e, rows=rows, value=src_rows if e.op == "copy" else e.value))
+            batch = tokens.repeat(k, 1)
+            if source is not None:
+                batch = torch.cat([batch, source])
+            run = self.backend.forward(batch, edits=edits)
+            m = metric(run.logits[: k * n], torch.arange(n).repeat(k)).detach().float().cpu()
+            out.append(m.reshape(k, n).mean(1))
+        return torch.cat(out)
+
     # -- ablation helper (shared with verify) -------------------------------- #
     def ablation_edits(self, comps: Sequence[tuple], mode: str, ref: dict[str, torch.Tensor] | None,
                        pos: Any = None, seed: int = 0) -> list[Edit]:
@@ -295,6 +324,8 @@ class Lab:
                 v = a[torch.randperm(a.shape[0], generator=gen).to(a.device)]
             else:
                 raise ValueError("ablation mode must be 'mean', 'zero' or 'resample'")
+            if head is not None:
+                v = v[:, :, head]                 # only this head's slice travels (matters for remote backends)
             edits.append(Edit(site, "replace", v, pos, head))
         return edits
 

@@ -6,6 +6,7 @@ picks it up itself). Glassbox never stores, logs or returns it.
 """
 from __future__ import annotations
 
+import os
 from typing import Any
 
 from . import ndif_status
@@ -15,6 +16,8 @@ from .nnsight_common import NNsightBackend
 class NDIF(NNsightBackend):
     name = "ndif"
     remote = True
+    #: rows per remote forward pass when many patch variants are batched together (server memory is shared)
+    max_rows = int(os.environ.get("GLASSBOX_REMOTE_ROWS", "128"))
 
     def list_models(self) -> list[dict[str, Any]]:
         live = ndif_status.live_models()

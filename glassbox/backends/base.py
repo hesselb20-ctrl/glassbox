@@ -148,6 +148,8 @@ class Edit:
 
     op:
       ``replace``      overwrite with ``value``
+      ``copy``         overwrite with the same activation taken from other batch rows of this forward pass
+                       (``value`` = the source row indices); nothing has to be uploaded to a remote backend
       ``add``          add ``value`` (steering)
       ``zero``         set to zero
       ``project_out``  remove the component inside a subspace
@@ -161,6 +163,7 @@ class Edit:
     value: Any = None
     pos: Any = None          # int, list[int] or None for all positions
     head: int | None = None  # head index for per-head sites
+    rows: Any = None         # batch rows the edit applies to (None = all); lets one forward pass carry many variants
 
 
 @dataclasses.dataclass
@@ -172,6 +175,13 @@ class Run:
 
 def apply_edit(x: torch.Tensor, e: Edit) -> torch.Tensor:
     """Apply ``e`` to activation ``x`` ([batch, pos, d] or [batch, pos, head, d])."""
+    if e.op == "copy":
+        e = dataclasses.replace(e, op="replace", value=x[list(e.value)])
+    if e.rows is not None:
+        rows = list(e.rows)
+        out = x.clone()
+        out[rows] = apply_edit(x[rows], dataclasses.replace(e, rows=None))
+        return out
     pos = e.pos
     if isinstance(pos, int):
         pos = [pos]
@@ -277,6 +287,10 @@ class Backend(abc.ABC):
     @abc.abstractmethod
     def decode(self, ids: Sequence[int]) -> list[str]:
         """Token ids -> token strings, one per id."""
+
+    def heads_in_layers(self, layers: Sequence[int]) -> list[int]:
+        """Number of attention heads in each of the given layers (hybrid models have layers of different kinds)."""
+        return [self.info()["n_heads"]] * len(layers)
 
     def bos_id(self) -> int | None:
         """Id of the token the model expects at position 0, or None."""

@@ -122,17 +122,13 @@ def activation_patching(lab: Lab, params: dict):
     if comp == "head":
         lab.backend.require("activation_patching", ["read_heads"])
         pos = params.get("positions")
-        cache = lab.fwd(src, read=[f"head_out.{l}" for l in layers]).acts
-        n_h = [cache[f"head_out.{l}"].shape[2] for l in layers]
+        n_h = lab.backend.heads_in_layers(layers)
         if len(set(n_h)) != 1:
             raise ValueError(f"layers {layers} have different numbers of heads {sorted(set(n_h))}; sweep one layer type at a time "
                              f"(see 'full_attention_layers' in the model info)")
         info = {**info, "n_heads": n_h[0]}
-        eff = torch.zeros(len(layers), info["n_heads"])
-        for i, l in enumerate(layers):
-            for h in range(info["n_heads"]):
-                e = Edit(f"head_out.{l}", "replace", cache[f"head_out.{l}"], pos, h)
-                eff[i, h] = (float(lab.fwd(base, edits=[e], metric=d.metric).metric.mean()) - m_base) / denom
+        variants = [[Edit(f"head_out.{l}", "copy", None, pos, h)] for l in layers for h in range(info["n_heads"])]
+        eff = ((lab.fwd_variants(base, variants, d.metric, source=src) - m_base) / denom).reshape(len(layers), info["n_heads"])
         cols = list(range(info["n_heads"]))
         top = _top(eff, layers, cols)
         fig = plots.heatmap(lab, eff, f"Activation patching: heads ({direction})", "head", "layer", cols, layers,
@@ -146,12 +142,8 @@ def activation_patching(lab: Lab, params: dict):
             cols_pos = [None]
         else:
             cols_pos = list(positions)
-        cache = lab.fwd(src, read=[f"{comp}.{l}" for l in layers]).acts
-        eff = torch.zeros(len(layers), len(cols_pos))
-        for i, l in enumerate(layers):
-            for j, p in enumerate(cols_pos):
-                e = Edit(f"{comp}.{l}", "replace", cache[f"{comp}.{l}"], p)
-                eff[i, j] = (float(lab.fwd(base, edits=[e], metric=d.metric).metric.mean()) - m_base) / denom
+        variants = [[Edit(f"{comp}.{l}", "copy", None, p)] for l in layers for p in cols_pos]
+        eff = ((lab.fwd_variants(base, variants, d.metric, source=src) - m_base) / denom).reshape(len(layers), len(cols_pos))
         labels = _pos_labels(lab, d, npos)
         xl = ["all" if p is None else labels[p] for p in cols_pos]
         top = _top(eff, layers, xl, fmt=comp + ".{r} @ pos {c}")
