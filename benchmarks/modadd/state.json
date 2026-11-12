@@ -1,0 +1,7 @@
+{
+ "backend": "local-full",
+ "model": "checkpoint:benchmarks/modadd/model/model.pt",
+ "options": {},
+ "budget": 40,
+ "started": "2026-11-12T22:33:11"
+}

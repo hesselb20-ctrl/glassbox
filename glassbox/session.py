@@ -233,4 +233,4 @@ class Session:
         self._open(None)
         paths = write_report(self._dir(), report, self.notebook, self._state())
         self.notebook.append("report", f"Report written: {paths['markdown']}", refs=paths["cited"])
-        return paths
+        return {**paths, "folder": str(self._dir())}

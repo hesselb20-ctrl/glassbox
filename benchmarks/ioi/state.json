@@ -1,0 +1,7 @@
+{
+ "backend": "local-full",
+ "model": "gpt2",
+ "options": {},
+ "budget": 60,
+ "started": "2026-11-12T22:33:16"
+}

@@ -45,8 +45,19 @@ def compile_predict(code: str, backend) -> Any:
     return ns["predict"]
 
 
-def _frac(a: float, b: float) -> float:
-    return a / b if abs(b) > 1e-9 else float("nan")
+def metric_floor(metric_type: str, d_vocab: int) -> float:
+    """The value a metric takes when the model has no information about the answer.
+
+    Ratios are measured from this floor, so that "fraction of clean" means the same thing for a logit
+    difference (floor 0) and for a log-probability (floor log(1/vocab), where a plain ratio of two
+    negative numbers would be misleading).
+    """
+    return {"logit_diff": 0.0, "logit": 0.0, "accuracy": 0.0, "prob": 1.0 / d_vocab,
+            "logprob": -math.log(d_vocab)}[metric_type]
+
+
+def _frac(a: float, b: float, floor: float = 0.0) -> float:
+    return (a - floor) / (b - floor) if abs(b - floor) > 1e-9 else float("nan")
 
 
 def verify(lab: Lab, spec: dict) -> tuple[dict, Any]:
@@ -62,6 +73,8 @@ def verify(lab: Lab, spec: dict) -> tuple[dict, Any]:
     correct = d.metric.correct
     out["model_accuracy"] = float((model_pred == correct).float().mean())
     out["metric_clean"] = m_clean
+    floor = metric_floor(d.metric.type, backend.info()["d_vocab"])
+    out["metric_floor"] = floor
     passed: list[bool] = []
 
     # ---- 1. agreement between the written-out algorithm and the model -------------------------
@@ -90,7 +103,7 @@ def verify(lab: Lab, spec: dict) -> tuple[dict, Any]:
 
     def score(edits: list[Edit]) -> dict:
         o = lab.fwd(d.clean, edits=edits, metric=d.metric, keep_logits=True)
-        return {"metric": float(o.metric.mean()), "fraction_of_clean": _frac(float(o.metric.mean()), m_clean),
+        return {"metric": float(o.metric.mean()), "fraction_of_clean": _frac(float(o.metric.mean()), m_clean, floor),
                 "accuracy": float((o.logits.argmax(-1) == correct).float().mean())}
 
     if circuit.get("components"):

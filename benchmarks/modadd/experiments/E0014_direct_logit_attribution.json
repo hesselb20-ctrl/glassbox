@@ -1,0 +1,53 @@
+{
+ "id": "E0014",
+ "primitive": "direct_logit_attribution",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/modadd/model/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "modadd",
+   "n": "all"
+  }
+ },
+ "summary": {
+  "metric_clean": 72.427719,
+  "sum_of_head_contributions": 0.902602,
+  "n": 12769,
+  "top": [
+   {
+    "component": "0.0",
+    "effect": 0.301369
+   },
+   {
+    "component": "0.1",
+    "effect": 0.245678
+   },
+   {
+    "component": "0.3",
+    "effect": 0.208271
+   },
+   {
+    "component": "0.2",
+    "effect": 0.147285
+   }
+  ]
+ },
+ "data": {
+  "contribution": [
+   [
+    0.301369,
+    0.245678,
+    0.147285,
+    0.208271
+   ]
+  ]
+ },
+ "plot": "experiments/E0014_direct_logit_attribution.png",
+ "seconds": 0.66,
+ "timestamp": "2026-11-12T22:34:54"
+}

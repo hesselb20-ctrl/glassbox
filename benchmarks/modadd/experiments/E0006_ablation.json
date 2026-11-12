@@ -1,0 +1,74 @@
+{
+ "id": "E0006",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/modadd/model/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "modadd",
+   "n": "all"
+  },
+  "sweep": "heads",
+  "mode": "mean"
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 12769,
+  "metric_clean": 72.427719,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "0.1",
+    "metric": 47.944881,
+    "change": -24.482838,
+    "fraction_of_clean": 0.661969
+   },
+   {
+    "component": "0.0",
+    "metric": 50.28817,
+    "change": -22.139549,
+    "fraction_of_clean": 0.694322
+   },
+   {
+    "component": "0.2",
+    "metric": 51.158638,
+    "change": -21.269081,
+    "fraction_of_clean": 0.706341
+   },
+   {
+    "component": "0.3",
+    "metric": 52.027443,
+    "change": -20.400276,
+    "fraction_of_clean": 0.718336
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "0.0",
+   "0.1",
+   "0.2",
+   "0.3"
+  ],
+  "metric": [
+   50.28817,
+   47.944881,
+   51.158638,
+   52.027443
+  ],
+  "change": [
+   -22.139549,
+   -24.482838,
+   -21.269081,
+   -20.400276
+  ]
+ },
+ "plot": "experiments/E0006_ablation.png",
+ "seconds": 1.86,
+ "timestamp": "2026-11-12T22:33:46"
+}

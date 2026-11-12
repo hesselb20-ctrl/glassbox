@@ -1,0 +1,370 @@
+{
+ "id": "E0006",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "component": "head",
+  "clean": {
+   "prompts": [
+    "When Mary and John went to the store, John gave a drink to",
+    "When Tom and Sarah went to the park, Tom gave a book to",
+    "When Kevin and Susan went to the library, Susan gave a ring to",
+    "When Peter and Maria went to the garden, Peter gave a gift to",
+    "When Alex and Kate went to the school, Kate gave a letter to",
+    "When Paul and Jack went to the office, Paul gave a ball to",
+    "When Anna and Adam went to the beach, Adam gave a drink to",
+    "When Rachel and Dan went to the market, Rachel gave a book to",
+    "When Alice and Ryan went to the store, Ryan gave a ring to",
+    "When Jane and Mark went to the park, Jane gave a gift to",
+    "When Lisa and David went to the library, David gave a letter to",
+    "When Emma and James went to the garden, Emma gave a ball to",
+    "When John and Kate went to the school, Kate gave a drink to",
+    "When Sarah and Paul went to the office, Sarah gave a book to",
+    "When Mark and Anna went to the beach, Anna gave a ring to",
+    "When David and Alice went to the market, David gave a gift to",
+    "When James and Rachel went to the store, Rachel gave a letter to",
+    "When Maria and Tom went to the park, Maria gave a ball to",
+    "When Jack and Lisa went to the library, Lisa gave a drink to",
+    "When Susan and Dan went to the garden, Susan gave a book to",
+    "When Ryan and Emma went to the school, Emma gave a ring to",
+    "When Kate and Peter went to the office, Kate gave a gift to",
+    "When Adam and Jane went to the beach, Jane gave a letter to",
+    "When Alex and Mary went to the market, Alex gave a ball to"
+   ]
+  },
+  "corrupt": {
+   "prompts": [
+    "When Mary and John went to the store, Mary gave a drink to",
+    "When Tom and Sarah went to the park, Sarah gave a book to",
+    "When Kevin and Susan went to the library, Kevin gave a ring to",
+    "When Peter and Maria went to the garden, Maria gave a gift to",
+    "When Alex and Kate went to the school, Alex gave a letter to",
+    "When Paul and Jack went to the office, Jack gave a ball to",
+    "When Anna and Adam went to the beach, Anna gave a drink to",
+    "When Rachel and Dan went to the market, Dan gave a book to",
+    "When Alice and Ryan went to the store, Alice gave a ring to",
+    "When Jane and Mark went to the park, Mark gave a gift to",
+    "When Lisa and David went to the library, Lisa gave a letter to",
+    "When Emma and James went to the garden, James gave a ball to",
+    "When John and Kate went to the school, John gave a drink to",
+    "When Sarah and Paul went to the office, Paul gave a book to",
+    "When Mark and Anna went to the beach, Mark gave a ring to",
+    "When David and Alice went to the market, Alice gave a gift to",
+    "When James and Rachel went to the store, James gave a letter to",
+    "When Maria and Tom went to the park, Tom gave a ball to",
+    "When Jack and Lisa went to the library, Jack gave a drink to",
+    "When Susan and Dan went to the garden, Dan gave a book to",
+    "When Ryan and Emma went to the school, Ryan gave a ring to",
+    "When Kate and Peter went to the office, Peter gave a gift to",
+    "When Adam and Jane went to the beach, Adam gave a letter to",
+    "When Alex and Mary went to the market, Mary gave a ball to"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " Mary",
+    " Sarah",
+    " Kevin",
+    " Maria",
+    " Alex",
+    " Jack",
+    " Anna",
+    " Dan",
+    " Alice",
+    " Mark",
+    " Lisa",
+    " James",
+    " John",
+    " Paul",
+    " Mark",
+    " Alice",
+    " James",
+    " Tom",
+    " Jack",
+    " Dan",
+    " Ryan",
+    " Peter",
+    " Adam",
+    " Mary"
+   ],
+   "incorrect": [
+    " John",
+    " Tom",
+    " Susan",
+    " Peter",
+    " Kate",
+    " Paul",
+    " Adam",
+    " Rachel",
+    " Ryan",
+    " Jane",
+    " David",
+    " Emma",
+    " Kate",
+    " Sarah",
+    " Anna",
+    " David",
+    " Rachel",
+    " Maria",
+    " Lisa",
+    " Susan",
+    " Emma",
+    " Kate",
+    " Jane",
+    " Alex"
+   ]
+  }
+ },
+ "summary": {
+  "component": "head",
+  "direction": "denoise",
+  "metric_base": -4.702064,
+  "metric_source": 4.265985,
+  "n": 24,
+  "top": [
+   {
+    "component": "10.7",
+    "effect": -0.478715
+   },
+   {
+    "component": "8.10",
+    "effect": 0.278018
+   },
+   {
+    "component": "8.6",
+    "effect": 0.270431
+   },
+   {
+    "component": "5.5",
+    "effect": 0.242299
+   },
+   {
+    "component": "11.10",
+    "effect": -0.238202
+   },
+   {
+    "component": "9.9",
+    "effect": 0.228112
+   },
+   {
+    "component": "7.9",
+    "effect": 0.191526
+   },
+   {
+    "component": "7.3",
+    "effect": 0.130631
+   }
+  ],
+  "forward_passes": 147
+ },
+ "data": {
+  "effect": [
+   [
+    0.000454,
+    0.015148,
+    0.000409,
+    0.004057,
+    0.004056,
+    0.001506,
+    -0.002784,
+    -0.001065,
+    0.000268,
+    -0.001231,
+    -0.003408,
+    0.000479
+   ],
+   [
+    -0.001323,
+    -0.000154,
+    -5.6e-05,
+    -0.000723,
+    -0.000306,
+    0.005879,
+    -0.001237,
+    -0.00164,
+    0.000416,
+    -0.000272,
+    7.2e-05,
+    0.001966
+   ],
+   [
+    -0.00012,
+    -0.000507,
+    0.001534,
+    3.9e-05,
+    -0.000278,
+    9.6e-05,
+    -0.000237,
+    0.000229,
+    -8e-05,
+    -0.000204,
+    -0.000388,
+    0.000641
+   ],
+   [
+    0.116047,
+    -0.000323,
+    0.000521,
+    -0.000237,
+    0.020723,
+    -0.004783,
+    0.01276,
+    -0.001012,
+    -0.000101,
+    -0.000278,
+    0.001086,
+    3.7e-05
+   ],
+   [
+    -5.1e-05,
+    -0.000261,
+    -0.00068,
+    0.031946,
+    -0.005227,
+    -0.000371,
+    0.004048,
+    -0.006376,
+    0.001446,
+    0.000414,
+    0.000721,
+    0.003521
+   ],
+   [
+    -0.001653,
+    0.002445,
+    0.001656,
+    -5.2e-05,
+    -0.001194,
+    0.242299,
+    0.000722,
+    -0.000217,
+    -0.000514,
+    0.06189,
+    0.012276,
+    -0.003218
+   ],
+   [
+    0.049639,
+    0.011986,
+    -0.000633,
+    -0.001179,
+    -0.003258,
+    -0.001413,
+    -0.013951,
+    0.001876,
+    0.001126,
+    0.08056,
+    -0.001021,
+    0.001295
+   ],
+   [
+    4e-05,
+    0.009555,
+    0.00064,
+    0.130631,
+    -0.000254,
+    -0.010054,
+    -9.4e-05,
+    -0.000821,
+    -0.004582,
+    0.191526,
+    -0.000738,
+    -0.001357
+   ],
+   [
+    -0.001104,
+    -0.0,
+    -0.005991,
+    0.011103,
+    -2.4e-05,
+    0.00495,
+    0.270431,
+    0.003902,
+    -0.001014,
+    -0.000741,
+    0.278018,
+    0.002525
+   ],
+   [
+    0.002443,
+    -0.000544,
+    0.005992,
+    0.020026,
+    -0.025635,
+    0.015316,
+    -0.009838,
+    0.095169,
+    -0.002224,
+    0.228112,
+    0.001134,
+    -0.001814
+   ],
+   [
+    0.109505,
+    0.014879,
+    0.004461,
+    0.004309,
+    -0.000567,
+    -3.1e-05,
+    0.051529,
+    -0.478715,
+    -3.2e-05,
+    0.016139,
+    0.063096,
+    0.002171
+   ],
+   [
+    0.003772,
+    -0.008725,
+    -0.073376,
+    0.000847,
+    -3e-06,
+    -0.000247,
+    -0.010093,
+    0.002589,
+    0.004875,
+    -9e-06,
+    -0.238202,
+    0.003013
+   ]
+  ],
+  "layers": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "columns": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ]
+ },
+ "plot": "experiments/E0006_activation_patching.png",
+ "seconds": 2.69,
+ "timestamp": "2026-11-12T22:35:04"
+}

@@ -1,0 +1,85 @@
+{
+ "id": "E0030",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 64,
+   "seed": 0
+  },
+  "mode": "mean",
+  "reference": "corrupt",
+  "joint": true,
+  "components": [
+   "3.0",
+   "5.5",
+   "6.9",
+   "7.3",
+   "7.9",
+   "8.6",
+   "8.10",
+   "9.9",
+   "9.6",
+   "10.0",
+   "10.10",
+   "10.6",
+   "10.7",
+   "11.10",
+   "0.1",
+   "1.11",
+   "5.8",
+   "4.11",
+   "4.3",
+   "5.9",
+   "6.0",
+   "9.7",
+   "10.1"
+  ]
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 64,
+  "metric_clean": 3.773854,
+  "joint": true,
+  "components": [
+   "3.0",
+   "5.5",
+   "6.9",
+   "7.3",
+   "7.9",
+   "8.6",
+   "8.10",
+   "9.9",
+   "9.6",
+   "10.0",
+   "10.10",
+   "10.6",
+   "10.7",
+   "11.10",
+   "0.1",
+   "1.11",
+   "5.8",
+   "4.11",
+   "4.3",
+   "5.9",
+   "6.0",
+   "9.7",
+   "10.1"
+  ],
+  "metric_ablated": -1.480479,
+  "fraction_of_clean": -0.392299
+ },
+ "data": {
+  "metric_ablated": -1.480479
+ },
+ "plot": "experiments/E0030_ablation.png",
+ "seconds": 0.47,
+ "timestamp": "2026-11-12T22:41:32"
+}

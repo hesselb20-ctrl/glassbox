@@ -1,0 +1,102 @@
+{
+ "id": "E0005",
+ "primitive": "attribution_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/modadd/model/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "modadd",
+   "n": 512,
+   "seed": 1
+  }
+ },
+ "summary": {
+  "direction": "denoise",
+  "metric_base": -72.295372,
+  "metric_source": 72.226555,
+  "n": 512,
+  "top_heads": [
+   {
+    "component": "0.1",
+    "effect": 0.174943
+   },
+   {
+    "component": "0.2",
+    "effect": 0.140162
+   },
+   {
+    "component": "0.3",
+    "effect": 0.137673
+   },
+   {
+    "component": "0.0",
+    "effect": 0.136732
+   }
+  ],
+  "top_resid": [
+   {
+    "component": "resid_pre.0 @ pos 1",
+    "effect": 0.283195
+   },
+   {
+    "component": "resid_pre.0 @ pos 0",
+    "effect": 0.279462
+   },
+   {
+    "component": "resid_pre.0 @ pos 2",
+    "effect": 0.0
+   }
+  ],
+  "attn_by_layer": [
+   0.589511
+  ],
+  "note": "first-order estimate; confirm the top components with activation_patching",
+  "forward_passes": 4,
+  "backward_passes": 1,
+  "mlp_by_layer": [
+   0.989393
+  ]
+ },
+ "data": {
+  "layers": [
+   0
+  ],
+  "resid_pre": [
+   [
+    0.279462,
+    0.283195,
+    0.0
+   ]
+  ],
+  "attn_out_by_pos": [
+   [
+    0.0,
+    0.0,
+    0.589511
+   ]
+  ],
+  "heads": [
+   [
+    0.136732,
+    0.174943,
+    0.140162,
+    0.137673
+   ]
+  ],
+  "mlp_out_by_pos": [
+   [
+    0.0,
+    0.0,
+    0.989393
+   ]
+  ]
+ },
+ "plot": "experiments/E0005_attribution_patching.png",
+ "seconds": 0.22,
+ "timestamp": "2026-11-12T22:33:37"
+}

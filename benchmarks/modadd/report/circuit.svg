@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 254" width="100%" font-family="Consolas, DejaVu Sans Mono, monospace">
+<defs><filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3df5d0"/></marker></defs>
+<rect width="920" height="254" fill="#070b1a" rx="10"/>
+<path d="M178,87 C282,87 282,66 382,66" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="282" y="71" fill="#8793c2" font-size="11" text-anchor="middle">embed</text>
+<path d="M178,167 C282,167 282,66 382,66" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="282" y="111" fill="#8793c2" font-size="11" text-anchor="middle">embed</text>
+<path d="M535,66 C460,66 460,127 382,127" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="460" y="91" fill="#8793c2" font-size="11" text-anchor="middle">18-dim Fourier subspace (E0012, V0001)</text>
+<path d="M535,127 C460,127 460,188 382,188" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="460" y="151" fill="#8793c2" font-size="11" text-anchor="middle">mixed a,b features (E0008, E0014)</text>
+<path d="M535,188 C638,188 638,127 739,127" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="638" y="151" fill="#8793c2" font-size="11" text-anchor="middle">key-frequency directions (E0015, E0016)</text>
+<rect x="28" y="65" width="150" height="44" rx="8" fill="#0e1530" stroke="#8793c2" stroke-width="1.5"/>
+<text x="103" y="91" fill="#e6ebff" font-size="12" text-anchor="middle">token a (pos 0)</text>
+<rect x="28" y="145" width="150" height="44" rx="8" fill="#0e1530" stroke="#8793c2" stroke-width="1.5"/>
+<text x="103" y="171" fill="#e6ebff" font-size="12" text-anchor="middle">token b (pos 1)</text>
+<rect x="385" y="44" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="460" y="70" fill="#e6ebff" font-size="12" text-anchor="middle">W_E: cos/sin at k in {</text>
+<rect x="385" y="105" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="460" y="131" fill="#e6ebff" font-size="12" text-anchor="middle">heads 0.0-0.3: ~50/50 </text>
+<rect x="385" y="166" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="460" y="192" fill="#e6ebff" font-size="12" text-anchor="middle">mlp0: frequency-tuned </text>
+<rect x="742" y="105" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="817" y="131" fill="#e6ebff" font-size="12" text-anchor="middle">W_U: reads key-frequen</text>
+</svg>

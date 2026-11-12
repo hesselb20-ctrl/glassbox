@@ -1,0 +1,232 @@
+{
+ "id": "V0001",
+ "name": "prev-token head 0.3 -> induction head 1.6 (K-composition), copy next token",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "attn-only-2l",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 0.605,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [
+    {
+     "input": [
+      1,
+      5231,
+      36460,
+      31533,
+      5493,
+      6828,
+      34753,
+      38945,
+      4012,
+      18667,
+      37466,
+      5133,
+      20819,
+      5231,
+      36460,
+      31533,
+      5493,
+      6828,
+      34753,
+      38945,
+      4012,
+      18667,
+      37466,
+      5133
+     ],
+     "algorithm": " necrosis",
+     "model": "an"
+    },
+    {
+     "input": [
+      1,
+      8453,
+      25598,
+      18971,
+      15017,
+      20493,
+      39503,
+      27105,
+      4440,
+      23906,
+      29872,
+      16236,
+      33145,
+      8453,
+      25598,
+      18971,
+      15017,
+      20493,
+      39503,
+      27105,
+      4440,
+      23906,
+      29872,
+      16236
+     ],
+     "algorithm": "],[",
+     "model": "i"
+    },
+    {
+     "input": [
+      1,
+      17072,
+      17852,
+      25371,
+      9983,
+      2859,
+      26856,
+      3448,
+      3888,
+      14677,
+      11145,
+      21513,
+      34793,
+      17072,
+      17852,
+      25371,
+      9983,
+      2859,
+      26856,
+      3448,
+      3888,
+      14677,
+      11145,
+      21513
+     ],
+     "algorithm": " homozygous",
+     "model": "\n"
+    },
+    {
+     "input": [
+      1,
+      2189,
+      39341,
+      22698,
+      37974,
+      16047,
+      11651,
+      32324,
+      33729,
+      10171,
+      35885,
+      5471,
+      10537,
+      2189,
+      39341,
+      22698,
+      37974,
+      16047,
+      11651,
+      32324,
+      33729,
+      10171,
+      35885,
+      5471
+     ],
+     "algorithm": " intake",
+     "model": "ens"
+    },
+    {
+     "input": [
+      1,
+      3965,
+      4649,
+      18062,
+      28786,
+      22180,
+      23279,
+      21180,
+      39821,
+      29425,
+      38797,
+      11896,
+      25625,
+      3965,
+      4649,
+      18062,
+      28786,
+      22180,
+      23279,
+      21180,
+      39821,
+      29425,
+      38797,
+      11896
+     ],
+     "algorithm": " epigen",
+     "model": "ing"
+    }
+   ],
+   "pass": false
+  },
+  "causal_components": {
+   "circuit": [
+    "0.0",
+    "0.3",
+    "1.6",
+    "1.7"
+   ],
+   "circuit_size": 4,
+   "total_components": 16,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": -14.67532,
+    "fraction_of_clean": 4.811473,
+    "accuracy": 0.0
+   },
+   "everything_else_ablated": {
+    "metric": -2.755439,
+    "fraction_of_clean": 0.903402,
+    "accuracy": 0.65
+   },
+   "random_same_size_ablated_fraction": [
+    0.875027,
+    0.850476,
+    1.148454
+   ],
+   "pass_breaks_without_circuit": false,
+   "pass_survives_on_circuit_alone": true,
+   "pass": false
+  }
+ },
+ "model_accuracy": 0.605,
+ "metric_clean": -3.050068,
+ "status": "not-verified",
+ "all_checks_passed": false,
+ "note": "At least one check failed; the explanation is partial or wrong. See the numbers.",
+ "plot": "experiments/V0001_verify.png",
+ "spec": {
+  "name": "prev-token head 0.3 -> induction head 1.6 (K-composition), copy next token",
+  "dataset": {
+   "task": "induction",
+   "n": 200,
+   "seed": 1234
+  },
+  "code": "def predict(tokens, prompt):\n    # tokens: list of token ids of the prompt; predict the next token.\n    cur = tokens[-1]\n    # Layer 0, head 0.3: each position p carries the identity of token p-1 (attends offset -1, E0006).\n    # Layer 1, head 1.6: the query (current token) matches keys whose previous-token info equals it\n    # (K-composition 0.3 -> 1.6.k, E0010; content-based not positional, E0013).\n    # Most recent such earlier position wins.\n    for p in range(len(tokens) - 2, 0, -1):\n        if tokens[p - 1] == cur:\n            # 1.6's OV copies the attended token straight to the logits (DLA 81%, E0012).\n            return tokens[p]\n    # No earlier occurrence: no induction signal; 1.6 rests on BOS (E0007). Fallback guess.\n    return cur\n",
+  "circuit": {
+   "components": [
+    "0.0",
+    "0.3",
+    "1.6",
+    "1.7"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-12T22:38:16"
+}

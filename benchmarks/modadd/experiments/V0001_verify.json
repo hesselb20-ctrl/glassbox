@@ -1,0 +1,91 @@
+{
+ "id": "V0001",
+ "name": "Fourier frequency algorithm for (a+b) mod 113",
+ "n_heldout": 1000,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/modadd/model/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 1.0,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [],
+   "pass": true
+  },
+  "causal_subspace": {
+   "subspaces": [
+    {
+     "artifact": "A0001_fourier_subspace",
+     "site": "embed",
+     "pos": [
+      0,
+      1
+     ]
+    }
+   ],
+   "dims": [
+    18
+   ],
+   "of_total_dims": [
+    128
+   ],
+   "subspace_removed": {
+    "metric": -0.075351,
+    "fraction_of_clean": -0.001025,
+    "accuracy": 0.009
+   },
+   "only_subspace_kept": {
+    "metric": 73.346352,
+    "fraction_of_clean": 0.997611,
+    "accuracy": 1.0
+   },
+   "random_subspace_removed": {
+    "metric": 63.535301,
+    "fraction_of_clean": 0.864167,
+    "accuracy": 1.0
+   },
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": true,
+   "pass": true
+  }
+ },
+ "model_accuracy": 1.0,
+ "metric_clean": 73.52198,
+ "status": "verified",
+ "all_checks_passed": true,
+ "note": "Passed at full precision.",
+ "plot": "experiments/V0001_verify.png",
+ "spec": {
+  "name": "Fourier frequency algorithm for (a+b) mod 113",
+  "dataset": {
+   "task": "modadd",
+   "n": 1000,
+   "seed": 7
+  },
+  "code": "import math\n\nP = 113\n# Key frequencies shared by W_E (E0003), W_U (E0004) and the MLP neuron clusters (E0011)\nKEY_FREQS = [2, 14, 17, 27, 28]\n\ndef predict(tokens, prompt):\n    a, b = int(tokens[0]), int(tokens[1])\n    # Step 1: embed a and b as cos/sin at the key frequencies (E0003; necessary per E0012)\n    # Step 2: the attention heads at '=' average a and b ~50/50 (E0009, E0010); all 4 heads are needed jointly (E0008)\n    # Step 3: mlp0 neurons, each tuned to one key frequency (E0011), combine them into\n    #         cos/sin(w_k (a+b)) and write key-frequency directions (E0015); mlp0 is necessary (E0007)\n    # Step 4: W_U reads the key-frequency directions (E0004, E0016):\n    #         logit(c) = sum_k cos(w_k (a+b-c)), which peaks at c = (a+b) mod P\n    best_c, best = None, -1e9\n    for c in range(P):\n        s = 0.0\n        for k in KEY_FREQS:\n            w = 2 * math.pi * k / P\n            s += math.cos(w * (a + b - c))\n        if s > best:\n            best, best_c = s, c\n    return best_c\n",
+  "circuit": {
+   "subspaces": [
+    {
+     "artifact": "A0001_fourier_subspace",
+     "site": "embed",
+     "pos": [
+      0,
+      1
+     ]
+    }
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-12T22:36:27"
+}

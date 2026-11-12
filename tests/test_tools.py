@@ -97,6 +97,6 @@ def test_report_refuses_unbacked_claims_and_writes_both_files(session):
                                                       {"id": "h", "label": "head 0.0", "layer": 1}],
                                             "edges": [{"src": "in", "dst": "h", "label": "attend"}]},
                                 "key_plots": [r["id"]]})
-    md = open(out["markdown"], encoding="utf-8").read()
+    md = open(session._dir() / out["markdown"], encoding="utf-8").read()
     assert "full precision (local)" in md and r["id"] in md and "Notebook trail" in md
-    assert "<svg" in open(out["html"], encoding="utf-8").read()
+    assert "<svg" in open(session._dir() / out["html"], encoding="utf-8").read()

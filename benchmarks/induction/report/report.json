@@ -1,0 +1,220 @@
+{
+ "title": "Induction in attn-only-2l: previous-token head 0.3 -> induction head 1.6",
+ "label": "partial: causal checks pass at full precision, agreement check fails",
+ "behavior": "Given [BOS] + 12 random tokens + the first 11 repeated, attn-only-2l predicts the 12th token. Clean mean logprob -2.80, top-1 accuracy 0.53 (seed 0, n=64). With the first copy replaced, logprob is -15.36 (E0002). All numbers are from local-full (fp32, full precision).",
+ "summary": "A two-head circuit carries induction. Layer-0 head 0.3 is a previous-token head: about 0.53 of its attention goes to position p-1 (E0006). Layer-1 head 1.6 is an induction head. From the final query it attends 0.64 to the token right after the earlier occurrence of the current token (E0007). It finds that key by content, not by a fixed offset (E0013), using 0.3's output in its KEY input: patching 0.3 into 1.6.k restores 77% of a predecessor-only corruption, while the value path restores ~0 (E0009, E0010, E0011). 1.6 then writes the copied token straight to the logits (81% of the logit difference, E0012). Head 0.0 (minor previous-token signal) and head 1.7 (weak, diffuse induction) add small contributions (E0005, E0014). Joint mean-ablation of 0.3 and 1.6 collapses the behaviour (E0016). Ablating the other 12 heads improves it (E0015). On held-out prompts the circuit passes every causal check (V0002), but predict() agrees with the model only 50-60% of the time, because the model itself is wrong that often and errs toward common tokens (V0001, V0002, E0017).",
+ "pseudocode": "def predict(tokens, prompt):\n    cur = tokens[-1]\n    # L0 head 0.3: position p stores the identity of token p-1   (E0006)\n    # L1 head 1.6: its query (cur) matches keys whose stored previous token == cur,\n    #   via K-composition with 0.3 (E0010, E0011); content-based, not positional (E0013)\n    for p in range(len(tokens) - 2, 0, -1):\n        if tokens[p - 1] == cur:\n            # 1.6's OV copies the token at p into the logits (DLA 81%, E0012)\n            return tokens[p]\n    return cur  # no earlier occurrence: 1.6 rests on BOS (E0007)\n# Not modelled: the ~40-50% of cases where the model instead outputs a frequent token (E0017, V0001, V0002).",
+ "claims": [
+  {
+   "text": "The model does induction far above chance: clean logprob -2.80 and accuracy 0.53 vs corrupt -15.36 (uniform would be -10.8).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "Head 1.6 carries most of the effect: patching it alone restores 90% of the clean-corrupt gap and mean-ablating it costs 9.27 nats. Head 1.7 is second (15% restored, 0.90 nats).",
+   "evidence": [
+    "E0003",
+    "E0004",
+    "E0005"
+   ]
+  },
+  {
+   "text": "Layer-0 head 0.3 is critical but invisible to denoising with the dataset corruption. Mean-ablating it in the clean run costs 8.84 nats (70% of the gap). 0.0 costs 1.91 nats; the other L0 heads cost under 0.26.",
+   "evidence": [
+    "E0004",
+    "E0005"
+   ]
+  },
+  {
+   "text": "Head 0.3 is a previous-token head: mean attention 0.53 to offset -1, with most of the rest on BOS.",
+   "evidence": [
+    "E0006"
+   ]
+  },
+  {
+   "text": "Head 1.6 attends from each second-copy token to the token after its earlier occurrence (0.64 from the final query to pos 12), and rests on BOS in the first copy.",
+   "evidence": [
+    "E0007"
+   ]
+  },
+  {
+   "text": "The match is content-based: with 8-token repeats 1.6 attends to offset -7 (0.62 at pos 8), not -11.",
+   "evidence": [
+    "E0013"
+   ]
+  },
+  {
+   "text": "The model needs the answer's predecessor to match: replacing only that token, with the answer kept in place, drops logprob from -3.01 to -13.37.",
+   "evidence": [
+    "E0009"
+   ]
+  },
+  {
+   "text": "0.3 feeds 1.6 through 1.6's KEY input (K-composition): the 0.3 -> 1.6.k path restores 0.77 of the gap; 0.0 -> 1.6.k restores 0.06; the 0.3 -> 1.6.v path restores ~0.",
+   "evidence": [
+    "E0010",
+    "E0011"
+   ]
+  },
+  {
+   "text": "1.6 writes the answer directly: +11.09 of a 13.75 logit difference (81%). 1.7 adds +1.38, and 0.3's direct effect is -0.19, so 0.3 acts only through 1.6.",
+   "evidence": [
+    "E0012"
+   ]
+  },
+  {
+   "text": "1.7 is a weak, diffuse induction head: 0.077 on pos 12 from the final query (its largest non-BOS key), with 0.49 on BOS.",
+   "evidence": [
+    "E0014"
+   ]
+  },
+  {
+   "text": "Break tests: jointly ablating 0.3 and 1.6 gives -12.63; ablating the 12 heads outside the circuit gives -1.91, better than clean.",
+   "evidence": [
+    "E0015",
+    "E0016"
+   ]
+  },
+  {
+   "text": "On held-out sequences with a logit-diff metric, the circuit passes every causal check: circuit ablated 0.12 of clean (accuracy 0), circuit alone 1.05, random 4-head ablations 0.94-1.07.",
+   "evidence": [
+    "V0002"
+   ]
+  },
+  {
+   "text": "The agreement check fails: predict() agrees with the model only 0.605 (n=200) and 0.50 (n=10), exactly the model's own accuracy. predict() matches ground truth 100% of the time, and every disagreement is a model error toward a common token.",
+   "evidence": [
+    "V0001",
+    "V0002"
+   ]
+  },
+  {
+   "text": "On prompts where the model is wrong, 1.6 still finds the right key, just more weakly (0.46 vs 0.64). The failure is a weaker copy signal losing to competitors, not a failed match.",
+   "evidence": [
+    "E0017",
+    "E0007"
+   ]
+  },
+  {
+   "text": "In V0001 the 'breaks without circuit' check was flagged as failed because the logprob metric is negative (ratio 4.81 means worse). Behaviourally accuracy fell to 0.00; the check passes with logit diff in V0002.",
+   "evidence": [
+    "V0001",
+    "V0002"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "emb",
+    "label": "token embeddings",
+    "layer": 0,
+    "kind": "embed"
+   },
+   {
+    "id": "0.3",
+    "label": "0.3 previous-token head",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "0.0",
+    "label": "0.0 minor prev-token head",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "1.6",
+    "label": "1.6 induction head (main)",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "1.7",
+    "label": "1.7 weak induction head",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "logits",
+    "label": "logits",
+    "layer": 2,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "emb",
+    "dst": "0.3",
+    "label": "reads token p-1 (E0006)"
+   },
+   {
+    "src": "0.3",
+    "dst": "1.6",
+    "label": "K-composition: key = previous token (E0010, 0.77)"
+   },
+   {
+    "src": "0.0",
+    "dst": "1.6",
+    "label": "K-composition, minor (E0010, 0.06)"
+   },
+   {
+    "src": "emb",
+    "dst": "1.6",
+    "label": "query = current token; value = token at matched pos (E0007, E0013)"
+   },
+   {
+    "src": "1.6",
+    "dst": "logits",
+    "label": "copies answer, DLA +11.09 (E0012)"
+   },
+   {
+    "src": "1.7",
+    "dst": "logits",
+    "label": "DLA +1.38 (E0012)"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0005",
+  "E0007",
+  "E0010",
+  "E0012",
+  "E0013"
+ ],
+ "limitations": [
+  "Status: partial. The causal checks pass at full precision (V0002), but behavioural agreement fails (0.605 in V0001, 0.50 in V0002) because predict() returns the ideal induction answer while the model is wrong 40-50% of the time.",
+  "Custom-prompt experiments (E0009-E0013, V0002) use small n (5-10) built from token ids seen in E0001 and V0001.",
+  "The query-side path (L0 -> 1.6.q) was not tested; the predecessor corruption leaves the query position unchanged by construction.",
+  "The V0001 'breaks without circuit' check failed because the logprob metric is negative; the logit-diff rerun (V0002) passes.",
+  "What supplies the competing frequent tokens in the failure cases (direct embed->unembed path or other heads) was not measured.",
+  "Only one sequence length (12) on the dataset, plus one custom length (8)."
+ ],
+ "open_questions": [
+  "What decides whether 1.6's copy wins? Is it a token-dependent OV copy strength, or competition from the direct path or bigram statistics?",
+  "Why is 1.6's attention weaker on failure prompts (0.46 vs 0.64)? Is it a weaker previous-token signal from 0.3 for some tokens?",
+  "What does 0.0 do beyond its small K-composition share? Ablating it costs 1.91 nats, more than its 0.06 key-path share suggests.",
+  "Does the circuit hold on longer contexts or with multiple earlier occurrences of the current token?"
+ ],
+ "overall_status": "partial / not verified \u00b7 partial: causal checks pass at full precision, agreement check fails",
+ "cited": [
+  "E0002",
+  "E0003",
+  "E0004",
+  "E0005",
+  "E0006",
+  "E0007",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0013",
+  "E0014",
+  "E0015",
+  "E0016",
+  "E0017",
+  "V0001",
+  "V0002"
+ ]
+}

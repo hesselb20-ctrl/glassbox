@@ -72,10 +72,11 @@ def run_experiment(primitive: str, params: dict | None = None, note: str = "", d
       attribution_patching    cheap first screen of every head / layer / position (gradient estimate)
       activation_patching     exact causal effect; component: resid_pre | resid_post | attn_out | mlp_out | head
       path_patching           senders -> receiver: "logits" or {"heads": ["9.9"], "input": "q"|"k"|"v"}
-      ablation                components ["9.6","mlp0"] or sweep "heads"|"mlps"|"attn"; mode mean|zero|resample; joint; subspace
+      ablation                components ["9.6","mlp0"] or sweep "heads"|"mlps"|"attn"; mode mean|zero|resample; joint;
+                              or subspace {"artifact": id, "site": "embed", "pos": [0, 1], "op": "project_out" | "keep_only"}
       logit_lens              decode the residual stream after every layer
       direct_logit_attribution  each head's direct write along the answer direction
-      linear_probe            data + labels -> per-layer held-out probe accuracy (with shuffled-label control)
+      linear_probe            data {"prompts"|"tokens": [...]} + labels [one per input] -> per-layer held-out accuracy (+ control)
       attention_patterns      query_pos / key_pos / offset / head "L.H"
       diff_of_means           positive vs negative prompts -> a direction per layer (saved as an artifact)
       steering                add a direction at sites with strengths alphas; metric and/or generated text before/after

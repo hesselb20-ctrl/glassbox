@@ -1,0 +1,186 @@
+{
+ "title": "How a 1-layer transformer computes (a+b) mod 113: a sparse Fourier-frequency algorithm",
+ "label": "verified (local-full, full precision)",
+ "behavior": "Input [a, b, '='] with a, b in 0..112 ('=' is token 113); at the last position the model outputs (a+b) mod 113. Accuracy 1.0 on all 12769 pairs (E0002).",
+ "summary": "The model represents numbers as waves (cos/sin) at a small set of frequencies mod 113: mainly 28, 17, 2 and 14, with 27 and a few minor ones. The embedding (E0003), the MLP neurons (E0011), the MLP output (E0015) and the unembedding (E0004) all use this same set. All 4 attention heads at '=' split attention ~50/50 between a and b (E0009, E0010). They act together as a mixer (only joint ablation kills the behaviour, E0006/E0008) and write almost nothing to the logits directly (E0014). mlp0 is necessary (E0007): its neurons each tune to one key frequency and write key-frequency directions that W_U reads out (E0016). The 18-dim key-frequency subspace of the operand embeddings is necessary (E0012) and sufficient (V0001: keeping only it gives 99.8% of the logit diff). On held-out data the Fourier algorithm agrees with the model on 1000/1000 inputs (V0001). All numbers are from local-full (fp32).",
+ "pseudocode": "P = 113; K = [2, 14, 17, 27, 28]            # key frequencies (E0003, E0004, E0011)\ndef predict(a, b):\n    # 1. embed: a, b -> cos/sin(2*pi*k*x/P) for k in K       (E0003; necessary E0012, sufficient V0001)\n    # 2. attention (4 heads, ~50/50 on a and b) mixes them at '='   (E0009, E0010, E0008)\n    # 3. mlp0: frequency-tuned neurons combine a and b features   (E0011, E0015; necessary E0007)\n    # 4. unembed reads key-frequency directions                   (E0004, E0016)\n    logit = [sum(cos(2*pi*k*(a+b-c)/P) for k in K) for c in range(P)]\n    return argmax(logit)                                          # = (a+b) mod P  (V0001: 1000/1000)",
+ "claims": [
+  {
+   "text": "The model does the task perfectly: accuracy 1.0 on all 12769 pairs, mean logit diff 72.4.",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The token embedding is sparse in the Fourier basis mod 113: frequencies 28, 17, 2, 14 hold 28.5/23.1/20.0/7.2% of power (uniform would be 1.8%); 9 key frequencies hold 91.8%.",
+   "evidence": [
+    "E0003"
+   ]
+  },
+  {
+   "text": "The unembedding uses the same frequencies (28/17/2/14 = 30.0/24.2/21.6/9.1%); 6 key frequencies hold 90.1% of power.",
+   "evidence": [
+    "E0004"
+   ]
+  },
+  {
+   "text": "The MLP neurons cluster by frequency: k=2:190, 28:128, 17:113, 14:52, 27:19; on average 70% of a neuron's variance is on one frequency.",
+   "evidence": [
+    "E0011"
+   ]
+  },
+  {
+   "text": "All 128 dims of the MLP output at '=' are periodic with best frequency in {28, 17, 2}.",
+   "evidence": [
+    "E0015"
+   ]
+  },
+  {
+   "text": "From '=', each head attends ~50% to its top operand and ~0.2% to '=' itself, so attention mixes a and b ~50/50 on average.",
+   "evidence": [
+    "E0009",
+    "E0010"
+   ]
+  },
+  {
+   "text": "The heads share the work: each one ablated alone removes 28-34% of the logit diff, while all 4 together reduce it to ~0.",
+   "evidence": [
+    "E0006",
+    "E0008"
+   ]
+  },
+  {
+   "text": "The heads write only 1.2% of the logit diff directly; mlp0 is necessary (mean ablation leaves 1.4%).",
+   "evidence": [
+    "E0014",
+    "E0007"
+   ]
+  },
+  {
+   "text": "The key-frequency subspace (18 of 128 dims) of the a and b embeddings is necessary (ablated: 0%) and sufficient (kept alone: 99.8%, 100% accuracy). A random 18-dim ablation keeps 86.4%.",
+   "evidence": [
+    "E0012",
+    "V0001"
+   ]
+  },
+  {
+   "text": "The read-out goes through the 12-dim W_U key-frequency subspace: ablating it in resid_post at '=' leaves 0.2% of the logit diff.",
+   "evidence": [
+    "E0016"
+   ]
+  },
+  {
+   "text": "The Fourier algorithm predict() agrees with the model on 1000/1000 held-out inputs (seed 7).",
+   "evidence": [
+    "V0001"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "a",
+    "label": "token a (pos 0)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "b",
+    "label": "token b (pos 1)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "WE",
+    "label": "W_E: cos/sin at k in {2,14,17,27,28}",
+    "layer": 0,
+    "kind": "embed"
+   },
+   {
+    "id": "heads",
+    "label": "heads 0.0-0.3: ~50/50 mix of a,b at '='",
+    "layer": 0,
+    "kind": "attention"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0: frequency-tuned neurons",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "WU",
+    "label": "W_U: reads key-frequency directions -> (a+b) mod 113",
+    "layer": 1,
+    "kind": "unembed"
+   }
+  ],
+  "edges": [
+   {
+    "src": "a",
+    "dst": "WE",
+    "label": "embed"
+   },
+   {
+    "src": "b",
+    "dst": "WE",
+    "label": "embed"
+   },
+   {
+    "src": "WE",
+    "dst": "heads",
+    "label": "18-dim Fourier subspace (E0012, V0001)"
+   },
+   {
+    "src": "heads",
+    "dst": "mlp0",
+    "label": "mixed a,b features (E0008, E0014)"
+   },
+   {
+    "src": "mlp0",
+    "dst": "WU",
+    "label": "key-frequency directions (E0015, E0016)"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0003",
+  "E0004",
+  "E0011",
+  "E0009",
+  "E0006",
+  "E0012"
+ ],
+ "limitations": [
+  "Everything was measured on local-full (fp32); there is no quantized/screening data.",
+  "Because the model is 100% accurate, 100% agreement in V0001 would hold for any correct algorithm. The exact logit form sum_k cos(w_k(a+b-c)) and the frequency weights were not fitted or measured directly.",
+  "That the MLP multiplies a and b features (product-to-sum) is inferred from the frequency structure and the roles. It was not measured directly: periodicity (E0015) does not split a-only, b-only and (a+b) terms, and the linear probe for (a+b) before vs after the MLP failed because it needs an explicit label list.",
+  "Attention numbers (E0009, E0010) are means; I did not measure how much the a/b split varies per example.",
+  "E0013 (keep-only-subspace via 'complement') silently ignored the flag and duplicated E0012. It is not used as evidence; sufficiency comes from V0001.",
+  "The DLA tool reported heads only; the MLP's direct logit share is inferred from E0007, not measured.",
+  "No component-level 'ablate everything else' test: in a 1-layer model the claimed components are the whole model."
+ ],
+ "open_questions": [
+  "Does each neuron's activation depend on cos/sin(w_k(a+b)) (the joint term) rather than on a and b separately? This needs a 2-D Fourier split or a probe with explicit labels.",
+  "What does each frequency contribute? Ablate one frequency at a time to see whether any single one is enough or needed.",
+  "Why do the 4 heads share the work evenly? Do they specialise by frequency?",
+  "What role do the minor frequencies (4, 34, 43, 56) play?"
+ ],
+ "overall_status": "verified \u00b7 verified (local-full, full precision)",
+ "cited": [
+  "E0002",
+  "E0003",
+  "E0004",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0014",
+  "E0015",
+  "E0016",
+  "V0001"
+ ]
+}

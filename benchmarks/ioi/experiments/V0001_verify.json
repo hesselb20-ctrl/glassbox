@@ -1,0 +1,129 @@
+{
+ "id": "V0001",
+ "name": "IO via duplicate detection -> S2 readers -> name movers",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 0.94,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [
+    {
+     "input": "When Mary and Susan went to the park, Mary gave a gift to",
+     "algorithm": " Susan",
+     "model": " the"
+    },
+    {
+     "input": "When Sarah and Laura went to the store, Sarah gave a letter to",
+     "algorithm": " Laura",
+     "model": " her"
+    },
+    {
+     "input": "When Sarah and Lisa went to the house, Sarah gave a drink to",
+     "algorithm": " Lisa",
+     "model": " her"
+    },
+    {
+     "input": "When Sarah and Jason went to the school, Sarah gave a drink to",
+     "algorithm": " Jason",
+     "model": " them"
+    },
+    {
+     "input": "When David and Anna went to the school, Anna gave a gift to",
+     "algorithm": " David",
+     "model": " the"
+    }
+   ],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "3.0",
+    "5.5",
+    "6.9",
+    "7.3",
+    "7.9",
+    "8.6",
+    "8.10",
+    "9.9",
+    "9.6",
+    "10.0",
+    "10.10",
+    "10.6",
+    "10.7",
+    "11.10",
+    "mlp0"
+   ],
+   "circuit_size": 15,
+   "total_components": 156,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": -1.328322,
+    "fraction_of_clean": -0.345129,
+    "accuracy": 0.0
+   },
+   "everything_else_ablated": {
+    "metric": -0.396584,
+    "fraction_of_clean": -0.103042,
+    "accuracy": 0.0
+   },
+   "random_same_size_ablated_fraction": [
+    0.930371,
+    0.978605,
+    0.774233
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": false,
+   "pass": false
+  }
+ },
+ "model_accuracy": 0.94,
+ "metric_clean": 3.848767,
+ "status": "not-verified",
+ "all_checks_passed": false,
+ "note": "At least one check failed; the explanation is partial or wrong. See the numbers.",
+ "plot": "experiments/V0001_verify.png",
+ "spec": {
+  "name": "IO via duplicate detection -> S2 readers -> name movers",
+  "dataset": {
+   "task": "ioi",
+   "n": 200,
+   "seed": 123
+  },
+  "code": "def predict(tokens, prompt):\n    import re\n    # Candidate names = capitalised words after the opening 'When'.\n    words = re.findall(r\"[A-Za-z]+\", prompt)\n    names = [w for w in words[1:] if w[0].isupper()]\n    first_two = names[:2]\n    later = names[2:]\n    # Step 1 (E0009, E0012): at S2 the model notices that the S2 name already occurred (3.0 attends S2->S1, 5.5 S2->S1+1).\n    repeated = [n for n in first_two if n in later]\n    # Step 2 (E0005, E0008, E0011): layer 7-8 heads (7.3, 7.9, 8.6, 8.10) move the repeat signal from S2 to END and set\n    # the queries of the name movers so they avoid the repeated name.\n    # Step 3 (E0008, E0010, E0020): 9.9 / 9.6 / 10.0 attend to the name that is NOT repeated and copy it to the output.\n    candidates = [n for n in first_two if n not in repeated]\n    if candidates:\n        return ' ' + candidates[0]\n    return ' ' + first_two[0]\n",
+  "circuit": {
+   "components": [
+    "3.0",
+    "5.5",
+    "6.9",
+    "7.3",
+    "7.9",
+    "8.6",
+    "8.10",
+    "9.9",
+    "9.6",
+    "10.0",
+    "10.10",
+    "10.6",
+    "10.7",
+    "11.10",
+    "mlp0"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-12T22:40:07"
+}

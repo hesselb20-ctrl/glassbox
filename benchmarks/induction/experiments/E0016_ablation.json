@@ -1,0 +1,42 @@
+{
+ "id": "E0016",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "attn-only-2l",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "induction",
+   "n": 64,
+   "seed": 0
+  },
+  "components": [
+   "0.3",
+   "1.6"
+  ],
+  "mode": "mean",
+  "joint": true
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 64,
+  "metric_clean": -2.804107,
+  "joint": true,
+  "components": [
+   "0.3",
+   "1.6"
+  ],
+  "metric_ablated": -12.632854,
+  "fraction_of_clean": 4.505125
+ },
+ "data": {
+  "metric_ablated": -12.632854
+ },
+ "plot": "experiments/E0016_ablation.png",
+ "seconds": 0.3,
+ "timestamp": "2026-11-12T22:37:58"
+}

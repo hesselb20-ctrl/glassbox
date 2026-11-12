@@ -1,0 +1,447 @@
+{
+ "id": "E0020",
+ "primitive": "attention_patterns",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "clean": {
+   "prompts": [
+    "When Mary and John went to the store, Mary gave a drink to",
+    "When Sarah and Tom went to the park, Sarah gave a book to",
+    "When Kevin and Susan went to the library, Kevin gave a ring to",
+    "When Maria and Peter went to the garden, Maria gave a gift to",
+    "When Alex and Kate went to the school, Alex gave a letter to",
+    "When Jack and Paul went to the office, Jack gave a ball to",
+    "When Anna and Adam went to the beach, Anna gave a drink to",
+    "When Dan and Rachel went to the market, Dan gave a book to",
+    "When Alice and Ryan went to the store, Alice gave a ring to",
+    "When Mark and Jane went to the park, Mark gave a gift to",
+    "When Lisa and David went to the library, Lisa gave a letter to",
+    "When James and Emma went to the garden, James gave a ball to",
+    "When John and Kate went to the school, John gave a drink to",
+    "When Paul and Sarah went to the office, Paul gave a book to",
+    "When Mark and Anna went to the beach, Mark gave a ring to",
+    "When Alice and David went to the market, Alice gave a gift to",
+    "When James and Rachel went to the store, James gave a letter to",
+    "When Tom and Maria went to the park, Tom gave a ball to",
+    "When Jack and Lisa went to the library, Jack gave a drink to",
+    "When Dan and Susan went to the garden, Dan gave a book to",
+    "When Ryan and Emma went to the school, Ryan gave a ring to",
+    "When Peter and Kate went to the office, Peter gave a gift to",
+    "When Adam and Jane went to the beach, Adam gave a letter to",
+    "When Mary and Alex went to the market, Mary gave a ball to"
+   ]
+  },
+  "query_pos": 14,
+  "heads": [
+   "9.9",
+   "9.6",
+   "10.7",
+   "11.10",
+   "8.6"
+  ]
+ },
+ "summary": {
+  "score": "max mean attention from pos 14",
+  "n": 24,
+  "top": [
+   {
+    "head": "4.11",
+    "score": 0.999933
+   },
+   {
+    "head": "5.1",
+    "score": 0.999213
+   },
+   {
+    "head": "7.2",
+    "score": 0.991468
+   },
+   {
+    "head": "7.10",
+    "score": 0.981319
+   },
+   {
+    "head": "6.9",
+    "score": 0.964659
+   },
+   {
+    "head": "8.1",
+    "score": 0.964495
+   },
+   {
+    "head": "3.0",
+    "score": 0.957619
+   },
+   {
+    "head": "7.1",
+    "score": 0.95305
+   }
+  ],
+  "most_attended_key_from_query": "omitted (many heads); see data"
+ },
+ "data": {
+  "score": [
+   [
+    0.263113,
+    0.515907,
+    0.273499,
+    0.539773,
+    0.321584,
+    0.366447,
+    0.293685,
+    0.296833,
+    0.212992,
+    0.214776,
+    0.146505,
+    0.273639
+   ],
+   [
+    0.454778,
+    0.18655,
+    0.138363,
+    0.507957,
+    0.237587,
+    0.378571,
+    0.312546,
+    0.346394,
+    0.347391,
+    0.361763,
+    0.123523,
+    0.502375
+   ],
+   [
+    0.35513,
+    0.564463,
+    0.431521,
+    0.364292,
+    0.342931,
+    0.241574,
+    0.272002,
+    0.146245,
+    0.836178,
+    0.732528,
+    0.151837,
+    0.599818
+   ],
+   [
+    0.957619,
+    0.396751,
+    0.349352,
+    0.615332,
+    0.900458,
+    0.558573,
+    0.212755,
+    0.771101,
+    0.418741,
+    0.366376,
+    0.539654,
+    0.301232
+   ],
+   [
+    0.416536,
+    0.411415,
+    0.684208,
+    0.622657,
+    0.688403,
+    0.385568,
+    0.580007,
+    0.603313,
+    0.740698,
+    0.426823,
+    0.87499,
+    0.999933
+   ],
+   [
+    0.94546,
+    0.999213,
+    0.357223,
+    0.307815,
+    0.274177,
+    0.922316,
+    0.871698,
+    0.412829,
+    0.80372,
+    0.84308,
+    0.407667,
+    0.72949
+   ],
+   [
+    0.393768,
+    0.805193,
+    0.658422,
+    0.601543,
+    0.336361,
+    0.695266,
+    0.685699,
+    0.47027,
+    0.298079,
+    0.964659,
+    0.869583,
+    0.346586
+   ],
+   [
+    0.771841,
+    0.95305,
+    0.991468,
+    0.277258,
+    0.789356,
+    0.554349,
+    0.834182,
+    0.931004,
+    0.371024,
+    0.533192,
+    0.981319,
+    0.780617
+   ],
+   [
+    0.583513,
+    0.964495,
+    0.290468,
+    0.322637,
+    0.442757,
+    0.369519,
+    0.887069,
+    0.615729,
+    0.446372,
+    0.693552,
+    0.367707,
+    0.321938
+   ],
+   [
+    0.579684,
+    0.889674,
+    0.726244,
+    0.424015,
+    0.663893,
+    0.578655,
+    0.783875,
+    0.450381,
+    0.416884,
+    0.910614,
+    0.798232,
+    0.811746
+   ],
+   [
+    0.437124,
+    0.584251,
+    0.510537,
+    0.484652,
+    0.637849,
+    0.843744,
+    0.560112,
+    0.858602,
+    0.886388,
+    0.321237,
+    0.470094,
+    0.837842
+   ],
+   [
+    0.164976,
+    0.47438,
+    0.743713,
+    0.399105,
+    0.64557,
+    0.739981,
+    0.680601,
+    0.699663,
+    0.261242,
+    0.786998,
+    0.612255,
+    0.297649
+   ]
+  ],
+  "top_key": [
+   [
+    0.0,
+    14.0,
+    0.0,
+    14.0,
+    11.0,
+    6.0,
+    14.0,
+    14.0,
+    14.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    11.0,
+    9.0,
+    14.0,
+    0.0,
+    0.0,
+    14.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    13.0,
+    14.0
+   ],
+   [
+    14.0,
+    0.0,
+    13.0,
+    12.0,
+    13.0,
+    13.0,
+    0.0,
+    11.0,
+    11.0,
+    13.0,
+    13.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    11.0,
+    0.0,
+    0.0,
+    0.0,
+    12.0,
+    13.0,
+    0.0,
+    11.0,
+    0.0,
+    13.0
+   ],
+   [
+    12.0,
+    0.0,
+    0.0,
+    13.0,
+    0.0,
+    0.0,
+    0.0,
+    14.0,
+    0.0,
+    0.0,
+    0.0,
+    13.0
+   ],
+   [
+    0.0,
+    0.0,
+    13.0,
+    0.0,
+    13.0,
+    0.0,
+    0.0,
+    13.0,
+    0.0,
+    0.0,
+    13.0,
+    0.0
+   ],
+   [
+    11.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    13.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    11.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    10.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    4.0,
+    0.0,
+    10.0,
+    10.0,
+    0.0,
+    0.0,
+    0.0,
+    10.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    4.0,
+    0.0,
+    0.0,
+    4.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    4.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    3.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    11.0,
+    0.0,
+    4.0,
+    0.0
+   ]
+  ],
+  "layers": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ]
+ },
+ "plot": "experiments/E0020_attention_patterns.png",
+ "seconds": 0.27,
+ "timestamp": "2026-11-12T22:38:41"
+}

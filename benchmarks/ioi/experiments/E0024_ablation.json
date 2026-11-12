@@ -1,0 +1,44 @@
+{
+ "id": "E0024",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 64,
+   "seed": 0
+  },
+  "components": [
+   "3.0",
+   "5.5",
+   "6.9"
+  ],
+  "mode": "mean",
+  "joint": true
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 64,
+  "metric_clean": 3.773854,
+  "joint": true,
+  "components": [
+   "3.0",
+   "5.5",
+   "6.9"
+  ],
+  "metric_ablated": 1.801707,
+  "fraction_of_clean": 0.477418
+ },
+ "data": {
+  "metric_ablated": 1.801707
+ },
+ "plot": "experiments/E0024_ablation.png",
+ "seconds": 0.16,
+ "timestamp": "2026-11-12T22:39:26"
+}

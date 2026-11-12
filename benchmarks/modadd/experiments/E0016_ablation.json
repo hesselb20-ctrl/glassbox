@@ -1,0 +1,61 @@
+{
+ "id": "E0016",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/modadd/model/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "modadd",
+   "n": "all"
+  },
+  "mode": "mean",
+  "subspace": {
+   "artifact": "A0002_fourier_subspace",
+   "site": "resid_post.0",
+   "pos": [
+    2
+   ]
+  }
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 12769,
+  "metric_clean": 72.427719,
+  "results": [
+   {
+    "subspace": {
+     "artifact": "A0002_fourier_subspace",
+     "site": "resid_post.0",
+     "pos": [
+      2
+     ]
+    },
+    "metric": 0.140116,
+    "fraction_of_clean": 0.001935
+   }
+  ]
+ },
+ "data": {
+  "results": [
+   {
+    "subspace": {
+     "artifact": "A0002_fourier_subspace",
+     "site": "resid_post.0",
+     "pos": [
+      2
+     ]
+    },
+    "metric": 0.140116,
+    "fraction_of_clean": 0.001935
+   }
+  ]
+ },
+ "plot": "experiments/E0016_ablation.png",
+ "seconds": 0.64,
+ "timestamp": "2026-11-12T22:36:03"
+}

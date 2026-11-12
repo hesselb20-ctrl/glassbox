@@ -1,0 +1,72 @@
+{
+ "id": "E0010",
+ "primitive": "attention_patterns",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/modadd/model/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "modadd",
+   "n": 1024,
+   "seed": 2
+  },
+  "query_pos": 2,
+  "key_pos": 2
+ },
+ "summary": {
+  "score": "attention from pos 2 to given key positions",
+  "n": 1024,
+  "top": [
+   {
+    "head": "0.2",
+    "score": 0.002125
+   },
+   {
+    "head": "0.3",
+    "score": 0.002051
+   },
+   {
+    "head": "0.0",
+    "score": 0.001879
+   },
+   {
+    "head": "0.1",
+    "score": 0.001848
+   }
+  ],
+  "most_attended_key_from_query": {
+   "0.0": 1,
+   "0.1": 1,
+   "0.2": 0,
+   "0.3": 0
+  }
+ },
+ "data": {
+  "score": [
+   [
+    0.001879,
+    0.001848,
+    0.002125,
+    0.002051
+   ]
+  ],
+  "top_key": [
+   [
+    1.0,
+    1.0,
+    0.0,
+    0.0
+   ]
+  ],
+  "layers": [
+   0
+  ]
+ },
+ "plot": "experiments/E0010_attention_patterns.png",
+ "seconds": 0.11,
+ "timestamp": "2026-11-12T22:34:08"
+}

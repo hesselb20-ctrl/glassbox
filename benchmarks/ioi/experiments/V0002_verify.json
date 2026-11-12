@@ -1,0 +1,159 @@
+{
+ "id": "V0002",
+ "name": "IO circuit v2: duplicate heads -> S2 readers -> name movers (+ supporting heads, mlp0-6)",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 0.935,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [
+    {
+     "input": "When Rachel and Jane went to the school, Rachel gave a bone to",
+     "algorithm": " Jane",
+     "model": " the"
+    },
+    {
+     "input": "When Laura and Mary went to the hospital, Laura gave a ring to",
+     "algorithm": " Mary",
+     "model": " her"
+    },
+    {
+     "input": "When Dan and David went to the house, Dan gave a gift to",
+     "algorithm": " David",
+     "model": " his"
+    },
+    {
+     "input": "When Tom and Paul went to the library, Paul gave a gift to",
+     "algorithm": " Tom",
+     "model": " the"
+    },
+    {
+     "input": "When Tom and Brian went to the library, Tom gave a bone to",
+     "algorithm": " Brian",
+     "model": " the"
+    }
+   ],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "3.0",
+    "5.5",
+    "6.9",
+    "7.3",
+    "7.9",
+    "8.6",
+    "8.10",
+    "9.9",
+    "9.6",
+    "10.0",
+    "10.10",
+    "10.6",
+    "10.7",
+    "11.10",
+    "0.1",
+    "1.11",
+    "5.8",
+    "4.11",
+    "4.3",
+    "5.9",
+    "6.0",
+    "9.7",
+    "10.1",
+    "mlp0",
+    "mlp1",
+    "mlp2",
+    "mlp3",
+    "mlp4",
+    "mlp5",
+    "mlp6"
+   ],
+   "circuit_size": 30,
+   "total_components": 156,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": -0.513351,
+    "fraction_of_clean": -0.13015,
+    "accuracy": 0.0
+   },
+   "everything_else_ablated": {
+    "metric": 3.921418,
+    "fraction_of_clean": 0.994195,
+    "accuracy": 0.375
+   },
+   "random_same_size_ablated_fraction": [
+    1.048385,
+    1.041293,
+    1.063553
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": true,
+   "pass": true
+  }
+ },
+ "model_accuracy": 0.935,
+ "metric_clean": 3.944313,
+ "status": "verified",
+ "all_checks_passed": true,
+ "note": "Passed at full precision.",
+ "plot": "experiments/V0002_verify.png",
+ "spec": {
+  "name": "IO circuit v2: duplicate heads -> S2 readers -> name movers (+ supporting heads, mlp0-6)",
+  "dataset": {
+   "task": "ioi",
+   "n": 200,
+   "seed": 777
+  },
+  "code": "def predict(tokens, prompt):\n    import re\n    # Candidate names = capitalised words after the opening 'When'.\n    words = re.findall(r\"[A-Za-z]+\", prompt)\n    names = [w for w in words[1:] if w[0].isupper()]\n    first_two = names[:2]\n    later = names[2:]\n    # Step 1 (E0009, E0012, E0024): at S2, heads 3.0 (S2->S1) and 5.5 (S2->S1+1), with 6.9, mark the S2 name as already seen.\n    repeated = [n for n in first_two if n in later]\n    # Step 2 (E0005, E0008, E0011, E0023): 7.3, 7.9, 8.6, 8.10 at END read S2 and set the name movers' queries.\n    # Step 3 (E0008, E0010, E0020): 9.9 / 9.6 / 10.0 attend to the name that is NOT repeated and copy it to the logits;\n    # 10.7 / 11.10 attend to the same name and partially cancel it (E0010, E0014), which does not change the argmax.\n    candidates = [n for n in first_two if n not in repeated]\n    if candidates:\n        return ' ' + candidates[0]\n    return ' ' + first_two[0]\n",
+  "circuit": {
+   "components": [
+    "3.0",
+    "5.5",
+    "6.9",
+    "7.3",
+    "7.9",
+    "8.6",
+    "8.10",
+    "9.9",
+    "9.6",
+    "10.0",
+    "10.10",
+    "10.6",
+    "10.7",
+    "11.10",
+    "0.1",
+    "1.11",
+    "5.8",
+    "4.11",
+    "4.3",
+    "5.9",
+    "6.0",
+    "9.7",
+    "10.1",
+    "mlp0",
+    "mlp1",
+    "mlp2",
+    "mlp3",
+    "mlp4",
+    "mlp5",
+    "mlp6"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-12T22:41:22"
+}

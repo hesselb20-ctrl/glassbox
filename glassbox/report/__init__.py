@@ -234,4 +234,4 @@ th{{color:{S.MUTED};font-weight:500}} img{{max-width:100%;border-radius:8px;bord
     h.append("</div></main></body></html>")
     (out_dir / "report.html").write_text("\n".join(h), encoding="utf-8")
     (out_dir / "report.json").write_text(json.dumps({**report, "overall_status": overall, "cited": cited}, indent=1), encoding="utf-8")
-    return {"markdown": str(out_dir / "report.md"), "html": str(out_dir / "report.html"), "status": overall, "cited": cited}
+    return {"markdown": "report/report.md", "html": "report/report.html", "status": overall, "cited": cited}
