@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 762" width="1280" height="762" role="img">
+<defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3df5d0"/></marker><marker id="arrm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8793c2"/></marker></defs>
+<rect width="1280" height="762" fill="#070b1a" rx="14"/>
+<text x="48" y="62" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="34" fill="#e6ebff" text-anchor="start" font-weight="700">Four backends, one interface</text>
+<text x="48" y="96" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="17.5" fill="#8793c2" text-anchor="start" font-weight="400">The same experiment code runs on all of them. An unsupported primitive raises an error that names a backend that works.</text>
+<rect x="330" y="124" width="214" height="52" rx="10" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="437.0" y="146" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="18" fill="#e6ebff" text-anchor="middle" font-weight="700">local-full</text>
+<text x="437.0" y="166" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="12.5" fill="#8793c2" text-anchor="middle" font-weight="400">full precision (local)</text>
+<rect x="558" y="124" width="214" height="52" rx="10" fill="#0e1530" stroke="#1c2750" stroke-width="1.5"/>
+<text x="665.0" y="146" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="18" fill="#e6ebff" text-anchor="middle" font-weight="700">local-gguf</text>
+<text x="665.0" y="166" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="12.5" fill="#8793c2" text-anchor="middle" font-weight="400">screening (gguf quantized)</text>
+<rect x="786" y="124" width="214" height="52" rx="10" fill="#0e1530" stroke="#1c2750" stroke-width="1.5"/>
+<text x="893.0" y="146" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="18" fill="#e6ebff" text-anchor="middle" font-weight="700">local-4bit</text>
+<text x="893.0" y="166" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="12.5" fill="#8793c2" text-anchor="middle" font-weight="400">screening (4-bit)</text>
+<rect x="1014" y="124" width="214" height="52" rx="10" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="1121.0" y="146" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="18" fill="#e6ebff" text-anchor="middle" font-weight="700">ndif</text>
+<text x="1121.0" y="166" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="12.5" fill="#8793c2" text-anchor="middle" font-weight="400">full precision (NDIF remote)</text>
+<rect x="40" y="190" width="1200" height="38" rx="6" fill="#0b112a" stroke="#070b1a" stroke-width="0"/>
+<text x="60" y="215" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="17" fill="#e6ebff" text-anchor="start" font-weight="400">attribution patching</text>
+<circle cx="437.0" cy="209" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<line x1="657.0" y1="209" x2="673.0" y2="209" stroke="#3a4780" stroke-width="3"/>
+<circle cx="893.0" cy="209" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<line x1="1113.0" y1="209" x2="1129.0" y2="209" stroke="#3a4780" stroke-width="3"/>
+<text x="60" y="253" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="17" fill="#e6ebff" text-anchor="start" font-weight="400">activation patching</text>
+<circle cx="437.0" cy="247" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<line x1="657.0" y1="247" x2="673.0" y2="247" stroke="#3a4780" stroke-width="3"/>
+<circle cx="893.0" cy="247" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<circle cx="1121.0" cy="247" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<rect x="40" y="266" width="1200" height="38" rx="6" fill="#0b112a" stroke="#070b1a" stroke-width="0"/>
+<text x="60" y="291" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="17" fill="#e6ebff" text-anchor="start" font-weight="400">path patching</text>
+<circle cx="437.0" cy="285" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<line x1="657.0" y1="285" x2="673.0" y2="285" stroke="#3a4780" stroke-width="3"/>
+<circle cx="893.0" cy="285" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<circle cx="1121.0" cy="285" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<text x="60" y="329" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="17" fill="#e6ebff" text-anchor="start" font-weight="400">ablation</text>
+<circle cx="437.0" cy="323" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<line x1="657.0" y1="323" x2="673.0" y2="323" stroke="#3a4780" stroke-width="3"/>
+<circle cx="893.0" cy="323" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<circle cx="1121.0" cy="323" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<rect x="40" y="342" width="1200" height="38" rx="6" fill="#0b112a" stroke="#070b1a" stroke-width="0"/>
+<text x="60" y="367" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="17" fill="#e6ebff" text-anchor="start" font-weight="400">logit lens</text>
+<circle cx="437.0" cy="361" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<circle cx="665.0" cy="361" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<circle cx="893.0" cy="361" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<circle cx="1121.0" cy="361" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<text x="60" y="405" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="17" fill="#e6ebff" text-anchor="start" font-weight="400">direct logit attribution</text>
+<circle cx="437.0" cy="399" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<line x1="657.0" y1="399" x2="673.0" y2="399" stroke="#3a4780" stroke-width="3"/>
+<line x1="885.0" y1="399" x2="901.0" y2="399" stroke="#3a4780" stroke-width="3"/>
+<line x1="1113.0" y1="399" x2="1129.0" y2="399" stroke="#3a4780" stroke-width="3"/>
+<rect x="40" y="418" width="1200" height="38" rx="6" fill="#0b112a" stroke="#070b1a" stroke-width="0"/>
+<text x="60" y="443" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="17" fill="#e6ebff" text-anchor="start" font-weight="400">linear probe</text>
+<circle cx="437.0" cy="437" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<circle cx="665.0" cy="437" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<circle cx="893.0" cy="437" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<circle cx="1121.0" cy="437" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<text x="60" y="481" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="17" fill="#e6ebff" text-anchor="start" font-weight="400">attention patterns</text>
+<circle cx="437.0" cy="475" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<line x1="657.0" y1="475" x2="673.0" y2="475" stroke="#3a4780" stroke-width="3"/>
+<line x1="885.0" y1="475" x2="901.0" y2="475" stroke="#3a4780" stroke-width="3"/>
+<line x1="1113.0" y1="475" x2="1129.0" y2="475" stroke="#3a4780" stroke-width="3"/>
+<rect x="40" y="494" width="1200" height="38" rx="6" fill="#0b112a" stroke="#070b1a" stroke-width="0"/>
+<text x="60" y="519" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="17" fill="#e6ebff" text-anchor="start" font-weight="400">diff of means</text>
+<circle cx="437.0" cy="513" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<circle cx="665.0" cy="513" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<circle cx="893.0" cy="513" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<circle cx="1121.0" cy="513" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<text x="60" y="557" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="17" fill="#e6ebff" text-anchor="start" font-weight="400">steering</text>
+<circle cx="437.0" cy="551" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<circle cx="665.0" cy="551" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<circle cx="893.0" cy="551" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<circle cx="1121.0" cy="551" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<rect x="40" y="570" width="1200" height="38" rx="6" fill="#0b112a" stroke="#070b1a" stroke-width="0"/>
+<text x="60" y="595" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="17" fill="#e6ebff" text-anchor="start" font-weight="400">periodicity</text>
+<circle cx="437.0" cy="589" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<line x1="657.0" y1="589" x2="673.0" y2="589" stroke="#3a4780" stroke-width="3"/>
+<line x1="885.0" y1="589" x2="901.0" y2="589" stroke="#3a4780" stroke-width="3"/>
+<line x1="1113.0" y1="589" x2="1129.0" y2="589" stroke="#3a4780" stroke-width="3"/>
+<text x="60" y="633" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="17" fill="#e6ebff" text-anchor="start" font-weight="400">weights svd</text>
+<circle cx="437.0" cy="627" r="7" fill="#3df5d0" filter="url(#glow)"/>
+<line x1="657.0" y1="627" x2="673.0" y2="627" stroke="#3a4780" stroke-width="3"/>
+<line x1="885.0" y1="627" x2="901.0" y2="627" stroke="#3a4780" stroke-width="3"/>
+<line x1="1113.0" y1="627" x2="1129.0" y2="627" stroke="#3a4780" stroke-width="3"/>
+<line x1="40" y1="654" x2="1240" y2="654" stroke="#1c2750" stroke-width="1.5"/>
+<text x="60" y="685" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="17" fill="#e6ebff" text-anchor="start" font-weight="700">counts as verification</text>
+<text x="437.0" y="685" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="16" fill="#3df5d0" text-anchor="middle" font-weight="400">yes</text>
+<text x="665.0" y="685" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="16" fill="#8793c2" text-anchor="middle" font-weight="400">screening only</text>
+<text x="893.0" y="685" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="16" fill="#8793c2" text-anchor="middle" font-weight="400">screening only</text>
+<text x="1121.0" y="685" font-family="Consolas, 'Cascadia Mono', 'DejaVu Sans Mono', monospace" font-size="16" fill="#3df5d0" text-anchor="middle" font-weight="400">yes</text>
+<text x="60" y="724" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="15" fill="#8793c2" text-anchor="start" font-weight="400">local-gguf v1: reading and steering only, no patching. Gradients are not offered on ndif.</text>
+</svg>
