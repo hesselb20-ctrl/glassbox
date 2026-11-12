@@ -1,0 +1,106 @@
+{
+ "id": "E0006",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 32,
+   "seed": 11,
+   "corruption": "abc"
+  },
+  "component": "head",
+  "layers": [
+   9
+  ],
+  "positions": [
+   14
+  ]
+ },
+ "summary": {
+  "component": "head",
+  "direction": "denoise",
+  "metric_base": -0.529507,
+  "metric_source": 3.813663,
+  "n": 32,
+  "top": [
+   {
+    "component": "9.9",
+    "effect": 0.853567
+   },
+   {
+    "component": "9.6",
+    "effect": 0.287021
+   },
+   {
+    "component": "9.7",
+    "effect": 0.038688
+   },
+   {
+    "component": "9.0",
+    "effect": 0.029016
+   },
+   {
+    "component": "9.2",
+    "effect": 0.017109
+   },
+   {
+    "component": "9.8",
+    "effect": 0.01257
+   },
+   {
+    "component": "9.4",
+    "effect": -0.010442
+   },
+   {
+    "component": "9.5",
+    "effect": 0.007211
+   }
+  ],
+  "variants": 12
+ },
+ "data": {
+  "effect": [
+   [
+    0.029016,
+    0.000473,
+    0.017109,
+    0.005648,
+    -0.010442,
+    0.007211,
+    0.287021,
+    0.038688,
+    0.01257,
+    0.853567,
+    0.000334,
+    -0.002167
+   ]
+  ],
+  "layers": [
+   9
+  ],
+  "columns": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ]
+ },
+ "plot": "experiments/E0006_activation_patching.png",
+ "seconds": 0.25,
+ "timestamp": "2026-11-13T00:20:21"
+}

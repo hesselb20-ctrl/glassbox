@@ -1,0 +1,192 @@
+{
+ "rung": "gpt2-ndif",
+ "behavior": "Indirect object identification: 'When Mary and John went to the store, John gave a drink to' -> ' Mary'",
+ "backend": "ndif",
+ "model": "openai-community/gpt2",
+ "params": "124M",
+ "tag": "full precision (NDIF remote)",
+ "n_layers": 12,
+ "n_prompts": 16,
+ "predictions": {
+  "P1": {
+   "accuracy": 0.8125,
+   "logit_diff": 3.6875,
+   "evidence": [
+    "E0002"
+   ],
+   "verdict": "supported"
+  },
+  "P2": {
+   "layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   "effect_S2": [
+    1.0,
+    0.984018,
+    0.995434,
+    0.993151,
+    0.993151,
+    0.965753,
+    0.958904,
+    0.915525,
+    0.63242,
+    -0.002283,
+    -0.050228,
+    -0.015982
+   ],
+   "effect_END": [
+    0.0,
+    -0.006849,
+    0.002283,
+    0.004566,
+    0.004566,
+    -0.006849,
+    -0.009132,
+    0.020548,
+    0.312785,
+    0.942922,
+    0.993151,
+    0.965753
+   ],
+   "crossover_layer": 9,
+   "crossover_relative_depth": 0.818,
+   "evidence": [
+    "E0004"
+   ],
+   "verdict": "supported"
+  },
+  "P3": {
+   "attn_layers_tested": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   "attn_effect_at_END": [
+    -0.016529,
+    0.008264,
+    -0.033058,
+    0.0,
+    -0.024793,
+    -0.041322,
+    -0.008264,
+    0.090909,
+    0.057851,
+    1.438017,
+    -0.190083,
+    -0.338843
+   ],
+   "top_attention_layers": [
+    9,
+    7
+   ],
+   "top_heads": [
+    {
+     "head": "9.9",
+     "effect": 0.991736
+    },
+    {
+     "head": "9.6",
+     "effect": 0.289256
+    },
+    {
+     "head": "7.3",
+     "effect": 0.041322
+    },
+    {
+     "head": "7.9",
+     "effect": 0.041322
+    },
+    {
+     "head": "9.0",
+     "effect": 0.024793
+    },
+    {
+     "head": "9.3",
+     "effect": 0.008264
+    }
+   ],
+   "top3_heads_effect": 1.322314,
+   "relative_depth_of_top_layer": 0.818,
+   "evidence": [
+    "E0005",
+    "E0006",
+    "E0007"
+   ],
+   "verdict": "supported"
+  },
+  "P4": {
+   "heads": [
+    "9.9",
+    "9.6",
+    "7.3"
+   ],
+   "fraction_of_logit_diff_left": 0.915254,
+   "drop": 0.08474599999999999,
+   "patching_effect_of_same_heads": 1.322314,
+   "evidence": [
+    "E0008"
+   ],
+   "verdict": "supported"
+  }
+ },
+ "not_run": [],
+ "logit_lens": {
+  "layers": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "logit_diff": [
+   -0.007812,
+   -0.005859,
+   0.103516,
+   0.416992,
+   0.453125,
+   0.597656,
+   0.273438,
+   2.019531,
+   2.777344,
+   16.110352,
+   9.484375,
+   3.65625
+  ],
+  "first_layer_reaching_half": 7,
+  "relative_depth": 0.636,
+  "evidence": [
+   "E0003"
+  ]
+ },
+ "status": "confirmed",
+ "counts_as_verification": true,
+ "seconds": 123.6,
+ "experiments": 8
+}

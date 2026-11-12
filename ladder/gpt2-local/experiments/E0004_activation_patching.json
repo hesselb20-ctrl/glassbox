@@ -1,0 +1,153 @@
+{
+ "id": "E0004",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 32,
+   "seed": 11,
+   "corruption": "flip"
+  },
+  "component": "resid_pre",
+  "layers": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "positions": [
+   10,
+   14
+  ]
+ },
+ "summary": {
+  "component": "resid_pre",
+  "direction": "denoise",
+  "metric_base": -3.34489,
+  "metric_source": 3.761639,
+  "n": 32,
+  "top": [
+   {
+    "component": "resid_pre.10 @ pos 14:'to'",
+    "effect": 1.003281
+   },
+   {
+    "component": "resid_pre.1 @ pos 10:'Jason'",
+    "effect": 1.001491
+   },
+   {
+    "component": "resid_pre.2 @ pos 10:'Jason'",
+    "effect": 1.001337
+   },
+   {
+    "component": "resid_pre.0 @ pos 10:'Jason'",
+    "effect": 1.0
+   },
+   {
+    "component": "resid_pre.3 @ pos 10:'Jason'",
+    "effect": 0.999388
+   },
+   {
+    "component": "resid_pre.4 @ pos 10:'Jason'",
+    "effect": 0.994788
+   },
+   {
+    "component": "resid_pre.11 @ pos 14:'to'",
+    "effect": 0.974063
+   },
+   {
+    "component": "resid_pre.6 @ pos 10:'Jason'",
+    "effect": 0.967656
+   }
+  ],
+  "variants": 24
+ },
+ "data": {
+  "effect": [
+   [
+    1.0,
+    -0.0
+   ],
+   [
+    1.001491,
+    -0.000445
+   ],
+   [
+    1.001337,
+    -0.000397
+   ],
+   [
+    0.999388,
+    -3.7e-05
+   ],
+   [
+    0.994788,
+    -0.000876
+   ],
+   [
+    0.966634,
+    -0.001238
+   ],
+   [
+    0.967656,
+    0.000586
+   ],
+   [
+    0.928785,
+    0.015382
+   ],
+   [
+    0.633333,
+    0.30644
+   ],
+   [
+    0.016165,
+    0.943305
+   ],
+   [
+    -0.037843,
+    1.003281
+   ],
+   [
+    0.004089,
+    0.974063
+   ]
+  ],
+  "layers": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "columns": [
+   "10:'Jason'",
+   "14:'to'"
+  ]
+ },
+ "plot": "experiments/E0004_activation_patching.png",
+ "seconds": 0.44,
+ "timestamp": "2026-11-13T00:20:21"
+}

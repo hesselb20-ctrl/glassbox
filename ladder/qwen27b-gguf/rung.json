@@ -1,0 +1,83 @@
+{
+ "rung": "qwen27b-gguf",
+ "behavior": "Indirect object identification: 'When Mary and John went to the store, John gave a drink to' -> ' Mary'",
+ "backend": "local-gguf",
+ "model": "Huihui-Qwen3.8-27B-abliterated-UD-DW-Q4_K_M.gguf",
+ "params": "27B",
+ "tag": "screening (gguf quantized, abliterated variant)",
+ "n_layers": 64,
+ "n_prompts": 16,
+ "predictions": {
+  "P1": {
+   "accuracy": 0.8125,
+   "logit_diff": 6.154707,
+   "evidence": [
+    "E0002"
+   ],
+   "verdict": "supported"
+  },
+  "P2": {
+   "verdict": "not testable on this backend"
+  },
+  "P3": {
+   "verdict": "not testable on this backend"
+  },
+  "P4": {
+   "verdict": "not testable on this backend"
+  }
+ },
+ "not_run": [
+  "P2 (needs activation patching)",
+  "P3 (needs activation patching)",
+  "P4 (needs ablation)"
+ ],
+ "logit_lens": {
+  "layers": [
+   0,
+   4,
+   8,
+   12,
+   16,
+   20,
+   24,
+   28,
+   32,
+   35,
+   39,
+   43,
+   47,
+   51,
+   55,
+   59,
+   63
+  ],
+  "logit_diff": [
+   0.150684,
+   -0.103123,
+   -0.556898,
+   -0.480217,
+   -0.496599,
+   -0.784353,
+   -0.248242,
+   -0.244526,
+   -0.134671,
+   -0.391238,
+   -0.283048,
+   -0.186954,
+   -0.173429,
+   0.40859,
+   2.859099,
+   13.370008,
+   6.161786
+  ],
+  "first_layer_reaching_half": 59,
+  "relative_depth": 0.937,
+  "evidence": [
+   "E0003"
+  ]
+ },
+ "status": "partly tested, supported so far (screening)",
+ "counts_as_verification": false,
+ "seconds": 30.2,
+ "experiments": 3
+}

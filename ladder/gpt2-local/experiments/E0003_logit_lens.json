@@ -1,0 +1,520 @@
+{
+ "id": "E0003",
+ "primitive": "logit_lens",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 32,
+   "seed": 11,
+   "corruption": "abc"
+  },
+  "layers": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ]
+ },
+ "summary": {
+  "pos": -1,
+  "n": 32,
+  "layers": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "top_tokens_example0": {
+   "0": [
+    " get",
+    " be",
+    " make",
+    " give",
+    " avoid"
+   ],
+   "1": [
+    " get",
+    " make",
+    " be",
+    " give",
+    " save"
+   ],
+   "2": [
+    " the",
+    " get",
+    " accompany",
+    " make",
+    " address"
+   ],
+   "3": [
+    " the",
+    " accompany",
+    " address",
+    " get",
+    " help"
+   ],
+   "4": [
+    " accompany",
+    " the",
+    " address",
+    " help",
+    " get"
+   ],
+   "5": [
+    " accompany",
+    " the",
+    " address",
+    " commemorate",
+    " help"
+   ],
+   "6": [
+    " accompany",
+    " the",
+    " help",
+    " commemorate",
+    " address"
+   ],
+   "7": [
+    " the",
+    " accompany",
+    " his",
+    " address",
+    " him"
+   ],
+   "8": [
+    " the",
+    " his",
+    " someone",
+    " everyone",
+    " Steve"
+   ],
+   "9": [
+    " Steve",
+    " Steven",
+    " Stephen",
+    " his",
+    " the"
+   ],
+   "10": [
+    " Steve",
+    " his",
+    " the",
+    " him",
+    " Steven"
+   ],
+   "11": [
+    " the",
+    " Steve",
+    " his",
+    " them",
+    " a"
+   ]
+  },
+  "metric_type": "logit_diff",
+  "metric_by_layer": [
+   -0.311003,
+   -0.355297,
+   -0.269826,
+   -0.055475,
+   -0.112194,
+   -0.237637,
+   -0.457496,
+   1.51219,
+   2.38369,
+   15.939452,
+   9.950743,
+   3.813663
+  ],
+  "median_rank_of_answer": [
+   7476.0,
+   7531.0,
+   6364.0,
+   5525.0,
+   4458.0,
+   2539.0,
+   1972.0,
+   539.0,
+   42.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "prob_of_answer": [
+   1e-06,
+   1e-06,
+   1e-06,
+   3e-06,
+   3e-06,
+   6e-06,
+   1e-05,
+   7e-05,
+   0.001295,
+   0.984374,
+   0.974632,
+   0.49445
+  ],
+  "first_layer_reaching_half_final_metric": 8
+ },
+ "data": {
+  "layers": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "top_tokens": [
+   [
+    [
+     " get",
+     " be",
+     " make",
+     " give",
+     " avoid"
+    ],
+    [
+     " get",
+     " make",
+     " be",
+     " give",
+     " keep"
+    ],
+    [
+     " get",
+     " make",
+     " be",
+     " keep",
+     " find"
+    ]
+   ],
+   [
+    [
+     " get",
+     " make",
+     " be",
+     " give",
+     " save"
+    ],
+    [
+     " get",
+     " make",
+     " be",
+     " save",
+     " give"
+    ],
+    [
+     " get",
+     " make",
+     " be",
+     " save",
+     " give"
+    ]
+   ],
+   [
+    [
+     " the",
+     " get",
+     " accompany",
+     " make",
+     " address"
+    ],
+    [
+     " make",
+     " save",
+     " get",
+     " be",
+     " cover"
+    ],
+    [
+     " get",
+     " make",
+     " be",
+     " save",
+     " help"
+    ]
+   ],
+   [
+    [
+     " the",
+     " accompany",
+     " address",
+     " get",
+     " help"
+    ],
+    [
+     " make",
+     " fill",
+     " be",
+     " protect",
+     " stop"
+    ],
+    [
+     " fill",
+     " protect",
+     " help",
+     " be",
+     " make"
+    ]
+   ],
+   [
+    [
+     " accompany",
+     " the",
+     " address",
+     " help",
+     " get"
+    ],
+    [
+     " fill",
+     " help",
+     " protect",
+     " restore",
+     " make"
+    ],
+    [
+     " protect",
+     " fill",
+     " restore",
+     " help",
+     " accompany"
+    ]
+   ],
+   [
+    [
+     " accompany",
+     " the",
+     " address",
+     " commemorate",
+     " help"
+    ],
+    [
+     " fill",
+     " celebrate",
+     " cover",
+     " remind",
+     " settle"
+    ],
+    [
+     " fill",
+     " celebrate",
+     " accompany",
+     " protect",
+     " get"
+    ]
+   ],
+   [
+    [
+     " accompany",
+     " the",
+     " help",
+     " commemorate",
+     " address"
+    ],
+    [
+     " fill",
+     " accompany",
+     " celebrate",
+     "wered",
+     " be"
+    ],
+    [
+     " accompany",
+     " fill",
+     " commemorate",
+     " go",
+     " cover"
+    ]
+   ],
+   [
+    [
+     " the",
+     " accompany",
+     " his",
+     " address",
+     " him"
+    ],
+    [
+     " cover",
+     "wered",
+     " the",
+     " accompany",
+     " anyone"
+    ],
+    [
+     " the",
+     " someone",
+     " his",
+     " somebody",
+     " everyone"
+    ]
+   ],
+   [
+    [
+     " the",
+     " his",
+     " someone",
+     " everyone",
+     " Steve"
+    ],
+    [
+     " the",
+     " his",
+     " her",
+     " him",
+     " someone"
+    ],
+    [
+     " the",
+     " his",
+     " someone",
+     " everyone",
+     " a"
+    ]
+   ],
+   [
+    [
+     " Steve",
+     " Steven",
+     " Stephen",
+     " his",
+     " the"
+    ],
+    [
+     " David",
+     " her",
+     " the",
+     " Dave",
+     " someone"
+    ],
+    [
+     " Brian",
+     "Brian",
+     " Bobby",
+     " Bryan",
+     " the"
+    ]
+   ],
+   [
+    [
+     " Steve",
+     " his",
+     " the",
+     " him",
+     " Steven"
+    ],
+    [
+     " David",
+     " her",
+     " the",
+     " Elsa",
+     " his"
+    ],
+    [
+     " Brian",
+     " Steve",
+     " the",
+     " his",
+     " Bobby"
+    ]
+   ],
+   [
+    [
+     " the",
+     " Steve",
+     " his",
+     " them",
+     " a"
+    ],
+    [
+     " the",
+     " David",
+     " her",
+     " their",
+     " Elsa"
+    ],
+    [
+     " Brian",
+     " the",
+     " his",
+     " a",
+     " their"
+    ]
+   ]
+  ],
+  "metric": [
+   -0.311003,
+   -0.355297,
+   -0.269826,
+   -0.055475,
+   -0.112194,
+   -0.237637,
+   -0.457496,
+   1.51219,
+   2.38369,
+   15.939452,
+   9.950743,
+   3.813663
+  ],
+  "rank": [
+   7476.0,
+   7531.0,
+   6364.0,
+   5525.0,
+   4458.0,
+   2539.0,
+   1972.0,
+   539.0,
+   42.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "prob": [
+   1e-06,
+   1e-06,
+   1e-06,
+   3e-06,
+   3e-06,
+   6e-06,
+   1e-05,
+   7e-05,
+   0.001295,
+   0.984374,
+   0.974632,
+   0.49445
+  ]
+ },
+ "plot": "experiments/E0003_logit_lens.png",
+ "seconds": 0.22,
+ "timestamp": "2026-11-13T00:20:20"
+}

@@ -1,0 +1,87 @@
+{
+ "id": "E0002",
+ "primitive": "baseline",
+ "provenance": {
+  "backend": "local-gguf",
+  "precision": "gguf-quantized",
+  "tag": "screening (gguf quantized, abliterated variant)",
+  "model": "Huihui-Qwen3.8-27B-abliterated-UD-DW-Q4_K_M.gguf",
+  "counts_as_verification": false,
+  "variant": "abliterated community variant (refusal direction removed); not the official weights"
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 16,
+   "seed": 11,
+   "corruption": "abc"
+  }
+ },
+ "summary": {
+  "n": 16,
+  "metric_type": "logit_diff",
+  "clean_metric_mean": 6.154707,
+  "clean_metric_std": 1.258037,
+  "clean_accuracy": 0.8125,
+  "example_predictions": [
+   {
+    "predicted": " the",
+    "expected": " Steve"
+   },
+   {
+    "predicted": " the",
+    "expected": " David"
+   },
+   {
+    "predicted": " Brian",
+    "expected": " Brian"
+   },
+   {
+    "predicted": " Tom",
+    "expected": " Tom"
+   }
+  ],
+  "corrupt_metric_mean": 0.48075
+ },
+ "data": {
+  "clean_metric": [
+   5.158965,
+   3.918543,
+   7.839053,
+   6.79032,
+   5.274437,
+   4.376496,
+   7.554333,
+   6.482092,
+   5.857917,
+   5.917154,
+   6.146571,
+   5.391517,
+   5.271716,
+   6.545427,
+   7.647725,
+   8.30305
+  ],
+  "corrupt_metric": [
+   0.619211,
+   -0.294653,
+   -0.619433,
+   2.68054,
+   -0.480133,
+   2.800266,
+   -1.487454,
+   -0.396078,
+   -0.482411,
+   -0.033881,
+   1.518134,
+   0.674568,
+   -0.219071,
+   0.798205,
+   2.026491,
+   0.587694
+  ]
+ },
+ "plot": "experiments/E0002_baseline.png",
+ "seconds": 3.15,
+ "timestamp": "2026-11-12T23:50:16"
+}

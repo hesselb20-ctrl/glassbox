@@ -1,0 +1,153 @@
+{
+ "id": "E0004",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "ndif",
+  "precision": "full",
+  "tag": "full precision (NDIF remote)",
+  "model": "openai-community/gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 16,
+   "seed": 11,
+   "corruption": "flip"
+  },
+  "component": "resid_pre",
+  "layers": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "positions": [
+   10,
+   14
+  ]
+ },
+ "summary": {
+  "component": "resid_pre",
+  "direction": "denoise",
+  "metric_base": -3.203125,
+  "metric_source": 3.640625,
+  "n": 16,
+  "top": [
+   {
+    "component": "resid_pre.0 @ pos 10:'Jason'",
+    "effect": 1.0
+   },
+   {
+    "component": "resid_pre.2 @ pos 10:'Jason'",
+    "effect": 0.995434
+   },
+   {
+    "component": "resid_pre.3 @ pos 10:'Jason'",
+    "effect": 0.993151
+   },
+   {
+    "component": "resid_pre.4 @ pos 10:'Jason'",
+    "effect": 0.993151
+   },
+   {
+    "component": "resid_pre.10 @ pos 14:'to'",
+    "effect": 0.993151
+   },
+   {
+    "component": "resid_pre.1 @ pos 10:'Jason'",
+    "effect": 0.984018
+   },
+   {
+    "component": "resid_pre.5 @ pos 10:'Jason'",
+    "effect": 0.965753
+   },
+   {
+    "component": "resid_pre.11 @ pos 14:'to'",
+    "effect": 0.965753
+   }
+  ],
+  "variants": 24
+ },
+ "data": {
+  "effect": [
+   [
+    1.0,
+    0.0
+   ],
+   [
+    0.984018,
+    -0.006849
+   ],
+   [
+    0.995434,
+    0.002283
+   ],
+   [
+    0.993151,
+    0.004566
+   ],
+   [
+    0.993151,
+    0.004566
+   ],
+   [
+    0.965753,
+    -0.006849
+   ],
+   [
+    0.958904,
+    -0.009132
+   ],
+   [
+    0.915525,
+    0.020548
+   ],
+   [
+    0.63242,
+    0.312785
+   ],
+   [
+    -0.002283,
+    0.942922
+   ],
+   [
+    -0.050228,
+    0.993151
+   ],
+   [
+    -0.015982,
+    0.965753
+   ]
+  ],
+  "layers": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "columns": [
+   "10:'Jason'",
+   "14:'to'"
+  ]
+ },
+ "plot": "experiments/E0004_activation_patching.png",
+ "seconds": 26.15,
+ "timestamp": "2026-11-13T00:33:50"
+}

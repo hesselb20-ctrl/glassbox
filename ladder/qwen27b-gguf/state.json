@@ -1,0 +1,9 @@
+{
+ "backend": "local-gguf",
+ "model": "Huihui-Qwen3.8-27B-abliterated-UD-DW-Q4_K_M.gguf",
+ "options": {
+  "n_ctx": 256
+ },
+ "budget": null,
+ "started": "2026-11-12T23:50:13"
+}

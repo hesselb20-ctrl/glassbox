@@ -1,0 +1,94 @@
+{
+ "behavior": "IOI",
+ "protocol": "four fixed predictions from the GPT-2 circuit, tested unchanged on every rung",
+ "rungs": [
+  {
+   "rung": "gpt2-local",
+   "model": "gpt2",
+   "params": "124M",
+   "backend": "local-full",
+   "tag": "full precision (local)",
+   "status": "confirmed",
+   "key_result": "accuracy 0.91, logit diff 3.8; S2 to END hand-off at layer 9/11; top heads 9.9, 9.6, 7.9 restore 1.19; ablating them leaves 0.85",
+   "heads": [
+    "9.9",
+    "9.6",
+    "7.9"
+   ],
+   "verdicts": {
+    "P1": "supported",
+    "P2": "supported",
+    "P3": "supported",
+    "P4": "supported"
+   },
+   "not_run": []
+  },
+  {
+   "rung": "gpt2-ndif",
+   "model": "openai-community/gpt2",
+   "params": "124M",
+   "backend": "ndif",
+   "tag": "full precision (NDIF remote)",
+   "status": "confirmed",
+   "key_result": "accuracy 0.81, logit diff 3.7; S2 to END hand-off at layer 9/11; top heads 9.9, 9.6, 7.3 restore 1.32; ablating them leaves 0.92",
+   "heads": [
+    "9.9",
+    "9.6",
+    "7.3"
+   ],
+   "verdicts": {
+    "P1": "supported",
+    "P2": "supported",
+    "P3": "supported",
+    "P4": "supported"
+   },
+   "not_run": []
+  },
+  {
+   "rung": "qwen27b-gguf",
+   "model": "Huihui-Qwen3.8-27B-abliterated-UD-DW-Q4_K_M.gguf",
+   "params": "27B",
+   "backend": "local-gguf",
+   "tag": "screening (gguf quantized, abliterated variant)",
+   "status": "partly tested, supported so far (screening)",
+   "key_result": "accuracy 0.81, logit diff 6.2",
+   "heads": [],
+   "verdicts": {
+    "P1": "supported",
+    "P2": "not testable on this backend",
+    "P3": "not testable on this backend",
+    "P4": "not testable on this backend"
+   },
+   "not_run": [
+    "P2 (needs activation patching)",
+    "P3 (needs activation patching)",
+    "P4 (needs ablation)"
+   ]
+  },
+  {
+   "rung": "qwen27b-ndif",
+   "model": "Qwen/Qwen3.8-27B",
+   "params": "27B",
+   "backend": "ndif",
+   "tag": "full precision (NDIF remote)",
+   "status": "partly supported",
+   "key_result": "accuracy 0.50, logit diff 5.4; S2 to END hand-off at layer 55/63; top heads 59.8, 59.6, 51.23 restore 0.67; ablating them leaves 0.85",
+   "heads": [
+    "59.8",
+    "59.6",
+    "51.23"
+   ],
+   "verdicts": {
+    "P1": "rejected",
+    "P2": "supported",
+    "P3": "supported",
+    "P4": "supported"
+   },
+   "not_run": []
+  }
+ ],
+ "pending": [
+  "qwen27b-4bit"
+ ],
+ "conclusion": "In GPT-2 small all four predictions hold at full precision (gpt2-local, gpt2-ndif). In the official Qwen3.8-27B at full precision on NDIF, 3 of 4 hold: the S2-to-END hand-off, a few late heads writing the answer, backup. Not met: the behaviour itself (top-1 accuracy 0.50 on only 6 prompts, below the preset 0.8, although the logit difference is 5.4 in favour of the indirect object). So the same three-stage structure shows up at 220 times the size, at a similar relative depth, but this rung is small (NDIF's replica had little spare memory) and is not a full confirmation. Not done yet: qwen27b-4bit."
+}

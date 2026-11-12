@@ -1,0 +1,135 @@
+{
+ "id": "E0004",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "ndif",
+  "precision": "full",
+  "tag": "full precision (NDIF remote)",
+  "model": "Qwen/Qwen3.8-27B",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 6,
+   "seed": 11,
+   "corruption": "flip"
+  },
+  "component": "resid_pre",
+  "layers": [
+   0,
+   8,
+   16,
+   24,
+   32,
+   39,
+   47,
+   55,
+   63
+  ],
+  "positions": [
+   9,
+   13
+  ]
+ },
+ "summary": {
+  "component": "resid_pre",
+  "direction": "denoise",
+  "metric_base": -5.828125,
+  "metric_source": 5.708333,
+  "n": 6,
+  "top": [
+   {
+    "component": "resid_pre.32 @ pos 9:'Jason'",
+    "effect": 1.011287
+   },
+   {
+    "component": "resid_pre.63 @ pos 13:'to'",
+    "effect": 1.010835
+   },
+   {
+    "component": "resid_pre.8 @ pos 9:'Jason'",
+    "effect": 1.003612
+   },
+   {
+    "component": "resid_pre.24 @ pos 9:'Jason'",
+    "effect": 1.002257
+   },
+   {
+    "component": "resid_pre.0 @ pos 9:'Jason'",
+    "effect": 1.001354
+   },
+   {
+    "component": "resid_pre.16 @ pos 9:'Jason'",
+    "effect": 1.0
+   },
+   {
+    "component": "resid_pre.47 @ pos 9:'Jason'",
+    "effect": 0.998646
+   },
+   {
+    "component": "resid_pre.39 @ pos 9:'Jason'",
+    "effect": 0.997291
+   }
+  ],
+  "variants": 18
+ },
+ "data": {
+  "effect": [
+   [
+    1.001354,
+    0.000451
+   ],
+   [
+    1.003612,
+    0.002257
+   ],
+   [
+    1.0,
+    -0.000903
+   ],
+   [
+    1.002257,
+    -0.005418
+   ],
+   [
+    1.011287,
+    -0.008126
+   ],
+   [
+    0.997291,
+    -0.002709
+   ],
+   [
+    0.998646,
+    0.003612
+   ],
+   [
+    0.078104,
+    0.851919
+   ],
+   [
+    -0.014447,
+    1.010835
+   ]
+  ],
+  "layers": [
+   0,
+   8,
+   16,
+   24,
+   32,
+   39,
+   47,
+   55,
+   63
+  ],
+  "columns": [
+   "9:'Jason'",
+   "13:'to'"
+  ]
+ },
+ "plot": "experiments/E0004_activation_patching.png",
+ "seconds": 129.05,
+ "timestamp": "2026-11-13T00:24:03"
+}

@@ -1,0 +1,7 @@
+{
+ "backend": "ndif",
+ "model": "openai-community/gpt2",
+ "options": {},
+ "budget": null,
+ "started": "2026-11-13T00:32:46"
+}

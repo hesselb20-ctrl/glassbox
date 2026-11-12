@@ -1,0 +1,49 @@
+{
+ "id": "E0008",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "ndif",
+  "precision": "full",
+  "tag": "full precision (NDIF remote)",
+  "model": "Qwen/Qwen3.8-27B",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 6,
+   "seed": 11,
+   "corruption": "abc"
+  },
+  "components": [
+   "59.8",
+   "59.6",
+   "51.23"
+  ],
+  "mode": "mean",
+  "reference": "corrupt",
+  "joint": true,
+  "positions": [
+   13
+  ]
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 6,
+  "metric_clean": 5.447917,
+  "joint": true,
+  "components": [
+   "59.8",
+   "59.6",
+   "51.23"
+  ],
+  "metric_ablated": 4.625,
+  "fraction_of_clean": 0.848948
+ },
+ "data": {
+  "metric_ablated": 4.625
+ },
+ "plot": "experiments/E0008_ablation.png",
+ "seconds": 15.66,
+ "timestamp": "2026-11-13T00:32:32"
+}
