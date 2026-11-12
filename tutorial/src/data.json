@@ -1,0 +1,673 @@
+{
+ "modadd": {
+  "available": true,
+  "p": 113,
+  "frequencies": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   37,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45,
+   46,
+   47,
+   48,
+   49,
+   50,
+   51,
+   52,
+   53,
+   54,
+   55,
+   56
+  ],
+  "share": [
+   0.00539,
+   0.19954,
+   0.00128,
+   0.02395,
+   0.00171,
+   0.00169,
+   0.00088,
+   0.00076,
+   0.00282,
+   0.00094,
+   0.00075,
+   0.00068,
+   0.00148,
+   0.07248,
+   0.00155,
+   0.00113,
+   0.23133,
+   0.00082,
+   0.00118,
+   0.00122,
+   0.00056,
+   0.00042,
+   0.00079,
+   0.00093,
+   0.00155,
+   0.00197,
+   0.03463,
+   0.28487,
+   0.01679,
+   0.00121,
+   0.00135,
+   0.002,
+   0.00059,
+   0.01938,
+   0.00105,
+   0.00092,
+   0.0012,
+   0.00097,
+   0.00088,
+   0.00077,
+   0.00078,
+   0.00689,
+   0.02236,
+   0.00117,
+   0.00111,
+   0.00036,
+   0.0016,
+   0.00072,
+   0.00199,
+   0.00051,
+   0.00168,
+   0.00156,
+   0.00154,
+   0.00212,
+   0.00166,
+   0.02955
+  ],
+  "key_frequencies": [
+   2,
+   4,
+   14,
+   17,
+   27,
+   28,
+   34,
+   43,
+   56
+  ],
+  "top": [
+   {
+    "frequency": 28,
+    "share": 0.284867
+   },
+   {
+    "frequency": 17,
+    "share": 0.231332
+   },
+   {
+    "frequency": 2,
+    "share": 0.199539
+   },
+   {
+    "frequency": 14,
+    "share": 0.072477
+   },
+   {
+    "frequency": 27,
+    "share": 0.034633
+   }
+  ],
+  "hypothesis": "H2 (embedding structure): the token embedding W_E over integers 0..112 is sparse in the Fourier basis mod 113 \u2014 a handful of key frequencies carry most of the norm. Against: Fourier power spread roughly evenly across all 56 frequencies (no frequency with >>1/56 share).",
+  "result": "E0003 (local-full): W_E Fourier power is sparse. Top frequencies 28 (28.5%), 17 (23.1%), 2 (20.0%), 14 (7.2%); uniform share would be 1.8%. 9 key freqs hold 91.8% of power. Saved subspace A0001 (dim 18).",
+  "revised_example": {
+   "text": "E0006 (local-full, full grid, mean ablation): each head alone removes 28-34% of the logit diff (0.1: 72.4->47.9; 0.0: ->50.3; 0.2: ->51.2; 0.3: ->52.0). All 4 matter about equally, but none is needed on its own: the logit diff stays ~50, which is still a big margin. Revised: the heads share the work (each carries part of the frequency set?). Still to test: mlp0 alone, and all heads together.",
+   "target": "N0015"
+  },
+  "pseudocode": "P = 113; K = [2, 14, 17, 27, 28]            # key frequencies (E0003, E0004, E0011)\ndef predict(a, b):\n    # 1. embed: a, b -> cos/sin(2*pi*k*x/P) for k in K       (E0003; necessary E0012, sufficient V0001)\n    # 2. attention (4 heads, ~50/50 on a and b) mixes them at '='   (E0009, E0010, E0008)\n    # 3. mlp0: frequency-tuned neurons combine a and b features   (E0011, E0015; necessary E0007)\n    # 4. unembed reads key-frequency directions                   (E0004, E0016)\n    logit = [sum(cos(2*pi*k*(a+b-c)/P) for k in K) for c in range(P)]\n    return argmax(logit)                                          # = (a+b) mod P  (V0001: 1000/1000)",
+  "verification": {
+   "n": 1000,
+   "agreement": 1.0,
+   "subspace_dims": 18,
+   "total_dims": 128,
+   "acc_only_subspace": 1.0,
+   "acc_subspace_removed": 0.009,
+   "acc_random_removed": 1.0
+  },
+  "experiments": 16,
+  "wall_clock_seconds": 276.6,
+  "training": {
+   "epochs": 11100,
+   "train_seconds": 50.7,
+   "final_test_acc": 1.0,
+   "device": "NVIDIA GeForce RTX 4070 SUPER"
+  },
+  "tag": "full precision (local)"
+ },
+ "scorecard": {
+  "available": true,
+  "rows": [
+   {
+    "name": "modadd",
+    "title": "Modular addition (1-layer transformer, mod 113)",
+    "found": 3,
+    "partial": 2,
+    "missed": 0,
+    "total": 5,
+    "experiments": 16,
+    "minutes": 4.6,
+    "status": "verified"
+   },
+   {
+    "name": "induction",
+    "title": "Induction (2-layer attention-only model)",
+    "found": 4,
+    "partial": 1,
+    "missed": 0,
+    "total": 5,
+    "experiments": 17,
+    "minutes": 8.2,
+    "status": "not-verified"
+   },
+   {
+    "name": "ioi",
+    "title": "Indirect object identification (GPT-2 small)",
+    "found": 4,
+    "partial": 2,
+    "missed": 0,
+    "total": 6,
+    "experiments": 30,
+    "minutes": 10.1,
+    "status": "verified"
+   }
+  ],
+  "ioi": {
+   "found": 20,
+   "published": 26,
+   "by_class": {
+    "Name mover": {
+     "found": [
+      "9.9",
+      "9.6",
+      "10.0"
+     ],
+     "missed": []
+    },
+    "Negative name mover": {
+     "found": [
+      "10.7",
+      "11.10"
+     ],
+     "missed": []
+    },
+    "S-inhibition": {
+     "found": [
+      "7.3",
+      "7.9",
+      "8.6",
+      "8.10"
+     ],
+     "missed": []
+    },
+    "Induction": {
+     "found": [
+      "5.5",
+      "5.8",
+      "5.9",
+      "6.9"
+     ],
+     "missed": []
+    },
+    "Duplicate token": {
+     "found": [
+      "0.1",
+      "3.0"
+     ],
+     "missed": [
+      "0.10"
+     ]
+    },
+    "Previous token": {
+     "found": [
+      "4.11"
+     ],
+     "missed": [
+      "2.2"
+     ]
+    },
+    "Backup name mover": {
+     "found": [
+      "10.10",
+      "10.6",
+      "10.1",
+      "9.7"
+     ],
+     "missed": [
+      "10.2",
+      "11.2",
+      "9.0",
+      "11.9"
+     ]
+    }
+   }
+  }
+ },
+ "demo27b": {
+  "available": true,
+  "title": "A language direction found and steered in a 27B model on a home PC",
+  "model": "Qwen3.8-27B abliterated, Q4_K_M GGUF",
+  "label": "quantized, abliterated community variant, screening result",
+  "tag": "screening (gguf quantized)",
+  "n_layers": 64,
+  "gpus": [
+   "RTX 4070 SUPER (7.4 GB)",
+   "RTX 3060 (9.0 GB)"
+  ],
+  "device": "GPU (llama.cpp offload)",
+  "separation_name": "probe accuracy (held-out)",
+  "separation_by_layer": [
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   0.95,
+   0.95,
+   0.95,
+   0.95,
+   0.95,
+   0.95,
+   0.95,
+   0.95,
+   0.95,
+   0.95,
+   0.95,
+   0.95,
+   0.95,
+   0.95,
+   0.95,
+   0.95,
+   1.0,
+   0.95,
+   0.95,
+   0.95,
+   0.9,
+   0.85,
+   0.8,
+   0.9,
+   0.9,
+   0.9,
+   0.85,
+   0.85,
+   0.95,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   0.95,
+   0.95,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   0.95,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "control_by_layer": [
+   0.4,
+   0.35,
+   0.25,
+   0.4,
+   0.5,
+   0.55,
+   0.5,
+   0.5,
+   0.55,
+   0.45,
+   0.45,
+   0.4,
+   0.5,
+   0.45,
+   0.3,
+   0.45,
+   0.4,
+   0.3,
+   0.5,
+   0.45,
+   0.65,
+   0.6,
+   0.7,
+   0.4,
+   0.35,
+   0.45,
+   0.55,
+   0.6,
+   0.5,
+   0.4,
+   0.25,
+   0.55,
+   0.55,
+   0.55,
+   0.4,
+   0.4,
+   0.8,
+   0.45,
+   0.5,
+   0.45,
+   0.5,
+   0.45,
+   0.75,
+   0.5,
+   0.35,
+   0.6,
+   0.6,
+   0.5,
+   0.5,
+   0.65,
+   0.65,
+   0.4,
+   0.25,
+   0.6,
+   0.65,
+   0.75,
+   0.5,
+   0.95,
+   0.35,
+   0.15,
+   0.35,
+   0.55,
+   0.75,
+   0.7
+  ],
+  "lens_name": "direction d' (held-out)",
+  "lens_by_layer": [
+   1.938803,
+   3.279985,
+   1.426387,
+   1.506735,
+   2.654004,
+   2.733878,
+   2.927824,
+   2.469792,
+   2.423101,
+   1.96829,
+   1.777409,
+   1.6637,
+   2.149454,
+   2.197215,
+   2.274955,
+   2.061151,
+   2.088708,
+   2.346484,
+   2.03171,
+   1.58725,
+   1.357198,
+   1.076048,
+   0.822378,
+   0.808003,
+   0.803835,
+   0.766003,
+   0.812855,
+   0.843789,
+   0.945489,
+   1.015468,
+   1.064622,
+   1.108379,
+   1.233753,
+   1.4734,
+   1.901054,
+   1.746973,
+   1.831918,
+   1.587443,
+   1.386156,
+   1.355079,
+   1.177588,
+   1.132056,
+   1.162727,
+   1.254877,
+   1.538495,
+   1.582009,
+   1.741489,
+   1.786368,
+   2.010104,
+   2.39093,
+   3.422622,
+   4.419765,
+   4.66075,
+   4.892535,
+   5.085568,
+   4.916503,
+   5.409163,
+   5.926867,
+   7.917894,
+   6.49364,
+   8.095778,
+   10.67647,
+   14.603034,
+   11.303899
+  ],
+  "best_layer": 62,
+  "steer_layers": [
+   6,
+   28,
+   54,
+   58,
+   62
+  ],
+  "steer_sites": [
+   "resid_post.28"
+  ],
+  "steering": {
+   "alphas": [
+    0.0,
+    0.1,
+    0.2,
+    0.4
+   ],
+   "metric": [
+    12.9,
+    12.5,
+    -8.7,
+    -10.3
+   ],
+   "metric_name": "logit(the) - logit(la)",
+   "metric_short": "logit(the) - logit(la)",
+   "control_metric": [
+    12.86509,
+    12.93688,
+    12.948373,
+    12.847762
+   ],
+   "control_alphas": [
+    0.0,
+    0.1,
+    0.2,
+    0.4
+   ],
+   "evidence": [
+    "E0006",
+    "E0010"
+   ]
+  },
+  "generations": [
+   {
+    "prompt": "The baker opened the door of",
+    "before": "the oven and pulled out the bread.\nThe baker opened the door of the oven and pulled out",
+    "after": "son four-roues et il a sorti une miche de pain.\nLe boulanger a",
+    "alpha": 0.4,
+    "evidence": "E0006"
+   },
+   {
+    "prompt": "The children were playing in",
+    "before": "the garden.\nThe children were playing in the garden.\nThe children were playing in the garden",
+    "after": "le parc.\nA. park\nB. parc\nC. parcs\nD. par",
+    "alpha": 0.4,
+    "evidence": "E0006"
+   },
+   {
+    "prompt": "Le boulanger a ouvert la porte de",
+    "before": "son fournil. Il a sorti un pain de seigle, encore ti\u00e8de, et l",
+    "after": "the bakery.\nA. bakery\nB. baker\nC. bread\nD. baker's",
+    "alpha": -0.4,
+    "evidence": "E0008"
+   }
+  ],
+  "experiments": 16,
+  "wall_clock_seconds": 826.6,
+  "evidence": {
+   "probe": "E0002",
+   "direction": "E0003",
+   "steer_forward": "E0006",
+   "steer_back": "E0008",
+   "control_direction": "E0010"
+  }
+ },
+ "ladder": {
+  "available": true,
+  "behavior": "IOI",
+  "protocol": "four fixed predictions from the GPT-2 circuit, tested unchanged on every rung",
+  "rungs": [
+   {
+    "rung": "gpt2-local",
+    "model": "GPT-2 small",
+    "params": "124M",
+    "backend": "local-full",
+    "tag": "full precision",
+    "status": "4 of 4 hold",
+    "key_result": "accuracy 0.91, logit diff 3.8. S2 to END hand-off at layer 9/11. top heads 9.9, 9.6, 7.9 restore 1.19. ablating them leaves 0.85",
+    "heads": [
+     "9.9",
+     "9.6",
+     "7.9"
+    ],
+    "verdicts": {
+     "P1": "supported",
+     "P2": "supported",
+     "P3": "supported",
+     "P4": "supported"
+    },
+    "not_run": []
+   },
+   {
+    "rung": "gpt2-ndif",
+    "model": "GPT-2 small",
+    "params": "124M",
+    "backend": "ndif",
+    "tag": "full precision",
+    "status": "4 of 4 hold",
+    "key_result": "accuracy 0.81, logit diff 3.7. S2 to END hand-off at layer 9/11. top heads 9.9, 9.6, 7.3 restore 1.32. ablating them leaves 0.92",
+    "heads": [
+     "9.9",
+     "9.6",
+     "7.3"
+    ],
+    "verdicts": {
+     "P1": "supported",
+     "P2": "supported",
+     "P3": "supported",
+     "P4": "supported"
+    },
+    "not_run": []
+   },
+   {
+    "rung": "qwen27b-gguf",
+    "model": "Qwen3.8-27B GGUF",
+    "params": "27B",
+    "backend": "local-gguf",
+    "tag": "screening",
+    "status": "1 of 1 hold",
+    "key_result": "accuracy 0.81, logit diff 6.2",
+    "heads": [],
+    "verdicts": {
+     "P1": "supported",
+     "P2": "not testable on this backend",
+     "P3": "not testable on this backend",
+     "P4": "not testable on this backend"
+    },
+    "not_run": [
+     "P2 (needs activation patching)",
+     "P3 (needs activation patching)",
+     "P4 (needs ablation)"
+    ]
+   },
+   {
+    "rung": "qwen27b-ndif",
+    "model": "Qwen3.8-27B official",
+    "params": "27B",
+    "backend": "ndif",
+    "tag": "full precision",
+    "status": "3 of 4 hold",
+    "key_result": "accuracy 0.50, logit diff 5.4. S2 to END hand-off at layer 55/63. top heads 59.8, 59.6, 51.23 restore 0.67. ablating them leaves 0.85",
+    "heads": [
+     "59.8",
+     "59.6",
+     "51.23"
+    ],
+    "verdicts": {
+     "P1": "rejected",
+     "P2": "supported",
+     "P3": "supported",
+     "P4": "supported"
+    },
+    "not_run": []
+   }
+  ],
+  "pending": [
+   "qwen27b-4bit"
+  ],
+  "conclusion": "In GPT-2 small all four predictions hold at full precision (gpt2-local, gpt2-ndif). In the official Qwen3.8-27B at full precision on NDIF, 3 of 4 hold: the S2-to-END hand-off, a few late heads writing the answer, backup. Not met: the behaviour itself (top-1 accuracy 0.50 on only 6 prompts, below the preset 0.8, although the logit difference is 5.4 in favour of the indirect object). So the same three-stage structure shows up at 220 times the size, at a similar relative depth, but this rung is small (NDIF's replica had little spare memory) and is not a full confirmation. Not done yet: qwen27b-4bit."
+ },
+ "repo": "github.com/hesselb20-ctrl/glassbox",
+ "install": "pip install -e . && claude mcp add glassbox -- python -m glassbox.mcp"
+}
