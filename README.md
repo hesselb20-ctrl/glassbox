@@ -1,9 +1,10 @@
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/hero-mobile-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/hero-mobile-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-dark.svg">
-  <img src=".github/assets/hero-light.svg" width="100%" alt="Glassbox. An interpretability lab Claude Code drives over MCP. Research prototype, version 0.1.0.">
-</picture>
+# Glassbox
+
+An interpretability lab Claude Code drives over MCP.
+
+<img src=".github/assets/figure.webp" width="100%" alt="3D chart of GPT-2 small's 144 attention heads. Each head is switched off in turn and its bar shows the score lost. Twelve heads then light up and link into one circuit, and three bars show the held-out checks passing: 94% match, 99% with the circuit alone, minus 13% with it removed.">
+
+<sub>The repository's own recorded run on GPT-2 small: ablation sweep `E0014` (64 prompts), the circuit in `benchmarks/ioi/report/report.json` (12 of its 30 parts drawn) and verification `V0002` on 200 held-out prompts at full precision.</sub>
 
 <picture>
   <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-01-dark.svg">
@@ -46,13 +47,6 @@ work, and who want every claim in the result tied to an experiment that ran.
   <img src=".github/assets/rule-03-light.svg" width="100%" alt="03 How it works">
 </picture>
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/flow-mobile-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/flow-mobile-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/flow-dark.svg">
-  <img src=".github/assets/flow-light.svg" width="100%" alt="Data flow. The scientist: Claude Code runs the /investigate command, pre-registers each experiment with a quantitative prediction in a hash-chained notebook, then runs it and gets the prediction scored. The lab: an MCP server with ten tools calls lab primitives such as patching, ablation and probes, on one of four backends: local-full, local-4bit, local-gguf or ndif. The record: the recovered algorithm is checked on held-out inputs; it counts as verified only at full precision; the report's claims must cite experiment ids.">
-</picture>
-
 1. **Start.** The `/investigate` command in `.claude/commands/investigate.md` gives Claude Code a backend,
    a model, a behavior and an experiment budget. Claude Code reaches the lab only through the MCP server.
 2. **Load.** `load_model` opens an investigation folder with its own `notebook.jsonl` and `state.json`.
@@ -71,17 +65,6 @@ work, and who want every claim in the result tied to an experiment that ran.
    Quantized backends stop at `screening-pass`.
 7. **Report.** `write_report` writes `report.md` and `report.html`. It fails if a claim cites nothing, cites
    an experiment that does not exist, or rests only on exploratory runs.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/scene-dark.gif">
-  <img src=".github/assets/scene-light.gif" width="100%" alt="GPT-2 small drawn as 12 stacked layers of 12 attention heads, each head shaded by how much ablating it changes the result; the 12 heads of the recovered IOI circuit light up layer by layer up to the logits, then a label reports verification V0002 at full precision with agreement 0.935.">
-</picture>
-
-<sub>The IOI circuit the blind run recovered in GPT-2 small, on the model's real 12 by 12 head grid. Head
-shade is the mean-ablation sweep E0014, the lit heads and links come from
-[`benchmarks/ioi/report/report.json`](benchmarks/ioi/report/report.json), and the numbers from
-verification V0002, which passed at full precision. The verified circuit has 30 components; only its 12
-named heads are lit, and supporting heads and MLPs are not drawn.</sub>
 
 <picture>
   <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-04-dark.svg">
