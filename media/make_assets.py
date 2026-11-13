@@ -534,6 +534,214 @@ ASSETS = {"how-it-works": how_it_works, "free-stack": free_stack, "backends": ba
           "circuit-modadd": circuit_modadd, "verification": verification, "scorecard": scorecard, "notebook": notebook_png,
           "steering-27b": steering_27b, "scale-ladder": scale_ladder}
 
+
+# --------------------------------------------------------------------------- #
+# glassbox-bench, null controls, pre-registration, model diff
+# --------------------------------------------------------------------------- #
+
+BENCH = ROOT / "benchmarks" / "glassbox-bench"
+
+
+def _bench_cards() -> list[dict]:
+    return [json.loads(p.read_text(encoding="utf-8")) for p in sorted(BENCH.glob("seed-*/scorecard.json"))]
+
+
+def bench_scorecard() -> None:
+    cards = _bench_cards()
+    if not cards:
+        print("skip bench-scorecard.png (no graded seeds)")
+        return
+    fams: dict[str, dict] = {}
+    for c in cards:
+        for t in c["tasks"]:
+            fams.setdefault(t["family"], {"track": t["track"], "cells": {}, "exp": []})
+            f = fams[t["family"]]
+            f["exp"].append(t["experiments"])
+            if t["track"] == "compiled":
+                ok = (t["mechanism_match"] or 0) >= 0.98 and (t["circuit"]["recall"] or 0) == 1.0
+                f["cells"][c["seed"]] = (f"{t['circuit']['recall']:.2f} / {t['circuit']['precision']:.2f} / {t['mechanism_match'] or 0:.2f}", ok)
+            else:
+                f["cells"][c["seed"]] = (f"behaviour {t['behavior_prediction'] or 0:.2f}", (t["behavior_prediction"] or 0) >= 0.98)
+    seeds = [c["seed"] for c in cards]
+    order = sorted(fams, key=lambda k: (fams[k]["track"] != "compiled", k))
+    rows, colors = [], {}
+    for i, k in enumerate(order):
+        f = fams[k]
+        rows.append([k, f["track"]] + [f["cells"].get(s, ("-", False))[0] for s in seeds] + [f"{np.mean(f['exp']):.0f}"])
+        for j, s in enumerate(seeds):
+            colors[(i, 2 + j)] = S.ACCENT if f["cells"].get(s, ("", False))[1] else S.WARN
+    solved = sum(c["summary"]["compiled_solved"] for c in cards)
+    n_comp = sum(sum(t["track"] == "compiled" for t in c["tasks"]) for c in cards)
+    conf = sum(c["summary"]["prereg_confirmed"] for c in cards)
+    ref = sum(c["summary"]["prereg_refuted"] for c in cards)
+    table_png("bench-scorecard.png", "glassbox-bench: planted circuits, sealed answer keys",
+              f"Algorithms written in RASP, compiled to weights with Tracr, then rotated and padded with distractor heads and neurons. "
+              f"A fresh task set per seed. {solved} of {n_comp} compiled tasks solved; predictions: {conf} confirmed, {ref} refuted. "
+              "Every task at this difficulty was solved, so the bench does not yet separate a strong scientist from a weak one.",
+              ["family", "track"] + [f"seed {s}" for s in seeds] + ["experiments"],
+              rows, [2.3, 1.5] + [2.5] * len(seeds) + [1.1], colors,
+              "Compiled cells: circuit recall / circuit precision / mechanism match on held-out inputs. Trained track: behaviour prediction only "
+              "(mechanism unknown, never scored on circuit match). Keys were sealed outside the repo during the runs: an honour-system seal on one PC.")
+
+
+def null_controls() -> None:
+    files = [ROOT / "benchmarks" / b / "null_calibration.json" for b in ("modadd", "induction", "ioi")]
+    if not all(f.exists() for f in files):
+        print("skip null-controls.png (run benchmarks/reverify_nulls.py)")
+        return
+    names = {"modadd": "Modular addition", "induction": "Induction", "ioi": "IOI in GPT-2 small"}
+    fig, axes = plt.subplots(1, 3, figsize=(13, 4.9))
+    fig.subplots_adjust(top=0.72, wspace=0.24, left=0.06, right=0.98, bottom=0.17)
+    for ax, f in zip(axes, files):
+        d = json.loads(f.read_text(encoding="utf-8"))
+        nc = next(n for n in d["null_controls"] if n["finding"].startswith("necessity"))
+        null = np.array(d["null_samples"][nc["finding"]])
+        lo, hi = min(null.min(), 0) - 0.05, max(nc["effect"], null.max()) + 0.1
+        ax.hist(null, bins=np.linspace(lo, hi, 36), color=S.DIM, edgecolor=S.PANEL)
+        ax.axvline(nc["null_p95"], color=S.MUTED, ls="--", lw=1.5)
+        ax.axvline(nc["effect"], color=S.ACCENT, lw=2.5)
+        ymax = ax.get_ylim()[1]
+        ax.text(nc["null_p95"], ymax * 0.97, f" null p95 = {nc['null_p95']:.2f}", color=S.MUTED, fontsize=9.5, va="top", ha="left")
+        ax.text(nc["effect"], ymax * 0.8, f"claimed circuit \n{nc['effect']:.2f} ", color=S.ACCENT, fontsize=10, va="top", ha="right")
+        ax.set_title(f"{names[d['benchmark']]}  ({nc['n_null']} null samples)", fontsize=11.5)
+        ax.set_xlabel("standardised drop in the metric when ablated")
+        ax.grid(axis="x", visible=False)
+    axes[0].set_ylabel("null samples")
+    _title(fig, "Null controls: is the effect bigger than what a random choice gives?",
+           "Grey: the same ablation applied to random component sets of the same size outside the claimed circuit (random subspaces for modular addition), and to "
+           "the same circuit in null models with random or shuffled weights. A finding passes only above the 95th percentile of its nulls. "
+           "full precision (local).", wrap=165)
+    fig.savefig(MEDIA / "null-controls.png", bbox_inches=None)
+    plt.close(fig)
+    print("wrote null-controls.png")
+
+
+def prereg_record() -> None:
+    from glassbox.notebook import Notebook
+
+    cards = _bench_cards()
+    books = [b for b in sorted(BENCH.glob("seed-*/runs/t*/notebook.jsonl")) if "__null-" not in b.parent.name]
+    if not books:
+        print("skip prereg-record.png (no bench notebooks)")
+        return
+    tot = {"confirmed": 0, "refuted": 0, "inconclusive": 0}
+    refuted = []
+    for p in books:
+        r = Notebook(p).prediction_record()
+        for k in tot:
+            tot[k] += r[k]
+        for x in r["refuted_predictions"]:
+            refuted.append({**x, "where": f"{p.parent.parent.parent.name} {p.parent.name}"})
+    audit = ROOT / "audits" / "abliteration" / "summary.json"
+    a = json.loads(audit.read_text(encoding="utf-8"))["predictions"] if audit.exists() else None
+    decided = tot["confirmed"] + tot["refuted"]
+    fig = plt.figure(figsize=(13, 5.8))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1, 2.3], top=0.76, left=0.06, right=0.98, bottom=0.08, wspace=0.12)
+    ax = fig.add_subplot(gs[0, 0])
+    vals = [tot["confirmed"], tot["refuted"], tot["inconclusive"]]
+    ax.bar(range(3), vals, color=[S.ACCENT, S.WARN, S.DIM], width=0.62)
+    for i, v in enumerate(vals):
+        ax.text(i, v + max(vals) * 0.02, str(v), ha="center", fontsize=12, color=S.TEXT)
+    ax.set_xticks(range(3))
+    ax.set_xticklabels(["confirmed", "refuted", "inconclusive"])
+    ax.set_ylim(0, max(vals) * 1.18)
+    ax.set_title(f"hit rate {tot['confirmed'] / decided * 100:.0f}%  ({decided} decided)", fontsize=12)
+    ax.grid(axis="x", visible=False)
+    ax = fig.add_subplot(gs[0, 1])
+    ax.axis("off")
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    ax.text(0, 0.99, "Refuted predictions stay in the report. Three examples:", fontsize=11.5, color=S.TEXT, va="top", fontweight="bold")
+    y = 0.88
+    for x in sorted(refuted, key=lambda r: len(r["hypothesis"]))[:3]:
+        hyp = textwrap.wrap(x["hypothesis"], 96)[:3]
+        h = 0.075 * len(hyp) + 0.105
+        ax.add_patch(FancyBboxPatch((0, y - h), 1, h, boxstyle="round,pad=0,rounding_size=0.015", fc=S.PANEL, ec=S.WARN, lw=1.2))
+        for k, line in enumerate(hyp):
+            ax.text(0.015, y - 0.03 - 0.075 * k, line, fontsize=9.3, color=S.MUTED, va="top")
+        pr = x["prediction"]
+        obs = f"{x['observed']:.3f}" if isinstance(x["observed"], float) else str(x["observed"])
+        ax.text(0.015, y - 0.045 - 0.075 * len(hyp), f"predicted {pr['metric'].split('.', 1)[1][:44]} {pr['op']} {pr['threshold']}   observed {obs}   "
+                f"[{x['where']}, {x['prereg']}]", fontsize=9.3, color=S.WARN, va="top")
+        y -= h + 0.03
+    extra = f" The model-diff audit (scored separately): {a['confirmed']} confirmed, {a['refuted']} refuted." if a else ""
+    _title(fig, "Prediction record: every experiment is pre-registered",
+           f"Before an experiment runs, the scientist commits to a quantitative prediction in a hash-chained notebook; the lab scores it. "
+           f"glassbox-bench, {len(cards)} seeds, {len(books)} investigations.{extra}", wrap=160)
+    fig.savefig(MEDIA / "prereg-record.png", bbox_inches=None)
+    plt.close(fig)
+    print("wrote prereg-record.png")
+
+
+def model_diff() -> None:
+    p = ROOT / "audits" / "abliteration" / "summary.json"
+    if not p.exists():
+        print("skip model-diff.png (no audit summary)")
+        return
+    d = json.loads(p.read_text(encoding="utf-8"))
+    if "exploratory" not in d:
+        print("skip model-diff.png (run audits/abliteration/run_audit.py explore)")
+        return
+    A, X, pr = d["activations"], d["exploratory"], d["predictions"]
+    layers = [x["layer"] for x in A["per_layer"]]
+    lo, hi = X["edited_layer_range"]
+    fig = plt.figure(figsize=(13, 8.6))
+    gs = fig.add_gridspec(2, 2, height_ratios=[1, 1.05], top=0.77, hspace=0.46, wspace=0.2, left=0.07, right=0.97, bottom=0.07)
+
+    ax = fig.add_subplot(gs[0, 0])
+    ax.axvspan(lo - 0.5, hi + 0.5, color=S.ACCENT, alpha=0.08, lw=0)
+    ax.plot(layers, [abs(x["gap_ratio"]) for x in A["per_layer"]], color=S.ACCENT, lw=2.2)
+    ax.axhline(1, color=S.DIM, ls=":", lw=1.2)
+    ax.set_ylim(0, 1.15)
+    ax.text((lo + hi) / 2, 1.07, f"edited layers {lo} to {hi}", color=S.ACCENT, fontsize=9.5, ha="center")
+    ax.set_title("Activations: how much of the refusal signal is left", fontsize=11.5)
+    ax.set_xlabel("layer")
+    ax.set_ylabel("gap left (edited / official)")
+
+    ax = fig.add_subplot(gs[0, 1])
+    ax.axvspan(lo - 0.5, hi + 0.5, color=S.ACCENT, alpha=0.08, lw=0)
+    cos = X["cosine_edit_direction_vs_refusal_direction_by_layer"]
+    ax.plot(layers, cos, color=S.ACCENT, lw=2.2, label="edit direction (from the weights)")
+    N = X["nulls"]
+    ax.axhline(N["unrelated_diffmeans_at_best_layer_p95"], color=S.MUTED, ls="--", lw=1.2, label="null p95: unrelated mean differences")
+    ax.axhline(N["reader_matrix_directions_best_layer_each_p95"], color=S.MUTED, ls=":", lw=1.2, label="null p95: directions of unedited matrices")
+    ax.legend(loc="upper left", fontsize=8.5)
+    b = X["best_layer"]
+    ax.annotate(f"{X['best_cosine']:.2f} at layer {b}", (b, X["best_cosine"]), (b + 5, X["best_cosine"] - 0.02), color=S.TEXT, fontsize=10,
+                arrowprops={"arrowstyle": "-", "color": S.MUTED})
+    ax.set_ylim(0, 1.32)
+    ax.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    ax.set_title("Edit direction vs refusal direction (cosine)", fontsize=11.5)
+    ax.set_xlabel("layer of the refusal direction (official model)")
+
+    ax = fig.add_subplot(gs[1, :])
+    roles = ["attn_out", "mlp_out", "attn_in", "mlp_in"]
+    lab = ["attention out  (writes)", "MLP out  (writes)", "attention in  (reads)", "MLP in  (reads)"]
+    M = np.full((4, len(layers)), np.nan)
+    for m in X["by_matrix"].values():
+        if m["layer"] < len(layers):
+            M[roles.index(m["role"]), m["layer"]] = m["energy_over_floor"]
+    im = ax.imshow(np.log10(np.clip(M, 0.5, 100)), cmap="glass", aspect="auto", vmin=np.log10(0.5), vmax=2)
+    ax.set_yticks(range(4))
+    ax.set_yticklabels(lab)
+    ax.set_xlabel("layer")
+    ax.set_title("Weights: structure of the difference in each matrix, as a multiple of its own quantization noise floor", fontsize=11.5)
+    ax.grid(False)
+    cb = fig.colorbar(im, ax=ax, fraction=0.02, pad=0.01, ticks=[0, 1, 2])
+    cb.ax.set_yticklabels(["1x", "10x", "100x"])
+    cb.outline.set_edgecolor(S.GRID)
+    _title(fig, "Auditing a model edit: where does the abliterated 27B differ from the official one?",
+           f"Two GGUF files, compared matrix by matrix and through activations on a public harmful/harmless prompt set. {pr['refuted']} of "
+           f"{pr['confirmed'] + pr['refuted']} pre-registered predictions were refuted: the edit is not in every writing matrix. Exploratory follow-up: "
+           f"{X['edited_matrices']} matrices in layers {lo} to {hi} share one direction (cosine above 0.99), and it matches the refusal direction. "
+           f"Label: {d['label']}. No completions stored.", wrap=160)
+    fig.savefig(MEDIA / "model-diff.png", bbox_inches=None)
+    plt.close(fig)
+    print("wrote model-diff.png")
+
+
+ASSETS.update({"bench-scorecard": bench_scorecard, "null-controls": null_controls, "prereg-record": prereg_record, "model-diff": model_diff})
+
 if __name__ == "__main__":
     MEDIA.mkdir(exist_ok=True)
     for name in (sys.argv[1:] or ASSETS):
