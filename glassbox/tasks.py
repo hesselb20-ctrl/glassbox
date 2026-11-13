@@ -137,7 +137,65 @@ def modadd(backend=None, n: int | str = 256, seed: int = 0, p: int = 113, split:
     }
 
 
-TASKS = {"ioi": ioi, "induction": induction, "modadd": modadd}
+_BENCH_MODELS: dict[str, Any] = {}
+
+
+def bench(backend=None, path: str = "", n: int = 128, seed: int = 0, **_: Any) -> dict:
+    """A glassbox-bench task: random valid inputs, with the model's own outputs as the answers.
+
+    The answers come from the task's published checkpoint, loaded separately on the CPU, not from whatever model
+    the backend is running. So a null version of the model is scored against the real behaviour, as it should be.
+    Only the public task folder is read here; answer keys live elsewhere and this code never looks for them.
+    """
+    import json
+    from pathlib import Path
+
+    import torch
+
+    d = Path(path)
+    if ".glassbox-sealed" in d.as_posix():
+        raise PermissionError("the sealed answer keys are off limits")
+    task = json.loads((d / "task.json").read_text(encoding="utf-8"))
+    if path not in _BENCH_MODELS:
+        from .bench.generate import build_model
+
+        ckpt = torch.load(d / "model.pt", map_location="cpu", weights_only=False)
+        _BENCH_MODELS[path] = build_model(ckpt["cfg"], ckpt["state_dict"])
+    model = _BENCH_MODELS[path]
+    rng = random.Random(seed)
+    ids, L = task["input_token_ids"], task["seq_len"]
+
+    def draw(k: int) -> list[list[int]]:
+        return [[task["bos_id"]] + [rng.choice(ids) for _ in range(L)] for _ in range(k)]
+
+    def out(xs: list[list[int]]) -> list[int]:
+        with torch.no_grad():
+            return model(torch.tensor(xs))[:, -1].argmax(-1).tolist()
+
+    clean = draw(int(n))
+    ans = out(clean)
+    corrupt, wrong = [], []
+    for a in ans:                                   # a corrupted input is another input with a different answer
+        for _ in range(200):
+            c = draw(1)[0]
+            w = out([c])[0]
+            if w != a:
+                break
+        corrupt.append(c)
+        wrong.append(w)
+    vocab = task["vocab"]
+    return {
+        "task": "bench",
+        "description": f"Input: BOS + {L} tokens; the model outputs one token at the last position. What it computes is for you to find out.",
+        "clean": {"tokens": clean}, "corrupt": {"tokens": corrupt},
+        "metric": {"type": "logit_diff", "correct": ans, "incorrect": wrong},
+        "answers": ans,
+        "meta": {"seq_len": L, "vocab": vocab, "input_token_ids": ids, "layout": task["layout"],
+                 "examples_as_strings": [{"input": [vocab[i] for i in x], "output": vocab[a]} for x, a in zip(clean[:12], ans[:12])]},
+    }
+
+
+TASKS = {"ioi": ioi, "induction": induction, "modadd": modadd, "bench": bench}
 
 
 def make(backend, spec: dict) -> dict:

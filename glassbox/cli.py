@@ -40,7 +40,34 @@ def main(argv: list[str] | None = None) -> int:
     nr.add_argument("--kinds", default="random-init,weight-shuffled,task-shuffled")
     nr.add_argument("--seed", type=int, default=0)
     nr.add_argument("--summary-only", action="store_true", help="do not run anything, just collect existing null runs")
+    be = sub.add_parser("bench", help="glassbox-bench: planted circuits with sealed answer keys")
+    be.add_argument("action", choices=["generate", "run", "grade"])
+    be.add_argument("seed_pos", nargs="?", type=int, default=None, help="seed (positional form, e.g. `glassbox bench grade 3`)")
+    be.add_argument("--seed", type=int, default=None)
+    be.add_argument("--tasks", default=None, help="comma-separated task ids for `run` (default: all)")
+    be.add_argument("--budget", type=int, default=25)
+    be.add_argument("--reveal", action="store_true", help="grade: also copy the answer keys of this seed into the repo")
     a = ap.parse_args(argv)
+
+    if a.cmd == "bench":
+        seed = a.seed if a.seed is not None else a.seed_pos
+        if seed is None:
+            print("give a seed: glassbox bench generate --seed 1")
+            return 1
+        if a.action == "generate":
+            from .bench.generate import generate
+
+            print(json.dumps(generate(seed), indent=1))
+        elif a.action == "run":
+            from . import bench
+
+            print(json.dumps(bench.run(seed, a.tasks.split(",") if a.tasks else None, a.budget), indent=1))
+        else:
+            from .bench.grade import grade
+
+            card = grade(seed, reveal=a.reveal)
+            print(json.dumps(card["summary"], indent=1))
+        return 0
 
     if a.cmd == "null-run":
         from pathlib import Path

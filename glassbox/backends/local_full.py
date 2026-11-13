@@ -75,9 +75,12 @@ class LocalFull(Backend):
             self.model_id = model_id or "in-memory"
         elif model_id.startswith("checkpoint:"):
             ckpt = torch.load(model_id.split(":", 1)[1], map_location="cpu", weights_only=False)
-            cfg = HookedTransformerConfig(**ckpt["cfg"])
+            c = dict(ckpt["cfg"])
+            if isinstance(c.get("dtype"), str):
+                c["dtype"] = getattr(torch, c["dtype"])
+            cfg = HookedTransformerConfig(**c)
             self.model = HookedTransformer(cfg)
-            self.model.load_state_dict(ckpt["state_dict"])
+            self.model.load_state_dict({k: v.to(cfg.dtype) for k, v in ckpt["state_dict"].items()}, strict=False)
             self.model_id = model_id
             self.vocab = ckpt.get("vocab")           # token strings for models without a tokenizer
         else:
