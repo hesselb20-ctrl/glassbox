@@ -10,6 +10,7 @@ import {CircuitScene} from './scenes/CircuitScene';
 import {Verify} from './scenes/Verify';
 import {Demo27b} from './scenes/Demo27b';
 import {Ladder} from './scenes/Ladder';
+import {AuditScene, BenchScene, NullScene} from './scenes/Upgrade';
 import {EndCard, Scorecard, ZeroCost} from './scenes/Closing';
 
 export type Scene = {id: string; seconds: number; C: React.FC<SceneProps & {coldDur?: number}>};
@@ -23,6 +24,9 @@ export const scenes = (data: Data): Scene[] => [
   {id: 'verify', seconds: 12, C: Verify},
   {id: 'demo27b', seconds: data.demo27b?.available ? 14 : 5, C: Demo27b},
   {id: 'ladder', seconds: data.ladder?.available && data.ladder?.rungs?.length ? 10 : 5, C: Ladder},
+  {id: 'bench', seconds: data.bench?.available ? 9 : 4, C: BenchScene},
+  {id: 'nulls', seconds: data.nulls?.available ? 8 : 4, C: NullScene},
+  {id: 'audit', seconds: data.audit?.available ? 9 : 4, C: AuditScene},
   {id: 'scorecard', seconds: 6, C: Scorecard},
   {id: 'zero', seconds: 6, C: ZeroCost},
   {id: 'end', seconds: 6, C: EndCard},

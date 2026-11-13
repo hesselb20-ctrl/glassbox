@@ -60,7 +60,61 @@ export interface Rung {
   heads?: string[];
 }
 
+export interface Bench {
+  available?: boolean;
+  seeds?: number;
+  compiled_tasks?: number;
+  compiled_solved?: number;
+  trained_tasks?: number;
+  trained_predicted?: number;
+  confirmed?: number;
+  refuted?: number;
+  example?: {
+    seed?: number;
+    task?: string;
+    family?: string;
+    n_layers?: number;
+    n_heads?: number;
+    claimed?: string[];
+    true?: string[];
+    recall?: number;
+    precision?: number;
+    mechanism_match?: number;
+    experiments?: number;
+    minutes?: number;
+    rasp?: string | null;
+  };
+}
+
+export interface Nulls {
+  available?: boolean;
+  panels?: {name?: string; effect?: number; p95?: number; n?: number; lo?: number; hi?: number; counts?: number[]}[];
+  null_runs?: number;
+  false_discoveries?: number;
+}
+
+export interface Audit {
+  available?: boolean;
+  label?: string;
+  refusal_official?: number;
+  refusal_abliterated?: number;
+  matrices?: number;
+  over_floor?: Record<string, (number | null)[]>;
+  edited_matrices?: number;
+  edited_from?: number;
+  edited_to?: number;
+  cosine?: number;
+  cosine_layer?: number;
+  cosine_null?: number;
+  beats_nulls?: boolean;
+  confirmed?: number;
+  refuted?: number;
+}
+
 export interface Data {
+  bench?: Bench;
+  nulls?: Nulls;
+  audit?: Audit;
   modadd?: ModAdd;
   scorecard?: {
     available?: boolean;

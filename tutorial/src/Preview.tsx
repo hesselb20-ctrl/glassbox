@@ -6,9 +6,10 @@ import {Data, SceneProps} from './types';
 import {GlassReveal, TAGLINE} from './scenes/GlassReveal';
 import {ResearchLoop} from './scenes/ResearchLoop';
 import {CircuitScene} from './scenes/CircuitScene';
+import {AuditScene, BenchScene} from './scenes/Upgrade';
 import {circuitFreqs} from './scenes/shared';
 
-// Tight cut for the README GIF: box to glass, the Fourier bars, the circuit lighting up.
+// Tight cut for the README GIF: box to glass, the Fourier bars, the circuit lighting up, a sealed bench task, the model-diff audit.
 // Each clip replays a stretch of a Tutorial scene at a higher speed (the scene's rame prop is remapped).
 type Clip = {C: React.FC<SceneProps>; sceneDur: number; from: number; to: number; speed: number};
 
@@ -16,6 +17,8 @@ const CLIPS: Clip[] = [
   {C: GlassReveal, sceneDur: 8 * FPS, from: 6, to: 170, speed: 2.5},
   {C: ResearchLoop, sceneDur: 22 * FPS, from: 286, to: 410, speed: 2},
   {C: CircuitScene, sceneDur: 14 * FPS, from: 18, to: 384, speed: 3.6},
+  {C: BenchScene, sceneDur: 9 * FPS, from: 50, to: 236, speed: 3},
+  {C: AuditScene, sceneDur: 9 * FPS, from: 30, to: 236, speed: 3},
 ];
 const XF = 8;
 const clipLen = (c: Clip) => Math.round((c.to - c.from) / c.speed);

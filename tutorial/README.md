@@ -6,8 +6,8 @@ The tutorial video, the README GIF and the hero image, drawn in code with [Remot
 
 | Composition | Size | Output |
 |---|---|---|
-| `Tutorial` | 1920x1080, 30 fps, 92 s now (106 s once `demo27b` and `ladder` are in data.json) | `media/tutorial.mp4` |
-| `Preview` | 960x540, 7.1 s, converted to a 15 fps GIF | `media/preview.gif` |
+| `Tutorial` | 1920x1080, 30 fps, 132 s with every section in data.json (sections without data get a short "not run yet" card) | `media/tutorial.mp4` |
+| `Preview` | 960x540, about 11 s, converted to a 15 fps GIF | `media/preview.gif` |
 | `Hero` (still) | 1600x800 | `media/hero.png` |
 
 ## Layout
@@ -15,7 +15,8 @@ The tutorial video, the README GIF and the hero image, drawn in code with [Remot
 - `src/Root.tsx`: registers the three compositions.
 - `src/Tutorial.tsx`: the timed brief (scene list with seconds). Pending runs get a 5 s "not run yet" card;
   when `demo27b.available` / `ladder.available` are true they get their full 14 s / 10 s slot.
-- `src/scenes/*.tsx`: one component per scene; each fades itself in and out.
+- `src/scenes/*.tsx`: one component per scene; each fades itself in and out. `Upgrade.tsx` holds the three scenes
+  on glassbox-bench (a sealed task solved), null controls and the model-diff audit (26 s together).
 - `src/components.tsx`: shared pieces (glass cube, circuit drawing, cards, pills).
 - `src/theme.ts`: palette and type scale, mirrored from `glassbox/style.py`.
 - `src/types.ts`: the shape of `data.json`; every field is optional.

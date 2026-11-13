@@ -109,8 +109,86 @@ def ladder() -> dict:
     return d
 
 
+def bench() -> dict:
+    """glassbox-bench: totals over the graded seeds and one sealed task to show (the largest compiled model of seed 1)."""
+    B = ROOT / "benchmarks" / "glassbox-bench"
+    cards = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(B.glob("seed-*/scorecard.json"))]
+    if not cards:
+        return {"available": False}
+    compiled = [t for c in cards for t in c["tasks"] if t["track"] == "compiled"]
+    trained = [t for c in cards for t in c["tasks"] if t["track"] == "trained"]
+    c = cards[0]
+    shapes = {t["id"]: t for t in json.loads((B / f"seed-{c['seed']}" / "tasks.json").read_text(encoding="utf-8"))["tasks"]}
+    t = max((t for t in c["tasks"] if t["track"] == "compiled"), key=lambda t: shapes[t["id"]]["n_layers"] * shapes[t["id"]]["n_heads"])
+    key = B / "revealed" / f"seed-{c['seed']}" / f"{t['id']}.json"
+    rasp = json.loads(key.read_text(encoding="utf-8"))["rasp_source"].split("#")[0].strip() if key.exists() else None
+    return {"available": True, "seeds": len(cards), "compiled_tasks": len(compiled),
+            "compiled_solved": sum(x["circuit"]["recall"] == 1 and x["circuit"]["precision"] == 1 and (x["mechanism_match"] or 0) >= 0.98 for x in compiled),
+            "trained_tasks": len(trained), "trained_predicted": sum((x["behavior_prediction"] or 0) >= 0.98 for x in trained),
+            "confirmed": sum(x["summary"]["prereg_confirmed"] for x in cards), "refuted": sum(x["summary"]["prereg_refuted"] for x in cards),
+            "example": {"seed": c["seed"], "task": t["id"], "family": t["family"], "n_layers": shapes[t["id"]]["n_layers"],
+                        "n_heads": shapes[t["id"]]["n_heads"], "claimed": t["circuit"]["found"], "true": t["circuit"]["true"],
+                        "recall": t["circuit"]["recall"], "precision": t["circuit"]["precision"], "mechanism_match": t["mechanism_match"],
+                        "experiments": t["experiments"], "minutes": round(t["wall_clock_seconds"] / 60, 1), "rasp": rasp}}
+
+
+def nulls() -> dict:
+    """Null distributions of the three original benchmarks (binned) and the null-run false discovery count."""
+    names = {"modadd": "Modular addition", "induction": "Induction", "ioi": "IOI, GPT-2 small"}
+    panels, runs, found = [], 0, 0
+    for b, title in names.items():
+        p = ROOT / "benchmarks" / b / "null_calibration.json"
+        if not p.exists():
+            return {"available": False}
+        d = json.loads(p.read_text(encoding="utf-8"))
+        nc = next(n for n in d["null_controls"] if n["finding"].startswith("necessity"))
+        s = d["null_samples"][nc["finding"]]
+        lo, hi = min(min(s), 0.0) - 0.05, max(nc["effect"], max(s)) + 0.1
+        bins = 40
+        counts = [0] * bins
+        for x in s:
+            counts[min(bins - 1, int((x - lo) / (hi - lo) * bins))] += 1
+        panels.append({"name": title, "effect": round(nc["effect"], 2), "p95": round(nc["null_p95"], 2), "n": nc["n_null"], "lo": lo, "hi": hi, "counts": counts})
+        r = ROOT / "benchmarks" / b / "null_runs.json"
+        if r.exists():
+            rr = json.loads(r.read_text(encoding="utf-8"))
+            runs += rr["n"]
+            found += rr["false_discoveries"]
+    for r in sorted((ROOT / "benchmarks" / "glassbox-bench").glob("seed-*/runs/t*/null_runs.json")):
+        if "__null-" in r.parent.name:
+            continue
+        rr = json.loads(r.read_text(encoding="utf-8"))
+        runs += rr["n"]
+        found += rr["false_discoveries"]
+    return {"available": True, "panels": panels, "null_runs": runs, "false_discoveries": found}
+
+
+def audit() -> dict:
+    """The model-diff audit: the registered predictions as scored, and the exploratory localisation (labelled as such)."""
+    d = optional(ROOT / "audits" / "abliteration" / "summary.json")
+    if not d["available"] or "exploratory" not in d:
+        return {"available": False}
+    X, pr = d["exploratory"], d["predictions"]
+    n_layers = d["activations"]["n_layers"]
+    grid = {r: [None] * n_layers for r in ("attn_out", "mlp_out", "attn_in", "mlp_in")}
+    for m in X["by_matrix"].values():
+        if m["layer"] < n_layers:
+            grid[m["role"]][m["layer"]] = round(m["energy_over_floor"], 2)
+    return {"available": True, "label": d["label"],
+            "refusal_official": round(d["official"]["refusal_rate_harmful"], 2), "refusal_abliterated": round(d["abliterated"]["refusal_rate_harmful"], 2),
+            "matrices": d["weights"]["matrices_compared"], "over_floor": grid,
+            "edited_matrices": X["edited_matrices"], "edited_from": X["edited_layer_range"][0], "edited_to": X["edited_layer_range"][1],
+            "cosine": round(X["best_cosine"], 2), "cosine_layer": X["best_layer"],
+            "cosine_null": round(max(X["nulls"]["unrelated_diffmeans_at_best_layer_p95"], X["nulls"]["reader_matrix_directions_best_layer_each_p95"],
+                                     X["nulls"]["random_directions_best_layer_each_p95"]), 2),
+            "beats_nulls": X["beats_all_nulls"], "confirmed": pr["confirmed"], "refuted": pr["refuted"]}
+
+
 def main() -> None:
     data = {
+        "bench": bench(),
+        "nulls": nulls(),
+        "audit": audit(),
         "modadd": modadd(),
         "scorecard": scorecard(),
         "demo27b": demo27b(),
