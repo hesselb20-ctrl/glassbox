@@ -1,0 +1,30 @@
+{
+ "id": "t2",
+ "seed": 3,
+ "track": "trained",
+ "seq_len": 4,
+ "bos_id": 0,
+ "vocab": [
+  "BOS",
+  "PAD",
+  "bo",
+  "ge",
+  "mu",
+  "fi",
+  "te",
+  "ra"
+ ],
+ "input_token_ids": [
+  2,
+  3,
+  4,
+  5,
+  6,
+  7
+ ],
+ "n_layers": 2,
+ "n_heads": 2,
+ "d_model": 48,
+ "layout": "token ids: [BOS] + seq_len input tokens; the answer is read at the last position",
+ "note": "trained by gradient descent on a hidden target function; it may be imperfect"
+}

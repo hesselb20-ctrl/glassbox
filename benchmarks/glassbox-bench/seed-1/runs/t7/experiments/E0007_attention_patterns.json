@@ -1,0 +1,282 @@
+{
+ "id": "E0007",
+ "primitive": "attention_patterns",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "clean": {
+   "tokens": [
+    [
+     0,
+     2,
+     7,
+     3,
+     4
+    ],
+    [
+     0,
+     3,
+     7,
+     6,
+     2
+    ],
+    [
+     0,
+     5,
+     7,
+     4,
+     6
+    ],
+    [
+     0,
+     6,
+     7,
+     6,
+     3
+    ],
+    [
+     0,
+     4,
+     7,
+     2,
+     5
+    ],
+    [
+     0,
+     2,
+     7,
+     2,
+     2
+    ],
+    [
+     0,
+     3,
+     7,
+     5,
+     3
+    ],
+    [
+     0,
+     6,
+     7,
+     4,
+     4
+    ],
+    [
+     0,
+     5,
+     7,
+     5,
+     6
+    ],
+    [
+     0,
+     4,
+     7,
+     3,
+     2
+    ],
+    [
+     0,
+     2,
+     7,
+     6,
+     5
+    ],
+    [
+     0,
+     3,
+     7,
+     4,
+     6
+    ]
+   ]
+  },
+  "corrupt": {
+   "tokens": [
+    [
+     0,
+     2,
+     6,
+     3,
+     4
+    ],
+    [
+     0,
+     3,
+     6,
+     6,
+     2
+    ],
+    [
+     0,
+     5,
+     6,
+     4,
+     6
+    ],
+    [
+     0,
+     6,
+     6,
+     6,
+     3
+    ],
+    [
+     0,
+     4,
+     6,
+     2,
+     5
+    ],
+    [
+     0,
+     2,
+     6,
+     2,
+     2
+    ],
+    [
+     0,
+     3,
+     6,
+     5,
+     3
+    ],
+    [
+     0,
+     6,
+     6,
+     4,
+     4
+    ],
+    [
+     0,
+     5,
+     6,
+     5,
+     6
+    ],
+    [
+     0,
+     4,
+     6,
+     3,
+     2
+    ],
+    [
+     0,
+     2,
+     6,
+     6,
+     5
+    ],
+    [
+     0,
+     3,
+     6,
+     4,
+     6
+    ]
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    7,
+    7,
+    7,
+    7,
+    7,
+    7,
+    7,
+    7,
+    7,
+    7,
+    7,
+    7
+   ],
+   "incorrect": [
+    4,
+    3,
+    5,
+    3,
+    5,
+    2,
+    5,
+    4,
+    5,
+    4,
+    5,
+    4
+   ]
+  },
+  "query_pos": 4,
+  "key_pos": 2
+ },
+ "summary": {
+  "score": "attention from pos 4 to given key positions",
+  "n": 12,
+  "top": [
+   {
+    "head": "1.1",
+    "score": 0.960288
+   },
+   {
+    "head": "1.0",
+    "score": 0.845178
+   },
+   {
+    "head": "0.0",
+    "score": 0.375378
+   },
+   {
+    "head": "0.1",
+    "score": 0.330933
+   }
+  ],
+  "most_attended_key_from_query": {
+   "0.0": 2,
+   "0.1": 2,
+   "1.0": 2,
+   "1.1": 2
+  }
+ },
+ "data": {
+  "score": [
+   [
+    0.375378,
+    0.330933
+   ],
+   [
+    0.845178,
+    0.960288
+   ]
+  ],
+  "top_key": [
+   [
+    2.0,
+    2.0
+   ],
+   [
+    2.0,
+    2.0
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ]
+ },
+ "plot": "experiments/E0007_attention_patterns.png",
+ "seconds": 0.08,
+ "timestamp": "2026-11-13T13:11:14",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null
+}

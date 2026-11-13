@@ -1,0 +1,146 @@
+{
+ "id": "E0005",
+ "primitive": "attention_patterns",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t1/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t1",
+   "n": 8,
+   "seed": 1
+  },
+  "head": "1.1",
+  "query_pos": 6
+ },
+ "summary": {
+  "score": "max mean attention from pos 6",
+  "n": 8,
+  "top": [
+   {
+    "head": "1.0",
+    "score": 0.75
+   },
+   {
+    "head": "1.1",
+    "score": 0.247917
+   },
+   {
+    "head": "0.0",
+    "score": 0.186911
+   },
+   {
+    "head": "0.1",
+    "score": 0.142857
+   }
+  ],
+  "most_attended_key_from_query": {
+   "0.0": 6,
+   "0.1": 0,
+   "1.0": 6,
+   "1.1": 0
+  }
+ },
+ "data": {
+  "score": [
+   [
+    0.186911,
+    0.142857
+   ],
+   [
+    0.75,
+    0.247917
+   ]
+  ],
+  "top_key": [
+   [
+    6.0,
+    0.0
+   ],
+   [
+    6.0,
+    0.0
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "pattern": [
+   [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.23125,
+    0.23125,
+    0.070833,
+    0.108333,
+    0.147917,
+    0.102083,
+    0.108333
+   ],
+   [
+    0.25625,
+    0.070833,
+    0.25625,
+    0.14375,
+    0.120833,
+    0.075,
+    0.077083
+   ],
+   [
+    0.247917,
+    0.108333,
+    0.14375,
+    0.247917,
+    0.091667,
+    0.045833,
+    0.114583
+   ],
+   [
+    0.197917,
+    0.147917,
+    0.120833,
+    0.091667,
+    0.197917,
+    0.152083,
+    0.091667
+   ],
+   [
+    0.25625,
+    0.102083,
+    0.075,
+    0.045833,
+    0.152083,
+    0.25625,
+    0.1125
+   ],
+   [
+    0.247917,
+    0.108333,
+    0.077083,
+    0.114583,
+    0.091667,
+    0.1125,
+    0.247917
+   ]
+  ]
+ },
+ "plot": "experiments/E0005_attention_patterns.png",
+ "seconds": 0.13,
+ "timestamp": "2026-11-13T12:43:04",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null
+}

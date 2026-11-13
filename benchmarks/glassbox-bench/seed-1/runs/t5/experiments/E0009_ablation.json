@@ -1,0 +1,61 @@
+{
+ "id": "E0009",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t5/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t5",
+   "n": 200,
+   "seed": 3
+  },
+  "components": [
+   "0.0"
+  ],
+  "mode": "resample"
+ },
+ "summary": {
+  "mode": "resample",
+  "n": 200,
+  "metric_clean": 1.0,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "0.0",
+    "metric": 1.0,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "0.0"
+  ],
+  "metric": [
+   1.0
+  ],
+  "change": [
+   0.0
+  ]
+ },
+ "plot": "experiments/E0009_ablation.png",
+ "seconds": 0.17,
+ "timestamp": "2026-11-13T13:03:14",
+ "prereg_id": "N0016",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[component=0.0].fraction_of_clean",
+  "op": ">=",
+  "threshold": 0.95,
+  "statement": "resample-ablating head 0.0 leaves at least 95% of the logit difference",
+  "verdict": "confirmed",
+  "observed": 1.0
+ }
+}

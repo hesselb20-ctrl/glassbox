@@ -1,0 +1,57 @@
+{
+ "id": "t6",
+ "seed": 3,
+ "track": "compiled",
+ "label": "compiled: mechanism known exactly",
+ "family": "shift-copy",
+ "params": {
+  "k": 1,
+  "f": {
+   "ro": "ge",
+   "sa": "sa",
+   "pe": "zu",
+   "zu": "ro",
+   "ge": "pe"
+  }
+ },
+ "vocab": [
+  "ro",
+  "sa",
+  "pe",
+  "zu",
+  "ge"
+ ],
+ "seq_len": 5,
+ "truth_function": "glassbox.bench.truth.shift_copy",
+ "rasp_source": "prev = shift_by(k, tokens); out = Map(f, prev)",
+ "tracr": {
+  "num_layers": 1,
+  "num_heads": 1,
+  "checked_inputs": 1500,
+  "exhaustive": false
+ },
+ "components_before_obfuscation": [
+  "0.0",
+  "mlp0"
+ ],
+ "transforms": {
+  "extra_residual_dims": 7,
+  "distractor_heads_per_layer": 2,
+  "distractor_neurons_per_layer": 10,
+  "head_permutation": {
+   "0": [
+    2,
+    0,
+    1
+   ]
+  },
+  "layers": 1,
+  "rotation": "random orthogonal 30x30, folded into the weights"
+ },
+ "true_components": [
+  "0.1",
+  "mlp0"
+ ],
+ "accuracy_after_conversion": 1.0,
+ "accuracy_after_obfuscation": 1.0
+}

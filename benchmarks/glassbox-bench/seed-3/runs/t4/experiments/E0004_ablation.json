@@ -1,0 +1,97 @@
+{
+ "id": "E0004",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t4/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t4",
+   "n": 200,
+   "seed": 1
+  },
+  "sweep": "heads",
+  "mode": "mean"
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 1.0,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "1.2",
+    "metric": 0.182,
+    "change": -0.818,
+    "fraction_of_clean": 0.182
+   },
+   {
+    "component": "0.0",
+    "metric": 1.0,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   },
+   {
+    "component": "0.1",
+    "metric": 1.0,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   },
+   {
+    "component": "0.2",
+    "metric": 1.0,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   },
+   {
+    "component": "1.0",
+    "metric": 1.0,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   },
+   {
+    "component": "1.1",
+    "metric": 1.0,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "0.0",
+   "0.1",
+   "0.2",
+   "1.0",
+   "1.1",
+   "1.2"
+  ],
+  "metric": [
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   0.182
+  ],
+  "change": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   -0.818
+  ]
+ },
+ "plot": "experiments/E0004_ablation.png",
+ "seconds": 0.39,
+ "timestamp": "2026-11-13T12:59:57",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null
+}

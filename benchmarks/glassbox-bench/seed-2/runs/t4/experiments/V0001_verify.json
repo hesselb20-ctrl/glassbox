@@ -1,0 +1,134 @@
+{
+ "id": "V0001",
+ "name": "first-last lookup, circuit without head 0.1",
+ "n_heldout": 300,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5,
+  "null_percentile": 95.0
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t4/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 1.0,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "0.0",
+    "1.0",
+    "1.1",
+    "mlp0",
+    "mlp1"
+   ],
+   "circuit_size": 5,
+   "total_components": 6,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": 0.021734,
+    "fraction_of_clean": 0.001302,
+    "accuracy": 0.156667
+   },
+   "everything_else_ablated": {
+    "metric": 14.132416,
+    "fraction_of_clean": 0.846331,
+    "accuracy": 0.966667
+   },
+   "random_same_size_ablated_fraction": [
+    0.846331,
+    0.846331,
+    0.846331
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": true,
+   "pass": true
+  }
+ },
+ "null_controls": [
+  {
+   "finding": "agreement",
+   "what": "share of held-out inputs where predict() equals the model's output",
+   "effect": 1.0,
+   "null_mean": 0.176556,
+   "null_p95": 0.205167,
+   "null_max": 0.21,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "task-shuffled": 30
+   },
+   "pass": true
+  },
+  {
+   "finding": "necessity",
+   "what": "standardised drop in the metric when the claimed circuit is ablated",
+   "effect": 0.998698,
+   "null_mean": 0.132972,
+   "null_p95": 0.153669,
+   "null_max": 0.153669,
+   "percentile_of_effect": 100.0,
+   "n_null": 34,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30,
+    "random-init": 2,
+    "weight-shuffled": 2
+   },
+   "pass": true
+  },
+  {
+   "finding": "sufficiency",
+   "what": "standardised metric (above its no-information floor) with everything except the claimed circuit ablated",
+   "effect": 0.846331,
+   "null_mean": 0.001302,
+   "null_p95": 0.001302,
+   "null_max": 0.001302,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30
+   },
+   "pass": true
+  }
+ ],
+ "model_accuracy": 1.0,
+ "metric_clean": 16.698442,
+ "metric_floor": 0.0,
+ "metric_unit": 16.698442,
+ "beats_null_controls": true,
+ "status": "verified",
+ "all_checks_passed": true,
+ "note": "Passed at full precision, and every effect exceeds its null distribution.",
+ "plot": "experiments/V0001_verify.png",
+ "spec": {
+  "name": "first-last lookup, circuit without head 0.1",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t4",
+   "n": 300,
+   "seed": 11
+  },
+  "code": "def predict(tokens, prompt):\n    # Output = T[first input token][last input token]; middle tokens ignored (E0005, E0009).\n    T = {2:{2:2,3:6,4:3,5:3,6:4,7:5},\n         3:{2:7,3:3,4:7,5:5,6:2,7:7},\n         4:{2:5,3:4,4:7,5:6,6:2,7:2},\n         5:{2:6,3:6,4:4,5:3,6:5,7:5},\n         6:{2:5,3:6,4:7,5:3,6:4,7:6},\n         7:{2:7,3:3,4:6,5:2,6:3,7:7}}\n    toks = [int(t) for t in tokens]\n    return T[toks[1]][toks[-1]]\n",
+  "circuit": {
+   "components": [
+    "0.0",
+    "1.0",
+    "1.1",
+    "mlp0",
+    "mlp1"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-13T12:58:00"
+}

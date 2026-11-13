@@ -1,0 +1,249 @@
+{
+ "title": "t7: priority-max over four symbols (2-layer, 2-head transformer)",
+ "label": "partial: function verified on held-out inputs; circuit localisation not verified (whole model involved)",
+ "behavior": "Input BOS + 4 tokens from {pa, li, po, pu, pi, re}; the model outputs one symbol at the last position.",
+ "summary": "All numbers are from the local-full backend (full precision). The model outputs the highest-priority symbol present in the input, with the fixed order pi > po > pu > pa > re > li. A six-line predict() agrees with the model on 400/400 and 400/400 held-out inputs (two unused seeds). At head/MLP granularity no component is inert: each of the four heads and both MLPs loses 33-81% of the logit difference when mean-ablated alone. Layer 0 produces only a weak tentative answer at the last position (logit-diff 2.0 of 38.7); layer 1 does most of the work, with the layer-1 heads acting mainly through mlp1 rather than writing logits directly. Layer-1 heads attend strongly (0.78) to pi when it is present, but do not select a low-priority winner such as pa, so the mechanism is a mixture of selective attention and pooled-symbol MLP computation. Circuit verification did not reach 'verified': the whole-model circuit has no sufficiency null, and dropping the weakest head (1.0) keeps 99.25% accuracy but only 64.6% of the logit difference, below the 70% threshold.",
+ "pseudocode": "def predict(tokens, prompt):\n    # highest-priority symbol present (E0001/E0002, E0006, V0001, V0002)\n    order = [6, 4, 5, 2, 7, 3]   # pi > po > pu > pa > re > li\n    present = set(tokens[1:])\n    for t in order:\n        if t in present:\n            return t\n\n# Mechanism sketch (evidence-backed parts only):\n# L0: heads 0.0/0.1 pool symbols into the last position with weak preference for pi (E0013);\n#     mlp0 is the most important single component (E0005); L0 heads have ~0 direct logit effect (E0015).\n# L1: heads 1.0/1.1 attend to pi when present (0.78, E0013) but not to low-priority winners (E0014);\n#     they act mostly via mlp1 (direct 0.10-0.11 vs total 0.36-0.50; E0015, E0009); mlp1 ablation leaves 0.33 (E0005).",
+ "claims": [
+  {
+   "text": "The model computes a priority max: output = highest-ranked symbol present, order pi > po > pu > pa > re > li. predict() matches the model on 400/400 held-out inputs in each of two verifications (null agreement ~0.35).",
+   "evidence": [
+    "E0002",
+    "V0001",
+    "V0002"
+   ]
+  },
+  {
+   "text": "re outranks li: on all 14 inputs containing only li and re (both present), logit(re) > logit(li) by 2.1-9.0. My pre-registered guess of the opposite order was refuted. Margins here are far smaller than the typical 38.7.",
+   "evidence": [
+    "E0006"
+   ]
+  },
+  {
+   "text": "Both MLPs are needed: mean-ablating mlp0 leaves 19% and mlp1 33% of the clean logit difference.",
+   "evidence": [
+    "E0005"
+   ]
+  },
+  {
+   "text": "All four heads are causally involved: exact denoising patch effects are 0.37 (0.0), 0.37 (0.1), 0.36 (1.0), 0.50 (1.1); joint mean ablation of the layer-1 heads leaves 22%, of the layer-0 heads 25%.",
+   "evidence": [
+    "E0009",
+    "E0011",
+    "E0012",
+    "E0004"
+   ]
+  },
+  {
+   "text": "Heads contribute little directly to the logits: layer-0 heads ~0.005 each, layer-1 heads 0.10-0.11 each of the clean-corrupt gap, versus total effects of 0.36-0.50. The answer is written mainly through the MLPs.",
+   "evidence": [
+    "E0015",
+    "E0009"
+   ]
+  },
+  {
+   "text": "Layer-1 heads select pi by content (0.78 attention on the pi position from the last position; layer-0 heads 0.32-0.35), but this does not generalise to a low-priority winner: with pa as winner among li/re attention is diffuse (max 0.39/0.33, not on the winner). The 'attend to the max' story holds only for high-priority symbols; this prediction was refuted.",
+   "evidence": [
+    "E0013",
+    "E0014"
+   ]
+  },
+  {
+   "text": "No head or MLP could be shown inert. Treating the whole model as the circuit passes the threshold checks but cannot be null-controlled for sufficiency; removing head 1.0 from the circuit keeps accuracy 0.9925 but only 0.646 of the logit difference (fails the 0.7 threshold). Ablating the 5-component circuit drops accuracy to 0.49.",
+   "evidence": [
+    "V0001",
+    "V0002",
+    "E0005",
+    "E0009"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "emb",
+    "label": "symbol embeddings pos 1-4",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "0.0",
+    "label": "head 0.0: soft pooling",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "0.1",
+    "label": "head 0.1: soft pooling",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0: tentative winner",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "1.0",
+    "label": "head 1.0: attends to pi / pools",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "1.1",
+    "label": "head 1.1: attends to pi / pools",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "mlp1",
+    "label": "mlp1: writes answer",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "logits at last position",
+    "layer": 2,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "emb",
+    "dst": "0.0",
+    "label": "symbols"
+   },
+   {
+    "src": "emb",
+    "dst": "0.1",
+    "label": "symbols"
+   },
+   {
+    "src": "0.0",
+    "dst": "mlp0",
+    "label": "pooled symbols"
+   },
+   {
+    "src": "0.1",
+    "dst": "mlp0",
+    "label": "pooled symbols"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.0",
+    "label": "via residual (not path-tested)"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.1",
+    "label": "via residual (not path-tested)"
+   },
+   {
+    "src": "1.0",
+    "dst": "mlp1",
+    "label": "indirect (total 0.36, direct 0.10)"
+   },
+   {
+    "src": "1.1",
+    "dst": "mlp1",
+    "label": "indirect (total 0.50, direct 0.11)"
+   },
+   {
+    "src": "1.0",
+    "dst": "out",
+    "label": "direct 0.10"
+   },
+   {
+    "src": "1.1",
+    "dst": "out",
+    "label": "direct 0.11"
+   },
+   {
+    "src": "mlp1",
+    "dst": "out",
+    "label": "main write"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0005",
+  "E0009",
+  "E0013",
+  "E0014",
+  "E0015"
+ ],
+ "limitations": [
+  "Circuit status is not-verified: the task says some components are inert, but at head/MLP granularity every component carries 33-81% of the logit difference; any inert parts may be at neuron or subspace level, which was not examined.",
+  "The priority order was read off input/output pairs and tested behaviourally; ties and the all-identical inputs are covered only by the held-out agreement checks.",
+  "The edges mlp0 -> layer-1 heads and heads -> mlp1 are inferred from total-vs-direct effects; no q/k/v path patching into specific receivers was run (one path_patching attempt with an MLP sender errored).",
+  "Ablation effects are on logit difference; accuracy is much more robust (0.9925 with head 1.0 ablated), so 'needed for the margin' is not the same as 'needed for the answer'.",
+  "How low-priority winners (pa, re, li) are resolved inside the MLPs is not explained.",
+  "Attention tests used small hand-built prompt sets (16 and 8 prompts)."
+ ],
+ "open_questions": [
+  "Which components are dispensable for accuracy rather than margin? Head 1.0 nearly is.",
+  "What do mlp0 neurons encode: presence of each symbol, or a partial ranking?",
+  "Do layer-1 heads select po and pu the way they select pi, and where does selection give way to pooling?"
+ ],
+ "overall_status": "partial / not verified \u00b7 partial: function verified on held-out inputs; circuit localisation not verified (whole model involved)",
+ "cited": [
+  "E0002",
+  "E0004",
+  "E0005",
+  "E0006",
+  "E0009",
+  "E0011",
+  "E0012",
+  "E0013",
+  "E0014",
+  "E0015",
+  "V0001",
+  "V0002"
+ ],
+ "prediction_record": {
+  "preregistered": 10,
+  "run": 9,
+  "not_run": [
+   "N0028"
+  ],
+  "confirmed": 7,
+  "refuted": 2,
+  "inconclusive": 0,
+  "hit_rate": 0.778,
+  "refuted_predictions": [
+   {
+    "prereg": "N0010",
+    "experiment": "E0006",
+    "hypothesis": "The function is a max under a fixed priority order of symbols. For the two lowest symbols I guess li(3) outranks re(7): on all 14 inputs made only of li and re (both present) the model outputs li.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.9,
+     "statement": "model outputs li on at least 90% of mixed li/re inputs"
+    },
+    "observed": 0.0
+   },
+   {
+    "prereg": "N0025",
+    "experiment": "E0014",
+    "hypothesis": "Layer-1 attention follows the priority order, not just a 'look at pi' rule: when the top-priority symbol present is the low-ranked pa (at position 1, the rest li/re), heads 1.0 and 1.1 still put most last-position attention on that position.",
+    "prediction": {
+     "metric": "data.score[1][0]",
+     "op": ">=",
+     "threshold": 0.4,
+     "statement": "head 1.0's max mean attention from the last position is at least 0.4 when pa at position 1 is the top-priority symbol"
+    },
+    "observed": 0.391097
+   }
+  ]
+ },
+ "exploratory_runs": [
+  "E0003",
+  "E0004",
+  "E0007",
+  "E0008",
+  "E0010"
+ ]
+}

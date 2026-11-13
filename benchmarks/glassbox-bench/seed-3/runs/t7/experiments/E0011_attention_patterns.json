@@ -1,0 +1,262 @@
+{
+ "id": "E0011",
+ "primitive": "attention_patterns",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "clean": {
+   "tokens": [
+    [
+     0,
+     2,
+     5,
+     4,
+     2
+    ],
+    [
+     0,
+     4,
+     5,
+     2,
+     4
+    ],
+    [
+     0,
+     4,
+     5,
+     4,
+     2
+    ],
+    [
+     0,
+     2,
+     5,
+     2,
+     2
+    ],
+    [
+     0,
+     2,
+     5,
+     2,
+     4
+    ],
+    [
+     0,
+     4,
+     5,
+     4,
+     4
+    ],
+    [
+     0,
+     4,
+     5,
+     2,
+     2
+    ],
+    [
+     0,
+     2,
+     5,
+     4,
+     4
+    ]
+   ]
+  },
+  "corrupt": {
+   "tokens": [
+    [
+     0,
+     2,
+     2,
+     4,
+     2
+    ],
+    [
+     0,
+     4,
+     2,
+     2,
+     4
+    ],
+    [
+     0,
+     4,
+     2,
+     4,
+     2
+    ],
+    [
+     0,
+     2,
+     4,
+     2,
+     2
+    ],
+    [
+     0,
+     2,
+     2,
+     2,
+     4
+    ],
+    [
+     0,
+     4,
+     2,
+     4,
+     4
+    ],
+    [
+     0,
+     4,
+     2,
+     2,
+     2
+    ],
+    [
+     0,
+     2,
+     2,
+     4,
+     4
+    ]
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5
+   ],
+   "incorrect": [
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4
+   ]
+  },
+  "head": "1.1",
+  "query_pos": 4
+ },
+ "summary": {
+  "score": "max mean attention from pos 4",
+  "n": 8,
+  "top": [
+   {
+    "head": "1.0",
+    "score": 0.95792
+   },
+   {
+    "head": "1.1",
+    "score": 0.83342
+   },
+   {
+    "head": "0.1",
+    "score": 0.28512
+   },
+   {
+    "head": "0.0",
+    "score": 0.246026
+   }
+  ],
+  "most_attended_key_from_query": {
+   "0.0": 2,
+   "0.1": 2,
+   "1.0": 2,
+   "1.1": 2
+  }
+ },
+ "data": {
+  "score": [
+   [
+    0.246026,
+    0.28512
+   ],
+   [
+    0.95792,
+    0.83342
+   ]
+  ],
+  "top_key": [
+   [
+    2.0,
+    2.0
+   ],
+   [
+    2.0,
+    2.0
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "pattern": [
+   [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.460662,
+    0.539338,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.005515,
+    0.003109,
+    0.991376,
+    0.0,
+    0.0
+   ],
+   [
+    0.035311,
+    0.03247,
+    0.819631,
+    0.112588,
+    0.0
+   ],
+   [
+    0.012663,
+    0.01088,
+    0.83342,
+    0.062566,
+    0.080471
+   ]
+  ]
+ },
+ "plot": "experiments/E0011_attention_patterns.png",
+ "seconds": 0.09,
+ "timestamp": "2026-11-13T13:12:31",
+ "prereg_id": "N0023",
+ "exploratory": false,
+ "score": {
+  "metric": "data.pattern[4][2]",
+  "op": ">=",
+  "threshold": 0.5,
+  "statement": "head 1.1 mean attention from pos 4 to pos 2 (where the present maximum vu sits) is at least 0.5",
+  "verdict": "confirmed",
+  "observed": 0.83342
+ }
+}

@@ -1,0 +1,129 @@
+{
+ "id": "E0010",
+ "primitive": "logit_lens",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t7",
+   "n": 200,
+   "seed": 0
+  }
+ },
+ "summary": {
+  "pos": -1,
+  "n": 200,
+  "layers": [
+   0,
+   1
+  ],
+  "top_tokens_example0": {
+   "0": [
+    "po",
+    "re",
+    "pu",
+    "pa",
+    "PAD"
+   ],
+   "1": [
+    "po",
+    "re",
+    "pu",
+    "PAD",
+    "BOS"
+   ]
+  },
+  "metric_type": "logit_diff",
+  "metric_by_layer": [
+   1.97822,
+   38.663486
+  ],
+  "median_rank_of_answer": [
+   0.0,
+   0.0
+  ],
+  "prob_of_answer": [
+   0.39966,
+   0.999817
+  ],
+  "first_layer_reaching_half_final_metric": 1
+ },
+ "data": {
+  "layers": [
+   0,
+   1
+  ],
+  "top_tokens": [
+   [
+    [
+     "po",
+     "re",
+     "pu",
+     "pa",
+     "PAD"
+    ],
+    [
+     "pi",
+     "po",
+     "pu",
+     "re",
+     "pa"
+    ],
+    [
+     "pi",
+     "pa",
+     "pu",
+     "li",
+     "re"
+    ]
+   ],
+   [
+    [
+     "po",
+     "re",
+     "pu",
+     "PAD",
+     "BOS"
+    ],
+    [
+     "pi",
+     "pa",
+     "li",
+     "pu",
+     "BOS"
+    ],
+    [
+     "pi",
+     "pa",
+     "li",
+     "pu",
+     "BOS"
+    ]
+   ]
+  ],
+  "metric": [
+   1.97822,
+   38.663486
+  ],
+  "rank": [
+   0.0,
+   0.0
+  ],
+  "prob": [
+   0.39966,
+   0.999817
+  ]
+ },
+ "plot": "experiments/E0010_logit_lens.png",
+ "seconds": 0.41,
+ "timestamp": "2026-11-13T13:11:10",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null
+}

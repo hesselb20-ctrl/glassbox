@@ -1,0 +1,100 @@
+{
+ "id": "E0014",
+ "primitive": "path_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t3/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t3",
+   "n": 100,
+   "seed": 2
+  },
+  "senders": [
+   "2.0"
+  ],
+  "receiver": {
+   "heads": [
+    "3.1"
+   ],
+   "input": "k"
+  }
+ },
+ "summary": {
+  "receiver": {
+   "heads": [
+    "3.1"
+   ],
+   "input": "k"
+  },
+  "direction": "denoise",
+  "metric_base": -0.999855,
+  "metric_source": 0.999855,
+  "n": 100,
+  "top": [
+   {
+    "component": "2.0",
+    "effect": 0.38
+   },
+   {
+    "component": "0.0",
+    "effect": 0.0
+   },
+   {
+    "component": "0.1",
+    "effect": 0.0
+   },
+   {
+    "component": "1.0",
+    "effect": 0.0
+   },
+   {
+    "component": "1.1",
+    "effect": 0.0
+   },
+   {
+    "component": "2.1",
+    "effect": 0.0
+   },
+   {
+    "component": "3.0",
+    "effect": 0.0
+   },
+   {
+    "component": "3.1",
+    "effect": 0.0
+   }
+  ]
+ },
+ "data": {
+  "effect": [
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.38,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ]
+  ]
+ },
+ "plot": "experiments/E0014_path_patching.png",
+ "seconds": 0.53,
+ "timestamp": "2026-11-13T12:54:37",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null
+}

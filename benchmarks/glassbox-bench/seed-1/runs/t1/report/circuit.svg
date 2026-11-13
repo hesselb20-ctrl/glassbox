@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 254" width="100%" font-family="Consolas, DejaVu Sans Mono, monospace">
+<defs><filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3df5d0"/></marker></defs>
+<rect width="920" height="254" fill="#070b1a" rx="10"/>
+<path d="M178,87 C222,87 222,66 263,66" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="222" y="71" fill="#8793c2" font-size="11" text-anchor="middle">self-attention at pos 1</text>
+<path d="M178,87 C222,87 222,127 263,127" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="222" y="101" fill="#8793c2" font-size="11" text-anchor="middle">self-attention at pos 1 (weak)</text>
+<path d="M178,87 C222,87 222,188 263,188" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="222" y="131" fill="#8793c2" font-size="11" text-anchor="middle">pos 1</text>
+<path d="M178,167 C222,167 222,188 263,188" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="222" y="171" fill="#8793c2" font-size="11" text-anchor="middle">pos 4</text>
+<path d="M416,66 C460,66 460,66 501,66" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="460" y="60" fill="#8793c2" font-size="11" text-anchor="middle">value input</text>
+<path d="M416,66 C460,66 460,127 501,127" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="460" y="91" fill="#8793c2" font-size="11" text-anchor="middle">value input</text>
+<path d="M416,127 C460,127 460,66 501,66" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="460" y="91" fill="#8793c2" font-size="11" text-anchor="middle">value input (weak)</text>
+<path d="M416,188 C460,188 460,66 501,66" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="460" y="121" fill="#8793c2" font-size="11" text-anchor="middle">x1 features (not path-tested)</text>
+<path d="M416,188 C460,188 460,127 501,127" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="460" y="151" fill="#8793c2" font-size="11" text-anchor="middle">x1 features (not path-tested)</text>
+<path d="M416,188 C460,188 460,188 501,188" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="460" y="182" fill="#8793c2" font-size="11" text-anchor="middle">x4 features at pos 4 (not path-tested)</text>
+<path d="M654,66 C579,66 579,188 501,188" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="579" y="121" fill="#8793c2" font-size="11" text-anchor="middle">x1 at pos 4</text>
+<path d="M654,127 C579,127 579,188 501,188" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="579" y="151" fill="#8793c2" font-size="11" text-anchor="middle">x1 at pos 4</text>
+<path d="M654,66 C698,66 698,127 739,127" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="698" y="91" fill="#8793c2" font-size="11" text-anchor="middle">small direct write</text>
+<path d="M654,127 C698,127 698,127 739,127" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="698" y="121" fill="#8793c2" font-size="11" text-anchor="middle">small direct write</text>
+<path d="M654,188 C698,188 698,127 739,127" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="698" y="151" fill="#8793c2" font-size="11" text-anchor="middle">answer logits</text>
+<rect x="28" y="65" width="150" height="44" rx="8" fill="#0e1530" stroke="#8793c2" stroke-width="1.5"/>
+<text x="103" y="91" fill="#e6ebff" font-size="12" text-anchor="middle">first token (pos 1)</text>
+<rect x="28" y="145" width="150" height="44" rx="8" fill="#0e1530" stroke="#8793c2" stroke-width="1.5"/>
+<text x="103" y="171" fill="#e6ebff" font-size="12" text-anchor="middle">last token (pos 4)</text>
+<rect x="266" y="44" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="341" y="70" fill="#e6ebff" font-size="12" text-anchor="middle">0.0: self-attends at p</text>
+<rect x="266" y="105" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="341" y="131" fill="#e6ebff" font-size="12" text-anchor="middle">0.1: weaker duplicate </text>
+<rect x="266" y="166" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="341" y="192" fill="#e6ebff" font-size="12" text-anchor="middle">mlp0: token features f</text>
+<rect x="504" y="44" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="579" y="70" fill="#e6ebff" font-size="12" text-anchor="middle">1.0: mover pos1 -&gt; </text>
+<rect x="504" y="105" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="579" y="131" fill="#e6ebff" font-size="12" text-anchor="middle">1.1: mover pos1 -&gt; </text>
+<rect x="504" y="166" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="579" y="192" fill="#e6ebff" font-size="12" text-anchor="middle">mlp1: table lookup f(x</text>
+<rect x="742" y="105" width="150" height="44" rx="8" fill="#0e1530" stroke="#8793c2" stroke-width="1.5"/>
+<text x="817" y="131" fill="#e6ebff" font-size="12" text-anchor="middle">output symbol</text>
+</svg>

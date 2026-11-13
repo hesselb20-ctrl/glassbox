@@ -1,0 +1,196 @@
+{
+ "id": "V0001",
+ "name": "t1: pointer-by-last-token then pair lookup (mlp0 -> 1.2 -> mlp1)",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5,
+  "null_percentile": 95.0
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t1/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 0.975,
+   "algorithm_accuracy_vs_ground_truth": 0.975,
+   "disagreements": [
+    {
+     "input": [
+      0,
+      2,
+      7,
+      3,
+      3,
+      4,
+      3
+     ],
+     "algorithm": "ge",
+     "model": "sa"
+    },
+    {
+     "input": [
+      0,
+      2,
+      3,
+      4,
+      3,
+      7,
+      3
+     ],
+     "algorithm": "ge",
+     "model": "sa"
+    },
+    {
+     "input": [
+      0,
+      2,
+      3,
+      5,
+      6,
+      3,
+      3
+     ],
+     "algorithm": "ge",
+     "model": "sa"
+    },
+    {
+     "input": [
+      0,
+      2,
+      2,
+      4,
+      2,
+      4,
+      3
+     ],
+     "algorithm": "ge",
+     "model": "sa"
+    },
+    {
+     "input": [
+      0,
+      2,
+      6,
+      4,
+      5,
+      5,
+      3
+     ],
+     "algorithm": "ge",
+     "model": "sa"
+    }
+   ],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "mlp0",
+    "1.2",
+    "mlp1"
+   ],
+   "circuit_size": 3,
+   "total_components": 8,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": -0.004625,
+    "fraction_of_clean": -0.004625,
+    "accuracy": 0.245
+   },
+   "everything_else_ablated": {
+    "metric": 1.0,
+    "fraction_of_clean": 1.0,
+    "accuracy": 1.0
+   },
+   "random_same_size_ablated_fraction": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": true,
+   "pass": true
+  }
+ },
+ "null_controls": [
+  {
+   "finding": "agreement",
+   "what": "share of held-out inputs where predict() equals the model's output",
+   "effect": 0.975,
+   "null_mean": 0.1825,
+   "null_p95": 0.22,
+   "null_max": 0.225,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "task-shuffled": 30
+   },
+   "pass": true
+  },
+  {
+   "finding": "necessity",
+   "what": "standardised drop in the metric when the claimed circuit is ablated",
+   "effect": 1.004625,
+   "null_mean": -0.003715,
+   "null_p95": 0.006214,
+   "null_max": 0.033279,
+   "percentile_of_effect": 100.0,
+   "n_null": 34,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30,
+    "random-init": 2,
+    "weight-shuffled": 2
+   },
+   "pass": true
+  },
+  {
+   "finding": "sufficiency",
+   "what": "standardised metric (above its no-information floor) with everything except the claimed circuit ablated",
+   "effect": 1.0,
+   "null_mean": -0.004625,
+   "null_p95": -0.004625,
+   "null_max": -0.004625,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30
+   },
+   "pass": true
+  }
+ ],
+ "model_accuracy": 1.0,
+ "metric_clean": 1.0,
+ "metric_floor": 0.0,
+ "metric_unit": 1.0,
+ "beats_null_controls": true,
+ "status": "verified",
+ "all_checks_passed": true,
+ "note": "Passed at full precision, and every effect exceeds its null distribution.",
+ "plot": "experiments/V0001_verify.png",
+ "spec": {
+  "name": "t1: pointer-by-last-token then pair lookup (mlp0 -> 1.2 -> mlp1)",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t1",
+   "n": 200,
+   "seed": 11
+  },
+  "code": "def predict(tokens, prompt):\n    # ids: 2=ge 3=gu 4=lu 5=sa 6=vi 7=zo ; tokens[0] is BOS, tokens[1..6] the input\n    last = tokens[6]\n    # Head 1.2 attends one-hot from pos 6 to a position chosen by the last token alone (E0008-E0012)\n    ptr = {2: 5, 5: 5, 3: 1, 6: 2, 4: 3, 7: 4}[last]\n    b = tokens[ptr]\n    # mlp1 lookup g(last, pointed token), table read from the model's outputs (E0001, E0007)\n    g = {\n        2: {2: 2, 3: 5, 4: 6, 5: 5, 6: 2, 7: 2},\n        3: {2: 2, 3: 6, 4: 3, 5: 4, 6: 2, 7: 7},\n        4: {2: 6, 3: 3, 4: 2, 5: 5, 6: 3, 7: 2},\n        5: {2: 4, 3: 7, 4: 6, 5: 5, 6: 2, 7: 6},\n        6: {2: 7, 3: 4, 4: 3, 5: 7, 6: 2, 7: 3},\n        7: {2: 4, 3: 6, 4: 4, 5: 3, 6: 5, 7: 2},\n    }\n    return g[last][b]\n",
+  "circuit": {
+   "components": [
+    "mlp0",
+    "1.2",
+    "mlp1"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-13T12:46:55"
+}

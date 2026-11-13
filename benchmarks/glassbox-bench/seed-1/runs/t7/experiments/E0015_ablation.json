@@ -1,0 +1,51 @@
+{
+ "id": "E0015",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t7",
+   "n": 200,
+   "seed": 1
+  },
+  "components": [
+   "mlp0"
+  ],
+  "mode": "mean",
+  "joint": true
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 31.691914,
+  "joint": true,
+  "components": [
+   "mlp0"
+  ],
+  "metric_ablated": 7.271402,
+  "fraction_of_clean": 0.22944
+ },
+ "data": {
+  "metric_ablated": 7.271402
+ },
+ "plot": "experiments/E0015_ablation.png",
+ "seconds": 0.32,
+ "timestamp": "2026-11-13T13:12:34",
+ "prereg_id": "N0025",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.4,
+  "statement": "mean-ablating mlp0 leaves at most 40% of the clean logit difference",
+  "verdict": "confirmed",
+  "observed": 0.22944
+ }
+}

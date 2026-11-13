@@ -1,0 +1,79 @@
+{
+ "id": "E0005",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "component": "head",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t2",
+   "n": 200,
+   "seed": 1
+  }
+ },
+ "summary": {
+  "component": "head",
+  "direction": "denoise",
+  "metric_base": -13.70281,
+  "metric_source": 14.347354,
+  "n": 200,
+  "top": [
+   {
+    "component": "1.0",
+    "effect": 0.467941
+   },
+   {
+    "component": "1.1",
+    "effect": 0.268193
+   },
+   {
+    "component": "0.1",
+    "effect": 0.227751
+   },
+   {
+    "component": "0.0",
+    "effect": 0.156175
+   }
+  ],
+  "variants": 4
+ },
+ "data": {
+  "effect": [
+   [
+    0.156175,
+    0.227751
+   ],
+   [
+    0.467941,
+    0.268193
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "columns": [
+   0,
+   1
+  ]
+ },
+ "plot": "experiments/E0005_activation_patching.png",
+ "seconds": 0.35,
+ "timestamp": "2026-11-13T12:47:23",
+ "prereg_id": "N0009",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[component=1.0].effect",
+  "op": ">=",
+  "threshold": 0.2,
+  "statement": "patching clean head 1.0 output recovers at least 20% of the logit-diff gap",
+  "verdict": "confirmed",
+  "observed": 0.467941
+ }
+}

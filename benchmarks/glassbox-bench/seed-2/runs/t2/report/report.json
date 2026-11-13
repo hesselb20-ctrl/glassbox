@@ -1,0 +1,146 @@
+{
+ "title": "t2: output = fixed symbol map of the token at position 3 (head 0.0 -> mlp0)",
+ "label": "verified",
+ "behavior": "BOS + 6 tokens from {do, du, go, gu, la, ta}; one symbol is output at the last position.",
+ "summary": "All numbers are from the local-full backend (full precision). The model outputs a fixed re-labelling of the third input token (sequence position 3, BOS = 0): do->do, gu->gu, la->la, du->go, go->ta, ta->du. No other input position influences the output. Head 0.0 attends from the last position to position 3 with weight 1.0 and moves that token; it has no direct effect on the logits. mlp0 reads what head 0.0 wrote and produces the output symbol. Heads 0.1 and 0.2 play no part. On 200 held-out inputs the algorithm matches the model 200/200; ablating {0.0, mlp0} drops accuracy to 0.16 (chance), ablating everything else leaves it at 1.0.",
+ "pseudocode": "def predict(tokens, prompt):\n    x = tokens[3]                      # head 0.0 copies position 3 to the last position (E0003, E0010)\n    table = {do: do, gu: gu, la: la,   # mlp0 turns it into the output symbol (E0008, E0011)\n             du: go, go: ta, ta: du}\n    return table[x]",
+ "claims": [
+  {
+   "text": "The model performs the behaviour perfectly on its own labels (accuracy 1.0, n=200).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The output depends only on the token at position 3: patching the layer-0 residual input at position 3 restores 100% of the metric, every other position 0%.",
+   "evidence": [
+    "E0003"
+   ]
+  },
+  {
+   "text": "The function is a fixed map of that token: do->do, gu->gu, la->la, du->go, go->ta, ta->du. It agrees with the model on 200/200 held-out inputs.",
+   "evidence": [
+    "V0001",
+    "E0001"
+   ]
+  },
+  {
+   "text": "Head 0.0 is necessary: mean-ablating it leaves 0.002 of the clean metric. It attends from position 6 to position 3 with weight 1.0.",
+   "evidence": [
+    "E0006",
+    "E0010",
+    "E0004"
+   ]
+  },
+  {
+   "text": "mlp0 is necessary (mean ablation leaves 0.002 of clean), and head 0.0 has zero direct effect on the logits, so the head's output reaches the answer only through mlp0.",
+   "evidence": [
+    "E0008",
+    "E0011",
+    "E0005"
+   ]
+  },
+  {
+   "text": "Heads 0.1 and 0.2 play no part: jointly mean-ablating them leaves 100% of the clean metric.",
+   "evidence": [
+    "E0007",
+    "V0001"
+   ]
+  },
+  {
+   "text": "The circuit {0.0, mlp0} is necessary and sufficient on held-out data: circuit ablated -> accuracy 0.16; everything else ablated -> accuracy 1.0; all effects beat their null controls.",
+   "evidence": [
+    "V0001"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "tok3",
+    "label": "token at position 3",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "0.0",
+    "label": "head 0.0: last position attends to position 3",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0: symbol map (du->go, go->ta, ta->du, others unchanged)",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "output logits at last position",
+    "layer": 1,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "tok3",
+    "dst": "0.0",
+    "label": "attention 6->3 = 1.0 (E0010)"
+   },
+   {
+    "src": "0.0",
+    "dst": "mlp0",
+    "label": "no direct logit path (E0011)"
+   },
+   {
+    "src": "mlp0",
+    "dst": "out",
+    "label": "writes the answer (E0008)"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0003",
+  "E0010",
+  "E0006",
+  "E0008"
+ ],
+ "limitations": [
+  "The symbol map was read off the dataset examples (E0001) and confirmed by held-out agreement (V0001); I did not separately measure whether the three-symbol rotation is done inside mlp0 or split between head 0.0's OV write, mlp0 and the unembedding. Only the combined path is established.",
+  "The attention pattern in E0009 suggests head 0.0 looks a fixed three positions back from every query position, but only the last position (6 -> 3) was tested with a pre-registered run, so 'position 3' and 'three back from the end' are not distinguished; they are the same thing at fixed length 7.",
+  "V0001 lists random_same_size_ablated_fraction as 1.0 for three random sets, which is odd for a 4-component model where most 2-component sets include a circuit component; the null-control tables in the same result pass, but I did not investigate this field.",
+  "What heads 0.1 and 0.2 compute (they attend mostly to positions 4 and 5) was not studied, only that removing them changes nothing."
+ ],
+ "open_questions": [
+  "Which neurons of mlp0 (12 available) implement the map, and how is the token encoded in head 0.0's output?"
+ ],
+ "overall_status": "verified \u00b7 verified",
+ "cited": [
+  "E0001",
+  "E0002",
+  "E0003",
+  "E0004",
+  "E0005",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0010",
+  "E0011",
+  "V0001"
+ ],
+ "prediction_record": {
+  "preregistered": 7,
+  "run": 7,
+  "not_run": [],
+  "confirmed": 7,
+  "refuted": 0,
+  "inconclusive": 0,
+  "hit_rate": 1.0,
+  "refuted_predictions": []
+ },
+ "exploratory_runs": [
+  "E0004",
+  "E0005",
+  "E0009"
+ ]
+}

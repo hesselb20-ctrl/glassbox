@@ -1,0 +1,79 @@
+{
+ "id": "E0006",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t7",
+   "n": 200,
+   "seed": 0
+  },
+  "component": "head"
+ },
+ "summary": {
+  "component": "head",
+  "direction": "denoise",
+  "metric_base": -31.325439,
+  "metric_source": 32.165562,
+  "n": 200,
+  "top": [
+   {
+    "component": "1.0",
+    "effect": 0.461623
+   },
+   {
+    "component": "1.1",
+    "effect": 0.425169
+   },
+   {
+    "component": "0.1",
+    "effect": 0.355389
+   },
+   {
+    "component": "0.0",
+    "effect": 0.303925
+   }
+  ],
+  "variants": 4
+ },
+ "data": {
+  "effect": [
+   [
+    0.303925,
+    0.355389
+   ],
+   [
+    0.461623,
+    0.425169
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "columns": [
+   0,
+   1
+  ]
+ },
+ "plot": "experiments/E0006_activation_patching.png",
+ "seconds": 0.43,
+ "timestamp": "2026-11-13T13:11:00",
+ "prereg_id": "N0009",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[0].effect",
+  "op": "<=",
+  "threshold": 0.5,
+  "statement": "the largest single-head patching effect (normalised, 1 = full restoration) is at most 0.5",
+  "verdict": "confirmed",
+  "observed": 0.461623
+ }
+}

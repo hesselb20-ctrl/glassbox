@@ -1,0 +1,53 @@
+{
+ "id": "E0006",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t3/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t3",
+   "n": 200,
+   "seed": 1
+  },
+  "components": [
+   "1.1",
+   "1.2"
+  ],
+  "mode": "mean",
+  "joint": true
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 1.0,
+  "joint": true,
+  "components": [
+   "1.1",
+   "1.2"
+  ],
+  "metric_ablated": 0.08,
+  "fraction_of_clean": 0.08
+ },
+ "data": {
+  "metric_ablated": 0.08
+ },
+ "plot": "experiments/E0006_ablation.png",
+ "seconds": 0.37,
+ "timestamp": "2026-11-13T12:51:07",
+ "prereg_id": "N0009",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.25,
+  "statement": "Jointly mean-ablating 1.1 and 1.2 leaves at most 25% of the clean metric.",
+  "verdict": "confirmed",
+  "observed": 0.08
+ }
+}

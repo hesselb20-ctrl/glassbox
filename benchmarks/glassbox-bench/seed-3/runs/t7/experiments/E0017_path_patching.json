@@ -1,0 +1,86 @@
+{
+ "id": "E0017",
+ "primitive": "path_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t7",
+   "n": 200,
+   "seed": 5
+  },
+  "senders": [
+   "0.0",
+   "0.1"
+  ],
+  "receiver": {
+   "heads": [
+    "1.0",
+    "1.1"
+   ],
+   "input": "q"
+  }
+ },
+ "summary": {
+  "receiver": {
+   "heads": [
+    "1.0",
+    "1.1"
+   ],
+   "input": "q"
+  },
+  "direction": "denoise",
+  "metric_base": -32.775307,
+  "metric_source": 34.661068,
+  "n": 200,
+  "top": [
+   {
+    "component": "0.1",
+    "effect": 0.017112
+   },
+   {
+    "component": "0.0",
+    "effect": 0.011746
+   },
+   {
+    "component": "1.0",
+    "effect": 0.0
+   },
+   {
+    "component": "1.1",
+    "effect": 0.0
+   }
+  ]
+ },
+ "data": {
+  "effect": [
+   [
+    0.011746,
+    0.017112
+   ],
+   [
+    0.0,
+    0.0
+   ]
+  ]
+ },
+ "plot": "experiments/E0017_path_patching.png",
+ "seconds": 0.38,
+ "timestamp": "2026-11-13T13:13:21",
+ "prereg_id": "N0032",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[component=0.1].effect",
+  "op": "<=",
+  "threshold": 0.1,
+  "statement": "path 0.1 -> q of layer-1 heads restores at most 0.1 of the gap",
+  "verdict": "confirmed",
+  "observed": 0.017112
+ }
+}

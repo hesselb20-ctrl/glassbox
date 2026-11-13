@@ -1,0 +1,160 @@
+{
+ "id": "E0004",
+ "primitive": "attention_patterns",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t4/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t4",
+   "n": 64,
+   "seed": 0
+  },
+  "head": "1.1",
+  "query_pos": 6
+ },
+ "summary": {
+  "score": "max mean attention from pos 6",
+  "n": 64,
+  "top": [
+   {
+    "head": "1.1",
+    "score": 0.640625
+   },
+   {
+    "head": "1.0",
+    "score": 0.421875
+   },
+   {
+    "head": "1.2",
+    "score": 0.375
+   },
+   {
+    "head": "0.2",
+    "score": 0.218663
+   },
+   {
+    "head": "0.1",
+    "score": 0.203516
+   },
+   {
+    "head": "0.0",
+    "score": 0.142857
+   }
+  ],
+  "most_attended_key_from_query": {
+   "0.0": 0,
+   "0.1": 2,
+   "0.2": 2,
+   "1.0": 5,
+   "1.1": 2,
+   "1.2": 0
+  }
+ },
+ "data": {
+  "score": [
+   [
+    0.142857,
+    0.203516,
+    0.218663
+   ],
+   [
+    0.421875,
+    0.640625,
+    0.375
+   ]
+  ],
+  "top_key": [
+   [
+    0.0,
+    2.0,
+    2.0
+   ],
+   [
+    5.0,
+    2.0,
+    0.0
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "pattern": [
+   [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.171875,
+    0.65625,
+    0.171875,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.28125,
+    0.515625,
+    0.203125,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.140625,
+    0.671875,
+    0.1875,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.125,
+    0.640625,
+    0.234375,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.1875,
+    0.5625,
+    0.25,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.171875,
+    0.640625,
+    0.1875,
+    0.0,
+    0.0,
+    0.0
+   ]
+  ]
+ },
+ "plot": "experiments/E0004_attention_patterns.png",
+ "seconds": 0.2,
+ "timestamp": "2026-11-13T12:57:56",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null
+}

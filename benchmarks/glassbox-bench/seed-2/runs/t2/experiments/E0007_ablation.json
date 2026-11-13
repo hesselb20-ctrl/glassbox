@@ -1,0 +1,53 @@
+{
+ "id": "E0007",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "components": [
+   "0.1",
+   "0.2"
+  ],
+  "mode": "mean",
+  "joint": true,
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t2",
+   "n": 200,
+   "seed": 3
+  }
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 1.0,
+  "joint": true,
+  "components": [
+   "0.1",
+   "0.2"
+  ],
+  "metric_ablated": 1.0,
+  "fraction_of_clean": 1.0
+ },
+ "data": {
+  "metric_ablated": 1.0
+ },
+ "plot": "experiments/E0007_ablation.png",
+ "seconds": 0.17,
+ "timestamp": "2026-11-13T12:49:03",
+ "prereg_id": "N0011",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": ">=",
+  "threshold": 0.95,
+  "statement": "jointly mean-ablating heads 0.1 and 0.2 keeps at least 95% of the clean metric",
+  "verdict": "confirmed",
+  "observed": 1.0
+ }
+}

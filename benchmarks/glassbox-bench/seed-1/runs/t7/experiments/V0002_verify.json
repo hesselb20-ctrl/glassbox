@@ -1,0 +1,134 @@
+{
+ "id": "V0002",
+ "name": "t7 priority-max, circuit without head 0.0",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5,
+  "null_percentile": 95.0
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 1.0,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "0.1",
+    "1.0",
+    "1.1",
+    "mlp0",
+    "mlp1"
+   ],
+   "circuit_size": 5,
+   "total_components": 6,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": -0.885642,
+    "fraction_of_clean": -0.028495,
+    "accuracy": 0.24
+   },
+   "everything_else_ablated": {
+    "metric": 21.211296,
+    "fraction_of_clean": 0.682469,
+    "accuracy": 0.965
+   },
+   "random_same_size_ablated_fraction": [
+    0.682469,
+    0.682469,
+    0.682469
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": false,
+   "pass": false
+  }
+ },
+ "null_controls": [
+  {
+   "finding": "agreement",
+   "what": "share of held-out inputs where predict() equals the model's output",
+   "effect": 1.0,
+   "null_mean": 0.356333,
+   "null_p95": 0.406,
+   "null_max": 0.415,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "task-shuffled": 30
+   },
+   "pass": true
+  },
+  {
+   "finding": "necessity",
+   "what": "standardised drop in the metric when the claimed circuit is ablated",
+   "effect": 1.028495,
+   "null_mean": 0.276314,
+   "null_p95": 0.317531,
+   "null_max": 0.317531,
+   "percentile_of_effect": 100.0,
+   "n_null": 34,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30,
+    "random-init": 2,
+    "weight-shuffled": 2
+   },
+   "pass": true
+  },
+  {
+   "finding": "sufficiency",
+   "what": "standardised metric (above its no-information floor) with everything except the claimed circuit ablated",
+   "effect": 0.682469,
+   "null_mean": -0.028495,
+   "null_p95": -0.028495,
+   "null_max": -0.028495,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30
+   },
+   "pass": true
+  }
+ ],
+ "model_accuracy": 1.0,
+ "metric_clean": 31.080212,
+ "metric_floor": 0.0,
+ "metric_unit": 31.080212,
+ "beats_null_controls": true,
+ "status": "not-verified",
+ "all_checks_passed": false,
+ "note": "At least one check failed; the explanation is partial or wrong. See the numbers.",
+ "plot": "experiments/V0002_verify.png",
+ "spec": {
+  "name": "t7 priority-max, circuit without head 0.0",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t7",
+   "n": 200,
+   "seed": 3
+  },
+  "code": "def predict(tokens, prompt):\n    # Output = highest-priority input symbol under pa(7) > bo(5) > pu(4) > ri(3) > ti(2) > so(6)  (E0001, E0002)\n    rank = {7: 5, 5: 4, 4: 3, 3: 2, 2: 1, 6: 0}\n    return max(tokens[1:], key=lambda t: rank.get(int(t), -1))\n",
+  "circuit": {
+   "components": [
+    "0.1",
+    "1.0",
+    "1.1",
+    "mlp0",
+    "mlp1"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-13T13:12:58"
+}

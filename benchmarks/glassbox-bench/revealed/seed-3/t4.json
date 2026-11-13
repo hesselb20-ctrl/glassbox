@@ -1,0 +1,90 @@
+{
+ "id": "t4",
+ "seed": 3,
+ "track": "compiled",
+ "label": "compiled: mechanism known exactly",
+ "family": "lookup2",
+ "params": {
+  "ptr": {
+   "ko": 1,
+   "vo": 0,
+   "nu": 0,
+   "la": 0,
+   "fu": 1
+  },
+  "table": {
+   "ko|ko": "ko",
+   "ko|vo": "vo",
+   "ko|nu": "la",
+   "ko|la": "vo",
+   "ko|fu": "nu",
+   "vo|ko": "nu",
+   "vo|vo": "nu",
+   "vo|nu": "ko",
+   "vo|la": "nu",
+   "vo|fu": "ko",
+   "nu|ko": "la",
+   "nu|vo": "vo",
+   "nu|nu": "la",
+   "nu|la": "vo",
+   "nu|fu": "vo",
+   "la|ko": "la",
+   "la|vo": "la",
+   "la|nu": "fu",
+   "la|la": "vo",
+   "la|fu": "vo",
+   "fu|ko": "nu",
+   "fu|vo": "nu",
+   "fu|nu": "nu",
+   "fu|la": "nu",
+   "fu|fu": "ko"
+  }
+ },
+ "vocab": [
+  "ko",
+  "vo",
+  "nu",
+  "la",
+  "fu"
+ ],
+ "seq_len": 6,
+ "truth_function": "glassbox.bench.truth.lookup2",
+ "rasp_source": "ptr = Map(ptr, tokens); fetched = Aggregate(Select(indices, ptr, EQ), tokens); out = SequenceMap(table, fetched, tokens)",
+ "tracr": {
+  "num_layers": 2,
+  "num_heads": 1,
+  "checked_inputs": 1500,
+  "exhaustive": false
+ },
+ "components_before_obfuscation": [
+  "mlp0",
+  "1.0",
+  "mlp1"
+ ],
+ "transforms": {
+  "extra_residual_dims": 8,
+  "distractor_heads_per_layer": 2,
+  "distractor_neurons_per_layer": 6,
+  "head_permutation": {
+   "0": [
+    1,
+    0,
+    2
+   ],
+   "1": [
+    1,
+    2,
+    0
+   ]
+  },
+  "layers": 2,
+  "rotation": "random orthogonal 34x34, folded into the weights"
+ },
+ "true_components": [
+  "1.2",
+  "mlp0",
+  "mlp1"
+ ],
+ "accuracy_after_conversion": 1.0,
+ "accuracy_after_obfuscation": 1.0
+}

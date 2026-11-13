@@ -1,0 +1,60 @@
+{
+ "id": "E0011",
+ "primitive": "direct_logit_attribution",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t1/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t1",
+   "n": 200,
+   "seed": 0
+  }
+ },
+ "summary": {
+  "metric_clean": 15.105472,
+  "sum_of_head_contributions": 2.929144,
+  "n": 200,
+  "top": [
+   {
+    "component": "1.0",
+    "effect": 1.652524
+   },
+   {
+    "component": "1.1",
+    "effect": 1.215641
+   },
+   {
+    "component": "0.0",
+    "effect": 0.039921
+   },
+   {
+    "component": "0.1",
+    "effect": 0.021057
+   }
+  ]
+ },
+ "data": {
+  "contribution": [
+   [
+    0.039921,
+    0.021057
+   ],
+   [
+    1.652524,
+    1.215641
+   ]
+  ]
+ },
+ "plot": "experiments/E0011_direct_logit_attribution.png",
+ "seconds": 0.25,
+ "timestamp": "2026-11-13T12:43:58",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null
+}

@@ -1,0 +1,53 @@
+{
+ "id": "E0007",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t1/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t1",
+   "n": 200,
+   "seed": 0
+  },
+  "components": [
+   "1.0",
+   "1.1"
+  ],
+  "mode": "mean",
+  "joint": true
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 15.105472,
+  "joint": true,
+  "components": [
+   "1.0",
+   "1.1"
+  ],
+  "metric_ablated": 5.521382,
+  "fraction_of_clean": 0.365522
+ },
+ "data": {
+  "metric_ablated": 5.521382
+ },
+ "plot": "experiments/E0007_ablation.png",
+ "seconds": 0.24,
+ "timestamp": "2026-11-13T12:43:27",
+ "prereg_id": "N0012",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.3,
+  "statement": "jointly mean-ablating 1.0 and 1.1 leaves at most 30% of the clean logit difference",
+  "verdict": "refuted",
+  "observed": 0.365522
+ }
+}

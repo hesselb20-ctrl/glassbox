@@ -1,0 +1,69 @@
+{
+ "id": "E0015",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t7",
+   "n": 200,
+   "seed": 4
+  },
+  "component": "attn_out"
+ },
+ "summary": {
+  "component": "attn_out",
+  "direction": "denoise",
+  "metric_base": -33.800335,
+  "metric_source": 34.481243,
+  "n": 200,
+  "top": [
+   {
+    "component": "attn_out.1 @ pos all",
+    "effect": 0.887544
+   },
+   {
+    "component": "attn_out.0 @ pos all",
+    "effect": 0.647304
+   }
+  ],
+  "variants": 2
+ },
+ "data": {
+  "effect": [
+   [
+    0.647304
+   ],
+   [
+    0.887544
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "columns": [
+   "all"
+  ]
+ },
+ "plot": "experiments/E0015_activation_patching.png",
+ "seconds": 0.35,
+ "timestamp": "2026-11-13T13:12:55",
+ "prereg_id": "N0028",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[0][4]",
+  "op": ">=",
+  "threshold": 0.1,
+  "statement": "exact patching effect of attn_out layer 0 at position 4 is at least 0.1",
+  "verdict": "inconclusive",
+  "observed": null,
+  "why": "metric not found in the result: list index out of range"
+ }
+}

@@ -1,0 +1,163 @@
+{
+ "title": "t1: count of tokens in the same class as the last token (mlp0 -> head 1.1 -> mlp1)",
+ "label": "verified (local-full, full precision)",
+ "behavior": "Input BOS + 6 tokens from {do, lo, po, to, vo}; the model outputs one digit at the last position.",
+ "summary": "The model splits the five symbols into two classes, A = {lo, vo} and B = {do, po, to}, and outputs how many of the 6 input tokens (the last one included) belong to the same class as the last token. The circuit is mlp0 (per-position work at each token position), head 1.1 (from the last position attends equally to BOS and to every same-class token, so the BOS weight is 1/(1+count)), and mlp1 (at the last position turns that into the digit). Heads 0.0, 0.1 and 1.0 play no part. All numbers are from local-full at full precision.",
+ "pseudocode": "A = {lo, vo}; B = {do, po, to}\nclass(t) = A if t in A else B          # mlp0, at every token position\ncount = #{ i in 1..6 : class(x_i) == class(x_6) }   # head 1.1 from the last position: equal attention on BOS and same-class tokens -> BOS weight 1/(1+count)\noutput digit = count                   # mlp1 at the last position",
+ "claims": [
+  {
+   "text": "The model does the behaviour deterministically (clean accuracy 1.0 on 128 inputs).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The function is: number of input tokens in the same class as the last token, with classes {lo, vo} and {do, po, to}. The Python version agrees with the model on 200/200 held-out inputs.",
+   "evidence": [
+    "V0001"
+   ]
+  },
+  {
+   "text": "Head 1.1 is necessary: resample-ablating it leaves 0.0 of the clean metric; the other three heads each leave 1.0.",
+   "evidence": [
+    "E0007"
+   ]
+  },
+  {
+   "text": "mlp0 and mlp1 are both necessary: resample-ablating either leaves 0.0 of the clean metric.",
+   "evidence": [
+    "E0008"
+   ]
+  },
+  {
+   "text": "Heads 0.0, 0.1 and 1.0 play no part: jointly mean-ablating all three leaves 1.0 of the clean metric; with everything outside {mlp0, 1.1, mlp1} ablated the model keeps accuracy 1.0.",
+   "evidence": [
+    "E0006",
+    "V0001"
+   ]
+  },
+  {
+   "text": "Head 1.1 at the last position attends only to BOS and same-class tokens with equal weight: when the last token is the only member of its class, 0.5 goes to BOS, 0.5 to itself and 0 to the five other-class tokens.",
+   "evidence": [
+    "E0009"
+   ]
+  },
+  {
+   "text": "mlp1 does its work only at the last position (patching it there alone restores 1.0); mlp0 works at each of the six token positions (0.29-0.36 each) and not at BOS (0.0).",
+   "evidence": [
+    "E0012"
+   ]
+  },
+  {
+   "text": "After layer 0 the answer is not yet at the last position (patching resid_post.0 at pos 6 alone restores 0.36); after layer 1 it is (1.0). So the count is moved to the last position in layer 1.",
+   "evidence": [
+    "E0013"
+   ]
+  },
+  {
+   "text": "Ablating the circuit {mlp0, 1.1, mlp1} drops the metric to 0.0015 of clean (accuracy 0.25); all three checks beat their null distributions.",
+   "evidence": [
+    "V0001"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "tok",
+    "label": "token embeddings (pos 1-6) + BOS",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0: per-position class mark {lo,vo} vs {do,po,to}",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "1.1",
+    "label": "head 1.1: last pos attends to BOS + same-class tokens; BOS weight = 1/(1+count)",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "mlp1",
+    "label": "mlp1 @ last pos: 1/(1+count) -> digit",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "digit logit",
+    "layer": 2,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "tok",
+    "dst": "mlp0",
+    "label": "token identity"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.1",
+    "label": "class at each position (query and key)"
+   },
+   {
+    "src": "1.1",
+    "dst": "mlp1",
+    "label": "attention fraction at last position"
+   },
+   {
+    "src": "mlp1",
+    "dst": "out",
+    "label": "count"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0009",
+  "E0012",
+  "E0013"
+ ],
+ "limitations": [
+  "What mlp0 writes was not read out directly. That it is a class mark is inferred from the attention rule of 1.1 (E0009) plus mlp0 being needed at every token position (E0012, E0013). Path patching from mlp0 into 1.1's query/key was attempted and the primitive errored for an MLP sender, so the mlp0 -> 1.1 edge is not separately measured.",
+  "The split of mlp1's role (decode 1/(1+count) to a digit) is inferred from the attention weights and position patching; the numeric encoding in 1.1's output was not measured.",
+  "E0009 used inputs where the last token is alone in its class; the general 1/(1+count) weighting is consistent with the exploratory mean pattern in E0005 but only the count = 1 case was pre-registered.",
+  "V0001's three random same-size ablation sets all returned 1.0; with only 6 components the random control is coarse."
+ ],
+ "open_questions": [
+  "Do heads 0.0, 0.1 and 1.0 compute anything coherent, or are they pure distractors?",
+  "Which side(s) of head 1.1 (query, key, value) read mlp0's output?"
+ ],
+ "overall_status": "verified \u00b7 verified (local-full, full precision)",
+ "cited": [
+  "E0002",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0009",
+  "E0012",
+  "E0013",
+  "V0001"
+ ],
+ "prediction_record": {
+  "preregistered": 7,
+  "run": 7,
+  "not_run": [],
+  "confirmed": 7,
+  "refuted": 0,
+  "inconclusive": 0,
+  "hit_rate": 1.0,
+  "refuted_predictions": []
+ },
+ "exploratory_runs": [
+  "E0003",
+  "E0004",
+  "E0005",
+  "E0010",
+  "E0011"
+ ]
+}

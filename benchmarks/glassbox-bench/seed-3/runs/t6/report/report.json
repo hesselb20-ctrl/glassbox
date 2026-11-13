@@ -1,0 +1,156 @@
+{
+ "title": "t6: fixed symbol lookup on the second-to-last token (head 0.1 -> mlp0)",
+ "label": "verified",
+ "behavior": "BOS + 5 tokens from {ge, pe, ro, sa, zu}; the model outputs one symbol at the last position.",
+ "summary": "The model outputs M[x4], where x4 is the fourth input symbol (token position 4, the one just before the last) and M is the fixed table ge->pe, pe->zu, ro->ge, sa->sa, zu->ro. All other inputs, including the last token itself, are ignored. Head 0.1 is a pure previous-token head that copies the position-4 token to the last position; mlp0 then applies the lookup and writes the answer. Heads 0.0 and 0.2 play no part. All numbers are from the local-full backend (full precision). Held-out verification: 300/300 agreement, circuit ablated -> metric -0.002 (accuracy 20%, chance), everything else ablated -> metric 1.0 (accuracy 100%).",
+ "pseudocode": "def predict(tokens, prompt):\n    # tokens = [BOS, x1, x2, x3, x4, x5]\n    moved = tokens[4]                      # head 0.1: last position attends to position 4 (E0012, E0010)\n    M = {2: 3, 3: 6, 4: 2, 5: 5, 6: 4}     # mlp0 lookup (E0006): ge->pe, pe->zu, ro->ge, sa->sa, zu->ro\n    return M[moved]",
+ "claims": [
+  {
+   "text": "The model reproduces the dataset answers on 100% of prompts (the behaviour is deterministic and clean).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The output is a fixed lookup of the token at position 4: ge->pe, pe->zu, ro->ge, sa->sa, zu->ro. The rule agrees with the model on 300/300 held-out inputs (null agreement with shuffled labels: mean 0.20, max 0.25).",
+   "evidence": [
+    "V0001",
+    "E0001"
+   ]
+  },
+  {
+   "text": "Before layer 0 only position 4 matters: patching the clean residual at position 4 into a corrupt run recovers 100% of the metric gap, every other position 0%.",
+   "evidence": [
+    "E0010",
+    "E0008"
+   ]
+  },
+  {
+   "text": "After layer 0 the answer is entirely at the last position (resid_post at position 5 recovers 100%, position 4 recovers 0%).",
+   "evidence": [
+    "E0011"
+   ]
+  },
+  {
+   "text": "Head 0.1 is necessary and is a previous-token head: mean-ablating it leaves 0.3% of the metric, and its attention from position 5 to position 4 is 1.0.",
+   "evidence": [
+    "E0009",
+    "E0012",
+    "E0004",
+    "E0007"
+   ]
+  },
+  {
+   "text": "mlp0 is necessary: mean-ablating it leaves 0.8% of the metric; patching clean mlp_out (all positions) into a corrupt run recovers 100%.",
+   "evidence": [
+    "E0006",
+    "E0013"
+   ]
+  },
+  {
+   "text": "Heads 0.0 and 0.2 play no part: ablating both together leaves 100% of the metric, and with everything except {0.1, mlp0} ablated the model keeps 100% accuracy.",
+   "evidence": [
+    "E0005",
+    "V0001"
+   ]
+  },
+  {
+   "text": "The circuit {0.1, mlp0} is necessary and sufficient on held-out data: ablated -> fraction of clean -0.002 and accuracy 0.203; alone -> fraction 1.0 and accuracy 1.0; all effects beat their null distributions.",
+   "evidence": [
+    "V0001"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "tok4",
+    "label": "token at position 4",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "0.1",
+    "label": "head 0.1: previous-token mover (5 -> 4)",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0: lookup table M at position 5",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "output logits at position 5",
+    "layer": 1,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "tok4",
+    "dst": "0.1",
+    "label": "value (token identity)"
+   },
+   {
+    "src": "0.1",
+    "dst": "mlp0",
+    "label": "copied token at last position"
+   },
+   {
+    "src": "mlp0",
+    "dst": "out",
+    "label": "M[token]"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0010",
+  "E0012",
+  "E0009",
+  "E0006"
+ ],
+ "limitations": [
+  "Two pre-registered predictions were scored inconclusive because the metric path I registered does not exist in the result (E0004, E0013). The observed values (0.0075 and 1.0) match the hypothesis; E0004 was re-tested on a new sample as E0009 with the same threshold.",
+  "The lookup table was read from the model's input/output pairs, not decoded from mlp0's weights or neurons; how the 15 MLP neurons implement the table was not studied.",
+  "mlp_out patching covers all positions at once, so 'mlp0 acts at position 5' is inferred from E0011 (only position 5 matters after the layer), not measured per position.",
+  "No path patching was run to show directly that 0.1's output is what mlp0 reads; this follows from both being individually necessary and jointly sufficient in a one-layer model."
+ ],
+ "open_questions": [
+  "What do the distractor heads 0.0 and 0.2 write, and into which subspace, given that it never reaches the output?",
+  "How is the table distributed over mlp0's neurons?"
+ ],
+ "overall_status": "verified \u00b7 verified",
+ "cited": [
+  "E0001",
+  "E0002",
+  "E0004",
+  "E0005",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0013",
+  "V0001"
+ ],
+ "prediction_record": {
+  "preregistered": 9,
+  "run": 9,
+  "not_run": [],
+  "confirmed": 7,
+  "refuted": 0,
+  "inconclusive": 2,
+  "hit_rate": 1.0,
+  "refuted_predictions": []
+ },
+ "exploratory_runs": [
+  "E0003",
+  "E0007",
+  "E0008"
+ ]
+}

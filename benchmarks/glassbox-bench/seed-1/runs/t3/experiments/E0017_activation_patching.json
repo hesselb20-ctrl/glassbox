@@ -1,0 +1,116 @@
+{
+ "id": "E0017",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t3/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t3",
+   "n": 200,
+   "seed": 2
+  },
+  "component": "resid_post"
+ },
+ "summary": {
+  "component": "resid_post",
+  "direction": "denoise",
+  "metric_base": -1.0,
+  "metric_source": 1.0,
+  "n": 200,
+  "top": [
+   {
+    "component": "resid_post.1 @ pos 5",
+    "effect": 1.0
+   },
+   {
+    "component": "resid_post.2 @ pos 5",
+    "effect": 1.0
+   },
+   {
+    "component": "resid_post.0 @ pos 3",
+    "effect": 0.2925
+   },
+   {
+    "component": "resid_post.0 @ pos 5",
+    "effect": 0.2925
+   },
+   {
+    "component": "resid_post.0 @ pos 1",
+    "effect": 0.29
+   },
+   {
+    "component": "resid_post.0 @ pos 2",
+    "effect": 0.2875
+   },
+   {
+    "component": "resid_post.0 @ pos 4",
+    "effect": 0.2325
+   },
+   {
+    "component": "resid_post.0 @ pos 0",
+    "effect": 0.0
+   }
+  ],
+  "variants": 18
+ },
+ "data": {
+  "effect": [
+   [
+    0.0,
+    0.29,
+    0.2875,
+    0.2925,
+    0.2325,
+    0.2925
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "layers": [
+   0,
+   1,
+   2
+  ],
+  "columns": [
+   "0",
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ]
+ },
+ "plot": "experiments/E0017_activation_patching.png",
+ "seconds": 0.56,
+ "timestamp": "2026-11-13T12:53:47",
+ "prereg_id": "N0028",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[1][5]",
+  "op": ">=",
+  "threshold": 0.95,
+  "statement": "Patching clean resid_post of layer 1 at position 5 into the corrupted run restores at least 95% of the metric.",
+  "verdict": "confirmed",
+  "observed": 1.0
+ }
+}

@@ -1,0 +1,207 @@
+{
+ "title": "t2: minimum of 5 symbols under a fixed order, computed by mlp0 -> mlp1 -> 2.0 -> mlp2 -> 3.1",
+ "label": "verified",
+ "behavior": "Input BOS + 5 tokens from {bo, la, nu, pa, ri, vu}; the model outputs one symbol at the last position.",
+ "summary": "All numbers are from the local-full backend (full precision). The model outputs the minimum of the five input symbols under the fixed order bo < nu < pa < la < ri < vu (token ids 1 < 4 < 5 < 3 < 6 < 7). A hand-written predict() implementing that agrees with the model on 1000/1000 held-out inputs (V0001). The circuit is five components out of 16: mlp0, mlp1, head 2.0, mlp2 and head 3.1. mlp0 -> mlp1 -> 2.0 -> mlp2 is a serial rank pathway: 2.0 at each position attends to BOS plus the positions whose symbol outranks its own, which gives each position a rank. That rank enters head 3.1 through its keys; 3.1 at the last position attends to the position holding the minimum symbol and writes that symbol straight to the logits. The other 10 heads and mlp3 play no part: ablating all of them together changes nothing.",
+ "pseudocode": "rank = {bo:0, nu:1, pa:2, la:3, ri:4, vu:5}\n# mlp0, mlp1 (per position) + head 2.0 (attend BOS + positions that outrank me) + mlp2:\n#   every position gets its rank among the 5 symbols\n# head 3.1 (last position): attend to the lowest-ranked position, copy its symbol to the logits\nreturn min(tokens[1:], key=rank)",
+ "claims": [
+  {
+   "text": "The model performs the behaviour perfectly on the bench dataset (accuracy 1.0, n=200).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The function is min over the 5 symbols under the order bo<nu<pa<la<ri<vu (first read off the dataset examples): predict() agrees with the model on 1000/1000 held-out inputs (task-shuffled null agreement p95 = 0.46).",
+   "evidence": [
+    "V0001"
+   ]
+  },
+  {
+   "text": "Heads 2.0 and 3.1 are the only heads that matter: resample ablation leaves 0.23 and 0.15 of the clean logit difference; all 10 other heads stay at 1.0.",
+   "evidence": [
+    "E0010",
+    "E0003",
+    "E0005"
+   ]
+  },
+  {
+   "text": "mlp0, mlp1 and mlp2 are each necessary (mean ablation leaves 0.0001, 0.0001, 0.02 of clean); mlp3 is not (1.0).",
+   "evidence": [
+    "E0011",
+    "E0004"
+   ]
+  },
+  {
+   "text": "The 11 non-circuit components (10 heads + mlp3) can be mean-ablated jointly with no loss (fraction of clean 1.0); on held-out data the circuit alone keeps accuracy 1.0 and ablating the circuit drops the metric to 0.0001 of clean (accuracy 0.276).",
+   "evidence": [
+    "E0012",
+    "V0001"
+   ]
+  },
+  {
+   "text": "Head 3.1 at the last position attends to the position of the minimum symbol (0.9999 attention on 8 constructed inputs with the unique minimum at position 2) and writes the answer directly to the logits (direct-path effect 1.0).",
+   "evidence": [
+    "E0008",
+    "E0016"
+   ]
+  },
+  {
+   "text": "Head 2.0 attends to BOS plus positions whose symbol comes later in the order than its own: when the last token is the unique maximum (vu), all of its attention (1.0) goes to BOS; it never attends to its own position.",
+   "evidence": [
+    "E0009",
+    "E0007"
+   ]
+  },
+  {
+   "text": "The rank information from 2.0 reaches 3.1 through its key input (path effect 0.3825) and not through its query (0.0). Denoising mlp0, mlp1 or mlp2 alone restores exactly the same 0.3825, consistent with one serial pathway mlp0 -> mlp1 -> 2.0 -> mlp2 -> 3.1 keys that decides where 3.1 looks, while the copied symbol comes from the token itself.",
+   "evidence": [
+    "E0014",
+    "E0015",
+    "E0018",
+    "E0013",
+    "E0017"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "tok",
+    "label": "token + position embedding",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0 (rank pathway, per position)",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "mlp1",
+    "label": "mlp1 (rank pathway, per position)",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "2.0",
+    "label": "2.0: attend BOS + positions that outrank me",
+    "layer": 2,
+    "kind": "head"
+   },
+   {
+    "id": "mlp2",
+    "label": "mlp2: attention share -> rank",
+    "layer": 2,
+    "kind": "mlp"
+   },
+   {
+    "id": "3.1",
+    "label": "3.1: last pos attends to the minimum, copies it",
+    "layer": 3,
+    "kind": "head"
+   },
+   {
+    "id": "logits",
+    "label": "output symbol",
+    "layer": 4,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "tok",
+    "dst": "mlp0",
+    "label": "symbol"
+   },
+   {
+    "src": "mlp0",
+    "dst": "mlp1",
+    "label": ""
+   },
+   {
+    "src": "mlp1",
+    "dst": "2.0",
+    "label": "ordering key"
+   },
+   {
+    "src": "2.0",
+    "dst": "mlp2",
+    "label": "share of attention on BOS"
+   },
+   {
+    "src": "mlp2",
+    "dst": "3.1",
+    "label": "rank, via keys"
+   },
+   {
+    "src": "tok",
+    "dst": "3.1",
+    "label": "symbol identity, via values"
+   },
+   {
+    "src": "3.1",
+    "dst": "logits",
+    "label": "direct write"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0010",
+  "E0011",
+  "E0008",
+  "E0009"
+ ],
+ "limitations": [
+  "What mlp0 and mlp1 each compute was not isolated; only that both are necessary and sit on the same serial pathway as 2.0 and mlp2. The edges mlp0 -> mlp1 -> 2.0 and 2.0 -> mlp2 are inferred from layer order plus the identical 0.3825 denoising effects, not from direct path patching (the path_patching primitive rejected MLP senders).",
+  "The labels 'ordering key' and 'attention share -> rank' for mlp1 and mlp2 are interpretation; the measured facts are the attention pattern of 2.0 and the key-path effect.",
+  "How ties between equal symbols are broken inside 2.0 was not tested; it does not affect the output since tied positions hold the same symbol.",
+  "The ri < vu leg of the order was read off a single example in the dataset listing (E0001); it is supported afterwards only by the 1000/1000 held-out agreement, without a count of how many of those inputs contain only ri and vu.",
+  "The value path token -> 3.1 is inferred from the path-patching effect being 0.38 rather than 1.0; it was not patched directly.",
+  "In V0001 all three random same-size ablations left the metric at 1.0, which suggests the random control is drawn from non-circuit components; I did not check how it is sampled."
+ ],
+ "open_questions": [
+  "What do mlp0 and mlp1 compute individually, and why are two MLP layers used before the first useful attention head?",
+  "Do positions other than the last also receive a sorted output from 3.1 (its attention from other positions is sharp too in E0006), i.e. is this a full sort of which only the last element is read?"
+ ],
+ "overall_status": "verified \u00b7 verified",
+ "cited": [
+  "E0002",
+  "E0003",
+  "E0004",
+  "E0005",
+  "E0007",
+  "E0008",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0013",
+  "E0014",
+  "E0015",
+  "E0016",
+  "E0017",
+  "E0018",
+  "V0001"
+ ],
+ "prediction_record": {
+  "preregistered": 10,
+  "run": 10,
+  "not_run": [],
+  "confirmed": 10,
+  "refuted": 0,
+  "inconclusive": 0,
+  "hit_rate": 1.0,
+  "refuted_predictions": []
+ },
+ "exploratory_runs": [
+  "E0003",
+  "E0004",
+  "E0005",
+  "E0006",
+  "E0007",
+  "E0013",
+  "E0017"
+ ]
+}

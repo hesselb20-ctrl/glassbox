@@ -1,0 +1,313 @@
+{
+ "id": "E0003",
+ "primitive": "baseline",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t6/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "clean": {
+   "tokens": [
+    [
+     0,
+     3,
+     2,
+     2,
+     2,
+     2
+    ],
+    [
+     0,
+     2,
+     3,
+     2,
+     2,
+     2
+    ],
+    [
+     0,
+     2,
+     2,
+     3,
+     2,
+     2
+    ],
+    [
+     0,
+     2,
+     2,
+     2,
+     3,
+     2
+    ],
+    [
+     0,
+     2,
+     2,
+     2,
+     2,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     3,
+     2
+    ],
+    [
+     0,
+     2,
+     3,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     2,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     2,
+     3,
+     2,
+     3
+    ],
+    [
+     0,
+     2,
+     3,
+     2,
+     3,
+     2
+    ],
+    [
+     0,
+     3,
+     2,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     2,
+     3
+    ]
+   ]
+  },
+  "corrupt": {
+   "tokens": [
+    [
+     0,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     3,
+     3
+    ]
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "incorrect": [
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+   ]
+  }
+ },
+ "summary": {
+  "n": 12,
+  "metric_type": "logit_diff",
+  "clean_metric_mean": 0.999934,
+  "clean_metric_std": 0.0,
+  "clean_accuracy": 1.0,
+  "example_predictions": [
+   {
+    "predicted": "gu",
+    "expected": "gu"
+   },
+   {
+    "predicted": "gu",
+    "expected": "gu"
+   },
+   {
+    "predicted": "gu",
+    "expected": "gu"
+   },
+   {
+    "predicted": "gu",
+    "expected": "gu"
+   }
+  ],
+  "corrupt_metric_mean": -0.999934
+ },
+ "data": {
+  "clean_metric": [
+   0.999934,
+   0.999934,
+   0.999934,
+   0.999934,
+   0.999934,
+   0.999934,
+   0.999934,
+   0.999934,
+   0.999934,
+   0.999934,
+   0.999934,
+   0.999934
+  ],
+  "corrupt_metric": [
+   -0.999934,
+   -0.999934,
+   -0.999934,
+   -0.999934,
+   -0.999934,
+   -0.999934,
+   -0.999934,
+   -0.999934,
+   -0.999934,
+   -0.999934,
+   -0.999934,
+   -0.999934
+  ]
+ },
+ "plot": "experiments/E0003_baseline.png",
+ "seconds": 0.11,
+ "timestamp": "2026-11-13T13:04:42",
+ "prereg_id": "N0005",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.clean_accuracy",
+  "op": ">=",
+  "threshold": 0.99,
+  "statement": "All 12 gu/tu-only prompts containing at least one gu output gu (and the all-tu corrupt prompts output tu)",
+  "verdict": "confirmed",
+  "observed": 1.0
+ }
+}

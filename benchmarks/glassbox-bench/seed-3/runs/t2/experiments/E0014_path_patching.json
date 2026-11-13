@@ -1,0 +1,79 @@
+{
+ "id": "E0014",
+ "primitive": "path_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "senders": [
+   "0.0",
+   "0.1"
+  ],
+  "receiver": {
+   "heads": [
+    "1.0",
+    "1.1"
+   ],
+   "input": "v"
+  },
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t2",
+   "n": 200,
+   "seed": 2
+  }
+ },
+ "summary": {
+  "receiver": {
+   "heads": [
+    "1.0",
+    "1.1"
+   ],
+   "input": "v"
+  },
+  "direction": "denoise",
+  "metric_base": -14.696445,
+  "metric_source": 14.443031,
+  "n": 200,
+  "top": [
+   {
+    "component": "0.1",
+    "effect": 0.157484
+   },
+   {
+    "component": "0.0",
+    "effect": 0.107383
+   },
+   {
+    "component": "1.0",
+    "effect": 0.0
+   },
+   {
+    "component": "1.1",
+    "effect": 0.0
+   }
+  ]
+ },
+ "data": {
+  "effect": [
+   [
+    0.107383,
+    0.157484
+   ],
+   [
+    0.0,
+    0.0
+   ]
+  ]
+ },
+ "plot": "experiments/E0014_path_patching.png",
+ "seconds": 0.31,
+ "timestamp": "2026-11-13T12:49:56",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null
+}

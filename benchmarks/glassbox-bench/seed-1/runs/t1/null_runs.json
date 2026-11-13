@@ -1,0 +1,44 @@
+{
+ "investigation": "t1",
+ "null_runs": [
+  {
+   "run": "t1__null-random-init",
+   "null": {
+    "kind": "random-init",
+    "seed": 0
+   },
+   "experiments": 5,
+   "verifications": [],
+   "report_status": "unverified (no verification run) \u00b7 null result: no behaviour, no mechanism",
+   "discovered_a_circuit": false
+  },
+  {
+   "run": "t1__null-task-shuffled",
+   "null": {
+    "kind": "task-shuffled",
+    "seed": 0
+   },
+   "experiments": 2,
+   "verifications": [],
+   "report_status": "unverified (no verification run) \u00b7 no mechanism: baseline at chance",
+   "discovered_a_circuit": false
+  },
+  {
+   "run": "t1__null-weight-shuffled",
+   "null": {
+    "kind": "weight-shuffled",
+    "seed": 0
+   },
+   "experiments": 4,
+   "verifications": [
+    "not-verified"
+   ],
+   "report_status": "partial / not verified \u00b7 no mechanism: behaviour absent (not verified)",
+   "discovered_a_circuit": false
+  }
+ ],
+ "n": 3,
+ "false_discoveries": 0,
+ "false_discovery_rate": 0.0,
+ "definition": "a null run counts as a false discovery if its final verification is 'verified' or 'screening-pass', or its report status says verified / screening"
+}

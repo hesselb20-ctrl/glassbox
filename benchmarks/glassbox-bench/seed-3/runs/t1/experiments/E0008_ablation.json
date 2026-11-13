@@ -1,0 +1,68 @@
+{
+ "id": "E0008",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t1/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t1",
+   "n": 128,
+   "seed": 2
+  },
+  "sweep": "mlps",
+  "mode": "resample"
+ },
+ "summary": {
+  "mode": "resample",
+  "n": 128,
+  "metric_clean": 1.0,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "mlp0",
+    "metric": 0.0,
+    "change": -1.0,
+    "fraction_of_clean": 0.0
+   },
+   {
+    "component": "mlp1",
+    "metric": 0.0,
+    "change": -1.0,
+    "fraction_of_clean": 0.0
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "mlp0",
+   "mlp1"
+  ],
+  "metric": [
+   0.0,
+   0.0
+  ],
+  "change": [
+   -1.0,
+   -1.0
+  ]
+ },
+ "plot": "experiments/E0008_ablation.png",
+ "seconds": 0.18,
+ "timestamp": "2026-11-13T12:43:12",
+ "prereg_id": "N0011",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[component=mlp0].fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.3,
+  "statement": "Resample-ablating mlp0 leaves at most 30% of the clean metric (mlp1 read from the same result)",
+  "verdict": "confirmed",
+  "observed": 0.0
+ }
+}

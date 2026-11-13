@@ -1,0 +1,52 @@
+{
+ "id": "E0004",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t6/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t6",
+   "n": 150,
+   "seed": 1
+  },
+  "components": [
+   "0.1"
+  ],
+  "mode": "mean",
+  "joint": true
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 150,
+  "metric_clean": 1.0,
+  "joint": true,
+  "components": [
+   "0.1"
+  ],
+  "metric_ablated": 0.007511,
+  "fraction_of_clean": 0.007511
+ },
+ "data": {
+  "metric_ablated": 0.007511
+ },
+ "plot": "experiments/E0004_ablation.png",
+ "seconds": 0.15,
+ "timestamp": "2026-11-13T13:08:48",
+ "prereg_id": "N0007",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[component=0.1].fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.2,
+  "statement": "Mean-ablating head 0.1 on a fresh sample leaves at most 20% of the clean metric.",
+  "verdict": "inconclusive",
+  "observed": null,
+  "why": "metric not found in the result: \"'top' not found while resolving 'summary.top[component=0.1].fraction_of_clean'\""
+ }
+}

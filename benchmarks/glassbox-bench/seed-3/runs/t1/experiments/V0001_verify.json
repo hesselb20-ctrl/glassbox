@@ -1,0 +1,130 @@
+{
+ "id": "V0001",
+ "name": "same-class count: mlp0 -> 1.1 -> mlp1",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5,
+  "null_percentile": 95.0
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t1/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 1.0,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "mlp0",
+    "1.1",
+    "mlp1"
+   ],
+   "circuit_size": 3,
+   "total_components": 6,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": 0.0015,
+    "fraction_of_clean": 0.0015,
+    "accuracy": 0.25
+   },
+   "everything_else_ablated": {
+    "metric": 1.0,
+    "fraction_of_clean": 1.0,
+    "accuracy": 1.0
+   },
+   "random_same_size_ablated_fraction": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": true,
+   "pass": true
+  }
+ },
+ "null_controls": [
+  {
+   "finding": "agreement",
+   "what": "share of held-out inputs where predict() equals the model's output",
+   "effect": 1.0,
+   "null_mean": 0.251333,
+   "null_p95": 0.3105,
+   "null_max": 0.32,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "task-shuffled": 30
+   },
+   "pass": true
+  },
+  {
+   "finding": "necessity",
+   "what": "standardised drop in the metric when the claimed circuit is ablated",
+   "effect": 0.9985,
+   "null_mean": 0.004675,
+   "null_p95": 0.006942,
+   "null_max": 0.149664,
+   "percentile_of_effect": 100.0,
+   "n_null": 34,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30,
+    "random-init": 2,
+    "weight-shuffled": 2
+   },
+   "pass": true
+  },
+  {
+   "finding": "sufficiency",
+   "what": "standardised metric (above its no-information floor) with everything except the claimed circuit ablated",
+   "effect": 1.0,
+   "null_mean": 0.0015,
+   "null_p95": 0.0015,
+   "null_max": 0.0015,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30
+   },
+   "pass": true
+  }
+ ],
+ "model_accuracy": 1.0,
+ "metric_clean": 1.0,
+ "metric_floor": 0.0,
+ "metric_unit": 1.0,
+ "beats_null_controls": true,
+ "status": "verified",
+ "all_checks_passed": true,
+ "note": "Passed at full precision, and every effect exceeds its null distribution.",
+ "plot": "experiments/V0001_verify.png",
+ "spec": {
+  "name": "same-class count: mlp0 -> 1.1 -> mlp1",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t1",
+   "n": 200,
+   "seed": 7
+  },
+  "code": "def predict(tokens, prompt):\n    # vocab (E0001): 2=do 3=lo 4=po 5=to 6=vo ; digits '0'..'6' are ids 7..13\n    # mlp0 marks each token's class at its own position (E0008, E0012, E0013): A={lo,vo}, B={do,po,to}\n    A = {3, 6}\n    cls = lambda t: t in A\n    seq = tokens[1:7]          # drop BOS\n    last = seq[-1]\n    # head 1.1 at the last position attends equally to BOS and every same-class token (E0009),\n    # so BOS weight = 1/(1+count); mlp1 at the last position decodes that into the digit (E0012)\n    count = sum(1 for t in seq if cls(t) == cls(last))\n    return 7 + count\n",
+  "circuit": {
+   "components": [
+    "mlp0",
+    "1.1",
+    "mlp1"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-13T12:44:07"
+}

@@ -1,0 +1,63 @@
+{
+ "id": "t5",
+ "seed": 2,
+ "track": "compiled",
+ "label": "compiled: mechanism known exactly",
+ "family": "hist",
+ "params": {
+  "classes": {
+   "ki": 0,
+   "gi": 1,
+   "su": 2,
+   "ke": 0,
+   "me": 1
+  }
+ },
+ "vocab": [
+  "me",
+  "gi",
+  "ki",
+  "su",
+  "ke"
+ ],
+ "seq_len": 5,
+ "truth_function": "glassbox.bench.truth.hist",
+ "rasp_source": "cls = Map(classes, tokens); out = SelectorWidth(Select(cls, cls, EQ))",
+ "tracr": {
+  "num_layers": 2,
+  "num_heads": 1,
+  "checked_inputs": 1500,
+  "exhaustive": false
+ },
+ "components_before_obfuscation": [
+  "mlp0",
+  "1.0",
+  "mlp1"
+ ],
+ "transforms": {
+  "extra_residual_dims": 9,
+  "distractor_heads_per_layer": 2,
+  "distractor_neurons_per_layer": 4,
+  "head_permutation": {
+   "0": [
+    1,
+    2,
+    0
+   ],
+   "1": [
+    0,
+    2,
+    1
+   ]
+  },
+  "layers": 2,
+  "rotation": "random orthogonal 32x32, folded into the weights"
+ },
+ "true_components": [
+  "1.0",
+  "mlp0",
+  "mlp1"
+ ],
+ "accuracy_after_conversion": 1.0,
+ "accuracy_after_obfuscation": 1.0
+}

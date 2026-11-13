@@ -1,0 +1,320 @@
+{
+ "title": "t1: a two-token lookup table f(first, last) in a 2-layer, 2-head transformer",
+ "label": "verified (function and a sufficient+necessary circuit); layer-0 head choice not unique",
+ "behavior": "Input BOS + 4 tokens from 6 symbols (ids 2..7 = lo, po, nu, pe, ko, fo); the model outputs one symbol at the last position. All numbers are from the local-full backend (full precision).",
+ "summary": "The model computes an unstructured 6x6 lookup table of the FIRST input token (pos 1) and the LAST input token (pos 4); the two middle tokens are ignored. The table reproduces the model's output on 600/600 held-out inputs across three unused seeds. Mechanism: layer-0 heads self-attend at pos 1 and enrich the x1 representation; layer-1 heads 1.0 and 1.1 both attend from pos 4 to pos 1 and move x1 to the last position; mlp0 and mlp1 hold the table and write most of the answer logits. Verified circuit: {0.0, 1.0, 1.1, mlp0, mlp1}. Head 0.1 is the weakest component and can be removed with no loss of accuracy, but it is not inert: it is a weaker duplicate of 0.0, and the pair is mutually redundant (either one suffices; removing both drops accuracy to 76%). No component of this model was found to be strictly without effect.",
+ "pseudocode": "def predict(tokens, prompt):\n    # only pos 1 and pos 4 matter (E0005); table read off the model's outputs (E0001), 200/200 on V0001, V0002, V0003\n    T = {2: [3, 6, 4, 3, 6, 3],\n         3: [2, 7, 3, 3, 5, 4],\n         4: [2, 6, 5, 7, 2, 5],\n         5: [7, 7, 2, 7, 3, 6],\n         6: [4, 3, 4, 6, 6, 6],\n         7: [6, 3, 4, 4, 6, 5]}\n    a = tokens[1]   # enriched at pos 1 by 0.0 (/0.1) (E0015, E0016), moved to pos 4 by 1.0 and 1.1 (E0012, E0009)\n    d = tokens[4]   # already at the output position\n    return T[a][d - 2]   # computed by mlp0 + mlp1 (E0010)\n\nAs strings (rows = first token, columns = last token lo po nu pe ko fo):\n lo: po ko nu po ko po\n po: lo fo po po pe nu\n nu: lo ko pe fo lo pe\n pe: fo fo lo fo po ko\n ko: nu po nu ko ko ko\n fo: ko po nu nu ko pe",
+ "claims": [
+  {
+   "text": "The model performs the behaviour perfectly on its own labels: accuracy 1.0, mean logit difference 15.1.",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The output is a function of the first and last input tokens only. Patching the residual stream at pos 2 or pos 3 changes the metric by less than 0.4%, while pos 1 and pos 4 carry 0.54 and 0.44 at layer 0.",
+   "evidence": [
+    "E0005",
+    "E0001"
+   ]
+  },
+  {
+   "text": "The function is the 6x6 lookup table given in the pseudocode: it matches the model on 200/200 held-out inputs in each of three unused seeds (null agreement about 0.18).",
+   "evidence": [
+    "V0001",
+    "V0002",
+    "V0003"
+   ]
+  },
+  {
+   "text": "x1 is still at pos 1 when layer 1 starts (resid_pre.1 @ pos 1 effect 0.50) and is moved to the last position by heads 1.0 and 1.1, which attend pos 4 -> pos 1 with weight 0.75 and 0.72; denoising them restores 36% and 28% of the metric.",
+   "evidence": [
+    "E0005",
+    "E0012",
+    "E0009",
+    "E0006"
+   ]
+  },
+  {
+   "text": "The two movers are the main route but joint mean-ablation leaves 37% of the logit difference, more than the predicted 30% (prediction refuted); single ablations leave 62-69%.",
+   "evidence": [
+    "E0007",
+    "E0014",
+    "E0003"
+   ]
+  },
+  {
+   "text": "The MLPs carry the table: denoising mlp0 output restores 79% and mlp1 74% of the metric; mean-ablating either leaves 22% / 30%. Heads write only about 2.9 of 15.1 logits directly and the direct-path effect of 1.0/1.1 is 0.11/0.07 of their 0.36/0.28 total, so the heads act mostly through mlp1.",
+   "evidence": [
+    "E0010",
+    "E0004",
+    "E0011",
+    "E0013",
+    "E0009"
+   ]
+  },
+  {
+   "text": "Layer-0 heads are not inert (two predictions refuted): denoising 0.0 / 0.1 restores 19% / 11%, most of it (13% / 9%) through the value input of the mover heads; at pos 1 they self-attend with weight 0.64 / 0.61, i.e. they enrich the x1 representation that is later copied.",
+   "evidence": [
+    "E0009",
+    "E0015",
+    "E0016"
+   ]
+  },
+  {
+   "text": "Core circuit {1.0, 1.1, mlp0, mlp1} is necessary (ablated: accuracy 0.225, fraction -0.01) but not sufficient alone: with both layer-0 heads mean-ablated the fraction is 0.65 (bar 0.70) and accuracy 0.76. This verification failed.",
+   "evidence": [
+    "V0001",
+    "E0008"
+   ]
+  },
+  {
+   "text": "Circuit {0.0, 1.0, 1.1, mlp0, mlp1} passes all checks on held-out seed 102: circuit ablated -> accuracy 0.22, fraction 0.02; everything else (head 0.1) ablated -> accuracy 1.00, fraction 0.89; all effects beyond the null controls.",
+   "evidence": [
+    "V0002"
+   ]
+  },
+  {
+   "text": "The layer-0 head is not uniquely identified: the control circuit with 0.1 instead of 0.0 also passes (only 0.0 ablated -> accuracy 1.00, fraction 0.82). The two layer-0 heads are a redundant pair with 0.0 the stronger (single mean-ablation 0.82 vs 0.88).",
+   "evidence": [
+    "V0003",
+    "V0002",
+    "V0001",
+    "E0014"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "x1",
+    "label": "first token (pos 1)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "x4",
+    "label": "last token (pos 4)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "0.0",
+    "label": "0.0: self-attends at pos 1, enriches x1",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "0.1",
+    "label": "0.1: weaker duplicate of 0.0 (dispensable)",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0: token features for the table",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "1.0",
+    "label": "1.0: mover pos1 -> pos4",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "1.1",
+    "label": "1.1: mover pos1 -> pos4",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "mlp1",
+    "label": "mlp1: table lookup f(x1,x4) at pos 4",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "output symbol",
+    "layer": 2,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "x1",
+    "dst": "0.0",
+    "label": "self-attention at pos 1"
+   },
+   {
+    "src": "x1",
+    "dst": "0.1",
+    "label": "self-attention at pos 1 (weak)"
+   },
+   {
+    "src": "x1",
+    "dst": "mlp0",
+    "label": "pos 1"
+   },
+   {
+    "src": "x4",
+    "dst": "mlp0",
+    "label": "pos 4"
+   },
+   {
+    "src": "0.0",
+    "dst": "1.0",
+    "label": "value input"
+   },
+   {
+    "src": "0.0",
+    "dst": "1.1",
+    "label": "value input"
+   },
+   {
+    "src": "0.1",
+    "dst": "1.0",
+    "label": "value input (weak)"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.0",
+    "label": "x1 features (not path-tested)"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.1",
+    "label": "x1 features (not path-tested)"
+   },
+   {
+    "src": "mlp0",
+    "dst": "mlp1",
+    "label": "x4 features at pos 4 (not path-tested)"
+   },
+   {
+    "src": "1.0",
+    "dst": "mlp1",
+    "label": "x1 at pos 4"
+   },
+   {
+    "src": "1.1",
+    "dst": "mlp1",
+    "label": "x1 at pos 4"
+   },
+   {
+    "src": "1.0",
+    "dst": "out",
+    "label": "small direct write"
+   },
+   {
+    "src": "1.1",
+    "dst": "out",
+    "label": "small direct write"
+   },
+   {
+    "src": "mlp1",
+    "dst": "out",
+    "label": "answer logits"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0005",
+  "E0009",
+  "E0012",
+  "E0015"
+ ],
+ "limitations": [
+  "No component is strictly inert in my measurements. Head 0.1 is the best candidate for 'not part of the circuit' (removing it keeps accuracy 1.0 and 89% of the margin), but swapping the roles of 0.0 and 0.1 also verifies (V0003), so which layer-0 head belongs in the circuit is a matter of degree, not a clean cut.",
+  "Three of ten scored predictions were refuted (E0007, E0009, E0015) and one was inconclusive because mlp_out patching is not per-position on this backend (E0010).",
+  "MLP-mediated edges (mlp0 -> movers, mlp0 -> mlp1) are inferred from layer-level patching and ablation; path patching with MLP senders errored, so those edges are not directly tested.",
+  "The split of work between mlp0 and mlp1 inside the table lookup is not resolved; I did not look for neurons or features.",
+  "Residual 37% of margin after ablating both movers is unexplained: it may be what x4 alone supports, or x1 leaking through the diffuse layer-0 attention at pos 4.",
+  "The table has no formula I could find; it is reported as a lookup. All 36 cells were observed in the seed-0 data."
+ ],
+ "open_questions": [
+  "Is the table a composition of simpler maps (e.g. a function of features of x1 and x4) that mlp0 and mlp1 factor between them?",
+  "Why does the model keep two movers and two enrichers: pure redundancy from training, or do they specialise by token?",
+  "What exactly does mlp0 contribute at pos 1 versus pos 4?"
+ ],
+ "overall_status": "partial / not verified \u00b7 verified (function and a sufficient+necessary circuit); layer-0 head choice not unique",
+ "cited": [
+  "E0001",
+  "E0002",
+  "E0003",
+  "E0004",
+  "E0005",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0013",
+  "E0014",
+  "E0015",
+  "E0016",
+  "V0001",
+  "V0002",
+  "V0003"
+ ],
+ "prediction_record": {
+  "preregistered": 10,
+  "run": 10,
+  "not_run": [],
+  "confirmed": 6,
+  "refuted": 3,
+  "inconclusive": 1,
+  "hit_rate": 0.667,
+  "refuted_predictions": [
+   {
+    "prereg": "N0012",
+    "experiment": "E0007",
+    "hypothesis": "Heads 1.0 and 1.1 are jointly the (redundant) route by which x1 reaches the last position; removing both destroys the behaviour.",
+    "prediction": {
+     "metric": "summary.fraction_of_clean",
+     "op": "<=",
+     "threshold": 0.3,
+     "statement": "jointly mean-ablating 1.0 and 1.1 leaves at most 30% of the clean logit difference"
+    },
+    "observed": 0.365522
+   },
+   {
+    "prereg": "N0014",
+    "experiment": "E0009",
+    "hypothesis": "Layer-0 heads do not carry input-specific information that the output depends on: denoising head 0.0 alone recovers almost nothing, whereas layer-1 heads recover a sizeable share.",
+    "prediction": {
+     "metric": "data.effect[0][0]",
+     "op": "between",
+     "threshold": [
+      -0.1,
+      0.1
+     ],
+     "statement": "patching head 0.0's clean output into the corrupt run restores less than 10% of the metric"
+    },
+    "observed": 0.185643
+   },
+   {
+    "prereg": "N0028",
+    "experiment": "E0015",
+    "hypothesis": "Layer-0 heads influence the answer mainly through mlp0 (same layer), not by writing directly into the value input of the layer-1 mover heads: the direct path 0.0 -> {1.0,1.1}.v carries less than a third of 0.0's total 0.186 denoising effect.",
+    "prediction": {
+     "metric": "data.effect[0][0]",
+     "op": "<",
+     "threshold": 0.06,
+     "statement": "direct path 0.0 -> value input of 1.0/1.1 restores less than 6% of the metric"
+    },
+    "observed": 0.126416
+   }
+  ]
+ },
+ "exploratory_runs": [
+  "E0003",
+  "E0004",
+  "E0006",
+  "E0011",
+  "E0013"
+ ]
+}

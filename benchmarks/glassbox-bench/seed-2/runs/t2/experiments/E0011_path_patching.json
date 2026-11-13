@@ -1,0 +1,66 @@
+{
+ "id": "E0011",
+ "primitive": "path_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "senders": [
+   "0.0"
+  ],
+  "receiver": "logits",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t2",
+   "n": 100,
+   "seed": 6
+  }
+ },
+ "summary": {
+  "receiver": "logits",
+  "direction": "denoise",
+  "metric_base": -1.0,
+  "metric_source": 1.0,
+  "n": 100,
+  "top": [
+   {
+    "component": "0.0",
+    "effect": 0.0
+   },
+   {
+    "component": "0.1",
+    "effect": 0.0
+   },
+   {
+    "component": "0.2",
+    "effect": 0.0
+   }
+  ]
+ },
+ "data": {
+  "effect": [
+   [
+    0.0,
+    0.0,
+    0.0
+   ]
+  ]
+ },
+ "plot": "experiments/E0011_path_patching.png",
+ "seconds": 0.14,
+ "timestamp": "2026-11-13T12:49:19",
+ "prereg_id": "N0018",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[component=0.0].effect",
+  "op": "<=",
+  "threshold": 0.1,
+  "statement": "the direct 0.0 -> logits path restores at most 10% of the metric gap",
+  "verdict": "confirmed",
+  "observed": 0.0
+ }
+}

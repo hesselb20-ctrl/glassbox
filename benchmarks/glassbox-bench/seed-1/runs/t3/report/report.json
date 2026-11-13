@@ -1,0 +1,207 @@
+{
+ "title": "glassbox-bench seed-1 t3: compare count(ka) with count(se)",
+ "label": "verified",
+ "behavior": "BOS + 5 tokens from {ba, ka, ne, se, va, ve}; the model outputs one of D / E / M at the last position.",
+ "summary": "The model outputs M if the input contains more 'ka' (id 3) than 'se' (id 5), E if it contains fewer, and D if the counts are equal. The circuit is heads 1.0 and 1.1 plus all three MLP layers. Head 1.0 attends uniformly over BOS and every 'se' position, head 1.1 uniformly over BOS and every 'ka' position, so each encodes one count as 1/(1+count) attention on BOS. After layer 1 everything needed sits at the last position, and mlp1/mlp2 turn it into the D/E/M output. The other ten heads (0.0-0.3, 1.2, 1.3, 2.0-2.3) play no part. All numbers are from local-full (full precision). Held-out verification V0001: status verified.",
+ "pseudocode": "def predict(tokens, prompt):\n    xs = tokens[1:]                      # drop BOS\n    n_ka = count(x == 3 for x in xs)     # head 1.1 (BOS + ka positions)\n    n_se = count(x == 5 for x in xs)     # head 1.0 (BOS + se positions)\n    if n_ka > n_se: return 10            # M\n    if n_ka < n_se: return 9             # E\n    return 8                             # D",
+ "claims": [
+  {
+   "text": "The model performs the task deterministically: clean accuracy 1.0 on 200 inputs.",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The function is sign(count(ka) - count(se)) mapped to M (more ka), E (more se), D (equal): the predict() code agrees with the model on 400/400 held-out inputs (seed 7), against a task-shuffled null of 0.34.",
+   "evidence": [
+    "V0001"
+   ]
+  },
+  {
+   "text": "Heads 1.0 and 1.1 are necessary: jointly mean-ablating them leaves 0.01 of the clean metric.",
+   "evidence": [
+    "E0010",
+    "E0003"
+   ]
+  },
+  {
+   "text": "Heads 0.0, 0.1, 0.2, 0.3, 1.2, 1.3, 2.0, 2.1, 2.2, 2.3 play no part: jointly mean-ablating all ten leaves 1.0 of the clean metric.",
+   "evidence": [
+    "E0011",
+    "E0003",
+    "V0001"
+   ]
+  },
+  {
+   "text": "Each of mlp0, mlp1 and mlp2 is necessary: resample-ablating any one alone leaves -0.01 of the clean metric (mean ablation: -0.075, 0.0, 0.004).",
+   "evidence": [
+    "E0012",
+    "E0013",
+    "E0014",
+    "E0004"
+   ]
+  },
+  {
+   "text": "Head 1.0 attends uniformly over BOS plus every 'se' position (BOS weight 0.25 with three se, 0.5 with one se); the pattern does not depend on the query position.",
+   "evidence": [
+    "E0008",
+    "E0006"
+   ]
+  },
+  {
+   "text": "Head 1.1 attends uniformly over BOS plus every 'ka' position (BOS weight 0.5 with one ka, 1/3 with two ka).",
+   "evidence": [
+    "E0009",
+    "E0007"
+   ]
+  },
+  {
+   "text": "Before layer 1 the task information is spread over the five token positions (patching any single position restores 0.23-0.29); after layer 1 the last position alone restores 1.0.",
+   "evidence": [
+    "E0017",
+    "E0016"
+   ]
+  },
+  {
+   "text": "The five-component circuit is necessary and sufficient on held-out data: ablating it gives 0.0 of clean (accuracy 0.345, chance level), ablating the other ten components gives 1.0; both beat their null distributions.",
+   "evidence": [
+    "V0001"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "tok",
+    "label": "token embeddings (x1..x5)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0 (per-position preprocessing, necessary)",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "1.0",
+    "label": "head 1.0: BOS + se positions -> 1/(1+count(se))",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "1.1",
+    "label": "head 1.1: BOS + ka positions -> 1/(1+count(ka))",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "mlp1",
+    "label": "mlp1 (last position)",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "mlp2",
+    "label": "mlp2 (last position)",
+    "layer": 2,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "D / E / M",
+    "layer": 3,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "tok",
+    "dst": "mlp0",
+    "label": "token identity"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.0",
+    "label": "not resolved which input (k/v)"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.1",
+    "label": "not resolved which input (k/v)"
+   },
+   {
+    "src": "1.0",
+    "dst": "mlp1",
+    "label": "se count at last pos"
+   },
+   {
+    "src": "1.1",
+    "dst": "mlp1",
+    "label": "ka count at last pos"
+   },
+   {
+    "src": "mlp1",
+    "dst": "mlp2",
+    "label": "last pos"
+   },
+   {
+    "src": "mlp2",
+    "dst": "out",
+    "label": "comparison result"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0003",
+  "E0004",
+  "E0017"
+ ],
+ "limitations": [
+  "The division of labour between mlp0, mlp1 and mlp2 was not measured: only that each is individually necessary. The circuit-diagram edges into and between MLPs are ordering by layer, not measured paths.",
+  "Path patching from an MLP sender (mlp0 -> heads 1.0/1.1) raised a tool error, so whether mlp0 feeds the heads' keys or values is unknown.",
+  "Attention patterns for 1.0 and 1.1 were confirmed on two hand-built prompts each (one exploratory, one pre-registered), plus matching dataset-mean BOS attention (E0005, exploratory); not checked exhaustively over all inputs.",
+  "The function was first read off the seed-0 dataset listing by inspection, then tested; agreement is on 400 sampled inputs out of 7776 possible, not exhaustive."
+ ],
+ "open_questions": [
+  "What exactly does mlp0 compute per position, and do heads 1.0/1.1 read it through keys or values?",
+  "How do mlp1 and mlp2 split the comparison of the two 1/(1+count) signals?"
+ ],
+ "overall_status": "verified \u00b7 verified",
+ "cited": [
+  "E0002",
+  "E0003",
+  "E0004",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0013",
+  "E0014",
+  "E0016",
+  "E0017",
+  "V0001"
+ ],
+ "prediction_record": {
+  "preregistered": 9,
+  "run": 9,
+  "not_run": [],
+  "confirmed": 9,
+  "refuted": 0,
+  "inconclusive": 0,
+  "hit_rate": 1.0,
+  "refuted_predictions": []
+ },
+ "exploratory_runs": [
+  "E0003",
+  "E0004",
+  "E0005",
+  "E0006",
+  "E0007",
+  "E0015",
+  "E0016"
+ ]
+}

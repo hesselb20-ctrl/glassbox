@@ -1,0 +1,158 @@
+{
+ "id": "E0005",
+ "primitive": "attribution_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t7",
+   "n": 200,
+   "seed": 0
+  }
+ },
+ "summary": {
+  "direction": "denoise",
+  "metric_base": -32.969624,
+  "metric_source": 31.890808,
+  "n": 200,
+  "top_heads": [
+   {
+    "component": "1.1",
+    "effect": 0.501531
+   },
+   {
+    "component": "1.0",
+    "effect": 0.288045
+   },
+   {
+    "component": "0.1",
+    "effect": 0.244741
+   },
+   {
+    "component": "0.0",
+    "effect": 0.216807
+   }
+  ],
+  "top_resid": [
+   {
+    "component": "resid_pre.1 @ pos 4",
+    "effect": 0.30773
+   },
+   {
+    "component": "resid_pre.0 @ pos 1",
+    "effect": 0.21691
+   },
+   {
+    "component": "resid_pre.0 @ pos 2",
+    "effect": 0.213132
+   },
+   {
+    "component": "resid_pre.0 @ pos 4",
+    "effect": 0.205803
+   },
+   {
+    "component": "resid_pre.1 @ pos 2",
+    "effect": 0.187856
+   },
+   {
+    "component": "resid_pre.1 @ pos 1",
+    "effect": 0.148816
+   },
+   {
+    "component": "resid_pre.0 @ pos 3",
+    "effect": 0.12939
+   },
+   {
+    "component": "resid_pre.1 @ pos 3",
+    "effect": 0.124845
+   }
+  ],
+  "attn_by_layer": [
+   0.461548,
+   0.789576
+  ],
+  "note": "first-order estimate; confirm the top components with activation_patching",
+  "forward_passes": 4,
+  "backward_passes": 1,
+  "mlp_by_layer": [
+   0.568729,
+   0.74878
+  ]
+ },
+ "data": {
+  "layers": [
+   0,
+   1
+  ],
+  "resid_pre": [
+   [
+    0.0,
+    0.21691,
+    0.213132,
+    0.12939,
+    0.205803
+   ],
+   [
+    0.0,
+    0.148816,
+    0.187856,
+    0.124845,
+    0.30773
+   ]
+  ],
+  "attn_out_by_pos": [
+   [
+    0.0,
+    0.087461,
+    0.108391,
+    0.068287,
+    0.197409
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.789576
+   ]
+  ],
+  "heads": [
+   [
+    0.216807,
+    0.244741
+   ],
+   [
+    0.288045,
+    0.501531
+   ]
+  ],
+  "mlp_out_by_pos": [
+   [
+    0.0,
+    0.109579,
+    0.141047,
+    0.092189,
+    0.225914
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.74878
+   ]
+  ]
+ },
+ "plot": "experiments/E0005_attribution_patching.png",
+ "seconds": 0.42,
+ "timestamp": "2026-11-13T13:10:52",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null
+}

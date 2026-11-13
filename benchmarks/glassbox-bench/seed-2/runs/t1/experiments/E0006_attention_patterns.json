@@ -1,0 +1,160 @@
+{
+ "id": "E0006",
+ "primitive": "attention_patterns",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t1/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t1",
+   "n": 64,
+   "seed": 0
+  },
+  "head": "1.2",
+  "query_pos": 6
+ },
+ "summary": {
+  "score": "max mean attention from pos 6",
+  "n": 64,
+  "top": [
+   {
+    "head": "1.0",
+    "score": 0.453125
+   },
+   {
+    "head": "1.1",
+    "score": 0.28125
+   },
+   {
+    "head": "1.2",
+    "score": 0.28125
+   },
+   {
+    "head": "0.1",
+    "score": 0.198306
+   },
+   {
+    "head": "0.0",
+    "score": 0.19555
+   },
+   {
+    "head": "0.2",
+    "score": 0.142857
+   }
+  ],
+  "most_attended_key_from_query": {
+   "0.0": 0,
+   "0.1": 5,
+   "0.2": 0,
+   "1.0": 5,
+   "1.1": 5,
+   "1.2": 5
+  }
+ },
+ "data": {
+  "score": [
+   [
+    0.19555,
+    0.198306,
+    0.142857
+   ],
+   [
+    0.453125,
+    0.28125,
+    0.28125
+   ]
+  ],
+  "top_key": [
+   [
+    0.0,
+    5.0,
+    0.0
+   ],
+   [
+    5.0,
+    5.0,
+    5.0
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "pattern": [
+   [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.25,
+    0.09375,
+    0.15625,
+    0.265625,
+    0.234375,
+    0.0
+   ],
+   [
+    0.0,
+    0.078125,
+    0.125,
+    0.1875,
+    0.21875,
+    0.390625,
+    0.0
+   ],
+   [
+    0.0,
+    0.109375,
+    0.171875,
+    0.203125,
+    0.28125,
+    0.234375,
+    0.0
+   ],
+   [
+    0.0,
+    0.171875,
+    0.09375,
+    0.203125,
+    0.125,
+    0.40625,
+    0.0
+   ],
+   [
+    0.0,
+    0.125,
+    0.21875,
+    0.140625,
+    0.171875,
+    0.34375,
+    0.0
+   ],
+   [
+    0.0,
+    0.140625,
+    0.21875,
+    0.265625,
+    0.09375,
+    0.28125,
+    0.0
+   ]
+  ]
+ },
+ "plot": "experiments/E0006_attention_patterns.png",
+ "seconds": 0.17,
+ "timestamp": "2026-11-13T12:44:01",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null
+}

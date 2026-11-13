@@ -1,0 +1,116 @@
+{
+ "id": "E0011",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t1/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t1",
+   "n": 128,
+   "seed": 1
+  },
+  "component": "mlp_out",
+  "positions": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
+ },
+ "summary": {
+  "component": "mlp_out",
+  "direction": "denoise",
+  "metric_base": -1.0,
+  "metric_source": 1.0,
+  "n": 128,
+  "top": [
+   {
+    "component": "mlp_out.1 @ pos 6",
+    "effect": 1.0
+   },
+   {
+    "component": "mlp_out.0 @ pos 2",
+    "effect": 0.367188
+   },
+   {
+    "component": "mlp_out.0 @ pos 5",
+    "effect": 0.347656
+   },
+   {
+    "component": "mlp_out.0 @ pos 6",
+    "effect": 0.324219
+   },
+   {
+    "component": "mlp_out.0 @ pos 4",
+    "effect": 0.320312
+   },
+   {
+    "component": "mlp_out.0 @ pos 3",
+    "effect": 0.316406
+   },
+   {
+    "component": "mlp_out.0 @ pos 1",
+    "effect": 0.304688
+   },
+   {
+    "component": "mlp_out.0 @ pos 0",
+    "effect": 0.0
+   }
+  ],
+  "variants": 14,
+  "variants_that_could_not_run": {
+   "count": 8,
+   "example": "new(): invalid data type 'str'"
+  }
+ },
+ "data": {
+  "effect": [
+   [
+    0.0,
+    0.304688,
+    0.367188,
+    0.316406,
+    0.320312,
+    0.347656,
+    0.324219
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "columns": [
+   "0",
+   "1",
+   "2",
+   "3",
+   "4",
+   "5",
+   "6"
+  ]
+ },
+ "plot": "experiments/E0011_activation_patching.png",
+ "seconds": 0.22,
+ "timestamp": "2026-11-13T12:43:38",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null
+}

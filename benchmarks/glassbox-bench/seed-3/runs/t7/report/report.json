@@ -1,0 +1,280 @@
+{
+ "title": "t7: maximum under a custom symbol ranking, computed by the whole 2-layer model",
+ "label": "function verified; circuit partial (whole model, no inert component found)",
+ "behavior": "BOS + 4 tokens from {ve, mu, ri, vu, va, nu}; the model outputs one symbol at the last position.",
+ "summary": "All numbers are from the local-full backend (full precision). The model outputs the highest-ranked of its four input symbols under the ordering nu > mu > va > vu > ri > ve, independent of position. A six-line predict() reproduces the model on 800/800 held-out inputs across four unused seeds (V0001-V0004). Mechanistically: both layer-1 heads attend from the last position to wherever the rank-maximum sits and copy it; the layer-0 heads attend diffusely and feed the layer-1 heads through their value inputs; the two MLPs carry most of the final logit. Contrary to the task brief's expectation, no head or MLP was found to be inert: every head carries 27-57% of the logit margin on its own. The heads are partially redundant (removing 0.0 or 1.0 alone keeps accuracy at 1.0 / 0.98) but removing both drops accuracy to 0.855. The claimed circuit is therefore all six components; that claim cannot be null-tested for sufficiency by the lab because it is the whole model, so its formal status is not-verified (V0001), while the five-component subsets pass as verified (V0002, V0003).",
+ "pseudocode": "def predict(tokens, prompt):\n    # ranking read from E0001, agreement 1.0 on held-out seeds 11-14 (V0001-V0004)\n    rank = {7: 5, 3: 4, 6: 3, 5: 2, 4: 1, 2: 0}   # nu > mu > va > vu > ri > ve\n    xs = tokens[1:]                                # drop BOS\n    # layer-1 heads attend from the last position to the rank-maximum (E0008, E0011)\n    return max(xs, key=lambda t: rank[t])",
+ "claims": [
+  {
+   "text": "The model does the task perfectly on its own labels (accuracy 1.0, mean logit diff 31.9).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The function is max over the four inputs under nu > mu > va > vu > ri > ve: predict() matches the model on 200/200 held-out inputs for each of four unused seeds (task-shuffled null agreement <= 0.45).",
+   "evidence": [
+    "V0001",
+    "V0002",
+    "V0003",
+    "V0004"
+   ]
+  },
+  {
+   "text": "All four heads are causally involved. Exact denoising patching: 1.1 0.56, 0.1 0.32, 1.0 0.30, 0.0 0.25. Single resample ablation leaves 0.43 / 0.62 / 0.69 / 0.73 of the logit diff. No head is inert.",
+   "evidence": [
+    "E0006",
+    "E0010",
+    "E0003"
+   ]
+  },
+  {
+   "text": "The layer-0 heads are not dispensable: jointly mean-ablating them leaves 0.34 of the logit diff (this refuted my prediction of >= 0.5).",
+   "evidence": [
+    "E0009"
+   ]
+  },
+  {
+   "text": "Both layer-1 heads select by content: from the last position they attend to the rank-maximum wherever it is (nu at pos 1: 1.1 0.94, 1.0 0.89; vu at pos 2 among ve/ri: 1.0 0.96, 1.1 0.83). Layer-0 heads stay near-uniform (0.25-0.29) in the same conditions.",
+   "evidence": [
+    "E0008",
+    "E0011",
+    "E0007"
+   ]
+  },
+  {
+   "text": "Layer-0 heads reach the output mainly through the value input of the layer-1 heads (0.18 and 0.19 of the gap), not through queries (0.01-0.02) or keys (0.02-0.06). The V-path result refuted my prediction of <= 0.1.",
+   "evidence": [
+    "E0018",
+    "E0017",
+    "E0016"
+   ]
+  },
+  {
+   "text": "Both MLPs are heavily involved: patching the whole-layer output restores 0.78 (mlp0) and 0.75 (mlp1) of the gap; single mean ablation leaves 0.24 and 0.30. Heads write only 8.3 of 36.3 logit-diff units directly, so most of the final logit goes through the MLPs. (The pre-registered per-position predictions for E0014/E0015 scored inconclusive because the metric path did not exist; the whole-layer numbers are what was measured.)",
+   "evidence": [
+    "E0014",
+    "E0004",
+    "E0012",
+    "E0015"
+   ]
+  },
+  {
+   "text": "The answer is already weakly present after layer 0 (median rank 0, logit diff 1.5, prob 0.42) and layer 1 amplifies it to 36.3.",
+   "evidence": [
+    "E0013",
+    "E0014"
+   ]
+  },
+  {
+   "text": "Circuit size. All six components: ablating them leaves 0.01 of the metric (accuracy 0.5); sufficiency is trivially 1.0 and has no null, so status not-verified. Without 0.0: remaining five keep 0.73 of the metric and accuracy 1.0 (verified). Without 1.0: 0.71, accuracy 0.98 (verified). Without both 0.0 and 1.0: 0.52, accuracy 0.855, fails. Heads are redundant one at a time but not two at a time.",
+   "evidence": [
+    "V0001",
+    "V0002",
+    "V0003",
+    "V0004"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "tok",
+    "label": "token + position embeddings (pos 1-4)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "0.0",
+    "label": "head 0.0: diffuse mixing",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "0.1",
+    "label": "head 0.1: diffuse mixing",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "1.0",
+    "label": "head 1.0: attend to rank-max, copy",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "1.1",
+    "label": "head 1.1: attend to rank-max, copy (strongest)",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "mlp1",
+    "label": "mlp1: main logit writer",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "logits at last position",
+    "layer": 2,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "tok",
+    "dst": "0.0",
+    "label": "diffuse attention"
+   },
+   {
+    "src": "tok",
+    "dst": "0.1",
+    "label": "diffuse attention"
+   },
+   {
+    "src": "tok",
+    "dst": "mlp0",
+    "label": ""
+   },
+   {
+    "src": "0.0",
+    "dst": "1.0",
+    "label": "V (0.18 for 1.0+1.1 jointly, E0018)"
+   },
+   {
+    "src": "0.1",
+    "dst": "1.1",
+    "label": "V (0.19 for 1.0+1.1 jointly, E0018)"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.0",
+    "label": "not path-tested"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.1",
+    "label": "not path-tested"
+   },
+   {
+    "src": "1.0",
+    "dst": "mlp1",
+    "label": "inferred, not path-tested"
+   },
+   {
+    "src": "1.1",
+    "dst": "mlp1",
+    "label": "inferred, not path-tested"
+   },
+   {
+    "src": "1.0",
+    "dst": "out",
+    "label": "direct 3.2"
+   },
+   {
+    "src": "1.1",
+    "dst": "out",
+    "label": "direct 4.7"
+   },
+   {
+    "src": "mlp1",
+    "dst": "out",
+    "label": "bulk of logit"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0006",
+  "E0008",
+  "E0011",
+  "E0010",
+  "E0018"
+ ],
+ "limitations": [
+  "The brief says the model contains components that play no part. I did not find any: every head and MLP has a sizeable causal effect. If the benchmark defines 'no part' by accuracy rather than margin, heads 0.0 (accuracy 1.0 without it) and 1.0 (0.98) are the candidates, but they cannot both be dropped (0.855).",
+  "The full six-component circuit is formally not-verified: the lab cannot draw a sufficiency null when the circuit is the whole model. Four verification runs with different circuits were made and all are reported; the 5-component 'verified' runs were not chosen as the headline because the dropped head still carries ~27-29% of the margin.",
+  "Two pre-registered predictions (E0014, E0015) scored inconclusive because I guessed a per-position metric path that the primitive does not return. Where in the sequence layer 0 does its work is therefore unmeasured.",
+  "The ranking of ri above ve rests on few examples in the 200-sample datasets (inputs containing only ve and ri are rare); agreement was 800/800 but that pair is thinly tested.",
+  "MLP mechanisms are black boxes here: I showed they are necessary and carry most of the logit, not what features they compute. Edges into and out of the MLPs are inferred, not path-patched (the path-patching primitive only accepts heads as senders).",
+  "Screening runs E0003, E0004, E0005, E0007, E0012, E0013, E0016 were exploratory."
+ ],
+ "open_questions": [
+  "What do the two layer-1 heads key on: raw token embeddings or mlp0 output? Keys from layer-0 heads are small (E0016), so it is one of those two.",
+  "What does the V-path from layer 0 carry: a bag-of-tokens summary that lets mlp1 confirm the maximum?",
+  "Is there a split of labour by rank between 1.0 and 1.1 (1.0 was stronger for vu, 1.1 for nu)?"
+ ],
+ "overall_status": "partial / not verified \u00b7 function verified; circuit partial (whole model, no inert component found)",
+ "cited": [
+  "E0002",
+  "E0003",
+  "E0004",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0013",
+  "E0014",
+  "E0015",
+  "E0016",
+  "E0017",
+  "E0018",
+  "V0001",
+  "V0002",
+  "V0003",
+  "V0004"
+ ],
+ "prediction_record": {
+  "preregistered": 10,
+  "run": 10,
+  "not_run": [],
+  "confirmed": 6,
+  "refuted": 2,
+  "inconclusive": 2,
+  "hit_rate": 0.75,
+  "refuted_predictions": [
+   {
+    "prereg": "N0015",
+    "experiment": "E0009",
+    "hypothesis": "The layer-0 heads are not essential: mean-ablating 0.0 and 0.1 jointly leaves most of the behaviour (their diffuse attention in E0008 suggests they add a bag-of-tokens boost rather than select the max).",
+    "prediction": {
+     "metric": "summary.fraction_of_clean",
+     "op": ">=",
+     "threshold": 0.5,
+     "statement": "jointly mean-ablating both layer-0 heads keeps at least half of the clean logit difference"
+    },
+    "observed": 0.343586
+   },
+   {
+    "prereg": "N0033",
+    "experiment": "E0018",
+    "hypothesis": "Layer-0 heads do not act mainly by V-composition with layer-1 heads: the direct path 0.1 -> value input of heads 1.0/1.1 carries at most 0.1 of the gap; the bulk of their effect is routed through the MLPs.",
+    "prediction": {
+     "metric": "summary.top[component=0.1].effect",
+     "op": "<=",
+     "threshold": 0.1,
+     "statement": "path 0.1 -> v of layer-1 heads restores at most 0.1 of the gap"
+    },
+    "observed": 0.187966
+   }
+  ]
+ },
+ "exploratory_runs": [
+  "E0003",
+  "E0004",
+  "E0005",
+  "E0007",
+  "E0012",
+  "E0013",
+  "E0016"
+ ]
+}

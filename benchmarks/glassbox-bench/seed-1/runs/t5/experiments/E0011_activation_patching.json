@@ -1,0 +1,90 @@
+{
+ "id": "E0011",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t5/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t5",
+   "n": 200,
+   "seed": 5
+  },
+  "component": "resid_pre"
+ },
+ "summary": {
+  "component": "resid_pre",
+  "direction": "denoise",
+  "metric_base": -1.0,
+  "metric_source": 1.0,
+  "n": 200,
+  "top": [
+   {
+    "component": "resid_pre.0 @ pos 3",
+    "effect": 1.0
+   },
+   {
+    "component": "resid_pre.0 @ pos 0",
+    "effect": 0.0
+   },
+   {
+    "component": "resid_pre.0 @ pos 1",
+    "effect": 0.0
+   },
+   {
+    "component": "resid_pre.0 @ pos 2",
+    "effect": 0.0
+   },
+   {
+    "component": "resid_pre.0 @ pos 4",
+    "effect": 0.0
+   },
+   {
+    "component": "resid_pre.0 @ pos 5",
+    "effect": 0.0
+   }
+  ],
+  "variants": 6
+ },
+ "data": {
+  "effect": [
+   [
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0
+   ]
+  ],
+  "layers": [
+   0
+  ],
+  "columns": [
+   "0",
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ]
+ },
+ "plot": "experiments/E0011_activation_patching.png",
+ "seconds": 0.19,
+ "timestamp": "2026-11-13T13:03:22",
+ "prereg_id": "N0021",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[0][3]",
+  "op": ">=",
+  "threshold": 0.95,
+  "statement": "denoising resid_pre.0 at index 3 recovers at least 95% of the clean-corrupt logit difference",
+  "verdict": "confirmed",
+  "observed": 1.0
+ }
+}

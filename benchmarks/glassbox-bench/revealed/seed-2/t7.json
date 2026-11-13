@@ -1,0 +1,36 @@
+{
+ "id": "t7",
+ "seed": 2,
+ "track": "trained",
+ "label": "trained: behaviorally specified, mechanism unknown",
+ "family": "max-rank",
+ "params": {
+  "rank": {
+   "pa": 2,
+   "li": 0,
+   "po": 4,
+   "pu": 3,
+   "pi": 5,
+   "re": 1
+  }
+ },
+ "vocab": [
+  "pa",
+  "li",
+  "po",
+  "pu",
+  "pi",
+  "re"
+ ],
+ "seq_len": 4,
+ "truth_function": "glassbox.bench.truth.max_rank",
+ "training": {
+  "train_steps": 250,
+  "heldout_accuracy_on_target": 1.0,
+  "accuracy_on_target_all_inputs": 1.0,
+  "n_inputs": 1296,
+  "train_fraction": 0.7,
+  "device": "cpu (deterministic)"
+ },
+ "true_components": null
+}

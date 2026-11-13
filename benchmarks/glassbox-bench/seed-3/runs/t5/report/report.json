@@ -1,0 +1,207 @@
+{
+ "title": "t5 (glassbox-bench seed-3): three-way comparison of count(ta) vs count(mo)",
+ "behavior": "Input BOS + 6 tokens from {ta, mo, la, me, ba, le}; at the last position the model outputs one of K / S / U.",
+ "summary": "The model outputs U if 'ta' occurs more often than 'mo' in the 6 input tokens, S if it occurs less often, and K if the counts are equal; the other four symbols are ignored. The rule agrees with the model on 200/200 held-out inputs (V0001, local-full, full precision). The circuit is head 1.0 (collects ta), head 1.2 (collects mo), and all three MLP layers; the other ten heads are inert. Circuit ablated: metric -0.0004, accuracy 0.35 (chance for 3 classes); everything else ablated: metric 1.0, accuracy 1.0. All numbers are from the local-full backend.",
+ "pseudocode": "def predict(tokens, prompt):\n    seq = tokens[1:]                 # drop BOS\n    n_ta = seq.count(7)              # head 1.0: attends BOS + every 'ta' (E0008, E0011)\n    n_mo = seq.count(6)              # head 1.2: attends BOS + every 'mo' (E0007, E0012)\n    # mlp0 (before the heads) and mlp1, mlp2 (after) are all required (E0014)\n    if n_ta > n_mo: return 10        # 'U'\n    if n_ta < n_mo: return 9         # 'S'\n    return 8                         # 'K'",
+ "claims": [
+  {
+   "text": "The model performs a deterministic 3-class behaviour (clean accuracy 1.0 on 200 prompts).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The function is: U if count(ta) > count(mo), S if count(ta) < count(mo), K if equal. This rule matches the model on 200/200 held-out inputs (null agreement 0.33).",
+   "evidence": [
+    "V0001",
+    "E0001"
+   ]
+  },
+  {
+   "text": "Head 1.0 is the sole carrier of the ta count: in a ta-only contrast, patching head 1.0 alone restores the clean output completely (effect 1.0; every other head 0.0).",
+   "evidence": [
+    "E0008",
+    "E0006"
+   ]
+  },
+  {
+   "text": "Head 1.2 is the sole carrier of the mo count: in a mo-only contrast, patching head 1.2 alone restores the clean output completely (effect 1.0; every other head 0.0).",
+   "evidence": [
+    "E0007"
+   ]
+  },
+  {
+   "text": "Each of the two heads splits attention between BOS and its matching tokens: with one ta (resp. mo) at position 3, attention from the last position is 0.5 on BOS and 0.5 on that token, 0 elsewhere. The BOS share thus encodes 1/(1+count).",
+   "evidence": [
+    "E0011",
+    "E0012"
+   ]
+  },
+  {
+   "text": "Heads 1.0 and 1.2 are necessary: joint mean ablation takes the metric to -0.02 of clean.",
+   "evidence": [
+    "E0009",
+    "E0003"
+   ]
+  },
+  {
+   "text": "The other ten heads (0.0-0.3, 1.1, 1.3, 2.0-2.3) play no part: joint mean ablation of all ten leaves the metric at 1.0.",
+   "evidence": [
+    "E0010",
+    "V0001"
+   ]
+  },
+  {
+   "text": "All three MLP layers are necessary: mean-ablating mlp0, mlp1 or mlp2 alone takes the metric to -0.02, 0.0 and 0.002.",
+   "evidence": [
+    "E0014",
+    "E0004"
+   ]
+  },
+  {
+   "text": "The token's information stays at its own position through layer 0 and is at the last position before layer 2: resid_pre patching has effect 1.0 at (layer 0, pos 2), (layer 1, pos 2), (layer 2, pos 6) and 0 everywhere else. So the move to the last position happens in layer 1.",
+   "evidence": [
+    "E0015"
+   ]
+  },
+  {
+   "text": "The circuit {1.0, 1.2, mlp0, mlp1, mlp2} is necessary and sufficient on held-out data: ablating it gives metric -0.0004 / accuracy 0.35; ablating the other 10 components gives metric 1.0 / accuracy 1.0; both beat their null distributions.",
+   "evidence": [
+    "V0001"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "tok",
+    "label": "token embeddings (ta / mo / other)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0: per-token preprocessing (required; exact feature not resolved)",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "1.0",
+    "label": "head 1.0: attend BOS + every ta -> ta count at last pos",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "1.2",
+    "label": "head 1.2: attend BOS + every mo -> mo count at last pos",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "mlp1",
+    "label": "mlp1: processes the two counts (required)",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "mlp2",
+    "label": "mlp2: final comparison stage (required)",
+    "layer": 2,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "logits K / S / U",
+    "layer": 3,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "tok",
+    "dst": "mlp0",
+    "label": "at each token position"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.0",
+    "label": "ta signal (inferred from E0013 + E0008)"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.2",
+    "label": "mo signal (inferred)"
+   },
+   {
+    "src": "1.0",
+    "dst": "mlp1",
+    "label": "ta count, last position"
+   },
+   {
+    "src": "1.2",
+    "dst": "mlp1",
+    "label": "mo count, last position"
+   },
+   {
+    "src": "mlp1",
+    "dst": "mlp2",
+    "label": ""
+   },
+   {
+    "src": "mlp2",
+    "dst": "out",
+    "label": "sign of count(ta) - count(mo)"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0007",
+  "E0008",
+  "E0015",
+  "E0014"
+ ],
+ "limitations": [
+  "The individual computations of mlp0, mlp1 and mlp2 are not resolved: they are shown to be necessary (E0014), but which one converts attention shares to counts and which one compares is not measured.",
+  "One pre-registered prediction (E0013) was inconclusive: I assumed mlp_out patching was position-resolved; it patches all positions. Its by-product (each MLP's output alone restores the ta contrast) is suggestive of a serial chain mlp0 -> 1.0 -> mlp1 -> mlp2 but was not a pre-registered claim.",
+  "The edges mlp0 -> heads (key vs value) are inferred, not path-patched: path_patching with an MLP sender raised an error and was not run.",
+  "Contrast and attention experiments used small hand-written prompt sets (6-12 prompts); the dataset-level claims use 200 prompts.",
+  "The function was verified on 200 sampled inputs out of 46656 possible; not exhaustive."
+ ],
+ "open_questions": [
+  "What exactly does mlp0 write at each token position, and does head 1.0/1.2 read it through keys or values?",
+  "How do mlp1 and mlp2 divide the work of turning two 1/(1+n) attention shares into a 3-way comparison?"
+ ],
+ "overall_status": "verified",
+ "cited": [
+  "E0001",
+  "E0002",
+  "E0003",
+  "E0004",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0014",
+  "E0015",
+  "V0001"
+ ],
+ "prediction_record": {
+  "preregistered": 10,
+  "run": 10,
+  "not_run": [],
+  "confirmed": 9,
+  "refuted": 0,
+  "inconclusive": 1,
+  "hit_rate": 1.0,
+  "refuted_predictions": []
+ },
+ "exploratory_runs": [
+  "E0003",
+  "E0004",
+  "E0005",
+  "E0006"
+ ]
+}

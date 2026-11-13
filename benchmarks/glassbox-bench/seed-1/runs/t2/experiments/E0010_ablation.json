@@ -1,0 +1,146 @@
+{
+ "id": "E0010",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t2",
+   "n": 200,
+   "seed": 2
+  },
+  "sweep": "heads",
+  "mode": "resample"
+ },
+ "summary": {
+  "mode": "resample",
+  "n": 200,
+  "metric_clean": 0.999855,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "3.1",
+    "metric": 0.149978,
+    "change": -0.849877,
+    "fraction_of_clean": 0.15
+   },
+   {
+    "component": "2.0",
+    "metric": 0.229967,
+    "change": -0.769888,
+    "fraction_of_clean": 0.23
+   },
+   {
+    "component": "0.1",
+    "metric": 0.999855,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   },
+   {
+    "component": "0.0",
+    "metric": 0.999855,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   },
+   {
+    "component": "0.2",
+    "metric": 0.999855,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   },
+   {
+    "component": "1.0",
+    "metric": 0.999855,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   },
+   {
+    "component": "1.1",
+    "metric": 0.999855,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   },
+   {
+    "component": "1.2",
+    "metric": 0.999855,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   },
+   {
+    "component": "2.1",
+    "metric": 0.999855,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   },
+   {
+    "component": "2.2",
+    "metric": 0.999855,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "0.0",
+   "0.1",
+   "0.2",
+   "1.0",
+   "1.1",
+   "1.2",
+   "2.0",
+   "2.1",
+   "2.2",
+   "3.0",
+   "3.1",
+   "3.2"
+  ],
+  "metric": [
+   0.999855,
+   0.999855,
+   0.999855,
+   0.999855,
+   0.999855,
+   0.999855,
+   0.229967,
+   0.999855,
+   0.999855,
+   0.999855,
+   0.149978,
+   0.999855
+  ],
+  "change": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   -0.769888,
+   0.0,
+   0.0,
+   0.0,
+   -0.849877,
+   0.0
+  ]
+ },
+ "plot": "experiments/E0010_ablation.png",
+ "seconds": 0.92,
+ "timestamp": "2026-11-13T12:48:58",
+ "prereg_id": "N0015",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[component=3.1].fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.3,
+  "statement": "resample-ablating 3.1 leaves at most 30% of the clean logit difference",
+  "verdict": "confirmed",
+  "observed": 0.15
+ }
+}

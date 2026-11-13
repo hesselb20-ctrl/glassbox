@@ -1,0 +1,69 @@
+{
+ "id": "E0017",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t4/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t4",
+   "n": 200,
+   "seed": 5
+  },
+  "component": "mlp_out"
+ },
+ "summary": {
+  "component": "mlp_out",
+  "direction": "denoise",
+  "metric_base": -15.081435,
+  "metric_source": 15.215039,
+  "n": 200,
+  "top": [
+   {
+    "component": "mlp_out.1 @ pos all",
+    "effect": 0.780714
+   },
+   {
+    "component": "mlp_out.0 @ pos all",
+    "effect": 0.760766
+   }
+  ],
+  "variants": 2
+ },
+ "data": {
+  "effect": [
+   [
+    0.760766
+   ],
+   [
+    0.780714
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "columns": [
+   "all"
+  ]
+ },
+ "plot": "experiments/E0017_activation_patching.png",
+ "seconds": 0.32,
+ "timestamp": "2026-11-13T12:58:34",
+ "prereg_id": "N0029",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[1][4]",
+  "op": ">=",
+  "threshold": 0.5,
+  "statement": "Denoising mlp1 output at position 4 restores >= 50% of the clean-corrupt logit difference.",
+  "verdict": "inconclusive",
+  "observed": null,
+  "why": "metric not found in the result: list index out of range"
+ }
+}

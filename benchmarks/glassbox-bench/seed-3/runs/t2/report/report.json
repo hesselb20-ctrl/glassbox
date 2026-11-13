@@ -1,0 +1,290 @@
+{
+ "title": "t2: a two-token lookup f(first, last) in a 2-layer, 2-head transformer",
+ "label": "verified (5-component circuit; with caveats on head 0.0 and on the random control)",
+ "behavior": "Input BOS + 4 tokens from 6 symbols (ids 2..7: bo, ge, mu, fi, te, ra); the model outputs one symbol at the last position. All numbers are from the local-full backend (full precision).",
+ "summary": "The model computes a fixed 6x6 lookup table of the FIRST input token (pos 1) and the LAST input token (pos 4); the two middle tokens are ignored. The table, read off the model's own outputs, reproduces the model on 200/200 held-out inputs in each of three held-out sets. No closed-form rule for the table was found (rows are not permutations, so it is not a group operation or modular sum). Mechanism: layer 0 processes the first and last tokens in place (MLP0 is essential; heads 0.0 and 0.1 attend mostly to the token itself at pos 1 and enrich it); layer-1 heads 1.0 and 1.1 attend from the last position to pos 1 and move the first token's representation there; MLP1 at the last position combines both tokens and writes most of the answer. No head or MLP is fully inert: the unused parts of the model are positions 2 and 3. Head 0.0 is the weakest component and the circuit without it passes verification, but it still carries a minority share of the logit margin.",
+ "pseudocode": "T = {2:[4,4,6,5,2,5], 3:[2,5,2,3,5,5], 4:[7,5,6,4,4,3], 5:[4,5,3,3,6,7], 6:[5,3,7,5,5,3], 7:[2,6,2,4,7,2]}  # T[first][last-2], token ids\n\ndef predict(tokens, prompt):\n    a = tokens[1]   # first input token; held at pos 1 through layer 0 (E0004), enriched by MLP0 and heads 0.0/0.1 (E0015, E0018)\n    d = tokens[4]   # last input token; processed in place at pos 4 (E0004)\n    # tokens[2], tokens[3] are ignored (E0004: effects < 0.004)\n    # layer 1: heads 1.0/1.1 move a from pos 1 to pos 4 (E0009, E0010); MLP1 combines a and d (E0013, E0017)\n    return T[a][d - 2]",
+ "claims": [
+  {
+   "text": "The model does the behaviour deterministically: 200/200 top-1 agreement with its dataset answers, mean logit diff 14.3.",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The output is a lookup table of the first and last input tokens only; the table in the pseudocode matches the model on 200/200 held-out inputs in each of three held-out seeds (null agreement from task-shuffled labels: p95 about 0.24).",
+   "evidence": [
+    "V0001",
+    "V0002",
+    "V0003",
+    "E0004"
+   ]
+  },
+  {
+   "text": "Positions 2 and 3 are unused: patching the residual stream there at either layer recovers less than 0.004 of the gap, while pos 1 recovers 0.45-0.47 and pos 4 recovers 0.53-0.56. The first token is still at pos 1 at the input to layer 1.",
+   "evidence": [
+    "E0004"
+   ]
+  },
+  {
+   "text": "Heads 1.0 and 1.1 move the first token to the last position: from pos 4 they put 0.63 and 0.90 of their attention on pos 1, and jointly mean-ablating them leaves 0.17 of the clean logit diff. Single-head patching effects: 1.0 = 0.47, 1.1 = 0.27.",
+   "evidence": [
+    "E0009",
+    "E0010",
+    "E0005"
+   ]
+  },
+  {
+   "text": "The movers do not write the answer directly: direct paths to the logits are 0.12 (1.0) and 0.05 (1.1) of the gap, far below their total effects, so MLP1 mediates most of it. Patching MLP1's output alone recovers 0.77 of the gap and MLP0's 0.76.",
+   "evidence": [
+    "E0017",
+    "E0013",
+    "E0005"
+   ]
+  },
+  {
+   "text": "Layer-0 heads are part of the circuit, not inert: jointly mean-ablating 0.0 and 0.1 leaves 0.49 of the logit diff (my prediction of >= 0.5 was refuted), and the circuit without them fails sufficiency (0.48 of the logit diff, accuracy 0.855).",
+   "evidence": [
+    "E0011",
+    "V0001"
+   ]
+  },
+  {
+   "text": "Layer-0 heads work mainly by enriching the first token in place for the movers: from pos 1 they attend to the token itself (0.70 / 0.77), their path into the movers' value input recovers 0.10 (0.0) and 0.15 (0.1) of the gap, and their direct path to the logits is about 0.002. Head 0.1 also contributes 0.07 through the movers' query input (my prediction of <= 0.05 was refuted).",
+   "evidence": [
+    "E0018",
+    "E0015",
+    "E0016",
+    "E0017"
+   ]
+  },
+  {
+   "text": "The circuit {0.1, 1.0, 1.1, mlp0, mlp1} passes verification at full precision: ablating it leaves -0.016 of the logit diff (accuracy 0.27, near chance); ablating only the excluded head 0.0 keeps 0.79 of the logit diff and accuracy 0.985.",
+   "evidence": [
+    "V0003",
+    "E0005"
+   ]
+  },
+  {
+   "text": "Ablating all six components leaves 0.014 of the logit diff; a whole-model circuit cannot be given a sufficiency null, so that run is reported as not-verified.",
+   "evidence": [
+    "V0002",
+    "E0010"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "tok1",
+    "label": "first token (pos 1)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "tok4",
+    "label": "last token (pos 4)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "0.0",
+    "label": "head 0.0 (weak, in-place enrich)",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "0.1",
+    "label": "head 0.1 (in-place enrich)",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "mlp0",
+    "label": "MLP0 (token features at pos 1 and 4)",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "1.0",
+    "label": "head 1.0 (mover 4 -> 1)",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "1.1",
+    "label": "head 1.1 (mover 4 -> 1)",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "mlp1",
+    "label": "MLP1 (combine first+last -> answer)",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "answer logits (pos 4)",
+    "layer": 2,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "tok1",
+    "dst": "0.0",
+    "label": "self-attention at pos 1"
+   },
+   {
+    "src": "tok1",
+    "dst": "0.1",
+    "label": "self-attention at pos 1"
+   },
+   {
+    "src": "tok1",
+    "dst": "mlp0",
+    "label": "pos 1"
+   },
+   {
+    "src": "tok4",
+    "dst": "mlp0",
+    "label": "pos 4"
+   },
+   {
+    "src": "0.0",
+    "dst": "1.0",
+    "label": "value (0.10 with 1.1)"
+   },
+   {
+    "src": "0.1",
+    "dst": "1.0",
+    "label": "value (0.15 with 1.1), query (0.07)"
+   },
+   {
+    "src": "0.1",
+    "dst": "1.1",
+    "label": "value / query"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.0",
+    "label": "first-token features (inferred, not path-patched)"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.1",
+    "label": "first-token features (inferred, not path-patched)"
+   },
+   {
+    "src": "mlp0",
+    "dst": "mlp1",
+    "label": "last-token features at pos 4 (inferred)"
+   },
+   {
+    "src": "1.0",
+    "dst": "mlp1",
+    "label": "first token moved to pos 4"
+   },
+   {
+    "src": "1.1",
+    "dst": "mlp1",
+    "label": "first token moved to pos 4"
+   },
+   {
+    "src": "1.0",
+    "dst": "out",
+    "label": "direct 0.12"
+   },
+   {
+    "src": "1.1",
+    "dst": "out",
+    "label": "direct 0.05"
+   },
+   {
+    "src": "mlp1",
+    "dst": "out",
+    "label": "writes most of the answer"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0004",
+  "E0005",
+  "E0009",
+  "E0017"
+ ],
+ "limitations": [
+  "The function is given as a 36-cell lookup table read off the model's outputs (dataset E0001); no simpler rule was found, so I cannot say whether the model deviates from an intended target function.",
+  "Head 0.0 is excluded from the verified circuit but is not inert: ablating it alone costs about 18-21% of the logit margin (E0006 exploratory, V0003) and 1.5% accuracy. Excluding 0.1 instead was deliberately not tested; its single-ablation effect is similar (0.74, exploratory E0006), so the choice of which layer-0 head to drop is weakly determined.",
+  "The verification's random same-size control returned identical values for every draw (V0001, V0003), so it looks degenerate for a 6-component model and adds little beyond the threshold checks.",
+  "E0012 and E0013 were scored inconclusive because I pre-registered per-position metric paths that the primitive does not return; their all-position numbers are used only as measurements.",
+  "MLP edges (mlp0 -> movers, mlp0 -> mlp1) are inferred from position-level patching and ablation; path patching only accepted heads as senders, so they were not tested directly.",
+  "The per-position split of layer-0 attention (pos 1 vs pos 4) rests on the exploratory attribution screen E0003 only.",
+  "The metric is logit diff against the corrupt prompt's answer, which under-weights cases where clean and corrupt answers are close."
+ ],
+ "open_questions": [
+  "Is there a compact rule behind the 6x6 table (for example a composition of simpler per-token maps)?",
+  "How does MLP1 implement the 36-cell lookup: which neurons encode which (first, last) pairs?",
+  "Do heads 0.0 and 0.1 carry the same or complementary first-token features (their joint ablation effect is roughly additive)?"
+ ],
+ "overall_status": "partial / not verified \u00b7 verified (5-component circuit; with caveats on head 0.0 and on the random control)",
+ "cited": [
+  "E0002",
+  "E0004",
+  "E0005",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0013",
+  "E0015",
+  "E0016",
+  "E0017",
+  "E0018",
+  "V0001",
+  "V0002",
+  "V0003"
+ ],
+ "prediction_record": {
+  "preregistered": 12,
+  "run": 12,
+  "not_run": [],
+  "confirmed": 8,
+  "refuted": 2,
+  "inconclusive": 2,
+  "hit_rate": 0.8,
+  "refuted_predictions": [
+   {
+    "prereg": "N0017",
+    "experiment": "E0011",
+    "hypothesis": "Layer-0 heads 0.0 and 0.1 are not essential to the computation: jointly mean-ablating them keeps at least half the clean logit difference.",
+    "prediction": {
+     "metric": "summary.fraction_of_clean",
+     "op": ">=",
+     "threshold": 0.5,
+     "statement": "joint mean ablation of 0.0+0.1 keeps at least 50% of the clean logit diff"
+    },
+    "observed": 0.490872
+   },
+   {
+    "prereg": "N0032",
+    "experiment": "E0016",
+    "hypothesis": "Layer-0 heads do not control where the layer-1 movers look: the path from 0.0/0.1 into the query input of 1.0/1.1 carries little of the effect (the pos 4 -> pos 1 attention is mostly positional).",
+    "prediction": {
+     "metric": "summary.top[component=0.1].effect",
+     "op": "<=",
+     "threshold": 0.05,
+     "statement": "path 0.1 -> query input of 1.0/1.1 recovers at most 5% of the gap"
+    },
+    "observed": 0.070668
+   }
+  ]
+ },
+ "exploratory_runs": [
+  "E0003",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0014"
+ ]
+}

@@ -1,0 +1,130 @@
+{
+ "id": "V0001",
+ "name": "t6: count of tokens in the last token's class {2,7},{3,6},{4,5}",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5,
+  "null_percentile": 95.0
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t6/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 1.0,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "mlp0",
+    "1.1",
+    "mlp1"
+   ],
+   "circuit_size": 3,
+   "total_components": 8,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": 0.008525,
+    "fraction_of_clean": 0.008525,
+    "accuracy": 0.35
+   },
+   "everything_else_ablated": {
+    "metric": 1.0,
+    "fraction_of_clean": 1.0,
+    "accuracy": 1.0
+   },
+   "random_same_size_ablated_fraction": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": true,
+   "pass": true
+  }
+ },
+ "null_controls": [
+  {
+   "finding": "agreement",
+   "what": "share of held-out inputs where predict() equals the model's output",
+   "effect": 1.0,
+   "null_mean": 0.257833,
+   "null_p95": 0.3,
+   "null_max": 0.315,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "task-shuffled": 30
+   },
+   "pass": true
+  },
+  {
+   "finding": "necessity",
+   "what": "standardised drop in the metric when the claimed circuit is ablated",
+   "effect": 0.991475,
+   "null_mean": 0.001377,
+   "null_p95": 0.009259,
+   "null_max": 0.025876,
+   "percentile_of_effect": 100.0,
+   "n_null": 34,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30,
+    "random-init": 2,
+    "weight-shuffled": 2
+   },
+   "pass": true
+  },
+  {
+   "finding": "sufficiency",
+   "what": "standardised metric (above its no-information floor) with everything except the claimed circuit ablated",
+   "effect": 1.0,
+   "null_mean": 0.008525,
+   "null_p95": 0.008525,
+   "null_max": 0.008525,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30
+   },
+   "pass": true
+  }
+ ],
+ "model_accuracy": 1.0,
+ "metric_clean": 1.0,
+ "metric_floor": 0.0,
+ "metric_unit": 1.0,
+ "beats_null_controls": true,
+ "status": "verified",
+ "all_checks_passed": true,
+ "note": "Passed at full precision, and every effect exceeds its null distribution.",
+ "plot": "experiments/V0001_verify.png",
+ "spec": {
+  "name": "t6: count of tokens in the last token's class {2,7},{3,6},{4,5}",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t6",
+   "n": 200,
+   "seed": 7
+  },
+  "code": "def predict(tokens, prompt):\n    # tokens = [BOS] + 6 input ids in 2..7. Classes: {2,7}, {3,6}, {4,5}  (H1 from E0001)\n    cls = {2: 0, 7: 0, 3: 1, 6: 1, 4: 2, 5: 2}   # per-token class feature, mlp0 at every input position (E0010, E0017)\n    last = cls[tokens[-1]]\n    # head 1.1 at the last position attends uniformly to BOS + same-class tokens -> 1/(1+count) (E0007, E0013, E0009)\n    count = sum(1 for t in tokens[1:] if cls[t] == last)\n    # mlp1 at the last position decodes this to the count token (E0011, E0016); digits '0'..'6' are ids 8..14\n    return 8 + count\n",
+  "circuit": {
+   "components": [
+    "mlp0",
+    "1.1",
+    "mlp1"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-13T13:09:02"
+}

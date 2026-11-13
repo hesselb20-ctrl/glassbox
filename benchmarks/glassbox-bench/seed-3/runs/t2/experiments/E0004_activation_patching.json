@@ -1,0 +1,104 @@
+{
+ "id": "E0004",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "component": "resid_pre",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t2",
+   "n": 200,
+   "seed": 1
+  }
+ },
+ "summary": {
+  "component": "resid_pre",
+  "direction": "denoise",
+  "metric_base": -13.70281,
+  "metric_source": 14.347354,
+  "n": 200,
+  "top": [
+   {
+    "component": "resid_pre.1 @ pos 4",
+    "effect": 0.5625
+   },
+   {
+    "component": "resid_pre.0 @ pos 4",
+    "effect": 0.532068
+   },
+   {
+    "component": "resid_pre.0 @ pos 1",
+    "effect": 0.469302
+   },
+   {
+    "component": "resid_pre.1 @ pos 1",
+    "effect": 0.453705
+   },
+   {
+    "component": "resid_pre.0 @ pos 2",
+    "effect": 0.003294
+   },
+   {
+    "component": "resid_pre.1 @ pos 3",
+    "effect": 0.002376
+   },
+   {
+    "component": "resid_pre.0 @ pos 3",
+    "effect": -0.002107
+   },
+   {
+    "component": "resid_pre.1 @ pos 2",
+    "effect": 0.000302
+   }
+  ],
+  "variants": 10
+ },
+ "data": {
+  "effect": [
+   [
+    -0.0,
+    0.469302,
+    0.003294,
+    -0.002107,
+    0.532068
+   ],
+   [
+    -0.0,
+    0.453705,
+    0.000302,
+    0.002376,
+    0.5625
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "columns": [
+   "0",
+   "1",
+   "2",
+   "3",
+   "4"
+  ]
+ },
+ "plot": "experiments/E0004_activation_patching.png",
+ "seconds": 0.29,
+ "timestamp": "2026-11-13T12:47:17",
+ "prereg_id": "N0007",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[1][1]",
+  "op": ">=",
+  "threshold": 0.2,
+  "statement": "patching clean resid_pre.1 at pos 1 recovers at least 20% of the clean-corrupt logit-diff gap",
+  "verdict": "confirmed",
+  "observed": 0.453705
+ }
+}

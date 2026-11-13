@@ -1,0 +1,68 @@
+{
+ "id": "E0012",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t4/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t4",
+   "n": 200,
+   "seed": 3
+  },
+  "sweep": "mlps",
+  "mode": "mean"
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 15.773363,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "mlp1",
+    "metric": 3.81147,
+    "change": -11.961893,
+    "fraction_of_clean": 0.24164
+   },
+   {
+    "component": "mlp0",
+    "metric": 4.497144,
+    "change": -11.276218,
+    "fraction_of_clean": 0.28511
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "mlp0",
+   "mlp1"
+  ],
+  "metric": [
+   4.497144,
+   3.81147
+  ],
+  "change": [
+   -11.276218,
+   -11.961893
+  ]
+ },
+ "plot": "experiments/E0012_ablation.png",
+ "seconds": 0.31,
+ "timestamp": "2026-11-13T12:57:52",
+ "prereg_id": "N0018",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[component=mlp1].fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.4,
+  "statement": "Mean-ablating mlp1 leaves <= 40% of the clean logit difference.",
+  "verdict": "confirmed",
+  "observed": 0.24164
+ }
+}

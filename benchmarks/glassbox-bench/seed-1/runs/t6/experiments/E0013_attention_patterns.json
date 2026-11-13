@@ -1,0 +1,222 @@
+{
+ "id": "E0013",
+ "primitive": "attention_patterns",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t6/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "clean": {
+   "tokens": [
+    [
+     0,
+     3,
+     3,
+     4,
+     5,
+     6,
+     2
+    ],
+    [
+     0,
+     4,
+     4,
+     4,
+     3,
+     6,
+     7
+    ],
+    [
+     0,
+     2,
+     7,
+     2,
+     4,
+     5,
+     3
+    ],
+    [
+     0,
+     5,
+     5,
+     2,
+     7,
+     4,
+     6
+    ],
+    [
+     0,
+     2,
+     2,
+     3,
+     6,
+     7,
+     4
+    ],
+    [
+     0,
+     6,
+     3,
+     7,
+     7,
+     2,
+     5
+    ]
+   ]
+  },
+  "head": "1.1",
+  "query_pos": 6
+ },
+ "summary": {
+  "score": "max mean attention from pos 6",
+  "n": 6,
+  "top": [
+   {
+    "head": "1.1",
+    "score": 0.5
+   },
+   {
+    "head": "1.0",
+    "score": 0.333333
+   },
+   {
+    "head": "1.2",
+    "score": 0.333333
+   },
+   {
+    "head": "0.2",
+    "score": 0.302877
+   },
+   {
+    "head": "0.1",
+    "score": 0.21388
+   },
+   {
+    "head": "0.0",
+    "score": 0.142857
+   }
+  ],
+  "most_attended_key_from_query": {
+   "0.0": 0,
+   "0.1": 6,
+   "0.2": 3,
+   "1.0": 0,
+   "1.1": 0,
+   "1.2": 0
+  }
+ },
+ "data": {
+  "score": [
+   [
+    0.142857,
+    0.21388,
+    0.302877
+   ],
+   [
+    0.333333,
+    0.5,
+    0.333333
+   ]
+  ],
+  "top_key": [
+   [
+    0.0,
+    6.0,
+    3.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "pattern": [
+   [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.263889,
+    0.263889,
+    0.263889,
+    0.083333,
+    0.0,
+    0.125,
+    0.0
+   ],
+   [
+    0.263889,
+    0.263889,
+    0.263889,
+    0.083333,
+    0.0,
+    0.125,
+    0.0
+   ],
+   [
+    0.291667,
+    0.083333,
+    0.083333,
+    0.291667,
+    0.208333,
+    0.041667,
+    0.0
+   ],
+   [
+    0.319444,
+    0.0,
+    0.0,
+    0.208333,
+    0.319444,
+    0.152778,
+    0.0
+   ],
+   [
+    0.277778,
+    0.125,
+    0.125,
+    0.041667,
+    0.152778,
+    0.277778,
+    0.0
+   ],
+   [
+    0.5,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.5
+   ]
+  ]
+ },
+ "plot": "experiments/E0013_attention_patterns.png",
+ "seconds": 0.1,
+ "timestamp": "2026-11-13T13:08:23",
+ "prereg_id": "N0021",
+ "exploratory": false,
+ "score": {
+  "metric": "data.pattern[6][0]",
+  "op": "between",
+  "threshold": [
+   0.47,
+   0.53
+  ],
+  "statement": "1.1 attention from last position to BOS is ~1/2 when no other token shares the last token's class",
+  "verdict": "confirmed",
+  "observed": 0.5
+ }
+}

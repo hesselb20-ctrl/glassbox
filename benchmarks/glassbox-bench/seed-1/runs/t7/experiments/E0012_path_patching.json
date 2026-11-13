@@ -1,0 +1,76 @@
+{
+ "id": "E0012",
+ "primitive": "path_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t7",
+   "n": 200,
+   "seed": 0
+  },
+  "senders": [
+   "0.0",
+   "0.1",
+   "1.0",
+   "1.1"
+  ],
+  "receiver": "logits"
+ },
+ "summary": {
+  "receiver": "logits",
+  "direction": "denoise",
+  "metric_base": -31.325439,
+  "metric_source": 32.165562,
+  "n": 200,
+  "top": [
+   {
+    "component": "1.1",
+    "effect": 0.100325
+   },
+   {
+    "component": "1.0",
+    "effect": 0.096806
+   },
+   {
+    "component": "0.1",
+    "effect": 0.006127
+   },
+   {
+    "component": "0.0",
+    "effect": 0.003749
+   }
+  ]
+ },
+ "data": {
+  "effect": [
+   [
+    0.003749,
+    0.006127
+   ],
+   [
+    0.096806,
+    0.100325
+   ]
+  ]
+ },
+ "plot": "experiments/E0012_path_patching.png",
+ "seconds": 0.48,
+ "timestamp": "2026-11-13T13:12:09",
+ "prereg_id": "N0019",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[0][1]",
+  "op": "<=",
+  "threshold": 0.12,
+  "statement": "direct-to-logits path effect of head 0.1 is at most 0.12 (vs its total patching effect 0.36 in E0006); I expect the same of 0.0 (data.effect[0][0])",
+  "verdict": "confirmed",
+  "observed": 0.006127
+ }
+}

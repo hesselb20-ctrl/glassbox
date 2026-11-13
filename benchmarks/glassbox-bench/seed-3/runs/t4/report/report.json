@@ -1,0 +1,198 @@
+{
+ "title": "t4: last-token-directed pointer lookup (mlp0 -> head 1.2 -> mlp1)",
+ "label": "verified",
+ "behavior": "Input BOS + 6 tokens over {fu, ko, la, nu, vo}; the model outputs one symbol at the last position.",
+ "summary": "The model computes out = G[last][x[j]], where j = 2 if the last token is fu or ko and j = 1 if it is la, nu or vo, and G is a fixed 5x5 table. Tokens at positions 3, 4 and 5 are never used. Three components implement it: mlp0 at the last position turns the last token into a pointer, head 1.2 attends from the last position to position 1 or 2 accordingly and moves that token, and mlp1 at the last position maps (last token, moved token) to the output. Heads 0.0, 0.1, 0.2, 1.0 and 1.1 play no part. All numbers are from local-full (full precision). Held-out verification V0001 (n=400, seed 7): predict() agrees with the model on 100% of inputs; ablating the circuit leaves 0.4% of the metric; ablating everything else leaves 100%.",
+ "pseudocode": "ids: 0 BOS, 2 fu, 3 ko, 4 la, 5 nu, 6 vo\nlast = tokens[6]\nj = 2 if last in (fu, ko) else 1            # mlp0 @ last position\nb = tokens[j]                                # head 1.2, last position -> position j\nG = {fu: {fu:ko, ko:nu, la:vo, nu:vo, vo:ko},\n     ko: {fu:nu, ko:ko, la:la, nu:la, vo:nu},\n     la: {fu:nu, ko:vo, la:vo, nu:vo, vo:nu},\n     nu: {fu:nu, ko:la, la:fu, nu:la, vo:ko},\n     vo: {fu:nu, ko:vo, la:la, nu:vo, vo:nu}}\nreturn G[last][b]                            # mlp1 @ last position",
+ "claims": [
+  {
+   "text": "The model reproduces its recorded outputs on 100% of 200 inputs (local-full).",
+   "evidence": [
+    "E0003"
+   ]
+  },
+  {
+   "text": "The function is out = G[last][x[j]] with j = 2 for last in {fu, ko} and j = 1 for last in {la, nu, vo}; the rule was read off 100 examples (E0001) and agrees with the model on 400/400 held-out inputs.",
+   "evidence": [
+    "E0001",
+    "V0001"
+   ]
+  },
+  {
+   "text": "Head 1.2 attends from the last position entirely (1.00) to position 1 when the last token is la/nu/vo and entirely (1.00) to position 2 when it is fu/ko.",
+   "evidence": [
+    "E0007",
+    "E0008",
+    "E0006"
+   ]
+  },
+  {
+   "text": "mlp1 is necessary: mean-ablating it alone leaves -0.7% of the clean metric; ablating 1.2 together with mlp1 gives the same.",
+   "evidence": [
+    "E0011",
+    "E0009"
+   ]
+  },
+  {
+   "text": "mlp0 is part of the circuit: mean-ablating it alone leaves 64% of the metric, which accounts for the whole loss seen when all six non-{1.2, mlp1} components were ablated (a refuted prediction).",
+   "evidence": [
+    "E0012",
+    "E0010"
+   ]
+  },
+  {
+   "text": "mlp0 at the last position carries the pointer and nothing else that matters: patching it restores 100% on pairs whose last tokens are in different pointer classes and 0% on pairs whose last tokens differ within a class.",
+   "evidence": [
+    "E0016",
+    "E0017",
+    "E0015"
+   ]
+  },
+  {
+   "text": "Heads 0.0, 0.1, 0.2, 1.0 and 1.1 play no part: mean-ablating all five jointly leaves 100% of the metric; with everything outside {mlp0, 1.2, mlp1} ablated the model is still 100% accurate.",
+   "evidence": [
+    "E0013",
+    "V0001",
+    "E0004"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "tok6",
+    "label": "last token (pos 6)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "tok12",
+    "label": "tokens at pos 1 and 2",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0 @ pos 6: last token -> pointer (fu/ko -> 2, la/nu/vo -> 1)",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "1.2",
+    "label": "head 1.2: pos 6 attends to pointed position, moves its token",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "mlp1",
+    "label": "mlp1 @ pos 6: lookup G[last][moved token]",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "output symbol",
+    "layer": 2,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "tok6",
+    "dst": "mlp0",
+    "label": "token identity"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.2",
+    "label": "pointer (sets where 1.2 looks)"
+   },
+   {
+    "src": "tok12",
+    "dst": "1.2",
+    "label": "value"
+   },
+   {
+    "src": "1.2",
+    "dst": "mlp1",
+    "label": "selected token"
+   },
+   {
+    "src": "tok6",
+    "dst": "mlp1",
+    "label": "last token identity (not via mlp0)"
+   },
+   {
+    "src": "mlp1",
+    "dst": "out",
+    "label": "answer"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0002",
+  "E0007",
+  "E0008",
+  "E0016"
+ ],
+ "limitations": [
+  "The table G was read off 100 examples and checked on 400 held-out random inputs, not on all 15625 inputs; exhaustive enumeration was not run.",
+  "That the pointer enters head 1.2 through its query (rather than key) is inferred from mlp0 mattering only at position 6 (exploratory E0015) plus the attention switch; a direct path-patching test from mlp0 to 1.2's query failed with a tool error (mlp senders not accepted) and was not measured.",
+  "That mlp1 gets the last token's identity straight from the embedding is by elimination (E0017 rules out mlp0, E0013 rules out the other heads); it was not measured directly.",
+  "No structure was found in G beyond a lookup table; whether it factors into simpler maps was not tested.",
+  "In V0001 the three random same-size ablation sets all left 100% of the metric, so that control was uninformative about partial overlaps with the circuit."
+ ],
+ "open_questions": [
+  "Does G decompose (e.g. through coarser token classes such as {fu, vo}, which share a column value in four of five rows)?",
+  "What do the inert heads 0.0-0.2, 1.0, 1.1 compute, if anything coherent?"
+ ],
+ "overall_status": "verified \u00b7 verified",
+ "cited": [
+  "E0001",
+  "E0003",
+  "E0004",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0013",
+  "E0015",
+  "E0016",
+  "E0017",
+  "V0001"
+ ],
+ "prediction_record": {
+  "preregistered": 10,
+  "run": 10,
+  "not_run": [],
+  "confirmed": 9,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.9,
+  "refuted_predictions": [
+   {
+    "prereg": "N0013",
+    "experiment": "E0010",
+    "hypothesis": "Everything outside {1.2, mlp1} is irrelevant: jointly mean-ablating heads 0.0, 0.1, 0.2, 1.0, 1.1 and mlp0 leaves the behaviour intact.",
+    "prediction": {
+     "metric": "summary.fraction_of_clean",
+     "op": ">=",
+     "threshold": 0.95,
+     "statement": "Jointly mean-ablating all six other components keeps at least 95% of the clean metric."
+    },
+    "observed": 0.643923
+   }
+  ]
+ },
+ "exploratory_runs": [
+  "E0002",
+  "E0004",
+  "E0005",
+  "E0006",
+  "E0014",
+  "E0015"
+ ]
+}

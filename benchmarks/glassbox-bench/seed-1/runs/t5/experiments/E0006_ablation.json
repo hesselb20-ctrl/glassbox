@@ -1,0 +1,62 @@
+{
+ "id": "E0006",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t5/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t5",
+   "n": 200,
+   "seed": 2
+  },
+  "components": [
+   "0.0"
+  ],
+  "mode": "resample"
+ },
+ "summary": {
+  "mode": "resample",
+  "n": 200,
+  "metric_clean": 1.0,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "0.0",
+    "metric": 1.0,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "0.0"
+  ],
+  "metric": [
+   1.0
+  ],
+  "change": [
+   0.0
+  ]
+ },
+ "plot": "experiments/E0006_ablation.png",
+ "seconds": 0.19,
+ "timestamp": "2026-11-13T13:02:53",
+ "prereg_id": "N0010",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": ">=",
+  "threshold": 0.95,
+  "statement": "resample-ablating head 0.0 leaves at least 95% of the logit difference",
+  "verdict": "inconclusive",
+  "observed": null,
+  "why": "metric not found in the result: \"'fraction_of_clean' not found while resolving 'summary.fraction_of_clean'\""
+ }
+}

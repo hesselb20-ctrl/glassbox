@@ -1,0 +1,87 @@
+{
+ "id": "E0018",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t2",
+   "n": 200,
+   "seed": 3
+  },
+  "component": "mlp_out"
+ },
+ "summary": {
+  "component": "mlp_out",
+  "direction": "denoise",
+  "metric_base": -0.999855,
+  "metric_source": 0.999855,
+  "n": 200,
+  "top": [
+   {
+    "component": "mlp_out.0 @ pos all",
+    "effect": 0.3825
+   },
+   {
+    "component": "mlp_out.1 @ pos all",
+    "effect": 0.3825
+   },
+   {
+    "component": "mlp_out.2 @ pos all",
+    "effect": 0.3825
+   },
+   {
+    "component": "mlp_out.3 @ pos all",
+    "effect": 0.0
+   }
+  ],
+  "variants": 4
+ },
+ "data": {
+  "effect": [
+   [
+    0.3825
+   ],
+   [
+    0.3825
+   ],
+   [
+    0.3825
+   ],
+   [
+    0.0
+   ]
+  ],
+  "layers": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "columns": [
+   "all"
+  ]
+ },
+ "plot": "experiments/E0018_activation_patching.png",
+ "seconds": 0.69,
+ "timestamp": "2026-11-13T12:49:49",
+ "prereg_id": "N0029",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[1][0]",
+  "op": "between",
+  "threshold": [
+   0.33,
+   0.43
+  ],
+  "statement": "denoising mlp1's output at all positions has an effect between 0.33 and 0.43 (matching the 2.0->3.1 key path on seed 3)",
+  "verdict": "confirmed",
+  "observed": 0.3825
+ }
+}

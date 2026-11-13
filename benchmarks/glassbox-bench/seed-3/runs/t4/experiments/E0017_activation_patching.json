@@ -1,0 +1,400 @@
+{
+ "id": "E0017",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t4/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "clean": {
+   "tokens": [
+    [
+     0,
+     3,
+     5,
+     2,
+     6,
+     4,
+     4
+    ],
+    [
+     0,
+     4,
+     2,
+     6,
+     3,
+     5,
+     4
+    ],
+    [
+     0,
+     5,
+     6,
+     3,
+     2,
+     2,
+     4
+    ],
+    [
+     0,
+     6,
+     3,
+     4,
+     5,
+     3,
+     4
+    ],
+    [
+     0,
+     4,
+     4,
+     2,
+     6,
+     2,
+     6
+    ],
+    [
+     0,
+     3,
+     2,
+     5,
+     4,
+     6,
+     5
+    ],
+    [
+     0,
+     4,
+     6,
+     2,
+     3,
+     3,
+     5
+    ],
+    [
+     0,
+     5,
+     3,
+     6,
+     6,
+     2,
+     6
+    ],
+    [
+     0,
+     6,
+     5,
+     4,
+     2,
+     4,
+     5
+    ],
+    [
+     0,
+     5,
+     2,
+     4,
+     6,
+     5,
+     2
+    ],
+    [
+     0,
+     2,
+     3,
+     6,
+     4,
+     4,
+     3
+    ],
+    [
+     0,
+     6,
+     4,
+     3,
+     5,
+     6,
+     2
+    ],
+    [
+     0,
+     3,
+     5,
+     2,
+     2,
+     6,
+     3
+    ],
+    [
+     0,
+     4,
+     6,
+     5,
+     3,
+     2,
+     2
+    ],
+    [
+     0,
+     2,
+     2,
+     4,
+     5,
+     3,
+     3
+    ],
+    [
+     0,
+     5,
+     4,
+     6,
+     2,
+     4,
+     3
+    ]
+   ]
+  },
+  "corrupt": {
+   "tokens": [
+    [
+     0,
+     3,
+     5,
+     2,
+     6,
+     4,
+     5
+    ],
+    [
+     0,
+     4,
+     2,
+     6,
+     3,
+     5,
+     5
+    ],
+    [
+     0,
+     5,
+     6,
+     3,
+     2,
+     2,
+     5
+    ],
+    [
+     0,
+     6,
+     3,
+     4,
+     5,
+     3,
+     5
+    ],
+    [
+     0,
+     4,
+     4,
+     2,
+     6,
+     2,
+     4
+    ],
+    [
+     0,
+     3,
+     2,
+     5,
+     4,
+     6,
+     6
+    ],
+    [
+     0,
+     4,
+     6,
+     2,
+     3,
+     3,
+     6
+    ],
+    [
+     0,
+     5,
+     3,
+     6,
+     6,
+     2,
+     5
+    ],
+    [
+     0,
+     6,
+     5,
+     4,
+     2,
+     4,
+     6
+    ],
+    [
+     0,
+     5,
+     2,
+     4,
+     6,
+     5,
+     3
+    ],
+    [
+     0,
+     2,
+     3,
+     6,
+     4,
+     4,
+     2
+    ],
+    [
+     0,
+     6,
+     4,
+     3,
+     5,
+     6,
+     3
+    ],
+    [
+     0,
+     3,
+     5,
+     2,
+     2,
+     6,
+     2
+    ],
+    [
+     0,
+     4,
+     6,
+     5,
+     3,
+     2,
+     3
+    ],
+    [
+     0,
+     2,
+     2,
+     4,
+     5,
+     3,
+     2
+    ],
+    [
+     0,
+     5,
+     4,
+     6,
+     2,
+     4,
+     2
+    ]
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    6,
+    6,
+    6,
+    5,
+    4,
+    4,
+    2,
+    6,
+    3,
+    3,
+    3,
+    6,
+    4,
+    3,
+    5,
+    4
+   ],
+   "incorrect": [
+    4,
+    2,
+    4,
+    3,
+    6,
+    6,
+    4,
+    4,
+    5,
+    5,
+    5,
+    4,
+    6,
+    5,
+    3,
+    6
+   ]
+  },
+  "component": "mlp_out",
+  "positions": [
+   6
+  ]
+ },
+ "summary": {
+  "component": "mlp_out",
+  "direction": "denoise",
+  "metric_base": -1.0,
+  "metric_source": 1.0,
+  "n": 16,
+  "top": [
+   {
+    "component": "mlp_out.1 @ pos 6",
+    "effect": 1.0
+   },
+   {
+    "component": "mlp_out.0 @ pos 6",
+    "effect": 0.0
+   }
+  ],
+  "variants": 2
+ },
+ "data": {
+  "effect": [
+   [
+    0.0
+   ],
+   [
+    1.0
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "columns": [
+   "6"
+  ]
+ },
+ "plot": "experiments/E0017_activation_patching.png",
+ "seconds": 0.08,
+ "timestamp": "2026-11-13T13:02:45",
+ "prereg_id": "N0028",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[0][0]",
+  "op": "<=",
+  "threshold": 0.05,
+  "statement": "Patching clean mlp0 output at position 6 restores at most 5% of the metric on 16 same-pointer-class pairs.",
+  "verdict": "confirmed",
+  "observed": 0.0
+ }
+}

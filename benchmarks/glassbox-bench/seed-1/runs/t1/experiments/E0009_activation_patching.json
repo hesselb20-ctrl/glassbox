@@ -1,0 +1,82 @@
+{
+ "id": "E0009",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t1/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t1",
+   "n": 200,
+   "seed": 0
+  },
+  "component": "head"
+ },
+ "summary": {
+  "component": "head",
+  "direction": "denoise",
+  "metric_base": -15.156977,
+  "metric_source": 15.105472,
+  "n": 200,
+  "top": [
+   {
+    "component": "1.0",
+    "effect": 0.36079
+   },
+   {
+    "component": "1.1",
+    "effect": 0.281901
+   },
+   {
+    "component": "0.0",
+    "effect": 0.185643
+   },
+   {
+    "component": "0.1",
+    "effect": 0.112827
+   }
+  ],
+  "variants": 4
+ },
+ "data": {
+  "effect": [
+   [
+    0.185643,
+    0.112827
+   ],
+   [
+    0.36079,
+    0.281901
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "columns": [
+   0,
+   1
+  ]
+ },
+ "plot": "experiments/E0009_activation_patching.png",
+ "seconds": 0.24,
+ "timestamp": "2026-11-13T12:43:27",
+ "prereg_id": "N0014",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[0][0]",
+  "op": "between",
+  "threshold": [
+   -0.1,
+   0.1
+  ],
+  "statement": "patching head 0.0's clean output into the corrupt run restores less than 10% of the metric",
+  "verdict": "refuted",
+  "observed": 0.185643
+ }
+}

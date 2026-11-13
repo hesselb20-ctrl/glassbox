@@ -1,0 +1,76 @@
+{
+ "id": "E0017",
+ "primitive": "path_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "senders": [
+   "0.0",
+   "0.1",
+   "1.0",
+   "1.1"
+  ],
+  "receiver": "logits",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t2",
+   "n": 200,
+   "seed": 3
+  }
+ },
+ "summary": {
+  "receiver": "logits",
+  "direction": "denoise",
+  "metric_base": -15.050569,
+  "metric_source": 14.033377,
+  "n": 200,
+  "top": [
+   {
+    "component": "1.0",
+    "effect": 0.122082
+   },
+   {
+    "component": "1.1",
+    "effect": 0.050737
+   },
+   {
+    "component": "0.1",
+    "effect": 0.002633
+   },
+   {
+    "component": "0.0",
+    "effect": 0.001903
+   }
+  ]
+ },
+ "data": {
+  "effect": [
+   [
+    0.001903,
+    0.002633
+   ],
+   [
+    0.122082,
+    0.050737
+   ]
+  ]
+ },
+ "plot": "experiments/E0017_path_patching.png",
+ "seconds": 0.29,
+ "timestamp": "2026-11-13T12:50:17",
+ "prereg_id": "N0033",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[component=1.0].effect",
+  "op": "<=",
+  "threshold": 0.25,
+  "statement": "direct path 1.0 -> logits recovers at most 25% of the gap",
+  "verdict": "confirmed",
+  "observed": 0.122082
+ }
+}

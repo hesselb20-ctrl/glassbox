@@ -1,0 +1,243 @@
+{
+ "title": "t4: a 6x6 lookup on (first token, last token) in a 2-layer, 2-head transformer",
+ "label": "verified (local-full, full precision)",
+ "behavior": "Input BOS + 4 tokens from {fa,ku,fu,la,ma,vi} (ids 2..7); the model outputs one symbol at the last position.",
+ "summary": "The output is a fixed lookup table on the first and the last input token; the two middle tokens are ignored. The table matched the model on 72/72 designed prompts covering every cell (E0005) and on 900/900 held-out prompts (V0001, V0002, V0003). No arithmetic structure was found in the table, so it is reported as a table. Mechanism: first-token information is moved from position 1 to the last position by attention in both layers (0.0 and weakly 0.1 in layer 0; 1.0 and 1.1 in layer 1), and mlp0 and mlp1 at the last position turn the (first,last) pair into the answer, which only becomes decodable after layer 1. Verified circuit: heads 0.0, 1.0, 1.1 and mlp0, mlp1 (V0001, replicated in V0003). Head 0.1 is the only component outside it; it is a weak contributor rather than strictly inert (ablating it keeps about 96.5% accuracy and 85% of the logit difference). A smaller circuit without head 0.0 was tried and failed (V0002). All numbers are from the local-full backend at full precision.",
+ "pseudocode": "T = {fa:{fa:fa,ku:ma,fu:ku,la:ku,ma:fu,vi:la},\n     ku:{fa:vi,ku:ku,fu:vi,la:la,ma:fa,vi:vi},\n     fu:{fa:la,ku:fu,fu:vi,la:ma,ma:fa,vi:fa},\n     la:{fa:ma,ku:ma,fu:fu,la:ku,ma:la,vi:la},\n     ma:{fa:la,ku:ma,fu:vi,la:ku,ma:fu,vi:ma},\n     vi:{fa:vi,ku:ku,fu:ma,la:fa,ma:ku,vi:vi}}\n\ndef predict(tokens, prompt):   # ids: fa=2 ku=3 fu=4 la=5 ma=6 vi=7\n    first, last = tokens[1], tokens[4]      # positions 2,3 have no causal effect (E0009)\n    # layer 0: heads 0.0 (+0.1 weakly) copy 'first' to the last position (E0010, E0013, V0002)\n    # layer 1: heads 1.0, 1.1 copy 'first' (as processed by layer 0) again (E0009, E0010, E0014)\n    # mlp0 + mlp1 at the last position do the lookup (E0012)\n    return T[first][last]                   # E0005, V0001, V0003",
+ "claims": [
+  {
+   "text": "The model computes output = T[first token][last token], a fixed 6x6 table; confirmed on all 36 cells with two middle fillers (72/72) and on 300/300 held-out prompts in each of three verifications.",
+   "evidence": [
+    "E0005",
+    "V0001",
+    "V0002",
+    "V0003"
+   ]
+  },
+  {
+   "text": "The middle tokens (positions 2 and 3) have no causal effect: patching the residual stream there restores less than 0.5% of the logit difference at either layer, and all 36 middles give the same output in two probed cells.",
+   "evidence": [
+    "E0009",
+    "E0003"
+   ]
+  },
+  {
+   "text": "First-token information reaches the output position through attention in both layers: all four heads attend from the last position mostly to position 1, and after layer 0 about a third of the patching effect (0.32) still sits at position 1, where only layer-1 attention can read it.",
+   "evidence": [
+    "E0010",
+    "E0009"
+   ]
+  },
+  {
+   "text": "Layer-1 heads are necessary (joint mean ablation leaves 26% of the logit difference); layer-0 heads are a partial route (joint ablation leaves 63%). Single ablations: 1.0 0.52, 1.1 0.70, 0.0 0.77, 0.1 0.86.",
+   "evidence": [
+    "E0011",
+    "E0013",
+    "E0014"
+   ]
+  },
+  {
+   "text": "Both MLPs are necessary: mean-ablating mlp0 leaves 29% and mlp1 leaves 24% of the logit difference.",
+   "evidence": [
+    "E0012"
+   ]
+  },
+  {
+   "text": "The circuit {0.0, 1.0, 1.1, mlp0, mlp1} is necessary and sufficient by the lab's criteria on two held-out seeds: ablating it drops accuracy to 0.157 / 0.187 (about chance), ablating only the remaining head 0.1 keeps accuracy 0.967 / 0.963 and 85% / 84% of the logit difference; all null controls passed.",
+   "evidence": [
+    "V0001",
+    "V0003"
+   ]
+  },
+  {
+   "text": "Head 0.0 cannot be dropped from the circuit: with both layer-0 heads ablated accuracy falls to 0.577 and the sufficiency check fails.",
+   "evidence": [
+    "V0002",
+    "E0013"
+   ]
+  },
+  {
+   "text": "The answer is not yet decodable after layer 0 (logit-lens logit difference 1.0 of 16.6, answer probability 0.28) and the heads' direct writes total only 2.7 of 16.6, so most of the answer is written by the MLPs, consistent with mlp1 ablation removing 76%.",
+   "evidence": [
+    "E0015",
+    "E0016",
+    "E0012"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "tok1",
+    "label": "first token (pos 1)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "tok4",
+    "label": "last token (pos 4)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "0.0",
+    "label": "head 0.0: pos 4 -> pos 1",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "0.1",
+    "label": "head 0.1 (weak, outside circuit)",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0: partial (first,last) features",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "1.0",
+    "label": "head 1.0: pos 4 -> pos 1",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "1.1",
+    "label": "head 1.1: pos 4 -> pos 1",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "mlp1",
+    "label": "mlp1: completes lookup",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "output symbol",
+    "layer": 2,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "tok1",
+    "dst": "0.0",
+    "label": "first token"
+   },
+   {
+    "src": "tok1",
+    "dst": "0.1",
+    "label": "first token (weak)"
+   },
+   {
+    "src": "0.0",
+    "dst": "mlp0",
+    "label": "first token at pos 4"
+   },
+   {
+    "src": "tok4",
+    "dst": "mlp0",
+    "label": "last token"
+   },
+   {
+    "src": "tok1",
+    "dst": "1.0",
+    "label": "first token via pos 1 residual"
+   },
+   {
+    "src": "tok1",
+    "dst": "1.1",
+    "label": "first token via pos 1 residual"
+   },
+   {
+    "src": "mlp0",
+    "dst": "mlp1",
+    "label": "pos 4 residual"
+   },
+   {
+    "src": "1.0",
+    "dst": "mlp1",
+    "label": "first token at pos 4"
+   },
+   {
+    "src": "1.1",
+    "dst": "mlp1",
+    "label": "first token at pos 4"
+   },
+   {
+    "src": "mlp1",
+    "dst": "out",
+    "label": "answer logits"
+   },
+   {
+    "src": "1.0",
+    "dst": "out",
+    "label": "small direct write"
+   },
+   {
+    "src": "1.1",
+    "dst": "out",
+    "label": "small direct write"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0009",
+  "E0011",
+  "E0012",
+  "E0010"
+ ],
+ "limitations": [
+  "The function is reported as an unexplained 36-entry table; I found no simpler rule behind it and did not test for one experimentally.",
+  "The pre-registered test of 'mlp1 writes the answer' (E0017) was scored inconclusive because I registered a metric path that does not exist; the observed all-position effects (mlp1 0.78, mlp0 0.76) do not separate the two MLPs. What each MLP computes individually is not resolved.",
+  "No component is exactly inert: head 0.1, the only one outside the circuit, still costs about 15% of the logit difference and flips about 3-4% of outputs when ablated. The task statement says some components play no part; the closest match I measured is 0.1.",
+  "The edges between specific heads and MLPs in the diagram are inferred from position-level patching and ablations, not from path patching.",
+  "The table was first read by hand from E0001 samples and two transcription errors were caught by E0003; the final table rests on E0005 and the held-out verifications, not on the hand reading.",
+  "V0002 (a 4-component circuit without head 0.0) is a failed verification and is kept in the record; V0003 re-ran the V0001 circuit on a third unseen seed."
+ ],
+ "open_questions": [
+  "Is there a compact rule that generates the table (for example a composition of two smaller maps)?",
+  "What intermediate features does mlp0 write at the last position, and do the layer-1 heads read the raw first token or a layer-0 transformed version of it?",
+  "Is head 0.1 a partial duplicate of 0.0, or does it serve specific table cells?"
+ ],
+ "overall_status": "partial / not verified \u00b7 verified (local-full, full precision)",
+ "cited": [
+  "E0003",
+  "E0005",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0013",
+  "E0014",
+  "E0015",
+  "E0016",
+  "V0001",
+  "V0002",
+  "V0003"
+ ],
+ "prediction_record": {
+  "preregistered": 8,
+  "run": 8,
+  "not_run": [],
+  "confirmed": 7,
+  "refuted": 0,
+  "inconclusive": 1,
+  "hit_rate": 1.0,
+  "refuted_predictions": []
+ },
+ "exploratory_runs": [
+  "E0002",
+  "E0003",
+  "E0004",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0015",
+  "E0016"
+ ]
+}

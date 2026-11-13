@@ -1,0 +1,96 @@
+{
+ "id": "E0003",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "component": "resid_pre",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t2",
+   "n": 100,
+   "seed": 2
+  }
+ },
+ "summary": {
+  "component": "resid_pre",
+  "direction": "denoise",
+  "metric_base": -1.0,
+  "metric_source": 1.0,
+  "n": 100,
+  "top": [
+   {
+    "component": "resid_pre.0 @ pos 3",
+    "effect": 1.0
+   },
+   {
+    "component": "resid_pre.0 @ pos 0",
+    "effect": 0.0
+   },
+   {
+    "component": "resid_pre.0 @ pos 1",
+    "effect": 0.0
+   },
+   {
+    "component": "resid_pre.0 @ pos 2",
+    "effect": 0.0
+   },
+   {
+    "component": "resid_pre.0 @ pos 4",
+    "effect": 0.0
+   },
+   {
+    "component": "resid_pre.0 @ pos 5",
+    "effect": 0.0
+   },
+   {
+    "component": "resid_pre.0 @ pos 6",
+    "effect": 0.0
+   }
+  ],
+  "variants": 7
+ },
+ "data": {
+  "effect": [
+   [
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  ],
+  "layers": [
+   0
+  ],
+  "columns": [
+   "0",
+   "1",
+   "2",
+   "3",
+   "4",
+   "5",
+   "6"
+  ]
+ },
+ "plot": "experiments/E0003_activation_patching.png",
+ "seconds": 0.16,
+ "timestamp": "2026-11-13T12:48:43",
+ "prereg_id": "N0006",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[0][3]",
+  "op": ">=",
+  "threshold": 0.9,
+  "statement": "patching resid_pre layer 0 at position 3 restores at least 90% of the clean-corrupt metric gap",
+  "verdict": "confirmed",
+  "observed": 1.0
+ }
+}

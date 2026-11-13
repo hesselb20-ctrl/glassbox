@@ -1,0 +1,166 @@
+{
+ "title": "t6: counting the tokens that share the last token's class (mlp0 -> head 1.1 -> mlp1)",
+ "label": "verified",
+ "behavior": "Input BOS + 6 tokens from {do, ge, go, ko, no, vu}; at the last position the model outputs a digit. Backend: local-full (full precision) for every number in this report.",
+ "summary": "The model outputs how many of the 6 input tokens belong to the same class as the last token (the last token counts itself), with classes {do,vu}, {ge,no}, {go,ko} (token ids {2,7}, {3,6}, {4,5}). The rule was read off the dataset examples and reproduces the model on 200/200 held-out inputs. The circuit is three components: mlp0 (acts per token at every input position), head 1.1 (from the last position attends uniformly over BOS plus all same-class tokens, so BOS weight = 1/(1+count)), and mlp1 (acts only at the last position and turns that into the digit). Heads 0.0, 0.1, 0.2, 1.0 and 1.2 play no part: ablating all five together changes nothing.",
+ "pseudocode": "cls = {do:0, vu:0, ge:1, no:1, go:2, ko:2}\n# mlp0, at each input position: token -> class feature\n# head 1.1, at the last position: attend uniformly to BOS + tokens with cls == cls[last]  -> BOS weight 1/(1+count)\n# mlp1, at the last position: 1/(1+count) -> digit\ncount = sum(cls[t] == cls[tokens[-1]] for t in tokens[1:])\nreturn digit(count)   # id 8 + count",
+ "claims": [
+  {
+   "text": "The model performs its behaviour deterministically (accuracy 1.0 on 128 inputs).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The function is: number of input tokens in the last token's class, classes {2,7},{3,6},{4,5}; the coded rule agrees with the model on 200/200 held-out inputs (task-shuffled null max 0.315).",
+   "evidence": [
+    "V0001"
+   ]
+  },
+  {
+   "text": "Head 1.1 is necessary: mean-ablating it leaves 0.0 of the clean metric.",
+   "evidence": [
+    "E0009",
+    "V0001"
+   ]
+  },
+  {
+   "text": "mlp0 and mlp1 are both necessary: mean-ablating either leaves 0.0 and 0.012 of the clean metric.",
+   "evidence": [
+    "E0010",
+    "E0011"
+   ]
+  },
+  {
+   "text": "Heads 0.0, 0.1, 0.2, 1.0, 1.2 play no part: joint mean ablation leaves the metric at 1.0, and the circuit alone (everything else ablated) keeps accuracy 1.0.",
+   "evidence": [
+    "E0012",
+    "V0001"
+   ]
+  },
+  {
+   "text": "Head 1.1 at the last position attends uniformly over BOS plus same-class tokens (matching on class, not identity): BOS weight is 1/7 when all six tokens are class-mates of mixed identity, and 1/2 (self 1/2, all others 0) when the last token is alone in its class.",
+   "evidence": [
+    "E0007",
+    "E0013"
+   ]
+  },
+  {
+   "text": "mlp1 does its work only at the last position (patching its output there alone restores the full answer; other positions 0), while mlp0 works at every input position 1-6 (single-position patches give partial effects 0.25-0.43, BOS 0).",
+   "evidence": [
+    "E0016",
+    "E0017"
+   ]
+  },
+  {
+   "text": "Ablating the circuit {mlp0, 1.1, mlp1} drops the metric to 0.0085 of clean (accuracy 0.35); random same-size sets leave it at 1.0.",
+   "evidence": [
+    "V0001"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "tok",
+    "label": "token embeddings (pos 1-6)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0: per-token class feature",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "1.1",
+    "label": "head 1.1: BOS + same-class tokens, uniform",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "mlp1",
+    "label": "mlp1 @ last pos: 1/(1+count) -> digit",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "digit logits",
+    "layer": 2,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "tok",
+    "dst": "mlp0",
+    "label": "token identity"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.1",
+    "label": "class (inferred from layer order; not path-patched)"
+   },
+   {
+    "src": "1.1",
+    "dst": "mlp1",
+    "label": "BOS weight 1/(1+count)"
+   },
+   {
+    "src": "mlp1",
+    "dst": "out",
+    "label": "count"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0013",
+  "E0007",
+  "E0017",
+  "E0012"
+ ],
+ "limitations": [
+  "The mlp0 -> 1.1 edge is inferred from layer order, necessity and per-position patching; path_patching with an MLP sender raised an error, so it was not measured whether mlp0 feeds 1.1's query, key or both.",
+  "That mlp0 writes a 'class' feature is an interpretation consistent with 1.1's class-matching attention; the feature itself was not probed.",
+  "That mlp1 reads 1/(1+count) is inferred from the attention pattern; the value 1.1 moves was not decoded directly.",
+  "E0008 was scored inconclusive because of a wrong metric path (observed 1.0); it was re-run on a fresh seed with the same threshold as E0012.",
+  "Exploratory E0014 shows heads 1.0 and 1.2 have nonzero direct writes along the answer direction (0.21, 0.19) although ablating them does not change the output."
+ ],
+ "open_questions": [
+  "Does mlp0 feed head 1.1 through the query, the key, or both?",
+  "What do the unused heads 1.0 and 1.2 write, given their nonzero direct logit attribution?"
+ ],
+ "overall_status": "verified \u00b7 verified",
+ "cited": [
+  "E0002",
+  "E0007",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0013",
+  "E0016",
+  "E0017",
+  "V0001"
+ ],
+ "prediction_record": {
+  "preregistered": 10,
+  "run": 10,
+  "not_run": [],
+  "confirmed": 9,
+  "refuted": 0,
+  "inconclusive": 1,
+  "hit_rate": 1.0,
+  "refuted_predictions": []
+ },
+ "exploratory_runs": [
+  "E0003",
+  "E0004",
+  "E0005",
+  "E0006",
+  "E0014",
+  "E0015"
+ ]
+}

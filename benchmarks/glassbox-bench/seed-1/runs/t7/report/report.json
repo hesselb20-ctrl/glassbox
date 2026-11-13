@@ -1,0 +1,245 @@
+{
+ "title": "t7: priority-max over 4 symbols in a 2-layer, 2-head transformer",
+ "label": "partial: function verified by agreement, circuit localisation not verified",
+ "behavior": "BOS + 4 tokens from 6 symbols (ti, ri, pu, bo, so, pa); the model outputs one symbol at the last position.",
+ "summary": "The model outputs the highest-priority symbol present in the input under the fixed order pa > bo > pu > ri > ti > so, independent of position. A 4-line predict() matches the model on 200/200 held-out inputs twice (V0001 seed 2, V0002 seed 3). Mechanistically, layer-1 heads 1.0 and 1.1 attend from the last position to the winning symbol and mlp1 turns what they move into the answer logits; layer-0 heads pre-process the per-position representations that layer 1 moves (V-composition), and mlp0 is also required. All six components (4 heads, 2 MLPs) showed a causal effect, so I could not identify any component that plays no part. The circuit is therefore the whole model, which the lab cannot distinguish from a null on sufficiency (V0001: not-verified). The one pre-declared smaller circuit (dropping the weakest head, 0.0) kept 96.5% accuracy but only 0.682 of the logit difference, under the 0.7 threshold (V0002: not-verified). All numbers are from local-full (full precision).",
+ "pseudocode": "def predict(tokens, prompt):\n    rank = {pa(7): 5, bo(5): 4, pu(4): 3, ri(3): 2, ti(2): 1, so(6): 0}\n    return max(tokens[1:], key=rank)   # highest-priority symbol present\n\n# mechanism (as far as measured)\n# L0: heads 0.0/0.1 (+ mlp0) enrich each position's representation; no direct logit effect\n# L1: heads 1.0/1.1 at the last position attend to the position of the highest-priority symbol and copy its (L0-enriched) value\n# mlp1: converts the moved value into the output logits",
+ "claims": [
+  {
+   "text": "The model computes max under the order pa > bo > pu > ri > ti > so: predict() agrees with the model on 200/200 held-out inputs in two separate seeds; the model's own behaviour is confident (accuracy 1.0, mean logit diff 32).",
+   "evidence": [
+    "E0001",
+    "E0002",
+    "V0001",
+    "V0002"
+   ]
+  },
+  {
+   "text": "Layer-1 heads 1.0 and 1.1 attend from the last position to the winning symbol wherever it is (0.83 and 0.92 for winner pu at position 3; 0.85 and 0.96 for winner pa at position 2 in the exploratory run), and jointly mean-ablating them leaves 0.17 of the logit difference.",
+   "evidence": [
+    "E0008",
+    "E0007",
+    "E0009"
+   ]
+  },
+  {
+   "text": "Layer-0 heads 0.0 and 0.1 are needed (joint mean ablation leaves 0.27) but write almost nothing directly to the logits (0.004, 0.006); their main route is through the values of the layer-1 heads (0.18, 0.23), not their queries (0.02, 0.04, exploratory) or keys (0.03, 0.03).",
+   "evidence": [
+    "E0010",
+    "E0012",
+    "E0013",
+    "E0014",
+    "E0011"
+   ]
+  },
+  {
+   "text": "Layer-1 heads have only a small direct effect on the logits (about 0.10 each) while mean-ablating mlp1 leaves 0.29 of the logit difference: the answer is finalised by mlp1. mlp0 is also necessary (0.23 left when ablated).",
+   "evidence": [
+    "E0012",
+    "E0016",
+    "E0015",
+    "E0004"
+   ]
+  },
+  {
+   "text": "No single head carries the behaviour (largest single-head denoising effect 0.46; all four between 0.30 and 0.46), and no head or MLP was found to be inert.",
+   "evidence": [
+    "E0006",
+    "E0003",
+    "E0015",
+    "E0016"
+   ]
+  },
+  {
+   "text": "Circuit localisation is not verified. Whole model as circuit: thresholds met but sufficiency has no null (V0001). Circuit without head 0.0: ablating it breaks the behaviour (fraction -0.03, accuracy 0.24) and it beats the null controls, but alone it retains 0.682 of the logit difference (accuracy 0.965), below the 0.7 threshold (V0002).",
+   "evidence": [
+    "V0001",
+    "V0002"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "tok",
+    "label": "token + position embeddings (pos 1-4)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "0.0",
+    "label": "head 0.0 (weakest; pre-processing)",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "0.1",
+    "label": "head 0.1 (pre-processing)",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "1.0",
+    "label": "head 1.0 (attends to winner)",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "1.1",
+    "label": "head 1.1 (attends to winner)",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "mlp1",
+    "label": "mlp1 (writes answer)",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "logits at last position",
+    "layer": 2,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "tok",
+    "dst": "0.0",
+    "label": ""
+   },
+   {
+    "src": "tok",
+    "dst": "0.1",
+    "label": ""
+   },
+   {
+    "src": "tok",
+    "dst": "mlp0",
+    "label": ""
+   },
+   {
+    "src": "0.0",
+    "dst": "1.0",
+    "label": "V (0.18 to 1.0+1.1)"
+   },
+   {
+    "src": "0.1",
+    "dst": "1.1",
+    "label": "V (0.23 to 1.0+1.1)"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.0",
+    "label": "not measured separately"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.1",
+    "label": "not measured separately"
+   },
+   {
+    "src": "1.0",
+    "dst": "mlp1",
+    "label": "moves winner to last pos"
+   },
+   {
+    "src": "1.1",
+    "dst": "mlp1",
+    "label": "moves winner to last pos"
+   },
+   {
+    "src": "1.0",
+    "dst": "out",
+    "label": "direct 0.10"
+   },
+   {
+    "src": "1.1",
+    "dst": "out",
+    "label": "direct 0.10"
+   },
+   {
+    "src": "mlp1",
+    "dst": "out",
+    "label": "main write"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0006",
+  "E0008",
+  "E0012",
+  "E0013"
+ ],
+ "limitations": [
+  "Circuit status is not-verified: the only circuit that meets the thresholds is the whole model, which has no sufficiency null.",
+  "The task statement says some components play no part; at head/MLP granularity I found none. Head 0.0 is the weakest (model keeps 96.5% accuracy without it) but it still carries 30% of the patching effect, so I do not call it inert.",
+  "Ablation and patching effects are logit differences against the corrupt prompt's answer; per-component accuracy was only seen in the two verification runs.",
+  "The path-patching primitive rejected mlp0 as a sender, so the mlp0 -> layer-1 and layer-1 -> mlp1 edges are inferred from ablations and direct-effect sizes, not measured as paths.",
+  "How layer-1 attention picks the winner (what is in the keys) and what exactly the layer-0 heads add to the values was not resolved.",
+  "The single-symbol output 'so' (all four inputs so) never appeared in the sampled data; the rule predicts 'so' there but this is untested.",
+  "One prediction was refuted (N0020: I expected no V-composition from layer 0 to layer 1; observed 0.23)."
+ ],
+ "open_questions": [
+  "What do heads 0.0/0.1 write at the source positions that makes the layer-1 values useful: a partial max, or a re-encoding of the token?",
+  "Is the priority order encoded in the layer-1 key/query weights directly on the token embeddings?",
+  "Would a finer-grained decomposition (per position, or neurons within the MLPs) reveal the inert parts the task statement mentions?"
+ ],
+ "overall_status": "partial / not verified \u00b7 partial: function verified by agreement, circuit localisation not verified",
+ "cited": [
+  "E0001",
+  "E0002",
+  "E0003",
+  "E0004",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0013",
+  "E0014",
+  "E0015",
+  "E0016",
+  "V0001",
+  "V0002"
+ ],
+ "prediction_record": {
+  "preregistered": 10,
+  "run": 10,
+  "not_run": [],
+  "confirmed": 9,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.9,
+  "refuted_predictions": [
+   {
+    "prereg": "N0020",
+    "experiment": "E0013",
+    "hypothesis": "Layer-0 heads influence the layer-1 heads little through their values as well (as with queries, E0011): the layer-1 heads read the winning token mainly from the embedding/mlp0 stream at the source position, not from layer-0 attention output.",
+    "prediction": {
+     "metric": "summary.top[0].effect",
+     "op": "<=",
+     "threshold": 0.1,
+     "statement": "the larger of the two layer-0 -> layer-1 value path effects is at most 0.1"
+    },
+    "observed": 0.227605
+   }
+  ]
+ },
+ "exploratory_runs": [
+  "E0003",
+  "E0004",
+  "E0005",
+  "E0007",
+  "E0011"
+ ]
+}

@@ -1,0 +1,53 @@
+{
+ "id": "E0011",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t7",
+   "n": 200,
+   "seed": 0
+  },
+  "components": [
+   "1.0",
+   "1.1"
+  ],
+  "mode": "mean",
+  "joint": true
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 38.663483,
+  "joint": true,
+  "components": [
+   "1.0",
+   "1.1"
+  ],
+  "metric_ablated": 8.616983,
+  "fraction_of_clean": 0.222871
+ },
+ "data": {
+  "metric_ablated": 8.616983
+ },
+ "plot": "experiments/E0011_ablation.png",
+ "seconds": 0.31,
+ "timestamp": "2026-11-13T13:11:30",
+ "prereg_id": "N0018",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.35,
+  "statement": "joint mean ablation of heads 1.0+1.1 leaves at most 35% of the clean logit diff",
+  "verdict": "confirmed",
+  "observed": 0.222871
+ }
+}

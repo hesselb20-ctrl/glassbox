@@ -1,0 +1,132 @@
+{
+ "id": "V0001",
+ "name": "t1: f(x1,x4) lookup via L1 movers + both MLPs",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5,
+  "null_percentile": 95.0
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t1/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 1.0,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "1.0",
+    "1.1",
+    "mlp0",
+    "mlp1"
+   ],
+   "circuit_size": 4,
+   "total_components": 6,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": -0.175313,
+    "fraction_of_clean": -0.012073,
+    "accuracy": 0.225
+   },
+   "everything_else_ablated": {
+    "metric": 9.464011,
+    "fraction_of_clean": 0.651763,
+    "accuracy": 0.76
+   },
+   "random_same_size_ablated_fraction": [
+    0.651763,
+    0.651763,
+    0.651763
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": false,
+   "pass": false
+  }
+ },
+ "null_controls": [
+  {
+   "finding": "agreement",
+   "what": "share of held-out inputs where predict() equals the model's output",
+   "effect": 1.0,
+   "null_mean": 0.180833,
+   "null_p95": 0.22,
+   "null_max": 0.225,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "task-shuffled": 30
+   },
+   "pass": true
+  },
+  {
+   "finding": "necessity",
+   "what": "standardised drop in the metric when the claimed circuit is ablated",
+   "effect": 1.012073,
+   "null_mean": 0.305001,
+   "null_p95": 0.348237,
+   "null_max": 0.348237,
+   "percentile_of_effect": 100.0,
+   "n_null": 34,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30,
+    "random-init": 2,
+    "weight-shuffled": 2
+   },
+   "pass": true
+  },
+  {
+   "finding": "sufficiency",
+   "what": "standardised metric (above its no-information floor) with everything except the claimed circuit ablated",
+   "effect": 0.651763,
+   "null_mean": -0.012073,
+   "null_p95": -0.012073,
+   "null_max": -0.012073,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30
+   },
+   "pass": true
+  }
+ ],
+ "model_accuracy": 1.0,
+ "metric_clean": 14.520625,
+ "metric_floor": 0.0,
+ "metric_unit": 14.520625,
+ "beats_null_controls": true,
+ "status": "not-verified",
+ "all_checks_passed": false,
+ "note": "At least one check failed; the explanation is partial or wrong. See the numbers.",
+ "plot": "experiments/V0001_verify.png",
+ "spec": {
+  "name": "t1: f(x1,x4) lookup via L1 movers + both MLPs",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t1",
+   "n": 200,
+   "seed": 101
+  },
+  "code": "def predict(tokens, prompt):\n    # Output depends only on the first input token (pos 1) and the last (pos 4): E0001 table, E0005 causal.\n    # Heads 1.0/1.1 move x1 from pos 1 to pos 4 (E0012, E0009); mlp0+mlp1 implement the table (E0010).\n    T = {2: [3, 6, 4, 3, 6, 3],\n         3: [2, 7, 3, 3, 5, 4],\n         4: [2, 6, 5, 7, 2, 5],\n         5: [7, 7, 2, 7, 3, 6],\n         6: [4, 3, 4, 6, 6, 6],\n         7: [6, 3, 4, 4, 6, 5]}\n    a = int(tokens[1]); d = int(tokens[4])\n    return T[a][d - 2]\n",
+  "circuit": {
+   "components": [
+    "1.0",
+    "1.1",
+    "mlp0",
+    "mlp1"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-13T12:44:12"
+}

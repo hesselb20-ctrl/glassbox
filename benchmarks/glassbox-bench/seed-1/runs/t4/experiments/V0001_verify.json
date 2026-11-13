@@ -1,0 +1,183 @@
+{
+ "id": "V0001",
+ "name": "t4 pointer-then-lookup: mlp0 -> 1.1 -> mlp1",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5,
+  "null_percentile": 95.0
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t4/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 0.98,
+   "algorithm_accuracy_vs_ground_truth": 0.98,
+   "disagreements": [
+    {
+     "input": [
+      0,
+      5,
+      6,
+      2,
+      3,
+      3,
+      5
+     ],
+     "algorithm": "pa",
+     "model": "fu"
+    },
+    {
+     "input": [
+      0,
+      5,
+      6,
+      6,
+      5,
+      2,
+      5
+     ],
+     "algorithm": "pa",
+     "model": "fu"
+    },
+    {
+     "input": [
+      0,
+      4,
+      6,
+      6,
+      3,
+      5,
+      5
+     ],
+     "algorithm": "pa",
+     "model": "fu"
+    },
+    {
+     "input": [
+      0,
+      5,
+      6,
+      4,
+      5,
+      4,
+      5
+     ],
+     "algorithm": "pa",
+     "model": "fu"
+    }
+   ],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "mlp0",
+    "1.1",
+    "mlp1"
+   ],
+   "circuit_size": 3,
+   "total_components": 8,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": -0.00425,
+    "fraction_of_clean": -0.00425,
+    "accuracy": 0.255
+   },
+   "everything_else_ablated": {
+    "metric": 1.0,
+    "fraction_of_clean": 1.0,
+    "accuracy": 1.0
+   },
+   "random_same_size_ablated_fraction": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": true,
+   "pass": true
+  }
+ },
+ "null_controls": [
+  {
+   "finding": "agreement",
+   "what": "share of held-out inputs where predict() equals the model's output",
+   "effect": 0.98,
+   "null_mean": 0.212667,
+   "null_p95": 0.25775,
+   "null_max": 0.265,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "task-shuffled": 30
+   },
+   "pass": true
+  },
+  {
+   "finding": "necessity",
+   "what": "standardised drop in the metric when the claimed circuit is ablated",
+   "effect": 1.00425,
+   "null_mean": -0.002404,
+   "null_p95": 0.012919,
+   "null_max": 0.046582,
+   "percentile_of_effect": 100.0,
+   "n_null": 34,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30,
+    "random-init": 2,
+    "weight-shuffled": 2
+   },
+   "pass": true
+  },
+  {
+   "finding": "sufficiency",
+   "what": "standardised metric (above its no-information floor) with everything except the claimed circuit ablated",
+   "effect": 1.0,
+   "null_mean": -0.00425,
+   "null_p95": -0.00425,
+   "null_max": -0.00425,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30
+   },
+   "pass": true
+  }
+ ],
+ "model_accuracy": 1.0,
+ "metric_clean": 1.0,
+ "metric_floor": 0.0,
+ "metric_unit": 1.0,
+ "beats_null_controls": true,
+ "status": "verified",
+ "all_checks_passed": true,
+ "note": "Passed at full precision, and every effect exceeds its null distribution.",
+ "plot": "experiments/V0001_verify.png",
+ "spec": {
+  "name": "t4 pointer-then-lookup: mlp0 -> 1.1 -> mlp1",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t4",
+   "n": 200,
+   "seed": 7
+  },
+  "code": "def predict(tokens, prompt):\n    # tokens: [BOS, t1..t6]; ids: fu=2 ko=3 ni=4 pa=5 tu=6\n    last = tokens[6]\n    # mlp0 turns the last token into a pointer (E0013, E0014); head 1.1 attends one-hot there (E0005-E0007)\n    ptr = {3: 1, 4: 3}.get(last, 2)   # ko->pos1, ni->pos3, fu/pa/tu->pos2\n    x = tokens[ptr]\n    # mlp1 maps (last token, copied token) to the output (E0008); table read off E0001\n    TABLE = {\n        2: {2: 3, 3: 3, 4: 3, 5: 4, 6: 6},\n        3: {2: 3, 3: 4, 4: 4, 5: 2, 6: 5},\n        4: {2: 5, 3: 2, 4: 4, 5: 3, 6: 6},\n        5: {2: 5, 3: 5, 4: 2, 5: 2, 6: 5},\n        6: {2: 2, 3: 6, 4: 3, 5: 4, 6: 3},\n    }\n    return TABLE[last][x]\n",
+  "circuit": {
+   "components": [
+    "mlp0",
+    "1.1",
+    "mlp1"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-13T13:00:23"
+}

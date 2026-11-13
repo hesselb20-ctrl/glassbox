@@ -1,0 +1,134 @@
+{
+ "id": "V0001",
+ "name": "t6: max under order tu<gu<vi<za<ze via sort-rank circuit",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5,
+  "null_percentile": 95.0
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t6/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 1.0,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "mlp0",
+    "mlp1",
+    "2.1",
+    "mlp2",
+    "3.1"
+   ],
+   "circuit_size": 5,
+   "total_components": 12,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": -0.095319,
+    "fraction_of_clean": -0.095325,
+    "accuracy": 0.24
+   },
+   "everything_else_ablated": {
+    "metric": 0.999934,
+    "fraction_of_clean": 1.0,
+    "accuracy": 1.0
+   },
+   "random_same_size_ablated_fraction": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": true,
+   "pass": true
+  }
+ },
+ "null_controls": [
+  {
+   "finding": "agreement",
+   "what": "share of held-out inputs where predict() equals the model's output",
+   "effect": 1.0,
+   "null_mean": 0.5695,
+   "null_p95": 0.61,
+   "null_max": 0.615,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "task-shuffled": 30
+   },
+   "pass": true
+  },
+  {
+   "finding": "necessity",
+   "what": "standardised drop in the metric when the claimed circuit is ablated",
+   "effect": 1.095325,
+   "null_mean": -0.006047,
+   "null_p95": 0.007663,
+   "null_max": 0.0333,
+   "percentile_of_effect": 100.0,
+   "n_null": 34,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30,
+    "random-init": 2,
+    "weight-shuffled": 2
+   },
+   "pass": true
+  },
+  {
+   "finding": "sufficiency",
+   "what": "standardised metric (above its no-information floor) with everything except the claimed circuit ablated",
+   "effect": 1.0,
+   "null_mean": -0.095325,
+   "null_p95": -0.095325,
+   "null_max": -0.095325,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30
+   },
+   "pass": true
+  }
+ ],
+ "model_accuracy": 1.0,
+ "metric_clean": 0.999934,
+ "metric_floor": 0.0,
+ "metric_unit": 0.999934,
+ "beats_null_controls": true,
+ "status": "verified",
+ "all_checks_passed": true,
+ "note": "Passed at full precision, and every effect exceeds its null distribution.",
+ "plot": "experiments/V0001_verify.png",
+ "spec": {
+  "name": "t6: max under order tu<gu<vi<za<ze via sort-rank circuit",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t6",
+   "n": 200,
+   "seed": 7
+  },
+  "code": "def predict(tokens, prompt):\n    # tokens = [BOS, x1..x5]; ids: gu=2, tu=3, vi=4, za=5, ze=6\n    # Order tu < gu < vi < za < ze (E0001, E0003: gu beats tu; otherwise id order).\n    order = {3: 0, 2: 1, 4: 2, 5: 3, 6: 4}\n    xs = list(tokens[1:6])\n    # mlp0/mlp1: per-position ranking key (E0016). Head 2.1 + mlp2: stable ascending sort rank\n    # r_i = #(j: x_j lower, or equal and earlier) (E0010, E0011).\n    ranks = [sum(1 for j in range(5) if order[xs[j]] < order[xs[i]] or (xs[j] == xs[i] and j < i)) for i in range(5)]\n    # Head 3.1 at the last position attends to the position with rank 4 and copies its symbol (E0012, E0014).\n    return xs[ranks.index(4)]\n",
+  "circuit": {
+   "components": [
+    "mlp0",
+    "mlp1",
+    "2.1",
+    "mlp2",
+    "3.1"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-13T13:08:26"
+}

@@ -1,0 +1,102 @@
+{
+ "id": "E0016",
+ "primitive": "path_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t2",
+   "n": 200,
+   "seed": 3
+  },
+  "senders": [
+   "3.1",
+   "2.0"
+  ],
+  "receiver": "logits"
+ },
+ "summary": {
+  "receiver": "logits",
+  "direction": "denoise",
+  "metric_base": -0.999855,
+  "metric_source": 0.999855,
+  "n": 200,
+  "top": [
+   {
+    "component": "3.1",
+    "effect": 1.0
+   },
+   {
+    "component": "0.0",
+    "effect": 0.0
+   },
+   {
+    "component": "0.1",
+    "effect": 0.0
+   },
+   {
+    "component": "0.2",
+    "effect": 0.0
+   },
+   {
+    "component": "1.0",
+    "effect": 0.0
+   },
+   {
+    "component": "1.1",
+    "effect": 0.0
+   },
+   {
+    "component": "1.2",
+    "effect": 0.0
+   },
+   {
+    "component": "2.0",
+    "effect": 0.0
+   }
+  ]
+ },
+ "data": {
+  "effect": [
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    1.0,
+    0.0
+   ]
+  ]
+ },
+ "plot": "experiments/E0016_path_patching.png",
+ "seconds": 0.64,
+ "timestamp": "2026-11-13T12:49:35",
+ "prereg_id": "N0024",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[component=3.1].effect",
+  "op": ">=",
+  "threshold": 0.9,
+  "statement": "the direct path 3.1 -> logits has an effect of at least 0.9",
+  "verdict": "confirmed",
+  "observed": 1.0
+ }
+}

@@ -1,0 +1,130 @@
+{
+ "id": "V0001",
+ "name": "same-class count of last token via mlp0 -> 1.0 -> mlp1",
+ "n_heldout": 300,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5,
+  "null_percentile": 95.0
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t5/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 1.0,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "mlp0",
+    "1.0",
+    "mlp1"
+   ],
+   "circuit_size": 3,
+   "total_components": 8,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": -0.006167,
+    "fraction_of_clean": -0.006167,
+    "accuracy": 0.3
+   },
+   "everything_else_ablated": {
+    "metric": 1.0,
+    "fraction_of_clean": 1.0,
+    "accuracy": 1.0
+   },
+   "random_same_size_ablated_fraction": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": true,
+   "pass": true
+  }
+ },
+ "null_controls": [
+  {
+   "finding": "agreement",
+   "what": "share of held-out inputs where predict() equals the model's output",
+   "effect": 1.0,
+   "null_mean": 0.262,
+   "null_p95": 0.295167,
+   "null_max": 0.31,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "task-shuffled": 30
+   },
+   "pass": true
+  },
+  {
+   "finding": "necessity",
+   "what": "standardised drop in the metric when the claimed circuit is ablated",
+   "effect": 1.006167,
+   "null_mean": 0.001337,
+   "null_p95": 0.003441,
+   "null_max": 0.12094,
+   "percentile_of_effect": 100.0,
+   "n_null": 34,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30,
+    "random-init": 2,
+    "weight-shuffled": 2
+   },
+   "pass": true
+  },
+  {
+   "finding": "sufficiency",
+   "what": "standardised metric (above its no-information floor) with everything except the claimed circuit ablated",
+   "effect": 1.0,
+   "null_mean": -0.006167,
+   "null_p95": -0.006167,
+   "null_max": -0.006167,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30
+   },
+   "pass": true
+  }
+ ],
+ "model_accuracy": 1.0,
+ "metric_clean": 1.0,
+ "metric_floor": 0.0,
+ "metric_unit": 1.0,
+ "beats_null_controls": true,
+ "status": "verified",
+ "all_checks_passed": true,
+ "note": "Passed at full precision, and every effect exceeds its null distribution.",
+ "plot": "experiments/V0001_verify.png",
+ "spec": {
+  "name": "same-class count of last token via mlp0 -> 1.0 -> mlp1",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t5",
+   "n": 300,
+   "seed": 11
+  },
+  "code": "def predict(tokens, prompt):\n    # tokens: [BOS, x1..x5]; ids gi=2, ke=3, ki=4, me=5, su=6; digits '0'..'5' = ids 7..12\n    # mlp0 builds a per-token class feature at positions 1-5 (E0012, E0015)\n    cls = {3: 'k', 4: 'k', 2: 'g', 5: 'g', 6: 's'}\n    xs = list(tokens)[1:6]\n    last = cls[xs[-1]]\n    # head 1.0 at the last position attends evenly to BOS + every same-class position (E0008, E0014),\n    # so BOS share = 1/(count+1); mlp1 at pos 5 decodes this into the count (E0012, E0013, E0015)\n    count = sum(1 for x in xs if cls[x] == last)\n    return 7 + count\n",
+  "circuit": {
+   "components": [
+    "mlp0",
+    "1.0",
+    "mlp1"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-13T13:03:05"
+}

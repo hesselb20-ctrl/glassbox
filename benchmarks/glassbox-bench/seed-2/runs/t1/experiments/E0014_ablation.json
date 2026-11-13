@@ -1,0 +1,51 @@
+{
+ "id": "E0014",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t1/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t1",
+   "n": 200,
+   "seed": 3
+  },
+  "components": [
+   "1.2"
+  ],
+  "mode": "mean",
+  "joint": true
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 1.0,
+  "joint": true,
+  "components": [
+   "1.2"
+  ],
+  "metric_ablated": 0.1094,
+  "fraction_of_clean": 0.1094
+ },
+ "data": {
+  "metric_ablated": 0.1094
+ },
+ "plot": "experiments/E0014_ablation.png",
+ "seconds": 0.24,
+ "timestamp": "2026-11-13T12:46:34",
+ "prereg_id": "N0018",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.3,
+  "statement": "mean-ablating head 1.2 leaves <= 30% of the clean metric",
+  "verdict": "confirmed",
+  "observed": 0.1094
+ }
+}

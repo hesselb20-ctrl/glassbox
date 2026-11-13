@@ -1,0 +1,86 @@
+{
+ "id": "E0011",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t4/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t4",
+   "n": 200,
+   "seed": 3
+  },
+  "sweep": "heads",
+  "mode": "mean"
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 15.773363,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "1.0",
+    "metric": 8.203724,
+    "change": -7.569639,
+    "fraction_of_clean": 0.5201
+   },
+   {
+    "component": "1.1",
+    "metric": 11.095149,
+    "change": -4.678214,
+    "fraction_of_clean": 0.703411
+   },
+   {
+    "component": "0.0",
+    "metric": 12.218156,
+    "change": -3.555207,
+    "fraction_of_clean": 0.774607
+   },
+   {
+    "component": "0.1",
+    "metric": 13.522744,
+    "change": -2.250619,
+    "fraction_of_clean": 0.857315
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "0.0",
+   "0.1",
+   "1.0",
+   "1.1"
+  ],
+  "metric": [
+   12.218156,
+   13.522744,
+   8.203724,
+   11.095149
+  ],
+  "change": [
+   -3.555207,
+   -2.250619,
+   -7.569639,
+   -4.678214
+  ]
+ },
+ "plot": "experiments/E0011_ablation.png",
+ "seconds": 0.35,
+ "timestamp": "2026-11-13T12:57:52",
+ "prereg_id": "N0017",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[component=0.1].fraction_of_clean",
+  "op": ">=",
+  "threshold": 0.8,
+  "statement": "Mean-ablating head 0.1 leaves >= 80% of the clean logit difference.",
+  "verdict": "confirmed",
+  "observed": 0.857315
+ }
+}

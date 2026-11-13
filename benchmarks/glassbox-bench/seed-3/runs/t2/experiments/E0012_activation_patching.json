@@ -1,0 +1,69 @@
+{
+ "id": "E0012",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "component": "attn_out",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t2",
+   "n": 200,
+   "seed": 2
+  }
+ },
+ "summary": {
+  "component": "attn_out",
+  "direction": "denoise",
+  "metric_base": -14.696445,
+  "metric_source": 14.443031,
+  "n": 200,
+  "top": [
+   {
+    "component": "attn_out.1 @ pos all",
+    "effect": 0.761524
+   },
+   {
+    "component": "attn_out.0 @ pos all",
+    "effect": 0.416192
+   }
+  ],
+  "variants": 2
+ },
+ "data": {
+  "effect": [
+   [
+    0.416192
+   ],
+   [
+    0.761524
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "columns": [
+   "all"
+  ]
+ },
+ "plot": "experiments/E0012_activation_patching.png",
+ "seconds": 0.25,
+ "timestamp": "2026-11-13T12:48:31",
+ "prereg_id": "N0023",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[0][1]",
+  "op": ">=",
+  "threshold": 0.12,
+  "statement": "patching clean layer-0 attention output at pos 1 recovers at least 12% of the gap",
+  "verdict": "inconclusive",
+  "observed": null,
+  "why": "metric not found in the result: list index out of range"
+ }
+}

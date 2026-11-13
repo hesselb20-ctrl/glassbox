@@ -1,0 +1,193 @@
+{
+ "title": "t4: pointer-then-lookup in a 2-layer benchmark transformer (mlp0 -> head 1.1 -> mlp1)",
+ "behavior": "Input BOS + 6 tokens from {fu=2, ko=3, ni=4, pa=5, tu=6}; the model outputs one symbol at the last position.",
+ "label": "verified",
+ "summary": "The output depends on only two input tokens: the last token t6 and one token x from positions 1-3, chosen by t6 (ko -> position 1, ni -> position 3, fu/pa/tu -> position 2). The output is a fixed 5x5 lookup TABLE[t6][x]. Positions 4 and 5 are never used. Circuit: mlp0 supplies the pointer derived from the last token, head 1.1 attends one-hot from the last position to the pointed position, mlp1 produces the output. Heads 0.0, 0.1, 0.2, 1.0, 1.2 play no part. All numbers are from local-full (full precision). Held-out verification V0002 (n=400, unused seed): predict() agrees with the model on 100% of inputs; ablating the circuit drops the metric to 0.002 of clean (accuracy 0.21, chance 0.2); ablating everything else leaves 1.0.",
+ "pseudocode": "def predict(tokens, prompt):\n    last = tokens[6]                      # fu=2 ko=3 ni=4 pa=5 tu=6\n    ptr = {3: 1, 4: 3}.get(last, 2)       # mlp0 + head 1.1: ko->pos1, ni->pos3, fu/pa/tu->pos2\n    x = tokens[ptr]                       # head 1.1 copies the pointed token\n    TABLE = {                             # mlp1\n        2: {2: 3, 3: 3, 4: 3, 5: 4, 6: 6},\n        3: {2: 3, 3: 4, 4: 4, 5: 2, 6: 5},\n        4: {2: 5, 3: 2, 4: 4, 5: 3, 6: 6},\n        5: {2: 5, 3: 5, 4: 2, 5: 2, 6: 2},\n        6: {2: 2, 3: 6, 4: 3, 5: 4, 6: 3},\n    }\n    return TABLE[last][x]",
+ "claims": [
+  {
+   "text": "The model performs a deterministic behaviour: accuracy 1.0 against its own outputs on 64 inputs.",
+   "evidence": [
+    "E0003"
+   ]
+  },
+  {
+   "text": "The function is output = TABLE[t6][x], x = token at position 1 (t6=ko), 3 (t6=ni) or 2 (t6=fu/pa/tu). On 400 held-out inputs this code matches the model 100% (task-shuffled null: mean 0.22, max 0.27). A first version with one mis-transcribed table entry ([pa][tu]) matched 98%, with all 4 misses on exactly that entry.",
+   "evidence": [
+    "V0002",
+    "V0001"
+   ]
+  },
+  {
+   "text": "Head 1.1 implements the pointer: from the last position its attention is 1.0 on position 1 for ko-ending inputs, 1.0 on position 3 for ni-ending inputs and 1.0 on position 2 for fu/pa/tu-ending inputs.",
+   "evidence": [
+    "E0005",
+    "E0006",
+    "E0007"
+   ]
+  },
+  {
+   "text": "Head 1.1 and mlp1 are necessary: joint mean ablation leaves 0.015 of the clean metric.",
+   "evidence": [
+    "E0008",
+    "V0002"
+   ]
+  },
+  {
+   "text": "mlp0 is part of the circuit and its role is consistent with supplying the pointer: mean-ablating it is harmless when all inputs share the same pointer (fu/pa/tu-ending, 1.0 of clean) and destructive when the pointers differ (ko/ni-ending, 0.30 of clean). The original prediction that everything outside {1.1, mlp1} is inert was refuted (0.66 of clean, predicted >= 0.9).",
+   "evidence": [
+    "E0013",
+    "E0014",
+    "E0009"
+   ]
+  },
+  {
+   "text": "Heads 0.0, 0.1, 0.2, 1.0 and 1.2 play no part: jointly mean-ablating them leaves 1.0 of the clean metric, and with everything outside {mlp0, 1.1, mlp1} ablated the model keeps accuracy 1.0.",
+   "evidence": [
+    "E0015",
+    "V0002"
+   ]
+  },
+  {
+   "text": "The circuit {mlp0, 1.1, mlp1} is necessary and sufficient on held-out data: circuit ablated -> 0.002 of clean (accuracy 0.2125); everything else ablated -> 1.0 of clean (accuracy 1.0); both beyond every null control.",
+   "evidence": [
+    "V0002",
+    "V0001"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "tok6",
+    "label": "last token t6 (pos 6)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "tok123",
+    "label": "tokens at pos 1-3",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0: t6 -> pointer index",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "1.1",
+    "label": "head 1.1: one-hot attention to pointed position, copies x",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "mlp1",
+    "label": "mlp1: TABLE[t6][x]",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "output symbol",
+    "layer": 2,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "tok6",
+    "dst": "mlp0",
+    "label": "last token"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.1",
+    "label": "pointer (query; inferred from conditional ablations)"
+   },
+   {
+    "src": "tok123",
+    "dst": "1.1",
+    "label": "value x"
+   },
+   {
+    "src": "1.1",
+    "dst": "mlp1",
+    "label": "x"
+   },
+   {
+    "src": "tok6",
+    "dst": "mlp1",
+    "label": "t6 (residual; not isolated)"
+   },
+   {
+    "src": "mlp1",
+    "dst": "out",
+    "label": "answer"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0002",
+  "E0005",
+  "E0006",
+  "E0007",
+  "E0014"
+ ],
+ "limitations": [
+  "The mlp0 -> head 1.1 query edge was not measured directly: path_patching with sender mlp0 raised a ValueError, so the pointer role of mlp0 rests on conditional mean ablations (E0013, E0014) plus the attention patterns. Those do not exclude that mlp0 writes the pointer at a position other than the last one, nor a role beyond the pointer that happens to be shared by fu/pa/tu.",
+  "How mlp1 receives t6 (directly from the embedding via the residual stream) was not isolated.",
+  "The lookup table was read off input/output pairs (E0001) and confirmed behaviourally; no structure inside mlp1 was analysed. The table looks arbitrary and I found no simpler closed form.",
+  "Attribution patching (E0002) assigned mlp0 zero effect; that first-order estimate was wrong, as the ablations showed.",
+  "E0010-E0012 (per-component sweeps, mlp_out patching) were exploratory and are used only as pointers to the pre-registered runs."
+ ],
+ "open_questions": [
+  "Does mlp0 encode the pointer as a position index read by 1.1's query at the last position only?",
+  "Is there any simpler rule that generates the 5x5 table?"
+ ],
+ "overall_status": "verified \u00b7 verified",
+ "cited": [
+  "E0003",
+  "E0005",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0009",
+  "E0013",
+  "E0014",
+  "E0015",
+  "V0001",
+  "V0002"
+ ],
+ "prediction_record": {
+  "preregistered": 9,
+  "run": 9,
+  "not_run": [],
+  "confirmed": 8,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.889,
+  "refuted_predictions": [
+   {
+    "prereg": "N0012",
+    "experiment": "E0009",
+    "hypothesis": "Everything except head 1.1 and mlp1 is inert: jointly mean-ablating heads 0.0, 0.1, 0.2, 1.0, 1.2 and mlp0 leaves the behaviour intact.",
+    "prediction": {
+     "metric": "summary.fraction_of_clean",
+     "op": ">=",
+     "threshold": 0.9,
+     "statement": "Joint mean ablation of all non-circuit components keeps at least 90% of the clean metric"
+    },
+    "observed": 0.660813
+   }
+  ]
+ },
+ "exploratory_runs": [
+  "E0002",
+  "E0004",
+  "E0010",
+  "E0011",
+  "E0012"
+ ]
+}

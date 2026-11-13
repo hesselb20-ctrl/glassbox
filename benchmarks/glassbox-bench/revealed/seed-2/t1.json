@@ -1,0 +1,103 @@
+{
+ "id": "t1",
+ "seed": 2,
+ "track": "compiled",
+ "label": "compiled: mechanism known exactly",
+ "family": "lookup2",
+ "params": {
+  "ptr": {
+   "zo": 3,
+   "ge": 4,
+   "vi": 1,
+   "gu": 0,
+   "sa": 4,
+   "lu": 2
+  },
+  "table": {
+   "zo|zo": "ge",
+   "zo|ge": "ge",
+   "zo|vi": "gu",
+   "zo|gu": "zo",
+   "zo|sa": "vi",
+   "zo|lu": "ge",
+   "ge|zo": "lu",
+   "ge|ge": "ge",
+   "ge|vi": "zo",
+   "ge|gu": "sa",
+   "ge|sa": "lu",
+   "ge|lu": "vi",
+   "vi|zo": "sa",
+   "vi|ge": "ge",
+   "vi|vi": "ge",
+   "vi|gu": "ge",
+   "vi|sa": "ge",
+   "vi|lu": "gu",
+   "gu|zo": "vi",
+   "gu|ge": "sa",
+   "gu|vi": "lu",
+   "gu|gu": "vi",
+   "gu|sa": "zo",
+   "gu|lu": "gu",
+   "sa|zo": "gu",
+   "sa|ge": "sa",
+   "sa|vi": "zo",
+   "sa|gu": "lu",
+   "sa|sa": "sa",
+   "sa|lu": "sa",
+   "lu|zo": "lu",
+   "lu|ge": "vi",
+   "lu|vi": "gu",
+   "lu|gu": "gu",
+   "lu|sa": "vi",
+   "lu|lu": "ge"
+  }
+ },
+ "vocab": [
+  "zo",
+  "ge",
+  "vi",
+  "gu",
+  "sa",
+  "lu"
+ ],
+ "seq_len": 6,
+ "truth_function": "glassbox.bench.truth.lookup2",
+ "rasp_source": "ptr = Map(ptr, tokens); fetched = Aggregate(Select(indices, ptr, EQ), tokens); out = SequenceMap(table, fetched, tokens)",
+ "tracr": {
+  "num_layers": 2,
+  "num_heads": 1,
+  "checked_inputs": 1500,
+  "exhaustive": false
+ },
+ "components_before_obfuscation": [
+  "mlp0",
+  "1.0",
+  "mlp1"
+ ],
+ "transforms": {
+  "extra_residual_dims": 8,
+  "distractor_heads_per_layer": 2,
+  "distractor_neurons_per_layer": 7,
+  "head_permutation": {
+   "0": [
+    2,
+    1,
+    0
+   ],
+   "1": [
+    2,
+    1,
+    0
+   ]
+  },
+  "layers": 2,
+  "rotation": "random orthogonal 40x40, folded into the weights"
+ },
+ "true_components": [
+  "1.2",
+  "mlp0",
+  "mlp1"
+ ],
+ "accuracy_after_conversion": 1.0,
+ "accuracy_after_obfuscation": 1.0
+}

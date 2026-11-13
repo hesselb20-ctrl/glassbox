@@ -1,0 +1,61 @@
+{
+ "id": "E0009",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t4/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t4",
+   "n": 128,
+   "seed": 1
+  },
+  "components": [
+   "0.0",
+   "0.1",
+   "0.2",
+   "1.0",
+   "1.2",
+   "mlp0"
+  ],
+  "mode": "mean",
+  "joint": true
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 128,
+  "metric_clean": 1.0,
+  "joint": true,
+  "components": [
+   "0.0",
+   "0.1",
+   "0.2",
+   "1.0",
+   "1.2",
+   "mlp0"
+  ],
+  "metric_ablated": 0.660813,
+  "fraction_of_clean": 0.660813
+ },
+ "data": {
+  "metric_ablated": 0.660813
+ },
+ "plot": "experiments/E0009_ablation.png",
+ "seconds": 0.23,
+ "timestamp": "2026-11-13T12:58:54",
+ "prereg_id": "N0012",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": ">=",
+  "threshold": 0.9,
+  "statement": "Joint mean ablation of all non-circuit components keeps at least 90% of the clean metric",
+  "verdict": "refuted",
+  "observed": 0.660813
+ }
+}

@@ -1,0 +1,62 @@
+{
+ "id": "E0007",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t5/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t5",
+   "n": 200,
+   "seed": 1
+  },
+  "components": [
+   "mlp0"
+  ],
+  "mode": "mean"
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 1.0,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "mlp0",
+    "metric": 0.001975,
+    "change": -0.998025,
+    "fraction_of_clean": 0.001975
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "mlp0"
+  ],
+  "metric": [
+   0.001975
+  ],
+  "change": [
+   -0.998025
+  ]
+ },
+ "plot": "experiments/E0007_ablation.png",
+ "seconds": 0.23,
+ "timestamp": "2026-11-13T13:02:53",
+ "prereg_id": "N0011",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.2,
+  "statement": "mean-ablating mlp0 removes at least 80% of the logit difference",
+  "verdict": "inconclusive",
+  "observed": null,
+  "why": "metric not found in the result: \"'fraction_of_clean' not found while resolving 'summary.fraction_of_clean'\""
+ }
+}

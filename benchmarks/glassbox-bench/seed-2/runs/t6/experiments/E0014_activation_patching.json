@@ -1,0 +1,278 @@
+{
+ "id": "E0014",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t6/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "component": "resid_post",
+  "clean": {
+   "tokens": [
+    [
+     0,
+     3,
+     6,
+     2,
+     4,
+     5
+    ],
+    [
+     0,
+     2,
+     5,
+     3,
+     4,
+     2
+    ],
+    [
+     0,
+     3,
+     4,
+     2,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     2,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     4,
+     6,
+     5,
+     2,
+     3
+    ],
+    [
+     0,
+     2,
+     5,
+     4,
+     4,
+     3
+    ],
+    [
+     0,
+     5,
+     6,
+     5,
+     4,
+     2
+    ],
+    [
+     0,
+     2,
+     4,
+     2,
+     3,
+     2
+    ]
+   ]
+  },
+  "corrupt": {
+   "tokens": [
+    [
+     0,
+     3,
+     3,
+     2,
+     4,
+     5
+    ],
+    [
+     0,
+     2,
+     3,
+     3,
+     4,
+     2
+    ],
+    [
+     0,
+     3,
+     3,
+     2,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     4,
+     3,
+     5,
+     2,
+     3
+    ],
+    [
+     0,
+     2,
+     3,
+     4,
+     4,
+     3
+    ],
+    [
+     0,
+     5,
+     3,
+     5,
+     4,
+     2
+    ],
+    [
+     0,
+     2,
+     3,
+     2,
+     3,
+     2
+    ]
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    6,
+    5,
+    4,
+    2,
+    6,
+    5,
+    6,
+    4
+   ],
+   "incorrect": [
+    5,
+    4,
+    2,
+    3,
+    5,
+    4,
+    5,
+    2
+   ]
+  }
+ },
+ "summary": {
+  "component": "resid_post",
+  "direction": "denoise",
+  "metric_base": -0.999934,
+  "metric_source": 0.999934,
+  "n": 8,
+  "top": [
+   {
+    "component": "resid_post.0 @ pos 2",
+    "effect": 1.0
+   },
+   {
+    "component": "resid_post.1 @ pos 2",
+    "effect": 1.0
+   },
+   {
+    "component": "resid_post.3 @ pos 5",
+    "effect": 1.0
+   },
+   {
+    "component": "resid_post.2 @ pos 2",
+    "effect": 0.5
+   },
+   {
+    "component": "resid_post.2 @ pos 3",
+    "effect": 0.187483
+   },
+   {
+    "component": "resid_post.2 @ pos 5",
+    "effect": 0.187463
+   },
+   {
+    "component": "resid_post.2 @ pos 4",
+    "effect": 0.124988
+   },
+   {
+    "component": "resid_post.0 @ pos 0",
+    "effect": 0.0
+   }
+  ],
+  "variants": 24
+ },
+ "data": {
+  "effect": [
+   [
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.5,
+    0.187483,
+    0.124988,
+    0.187463
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "layers": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "columns": [
+   "0",
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ]
+ },
+ "plot": "experiments/E0014_activation_patching.png",
+ "seconds": 0.15,
+ "timestamp": "2026-11-13T13:07:25",
+ "prereg_id": "N0029",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[1][2]",
+  "op": ">=",
+  "threshold": 0.9,
+  "statement": "Patching clean resid_post of layer 1 at position 2 restores at least 90% of the clean logit difference",
+  "verdict": "confirmed",
+  "observed": 1.0
+ }
+}

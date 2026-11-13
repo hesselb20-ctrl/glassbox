@@ -1,0 +1,86 @@
+{
+ "id": "E0013",
+ "primitive": "path_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t7",
+   "n": 200,
+   "seed": 0
+  },
+  "senders": [
+   "0.0",
+   "0.1"
+  ],
+  "receiver": {
+   "heads": [
+    "1.0",
+    "1.1"
+   ],
+   "input": "v"
+  }
+ },
+ "summary": {
+  "receiver": {
+   "heads": [
+    "1.0",
+    "1.1"
+   ],
+   "input": "v"
+  },
+  "direction": "denoise",
+  "metric_base": -31.325439,
+  "metric_source": 32.165562,
+  "n": 200,
+  "top": [
+   {
+    "component": "0.1",
+    "effect": 0.227605
+   },
+   {
+    "component": "0.0",
+    "effect": 0.182353
+   },
+   {
+    "component": "1.0",
+    "effect": 0.0
+   },
+   {
+    "component": "1.1",
+    "effect": 0.0
+   }
+  ]
+ },
+ "data": {
+  "effect": [
+   [
+    0.182353,
+    0.227605
+   ],
+   [
+    0.0,
+    0.0
+   ]
+  ]
+ },
+ "plot": "experiments/E0013_path_patching.png",
+ "seconds": 0.4,
+ "timestamp": "2026-11-13T13:12:09",
+ "prereg_id": "N0020",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[0].effect",
+  "op": "<=",
+  "threshold": 0.1,
+  "statement": "the larger of the two layer-0 -> layer-1 value path effects is at most 0.1",
+  "verdict": "refuted",
+  "observed": 0.227605
+ }
+}

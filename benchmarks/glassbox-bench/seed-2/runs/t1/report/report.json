@@ -1,0 +1,172 @@
+{
+ "title": "t1: last token picks a position, MLP looks up (last token, token there)",
+ "label": "verified",
+ "behavior": "BOS + 6 tokens from {ge, gu, lu, sa, vi, zo}; the model outputs one symbol at the last position. local-full checkpoint benchmarks/glassbox-bench/seed-2/tasks/t1/model.pt (2 layers, 3 heads per layer, full precision).",
+ "summary": "The output depends on exactly two input tokens: the last token (position 6) and one earlier token whose position is chosen by the last token alone (ge->5, sa->5, gu->1, vi->2, lu->3, zo->4). The answer is a fixed 6x6 lookup g(last token, pointed token). Head 1.2 is the pointer (one-hot attention from position 6), mlp1 computes the lookup, and mlp0 is also required. Heads 0.0, 0.1, 0.2, 1.0 and 1.1 are inert. All numbers are from the local-full (full precision) backend. On 400 held-out inputs the algorithm agrees with the model 400/400; ablating the circuit drops accuracy to 0.245, ablating everything else leaves it at 1.0.",
+ "pseudocode": "ids: 2=ge 3=gu 4=lu 5=sa 6=vi 7=zo; x[1..6] = input tokens\nlast = x[6]\nptr  = {ge:5, sa:5, gu:1, vi:2, lu:3, zo:4}[last]        # head 1.2\nb    = x[ptr]\nout  = g[last][b]                                          # mlp1\n\ng (rows = last, cols = b in order ge gu lu sa vi zo):\n ge: ge sa vi sa ge ge\n gu: sa vi gu lu ge zo\n lu: vi gu ge sa gu ge\n sa: lu zo vi sa ge vi\n vi: zo lu gu zo ge gu\n zo: lu vi lu gu sa ge",
+ "claims": [
+  {
+   "text": "The model performs a deterministic behaviour (clean accuracy 1.0 on 200 inputs).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "Head 1.2 attends one-hot from the last position to a position set by the last token alone: gu->1, vi->2, lu->3, zo->4, ge and sa->5 (attention 1.0 in every case, 12 prompts each).",
+   "evidence": [
+    "E0008",
+    "E0009",
+    "E0010",
+    "E0011",
+    "E0012"
+   ]
+  },
+  {
+   "text": "Head 1.2 is necessary: mean-ablating it leaves 0.109 of the clean metric.",
+   "evidence": [
+    "E0014",
+    "V0002"
+   ]
+  },
+  {
+   "text": "mlp0 and mlp1 are necessary: mean-ablating either leaves under 0.02 of the clean metric.",
+   "evidence": [
+    "E0015",
+    "E0016",
+    "V0002"
+   ]
+  },
+  {
+   "text": "Heads 0.0, 0.1, 0.2, 1.0 and 1.1 play no part: joint mean ablation leaves the metric at 1.0, and the circuit {mlp0, 1.2, mlp1} alone keeps accuracy 1.0.",
+   "evidence": [
+    "E0013",
+    "V0002"
+   ]
+  },
+  {
+   "text": "The output is the lookup g(last token, token at the pointed position); this algorithm matches the model on 400/400 held-out inputs (null agreement p95 = 0.213). An earlier version with one misread table entry (gu,ge) scored 195/200 and was corrected.",
+   "evidence": [
+    "V0002",
+    "V0001"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "tok6",
+    "label": "last token (pos 6)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "tokp",
+    "label": "token at pointed position (1-5)",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0 (required; exact role not isolated)",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "1.2",
+    "label": "head 1.2: pointer, last token -> position",
+    "layer": 1,
+    "kind": "head"
+   },
+   {
+    "id": "mlp1",
+    "label": "mlp1: lookup g(last, pointed)",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "out",
+    "label": "output symbol",
+    "layer": 2,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "tok6",
+    "dst": "mlp0",
+    "label": "token"
+   },
+   {
+    "src": "tokp",
+    "dst": "mlp0",
+    "label": "token"
+   },
+   {
+    "src": "mlp0",
+    "dst": "1.2",
+    "label": "query (pos 6) / key+value (pos 1-5); not separated"
+   },
+   {
+    "src": "1.2",
+    "dst": "mlp1",
+    "label": "copies pointed token to pos 6"
+   },
+   {
+    "src": "tok6",
+    "dst": "mlp1",
+    "label": "last token (residual)"
+   },
+   {
+    "src": "mlp1",
+    "dst": "out",
+    "label": "answer"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0008",
+  "E0012",
+  "E0013"
+ ],
+ "limitations": [
+  "The lookup table g and the pointer map were read off the model's input/output pairs (E0001, E0007) and then tested; I found no simpler closed-form rule for g, so it is reported as a 36-entry table.",
+  "The exact role of mlp0 was not isolated (whether it feeds the query, the key or the value of head 1.2, or mlp1 directly). A path-patching attempt with mlp0 as sender errored (unsupported sender) and was not replaced.",
+  "The first verification (V0001) had one wrong table entry from a transcription error; it is corrected in V0002. The pointer rule and circuit were unchanged.",
+  "Attention tests used 12 prompts per last-token group; the held-out agreement (400/400) is the stronger test of the pointer rule."
+ ],
+ "open_questions": [
+  "Is g a composition of simpler operations (e.g. a per-token map followed by arithmetic)? The gu row is a permutation but the others are not.",
+  "What does mlp0 compute, and at which positions is it needed?"
+ ],
+ "overall_status": "verified \u00b7 verified",
+ "cited": [
+  "E0002",
+  "E0008",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0013",
+  "E0014",
+  "E0015",
+  "E0016",
+  "V0001",
+  "V0002"
+ ],
+ "prediction_record": {
+  "preregistered": 10,
+  "run": 10,
+  "not_run": [],
+  "confirmed": 10,
+  "refuted": 0,
+  "inconclusive": 0,
+  "hit_rate": 1.0,
+  "refuted_predictions": []
+ },
+ "exploratory_runs": [
+  "E0003",
+  "E0004",
+  "E0005",
+  "E0006"
+ ]
+}

@@ -1,0 +1,69 @@
+{
+ "id": "E0015",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t3/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t3",
+   "n": 200,
+   "seed": 1
+  },
+  "component": "mlp_out"
+ },
+ "summary": {
+  "component": "mlp_out",
+  "direction": "denoise",
+  "metric_base": -1.0,
+  "metric_source": 1.0,
+  "n": 200,
+  "top": [
+   {
+    "component": "mlp_out.0 @ pos all",
+    "effect": 1.0
+   },
+   {
+    "component": "mlp_out.1 @ pos all",
+    "effect": 1.0
+   },
+   {
+    "component": "mlp_out.2 @ pos all",
+    "effect": 1.0
+   }
+  ],
+  "variants": 3
+ },
+ "data": {
+  "effect": [
+   [
+    1.0
+   ],
+   [
+    1.0
+   ],
+   [
+    1.0
+   ]
+  ],
+  "layers": [
+   0,
+   1,
+   2
+  ],
+  "columns": [
+   "all"
+  ]
+ },
+ "plot": "experiments/E0015_activation_patching.png",
+ "seconds": 0.49,
+ "timestamp": "2026-11-13T12:53:14",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null
+}

@@ -1,0 +1,59 @@
+{
+ "id": "E0007",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t6/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t6",
+   "n": 200,
+   "seed": 3
+  },
+  "components": [
+   "mlp0",
+   "mlp1",
+   "2.1",
+   "mlp2",
+   "3.1"
+  ],
+  "mode": "mean",
+  "joint": true
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 0.999934,
+  "joint": true,
+  "components": [
+   "mlp0",
+   "mlp1",
+   "2.1",
+   "mlp2",
+   "3.1"
+  ],
+  "metric_ablated": 0.191437,
+  "fraction_of_clean": 0.19145
+ },
+ "data": {
+  "metric_ablated": 0.191437
+ },
+ "plot": "experiments/E0007_ablation.png",
+ "seconds": 0.69,
+ "timestamp": "2026-11-13T13:05:05",
+ "prereg_id": "N0012",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.1,
+  "statement": "Jointly mean-ablating the claimed circuit leaves at most 10% of the clean logit difference",
+  "verdict": "refuted",
+  "observed": 0.19145
+ }
+}

@@ -1,0 +1,55 @@
+{
+ "id": "E0005",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t5/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t5",
+   "n": 200,
+   "seed": 2
+  },
+  "components": [
+   "mlp0",
+   "1.0",
+   "mlp1"
+  ],
+  "mode": "mean",
+  "joint": true
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 1.0,
+  "joint": true,
+  "components": [
+   "mlp0",
+   "1.0",
+   "mlp1"
+  ],
+  "metric_ablated": 0.02255,
+  "fraction_of_clean": 0.02255
+ },
+ "data": {
+  "metric_ablated": 0.02255
+ },
+ "plot": "experiments/E0005_ablation.png",
+ "seconds": 0.28,
+ "timestamp": "2026-11-13T13:01:48",
+ "prereg_id": "N0008",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.15,
+  "statement": "joint mean ablation of mlp0+1.0+mlp1 leaves at most 15% of the clean metric",
+  "verdict": "confirmed",
+  "observed": 0.02255
+ }
+}

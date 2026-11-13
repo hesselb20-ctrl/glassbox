@@ -1,0 +1,69 @@
+{
+ "id": "E0013",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "component": "mlp_out",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t2",
+   "n": 200,
+   "seed": 2
+  }
+ },
+ "summary": {
+  "component": "mlp_out",
+  "direction": "denoise",
+  "metric_base": -14.696445,
+  "metric_source": 14.443031,
+  "n": 200,
+  "top": [
+   {
+    "component": "mlp_out.1 @ pos all",
+    "effect": 0.774404
+   },
+   {
+    "component": "mlp_out.0 @ pos all",
+    "effect": 0.755532
+   }
+  ],
+  "variants": 2
+ },
+ "data": {
+  "effect": [
+   [
+    0.755532
+   ],
+   [
+    0.774404
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "columns": [
+   "all"
+  ]
+ },
+ "plot": "experiments/E0013_activation_patching.png",
+ "seconds": 0.28,
+ "timestamp": "2026-11-13T12:48:32",
+ "prereg_id": "N0024",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[1][4]",
+  "op": ">=",
+  "threshold": 0.6,
+  "statement": "patching clean MLP1 output at pos 4 alone recovers at least 60% of the gap (MLP1 writes most of the answer)",
+  "verdict": "inconclusive",
+  "observed": null,
+  "why": "metric not found in the result: list index out of range"
+ }
+}

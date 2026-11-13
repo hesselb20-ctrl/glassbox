@@ -1,0 +1,77 @@
+{
+ "id": "E0011",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t3/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t3",
+   "n": 200,
+   "seed": 2
+  },
+  "sweep": "mlps",
+  "mode": "mean"
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 1.0,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "mlp0",
+    "metric": -0.02,
+    "change": -1.02,
+    "fraction_of_clean": -0.02
+   },
+   {
+    "component": "mlp1",
+    "metric": 0.0,
+    "change": -1.0,
+    "fraction_of_clean": 0.0
+   },
+   {
+    "component": "mlp2",
+    "metric": 0.00235,
+    "change": -0.99765,
+    "fraction_of_clean": 0.00235
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "mlp0",
+   "mlp1",
+   "mlp2"
+  ],
+  "metric": [
+   -0.02,
+   0.0,
+   0.00235
+  ],
+  "change": [
+   -1.02,
+   -1.0,
+   -0.99765
+  ]
+ },
+ "plot": "experiments/E0011_ablation.png",
+ "seconds": 0.39,
+ "timestamp": "2026-11-13T12:52:03",
+ "prereg_id": "N0018",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[component=mlp0].fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.3,
+  "statement": "Mean-ablating mlp0 leaves at most 30% of the clean metric on a fresh seed (mlp1 and mlp2 expected likewise, reported alongside).",
+  "verdict": "confirmed",
+  "observed": -0.02
+ }
+}

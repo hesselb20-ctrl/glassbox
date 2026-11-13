@@ -1,0 +1,61 @@
+{
+ "id": "E0010",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t4/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t4",
+   "n": 200,
+   "seed": 2
+  },
+  "components": [
+   "0.0",
+   "0.1",
+   "0.2",
+   "1.0",
+   "1.1",
+   "mlp0"
+  ],
+  "mode": "mean",
+  "joint": true
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 1.0,
+  "joint": true,
+  "components": [
+   "0.0",
+   "0.1",
+   "0.2",
+   "1.0",
+   "1.1",
+   "mlp0"
+  ],
+  "metric_ablated": 0.643923,
+  "fraction_of_clean": 0.643923
+ },
+ "data": {
+  "metric_ablated": 0.643923
+ },
+ "plot": "experiments/E0010_ablation.png",
+ "seconds": 0.29,
+ "timestamp": "2026-11-13T13:00:54",
+ "prereg_id": "N0013",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": ">=",
+  "threshold": 0.95,
+  "statement": "Jointly mean-ablating all six other components keeps at least 95% of the clean metric.",
+  "verdict": "refuted",
+  "observed": 0.643923
+ }
+}

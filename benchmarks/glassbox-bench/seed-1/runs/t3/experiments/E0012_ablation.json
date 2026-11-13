@@ -1,0 +1,51 @@
+{
+ "id": "E0012",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t3/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t3",
+   "n": 200,
+   "seed": 2
+  },
+  "components": [
+   "mlp0"
+  ],
+  "mode": "resample",
+  "joint": true
+ },
+ "summary": {
+  "mode": "resample",
+  "n": 200,
+  "metric_clean": 1.0,
+  "joint": true,
+  "components": [
+   "mlp0"
+  ],
+  "metric_ablated": -0.01,
+  "fraction_of_clean": -0.01
+ },
+ "data": {
+  "metric_ablated": -0.01
+ },
+ "plot": "experiments/E0012_ablation.png",
+ "seconds": 0.35,
+ "timestamp": "2026-11-13T12:53:12",
+ "prereg_id": "N0020",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.3,
+  "statement": "Resample-ablating mlp0 leaves at most 30% of the clean metric.",
+  "verdict": "confirmed",
+  "observed": -0.01
+ }
+}

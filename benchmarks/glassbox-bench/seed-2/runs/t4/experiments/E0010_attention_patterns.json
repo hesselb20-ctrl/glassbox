@@ -1,0 +1,87 @@
+{
+ "id": "E0010",
+ "primitive": "attention_patterns",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t4/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t4",
+   "n": 200,
+   "seed": 2
+  },
+  "query_pos": -1
+ },
+ "summary": {
+  "score": "max mean attention from pos -1",
+  "n": 200,
+  "top": [
+   {
+    "head": "1.1",
+    "score": 0.713304
+   },
+   {
+    "head": "0.0",
+    "score": 0.5693
+   },
+   {
+    "head": "1.0",
+    "score": 0.474826
+   },
+   {
+    "head": "0.1",
+    "score": 0.414186
+   }
+  ],
+  "most_attended_key_from_query": {
+   "0.0": 1,
+   "0.1": 1,
+   "1.0": 1,
+   "1.1": 1
+  }
+ },
+ "data": {
+  "score": [
+   [
+    0.5693,
+    0.414186
+   ],
+   [
+    0.474826,
+    0.713304
+   ]
+  ],
+  "top_key": [
+   [
+    1.0,
+    1.0
+   ],
+   [
+    1.0,
+    1.0
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ]
+ },
+ "plot": "experiments/E0010_attention_patterns.png",
+ "seconds": 0.28,
+ "timestamp": "2026-11-13T12:57:27",
+ "prereg_id": "N0014",
+ "exploratory": false,
+ "score": {
+  "metric": "data.top_key[1][1]",
+  "op": "==",
+  "threshold": 1,
+  "statement": "The most attended key position of head 1.1 from the last position is position 1.",
+  "verdict": "confirmed",
+  "observed": 1.0
+ }
+}

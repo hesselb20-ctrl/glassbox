@@ -1,0 +1,73 @@
+{
+ "id": "t6",
+ "seed": 2,
+ "track": "compiled",
+ "label": "compiled: mechanism known exactly",
+ "family": "sort-by-key",
+ "params": {
+  "key": {
+   "ze": 5,
+   "vi": 3,
+   "za": 4,
+   "tu": 1,
+   "gu": 2
+  }
+ },
+ "vocab": [
+  "ze",
+  "vi",
+  "za",
+  "tu",
+  "gu"
+ ],
+ "seq_len": 5,
+ "truth_function": "glassbox.bench.truth.sort_by_key",
+ "rasp_source": "keys = Map(key, tokens); out = make_sort(tokens, keys)   # read at the last position",
+ "tracr": {
+  "num_layers": 4,
+  "num_heads": 1,
+  "checked_inputs": 1500,
+  "exhaustive": false
+ },
+ "components_before_obfuscation": [
+  "mlp0",
+  "mlp1",
+  "2.0",
+  "mlp2",
+  "3.0"
+ ],
+ "transforms": {
+  "extra_residual_dims": 10,
+  "distractor_heads_per_layer": 1,
+  "distractor_neurons_per_layer": 10,
+  "head_permutation": {
+   "0": [
+    1,
+    0
+   ],
+   "1": [
+    1,
+    0
+   ],
+   "2": [
+    1,
+    0
+   ],
+   "3": [
+    1,
+    0
+   ]
+  },
+  "layers": 4,
+  "rotation": "random orthogonal 65x65, folded into the weights"
+ },
+ "true_components": [
+  "2.1",
+  "3.1",
+  "mlp0",
+  "mlp1",
+  "mlp2"
+ ],
+ "accuracy_after_conversion": 1.0,
+ "accuracy_after_obfuscation": 1.0
+}

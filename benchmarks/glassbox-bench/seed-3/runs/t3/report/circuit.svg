@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 188" width="100%" font-family="Consolas, DejaVu Sans Mono, monospace">
+<defs><filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3df5d0"/></marker></defs>
+<rect width="920" height="188" fill="#070b1a" rx="10"/>
+<path d="M178,94 C174,94 174,94 168,94" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="174" y="88" fill="#8793c2" font-size="11" text-anchor="middle">token</text>
+<path d="M321,94 C317,94 317,94 311,94" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="317" y="88" fill="#8793c2" font-size="11" text-anchor="middle">key (inferred from layer order)</text>
+<path d="M464,94 C460,94 460,65 453,65" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="460" y="73" fill="#8793c2" font-size="11" text-anchor="middle">sort key (q and k)</text>
+<path d="M606,65 C531,65 531,123 453,123" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="531" y="88" fill="#8793c2" font-size="11" text-anchor="middle">1/(1+rank)</text>
+<path d="M606,123 C603,123 603,94 596,94" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="603" y="103" fill="#8793c2" font-size="11" text-anchor="middle">rank -&gt; key input</text>
+<path d="M178,94 C389,94 389,94 596,94" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="389" y="88" fill="#8793c2" font-size="11" text-anchor="middle">position -&gt; query; token -&gt; value</text>
+<path d="M749,94 C746,94 746,94 739,94" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="746" y="88" fill="#8793c2" font-size="11" text-anchor="middle">copied token</text>
+<rect x="28" y="72" width="150" height="44" rx="8" fill="#0e1530" stroke="#8793c2" stroke-width="1.5"/>
+<text x="103" y="98" fill="#e6ebff" font-size="12" text-anchor="middle">token + position embed</text>
+<rect x="171" y="72" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="246" y="98" fill="#e6ebff" font-size="12" text-anchor="middle">mlp0: sort-key computa</text>
+<rect x="314" y="72" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="389" y="98" fill="#e6ebff" font-size="12" text-anchor="middle">mlp1: sort-key computa</text>
+<rect x="456" y="43" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="531" y="69" fill="#e6ebff" font-size="12" text-anchor="middle">head 2.0: attend to BO</text>
+<rect x="456" y="101" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="531" y="127" fill="#e6ebff" font-size="12" text-anchor="middle">mlp2: decode rank</text>
+<rect x="599" y="72" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="674" y="98" fill="#e6ebff" font-size="12" text-anchor="middle">head 3.1: position i c</text>
+<rect x="742" y="72" width="150" height="44" rx="8" fill="#0e1530" stroke="#8793c2" stroke-width="1.5"/>
+<text x="817" y="98" fill="#e6ebff" font-size="12" text-anchor="middle">output symbol at last </text>
+</svg>

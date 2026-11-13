@@ -1,0 +1,79 @@
+{
+ "id": "E0009",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t7",
+   "n": 200,
+   "seed": 0
+  },
+  "component": "head"
+ },
+ "summary": {
+  "component": "head",
+  "direction": "denoise",
+  "metric_base": -35.907623,
+  "metric_source": 38.663483,
+  "n": 200,
+  "top": [
+   {
+    "component": "1.1",
+    "effect": 0.495862
+   },
+   {
+    "component": "0.0",
+    "effect": 0.371583
+   },
+   {
+    "component": "0.1",
+    "effect": 0.368638
+   },
+   {
+    "component": "1.0",
+    "effect": 0.356669
+   }
+  ],
+  "variants": 4
+ },
+ "data": {
+  "effect": [
+   [
+    0.371583,
+    0.368638
+   ],
+   [
+    0.356669,
+    0.495862
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "columns": [
+   0,
+   1
+  ]
+ },
+ "plot": "experiments/E0009_activation_patching.png",
+ "seconds": 0.41,
+ "timestamp": "2026-11-13T13:11:00",
+ "prereg_id": "N0015",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[1][0]",
+  "op": ">=",
+  "threshold": 0.15,
+  "statement": "exact patching effect of head 1.0 is at least 0.15 of the clean-corrupt gap",
+  "verdict": "confirmed",
+  "observed": 0.356669
+ }
+}

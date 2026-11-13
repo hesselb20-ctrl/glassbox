@@ -1,0 +1,80 @@
+{
+ "id": "E0008",
+ "primitive": "attention_patterns",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "query_pos": 4,
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t2",
+   "n": 200,
+   "seed": 1
+  }
+ },
+ "summary": {
+  "score": "max mean attention from pos 4",
+  "n": 200,
+  "top": [
+   {
+    "head": "1.1",
+    "score": 0.863102
+   },
+   {
+    "head": "1.0",
+    "score": 0.701159
+   },
+   {
+    "head": "0.0",
+    "score": 0.363143
+   },
+   {
+    "head": "0.1",
+    "score": 0.352327
+   }
+  ],
+  "most_attended_key_from_query": {
+   "0.0": 4,
+   "0.1": 4,
+   "1.0": 1,
+   "1.1": 1
+  }
+ },
+ "data": {
+  "score": [
+   [
+    0.363143,
+    0.352327
+   ],
+   [
+    0.701159,
+    0.863102
+   ]
+  ],
+  "top_key": [
+   [
+    4.0,
+    4.0
+   ],
+   [
+    1.0,
+    1.0
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ]
+ },
+ "plot": "experiments/E0008_attention_patterns.png",
+ "seconds": 0.28,
+ "timestamp": "2026-11-13T12:47:34",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null
+}

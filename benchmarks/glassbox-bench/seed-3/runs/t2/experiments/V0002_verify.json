@@ -1,0 +1,130 @@
+{
+ "id": "V0002",
+ "name": "t2 lookup f(first,last); full circuit incl. layer-0 heads",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5,
+  "null_percentile": 95.0
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 1.0,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "0.0",
+    "0.1",
+    "1.0",
+    "1.1",
+    "mlp0",
+    "mlp1"
+   ],
+   "circuit_size": 6,
+   "total_components": 6,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": 0.196329,
+    "fraction_of_clean": 0.013926,
+    "accuracy": 0.265
+   },
+   "everything_else_ablated": {
+    "metric": 14.09828,
+    "fraction_of_clean": 1.0,
+    "accuracy": 1.0
+   },
+   "random_same_size_ablated_fraction": [
+    0.945329,
+    1.015632,
+    0.928041
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": true,
+   "pass": true
+  }
+ },
+ "null_controls": [
+  {
+   "finding": "agreement",
+   "what": "share of held-out inputs where predict() equals the model's output",
+   "effect": 1.0,
+   "null_mean": 0.180333,
+   "null_p95": 0.2255,
+   "null_max": 0.245,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "task-shuffled": 30
+   },
+   "pass": true
+  },
+  {
+   "finding": "necessity",
+   "what": "standardised drop in the metric when the claimed circuit is ablated",
+   "effect": 0.986074,
+   "null_mean": 0.046995,
+   "null_p95": 0.07623,
+   "null_max": 0.076983,
+   "percentile_of_effect": 100.0,
+   "n_null": 4,
+   "null_samples_by_kind": {
+    "random-same-size-set": 0,
+    "random-init": 2,
+    "weight-shuffled": 2
+   },
+   "pass": true
+  },
+  {
+   "finding": "sufficiency",
+   "what": "standardised metric (above its no-information floor) with everything except the claimed circuit ablated",
+   "effect": 1.0,
+   "n_null": 0,
+   "pass": false,
+   "why": "no null samples could be drawn (for example the claimed circuit is the whole model)"
+  }
+ ],
+ "model_accuracy": 1.0,
+ "metric_clean": 14.09828,
+ "metric_floor": 0.0,
+ "metric_unit": 14.09828,
+ "beats_null_controls": false,
+ "status": "not-verified",
+ "all_checks_passed": true,
+ "note": "The thresholds were met, but these effects do not exceed the 95th percentile of their null distribution: sufficiency. A random control does about as well, so this is not a finding.",
+ "plot": "experiments/V0002_verify.png",
+ "spec": {
+  "name": "t2 lookup f(first,last); full circuit incl. layer-0 heads",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t2",
+   "n": 200,
+   "seed": 12
+  },
+  "code": "T = {2:[4,4,6,5,2,5], 3:[2,5,2,3,5,5], 4:[7,5,6,4,4,3], 5:[4,5,3,3,6,7], 6:[5,3,7,5,5,3], 7:[2,6,2,4,7,2]}\ndef predict(tokens, prompt):\n    # output depends only on first input token (pos 1) and last input token (pos 4): E0001 table, E0004 (pos 2,3 effects ~0)\n    a = int(tokens[1]); d = int(tokens[4])\n    return T[a][d - 2]\n",
+  "circuit": {
+   "components": [
+    "0.0",
+    "0.1",
+    "1.0",
+    "1.1",
+    "mlp0",
+    "mlp1"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-13T12:50:37"
+}

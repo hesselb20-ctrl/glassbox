@@ -1,0 +1,69 @@
+{
+ "id": "E0014",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t7",
+   "n": 200,
+   "seed": 4
+  },
+  "component": "mlp_out"
+ },
+ "summary": {
+  "component": "mlp_out",
+  "direction": "denoise",
+  "metric_base": -33.800335,
+  "metric_source": 34.481243,
+  "n": 200,
+  "top": [
+   {
+    "component": "mlp_out.0 @ pos all",
+    "effect": 0.77638
+   },
+   {
+    "component": "mlp_out.1 @ pos all",
+    "effect": 0.749438
+   }
+  ],
+  "variants": 2
+ },
+ "data": {
+  "effect": [
+   [
+    0.77638
+   ],
+   [
+    0.749438
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "columns": [
+   "all"
+  ]
+ },
+ "plot": "experiments/E0014_activation_patching.png",
+ "seconds": 0.36,
+ "timestamp": "2026-11-13T13:12:55",
+ "prereg_id": "N0027",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[1][4]",
+  "op": ">=",
+  "threshold": 0.5,
+  "statement": "exact patching effect of mlp_out layer 1 at position 4 is at least 0.5",
+  "verdict": "inconclusive",
+  "observed": null,
+  "why": "metric not found in the result: list index out of range"
+ }
+}

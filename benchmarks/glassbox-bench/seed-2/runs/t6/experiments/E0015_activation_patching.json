@@ -1,0 +1,241 @@
+{
+ "id": "E0015",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t6/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "component": "mlp_out",
+  "clean": {
+   "tokens": [
+    [
+     0,
+     3,
+     6,
+     2,
+     4,
+     5
+    ],
+    [
+     0,
+     2,
+     5,
+     3,
+     4,
+     2
+    ],
+    [
+     0,
+     3,
+     4,
+     2,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     2,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     4,
+     6,
+     5,
+     2,
+     3
+    ],
+    [
+     0,
+     2,
+     5,
+     4,
+     4,
+     3
+    ],
+    [
+     0,
+     5,
+     6,
+     5,
+     4,
+     2
+    ],
+    [
+     0,
+     2,
+     4,
+     2,
+     3,
+     2
+    ]
+   ]
+  },
+  "corrupt": {
+   "tokens": [
+    [
+     0,
+     3,
+     3,
+     2,
+     4,
+     5
+    ],
+    [
+     0,
+     2,
+     3,
+     3,
+     4,
+     2
+    ],
+    [
+     0,
+     3,
+     3,
+     2,
+     3,
+     3
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    [
+     0,
+     4,
+     3,
+     5,
+     2,
+     3
+    ],
+    [
+     0,
+     2,
+     3,
+     4,
+     4,
+     3
+    ],
+    [
+     0,
+     5,
+     3,
+     5,
+     4,
+     2
+    ],
+    [
+     0,
+     2,
+     3,
+     2,
+     3,
+     2
+    ]
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    6,
+    5,
+    4,
+    2,
+    6,
+    5,
+    6,
+    4
+   ],
+   "incorrect": [
+    5,
+    4,
+    2,
+    3,
+    5,
+    4,
+    5,
+    2
+   ]
+  }
+ },
+ "summary": {
+  "component": "mlp_out",
+  "direction": "denoise",
+  "metric_base": -0.999934,
+  "metric_source": 0.999934,
+  "n": 8,
+  "top": [
+   {
+    "component": "mlp_out.0 @ pos all",
+    "effect": 0.4375
+   },
+   {
+    "component": "mlp_out.1 @ pos all",
+    "effect": 0.4375
+   },
+   {
+    "component": "mlp_out.2 @ pos all",
+    "effect": 0.4375
+   },
+   {
+    "component": "mlp_out.3 @ pos all",
+    "effect": 0.0
+   }
+  ],
+  "variants": 4
+ },
+ "data": {
+  "effect": [
+   [
+    0.4375
+   ],
+   [
+    0.4375
+   ],
+   [
+    0.4375
+   ],
+   [
+    0.0
+   ]
+  ],
+  "layers": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "columns": [
+   "all"
+  ]
+ },
+ "plot": "experiments/E0015_activation_patching.png",
+ "seconds": 0.11,
+ "timestamp": "2026-11-13T13:07:46",
+ "prereg_id": "N0031",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[1][2]",
+  "op": "between",
+  "threshold": [
+   0.35,
+   0.55
+  ],
+  "statement": "Patching clean mlp1 output at position 2 moves the metric about halfway (output becomes tu: neither answer)",
+  "verdict": "inconclusive",
+  "observed": null,
+  "why": "metric not found in the result: list index out of range"
+ }
+}

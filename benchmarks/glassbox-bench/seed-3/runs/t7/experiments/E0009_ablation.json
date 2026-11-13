@@ -1,0 +1,53 @@
+{
+ "id": "E0009",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t7",
+   "n": 200,
+   "seed": 1
+  },
+  "components": [
+   "0.0",
+   "0.1"
+  ],
+  "mode": "mean",
+  "joint": true
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 31.792212,
+  "joint": true,
+  "components": [
+   "0.0",
+   "0.1"
+  ],
+  "metric_ablated": 10.923362,
+  "fraction_of_clean": 0.343586
+ },
+ "data": {
+  "metric_ablated": 10.923362
+ },
+ "plot": "experiments/E0009_ablation.png",
+ "seconds": 0.38,
+ "timestamp": "2026-11-13T13:11:44",
+ "prereg_id": "N0015",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": ">=",
+  "threshold": 0.5,
+  "statement": "jointly mean-ablating both layer-0 heads keeps at least half of the clean logit difference",
+  "verdict": "refuted",
+  "observed": 0.343586
+ }
+}

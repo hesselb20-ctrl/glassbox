@@ -1,0 +1,134 @@
+{
+ "id": "V0001",
+ "name": "t5: compare count(ta) vs count(mo)",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5,
+  "null_percentile": 95.0
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t5/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 1.0,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "1.0",
+    "1.2",
+    "mlp0",
+    "mlp1",
+    "mlp2"
+   ],
+   "circuit_size": 5,
+   "total_components": 15,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": -0.00035,
+    "fraction_of_clean": -0.00035,
+    "accuracy": 0.35
+   },
+   "everything_else_ablated": {
+    "metric": 1.0,
+    "fraction_of_clean": 1.0,
+    "accuracy": 1.0
+   },
+   "random_same_size_ablated_fraction": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": true,
+   "pass": true
+  }
+ },
+ "null_controls": [
+  {
+   "finding": "agreement",
+   "what": "share of held-out inputs where predict() equals the model's output",
+   "effect": 1.0,
+   "null_mean": 0.328,
+   "null_p95": 0.3755,
+   "null_max": 0.38,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "task-shuffled": 30
+   },
+   "pass": true
+  },
+  {
+   "finding": "necessity",
+   "what": "standardised drop in the metric when the claimed circuit is ablated",
+   "effect": 1.00035,
+   "null_mean": -0.005677,
+   "null_p95": 0.015015,
+   "null_max": 0.078153,
+   "percentile_of_effect": 100.0,
+   "n_null": 34,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30,
+    "random-init": 2,
+    "weight-shuffled": 2
+   },
+   "pass": true
+  },
+  {
+   "finding": "sufficiency",
+   "what": "standardised metric (above its no-information floor) with everything except the claimed circuit ablated",
+   "effect": 1.0,
+   "null_mean": -0.00035,
+   "null_p95": -0.00035,
+   "null_max": -0.00035,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30
+   },
+   "pass": true
+  }
+ ],
+ "model_accuracy": 1.0,
+ "metric_clean": 1.0,
+ "metric_floor": 0.0,
+ "metric_unit": 1.0,
+ "beats_null_controls": true,
+ "status": "verified",
+ "all_checks_passed": true,
+ "note": "Passed at full precision, and every effect exceeds its null distribution.",
+ "plot": "experiments/V0001_verify.png",
+ "spec": {
+  "name": "t5: compare count(ta) vs count(mo)",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t5",
+   "n": 200,
+   "seed": 11
+  },
+  "code": "def predict(tokens, prompt):\n    # tokens: [BOS] + 6 symbols. ids: ta=7, mo=6; outputs K=8, S=9, U=10\n    seq = list(tokens)[1:]\n    n_ta = sum(1 for t in seq if int(t) == 7)   # head 1.0 attends BOS + every ta (E0008, E0011)\n    n_mo = sum(1 for t in seq if int(t) == 6)   # head 1.2 attends BOS + every mo (E0007, E0012)\n    # mlp1 -> mlp2 turn the two counts into a 3-way comparison (E0014)\n    if n_ta > n_mo:\n        return 10  # U\n    if n_ta < n_mo:\n        return 9   # S\n    return 8       # K\n",
+  "circuit": {
+   "components": [
+    "1.0",
+    "1.2",
+    "mlp0",
+    "mlp1",
+    "mlp2"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-13T13:06:54"
+}

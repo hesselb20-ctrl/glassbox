@@ -1,0 +1,300 @@
+{
+ "id": "E0013",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t4/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "components": [
+   "mlp0"
+  ],
+  "mode": "mean",
+  "joint": true,
+  "clean": {
+   "tokens": [
+    [
+     0,
+     5,
+     5,
+     6,
+     4,
+     2,
+     5
+    ],
+    [
+     0,
+     2,
+     3,
+     4,
+     3,
+     6,
+     2
+    ],
+    [
+     0,
+     4,
+     2,
+     2,
+     3,
+     4,
+     6
+    ],
+    [
+     0,
+     5,
+     4,
+     2,
+     3,
+     2,
+     5
+    ],
+    [
+     0,
+     5,
+     2,
+     4,
+     6,
+     2,
+     6
+    ],
+    [
+     0,
+     3,
+     3,
+     2,
+     5,
+     6,
+     6
+    ],
+    [
+     0,
+     4,
+     2,
+     5,
+     6,
+     4,
+     2
+    ],
+    [
+     0,
+     2,
+     2,
+     2,
+     4,
+     5,
+     6
+    ],
+    [
+     0,
+     6,
+     2,
+     5,
+     2,
+     4,
+     2
+    ],
+    [
+     0,
+     5,
+     5,
+     4,
+     6,
+     4,
+     2
+    ],
+    [
+     0,
+     6,
+     3,
+     2,
+     2,
+     6,
+     5
+    ],
+    [
+     0,
+     6,
+     3,
+     6,
+     4,
+     4,
+     5
+    ]
+   ]
+  },
+  "corrupt": {
+   "tokens": [
+    [
+     0,
+     6,
+     4,
+     5,
+     2,
+     6,
+     4
+    ],
+    [
+     0,
+     6,
+     5,
+     6,
+     2,
+     5,
+     4
+    ],
+    [
+     0,
+     2,
+     5,
+     4,
+     2,
+     3,
+     4
+    ],
+    [
+     0,
+     3,
+     3,
+     3,
+     6,
+     2,
+     4
+    ],
+    [
+     0,
+     3,
+     3,
+     2,
+     5,
+     2,
+     4
+    ],
+    [
+     0,
+     6,
+     2,
+     5,
+     2,
+     6,
+     4
+    ],
+    [
+     0,
+     4,
+     4,
+     2,
+     2,
+     3,
+     4
+    ],
+    [
+     0,
+     3,
+     3,
+     4,
+     4,
+     4,
+     4
+    ],
+    [
+     0,
+     6,
+     4,
+     2,
+     6,
+     6,
+     4
+    ],
+    [
+     0,
+     6,
+     4,
+     3,
+     2,
+     6,
+     4
+    ],
+    [
+     0,
+     5,
+     6,
+     5,
+     5,
+     6,
+     4
+    ],
+    [
+     0,
+     6,
+     6,
+     5,
+     2,
+     2,
+     4
+    ]
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    2,
+    3,
+    2,
+    2,
+    2,
+    6,
+    3,
+    2,
+    3,
+    4,
+    5,
+    5
+   ],
+   "incorrect": [
+    3,
+    4,
+    3,
+    3,
+    3,
+    2,
+    4,
+    3,
+    4,
+    5,
+    6,
+    6
+   ]
+  }
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 12,
+  "metric_clean": 1.0,
+  "joint": true,
+  "components": [
+   "mlp0"
+  ],
+  "metric_ablated": 1.0,
+  "fraction_of_clean": 1.0
+ },
+ "data": {
+  "metric_ablated": 1.0
+ },
+ "plot": "experiments/E0013_ablation.png",
+ "seconds": 0.09,
+ "timestamp": "2026-11-13T13:00:10",
+ "prereg_id": "N0023",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": ">=",
+  "threshold": 0.9,
+  "statement": "On fu/pa/tu-ending inputs, mean-ablating mlp0 keeps >= 90% of the clean metric",
+  "verdict": "confirmed",
+  "observed": 1.0
+ }
+}

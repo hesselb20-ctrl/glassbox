@@ -1,0 +1,27 @@
+{
+ "id": "t6",
+ "seed": 2,
+ "track": "compiled",
+ "seq_len": 5,
+ "bos_id": 0,
+ "vocab": [
+  "BOS",
+  "PAD",
+  "gu",
+  "tu",
+  "vi",
+  "za",
+  "ze"
+ ],
+ "input_token_ids": [
+  6,
+  4,
+  5,
+  3,
+  2
+ ],
+ "n_layers": 4,
+ "n_heads": 2,
+ "d_model": 65,
+ "layout": "token ids: [BOS] + seq_len input tokens; the answer is read at the last position"
+}

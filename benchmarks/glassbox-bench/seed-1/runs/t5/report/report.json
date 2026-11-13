@@ -1,0 +1,159 @@
+{
+ "title": "t5 (glassbox-bench seed-1): output = fixed symbol swap of the third input token, via head 0.1 -> mlp0",
+ "label": "verified",
+ "behavior": "Input is BOS followed by 5 tokens from {bo, lu, fe, ri, ka}; the model outputs one symbol at the last position.",
+ "summary": "All numbers are from the local-full backend (full precision, float64). The model is 1 layer with 2 attention heads and 1 MLP. Its output depends only on the token at index 3 (the third input symbol after BOS): output = sigma(tokens[3]) where sigma swaps bo<->lu and fe<->ka and leaves ri unchanged. Head 0.1 attends from the last position to index 3 with weight 1.0 and moves that token's identity; mlp0 turns it into the output symbol. Head 0.1 has no direct effect on the logits, so the whole path runs through the MLP. Head 0.0 plays no part. On 200 held-out inputs the rule matches the model 200/200; ablating {0.1, mlp0} drops the metric to -0.0005 of clean (accuracy 0.24, chance 0.20) and ablating everything else leaves it at 1.0.",
+ "pseudocode": "def predict(tokens, prompt):\n    # tokens = [BOS, x1, x2, x3, x4, x5]; only x3 = tokens[3] matters (E0011)\n    # head 0.1: last position attends to index 3 with weight 1.0 and copies the token (E0012, E0005)\n    # mlp0: maps the copied token to the output symbol (E0010); head has no direct logit path (E0014)\n    sigma = {1: 5, 5: 1, 3: 4, 4: 3, 6: 6}   # bo<->lu, fe<->ka, ri->ri\n    return sigma[tokens[3]]",
+ "claims": [
+  {
+   "text": "The model does the behaviour deterministically: clean accuracy 1.0 with a constant logit difference on 200 inputs (local-full).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The function is output = sigma(token at index 3), sigma = {bo<->lu, fe<->ka, ri->ri}; it agrees with the model on 200/200 held-out inputs (seed 100).",
+   "evidence": [
+    "V0001",
+    "E0011"
+   ]
+  },
+  {
+   "text": "Only index 3 feeds the answer: denoising the residual stream input at index 3 recovers 1.0 of the clean-corrupt difference, every other position (including BOS and the last position) recovers 0.0.",
+   "evidence": [
+    "E0011",
+    "E0008"
+   ]
+  },
+  {
+   "text": "Head 0.1 reads index 3 from the last position with attention 1.0 and is necessary: mean ablation leaves 0.002 of the clean metric.",
+   "evidence": [
+    "E0012",
+    "E0005",
+    "E0004",
+    "E0003"
+   ]
+  },
+  {
+   "text": "mlp0 is necessary (mean ablation leaves 0.010 of clean) and head 0.1's direct path to the logits has effect 0.0, so the symbol swap is written by the MLP after the head has copied the token.",
+   "evidence": [
+    "E0010",
+    "E0014",
+    "E0013"
+   ]
+  },
+  {
+   "text": "Head 0.0 plays no part: mean ablation and resample ablation both leave 1.0 of the clean metric, and the circuit {0.1, mlp0} alone retains 1.0 with head 0.0 ablated.",
+   "evidence": [
+    "E0005",
+    "E0009",
+    "V0001"
+   ]
+  },
+  {
+   "text": "The circuit {0.1, mlp0} is necessary and sufficient on held-out data: ablated -> -0.0005 of clean (accuracy 0.24); everything else ablated -> 1.0 (accuracy 1.0); all three effects are at the 100th percentile of their null distributions.",
+   "evidence": [
+    "V0001"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "embed3",
+    "label": "token embedding at index 3",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "0.1",
+    "label": "head 0.1: last pos -> index 3, copies token identity",
+    "layer": 0,
+    "kind": "head"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0: applies sigma (bo<->lu, fe<->ka, ri->ri)",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "logits",
+    "label": "output symbol at last position",
+    "layer": 1,
+    "kind": "output"
+   },
+   {
+    "id": "0.0",
+    "label": "head 0.0: not used (attends mostly to BOS)",
+    "layer": 0,
+    "kind": "distractor"
+   }
+  ],
+  "edges": [
+   {
+    "src": "embed3",
+    "dst": "0.1",
+    "label": "value, attention 1.0"
+   },
+   {
+    "src": "0.1",
+    "dst": "mlp0",
+    "label": "token identity at last position"
+   },
+   {
+    "src": "mlp0",
+    "dst": "logits",
+    "label": "sigma(token)"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0011",
+  "E0012",
+  "E0005",
+  "E0010"
+ ],
+ "limitations": [
+  "sigma itself was read off the model's input/output pairs (E0001) and confirmed by 200/200 held-out agreement; I did not open the MLP to show which neurons implement each of the five mappings.",
+  "Two pre-registrations (E0006, E0007) were scored inconclusive because I gave a metric path that does not exist for that output shape; both were re-registered with the corrected path and unchanged thresholds on fresh seeds (E0009, E0010). The observed values in the inconclusive runs were on the predicted side but are not counted.",
+  "The verifier's random same-size control reports 1.0 for all three draws, although with only 3 components any 2-component set must overlap the claimed circuit. I have not looked into how that control samples, so I would not lean on that particular number; the null-percentile controls are the ones I rely on.",
+  "Held-out agreement covers 200 of the 3125 possible inputs; the patching result (zero effect of every position except index 3) is what supports generalising to the rest.",
+  "PAD (id 2) never appears in the inputs, so behaviour on it is untested."
+ ],
+ "open_questions": [
+  "What head 0.0 reads and writes (it attends mostly to BOS from the last position) was not characterised beyond showing it has no effect on the output.",
+  "Which mlp0 neurons implement each symbol mapping."
+ ],
+ "overall_status": "verified \u00b7 verified",
+ "cited": [
+  "E0002",
+  "E0003",
+  "E0004",
+  "E0005",
+  "E0008",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0013",
+  "E0014",
+  "V0001"
+ ],
+ "prediction_record": {
+  "preregistered": 9,
+  "run": 9,
+  "not_run": [],
+  "confirmed": 7,
+  "refuted": 0,
+  "inconclusive": 2,
+  "hit_rate": 1.0,
+  "refuted_predictions": []
+ },
+ "exploratory_runs": [
+  "E0003",
+  "E0004",
+  "E0008",
+  "E0013"
+ ]
+}

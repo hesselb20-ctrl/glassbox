@@ -1,0 +1,55 @@
+{
+ "id": "E0013",
+ "primitive": "path_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t5/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t5",
+   "n": 100,
+   "seed": 0
+  },
+  "senders": [
+   "0.0",
+   "0.1"
+  ],
+  "receiver": "logits"
+ },
+ "summary": {
+  "receiver": "logits",
+  "direction": "denoise",
+  "metric_base": -1.0,
+  "metric_source": 1.0,
+  "n": 100,
+  "top": [
+   {
+    "component": "0.0",
+    "effect": 0.0
+   },
+   {
+    "component": "0.1",
+    "effect": 0.0
+   }
+  ]
+ },
+ "data": {
+  "effect": [
+   [
+    0.0,
+    0.0
+   ]
+  ]
+ },
+ "plot": "experiments/E0013_path_patching.png",
+ "seconds": 0.13,
+ "timestamp": "2026-11-13T13:03:28",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null
+}

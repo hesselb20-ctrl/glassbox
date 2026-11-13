@@ -1,0 +1,134 @@
+{
+ "id": "V0003",
+ "name": "t1 control: swap 0.0 for 0.1 (is the choice of layer-0 head unique?)",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5,
+  "null_percentile": 95.0
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t1/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 1.0,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "0.1",
+    "1.0",
+    "1.1",
+    "mlp0",
+    "mlp1"
+   ],
+   "circuit_size": 5,
+   "total_components": 6,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": 0.113625,
+    "fraction_of_clean": 0.007627,
+    "accuracy": 0.185
+   },
+   "everything_else_ablated": {
+    "metric": 12.178239,
+    "fraction_of_clean": 0.817487,
+    "accuracy": 1.0
+   },
+   "random_same_size_ablated_fraction": [
+    0.817487,
+    0.817487,
+    0.817487
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": true,
+   "pass": true
+  }
+ },
+ "null_controls": [
+  {
+   "finding": "agreement",
+   "what": "share of held-out inputs where predict() equals the model's output",
+   "effect": 1.0,
+   "null_mean": 0.187167,
+   "null_p95": 0.2205,
+   "null_max": 0.235,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "task-shuffled": 30
+   },
+   "pass": true
+  },
+  {
+   "finding": "necessity",
+   "what": "standardised drop in the metric when the claimed circuit is ablated",
+   "effect": 0.992373,
+   "null_mean": 0.157148,
+   "null_p95": 0.182513,
+   "null_max": 0.182513,
+   "percentile_of_effect": 100.0,
+   "n_null": 34,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30,
+    "random-init": 2,
+    "weight-shuffled": 2
+   },
+   "pass": true
+  },
+  {
+   "finding": "sufficiency",
+   "what": "standardised metric (above its no-information floor) with everything except the claimed circuit ablated",
+   "effect": 0.817487,
+   "null_mean": 0.007627,
+   "null_p95": 0.007627,
+   "null_max": 0.007627,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30
+   },
+   "pass": true
+  }
+ ],
+ "model_accuracy": 1.0,
+ "metric_clean": 14.897161,
+ "metric_floor": 0.0,
+ "metric_unit": 14.897161,
+ "beats_null_controls": true,
+ "status": "verified",
+ "all_checks_passed": true,
+ "note": "Passed at full precision, and every effect exceeds its null distribution.",
+ "plot": "experiments/V0003_verify.png",
+ "spec": {
+  "name": "t1 control: swap 0.0 for 0.1 (is the choice of layer-0 head unique?)",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t1",
+   "n": 200,
+   "seed": 103
+  },
+  "code": "def predict(tokens, prompt):\n    T = {2: [3, 6, 4, 3, 6, 3],\n         3: [2, 7, 3, 3, 5, 4],\n         4: [2, 6, 5, 7, 2, 5],\n         5: [7, 7, 2, 7, 3, 6],\n         6: [4, 3, 4, 6, 6, 6],\n         7: [6, 3, 4, 4, 6, 5]}\n    return T[int(tokens[1])][int(tokens[4]) - 2]\n",
+  "circuit": {
+   "components": [
+    "0.1",
+    "1.0",
+    "1.1",
+    "mlp0",
+    "mlp1"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-13T12:45:14"
+}

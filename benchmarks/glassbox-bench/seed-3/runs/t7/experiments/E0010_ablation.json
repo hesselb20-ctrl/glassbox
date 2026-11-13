@@ -1,0 +1,86 @@
+{
+ "id": "E0010",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t7/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t7",
+   "n": 200,
+   "seed": 2
+  },
+  "sweep": "heads",
+  "mode": "resample"
+ },
+ "summary": {
+  "mode": "resample",
+  "n": 200,
+  "metric_clean": 33.856167,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "1.1",
+    "metric": 14.625134,
+    "change": -19.231033,
+    "fraction_of_clean": 0.431978
+   },
+   {
+    "component": "0.1",
+    "metric": 20.849226,
+    "change": -13.006941,
+    "fraction_of_clean": 0.615818
+   },
+   {
+    "component": "1.0",
+    "metric": 23.38274,
+    "change": -10.473427,
+    "fraction_of_clean": 0.690649
+   },
+   {
+    "component": "0.0",
+    "metric": 24.601345,
+    "change": -9.254822,
+    "fraction_of_clean": 0.726643
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "0.0",
+   "0.1",
+   "1.0",
+   "1.1"
+  ],
+  "metric": [
+   24.601345,
+   20.849226,
+   23.38274,
+   14.625134
+  ],
+  "change": [
+   -9.254822,
+   -13.006941,
+   -10.473427,
+   -19.231033
+  ]
+ },
+ "plot": "experiments/E0010_ablation.png",
+ "seconds": 0.38,
+ "timestamp": "2026-11-13T13:12:23",
+ "prereg_id": "N0021",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[component=0.0].fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.85,
+  "statement": "resample-ablating head 0.0 alone leaves at most 0.85 of the clean logit difference",
+  "verdict": "confirmed",
+  "observed": 0.726643
+ }
+}

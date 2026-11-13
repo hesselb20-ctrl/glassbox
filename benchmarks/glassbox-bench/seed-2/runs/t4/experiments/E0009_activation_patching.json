@@ -1,0 +1,107 @@
+{
+ "id": "E0009",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t4/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t4",
+   "n": 200,
+   "seed": 2
+  },
+  "component": "resid_pre"
+ },
+ "summary": {
+  "component": "resid_pre",
+  "direction": "denoise",
+  "metric_base": -16.464022,
+  "metric_source": 17.210688,
+  "n": 200,
+  "top": [
+   {
+    "component": "resid_pre.1 @ pos 4",
+    "effect": 0.642852
+   },
+   {
+    "component": "resid_pre.0 @ pos 4",
+    "effect": 0.572385
+   },
+   {
+    "component": "resid_pre.0 @ pos 1",
+    "effect": 0.39563
+   },
+   {
+    "component": "resid_pre.1 @ pos 1",
+    "effect": 0.322263
+   },
+   {
+    "component": "resid_pre.0 @ pos 2",
+    "effect": -0.004454
+   },
+   {
+    "component": "resid_pre.1 @ pos 3",
+    "effect": 0.000779
+   },
+   {
+    "component": "resid_pre.0 @ pos 3",
+    "effect": 5.8e-05
+   },
+   {
+    "component": "resid_pre.1 @ pos 2",
+    "effect": 2.1e-05
+   }
+  ],
+  "variants": 10
+ },
+ "data": {
+  "effect": [
+   [
+    0.0,
+    0.39563,
+    -0.004454,
+    5.8e-05,
+    0.572385
+   ],
+   [
+    0.0,
+    0.322263,
+    2.1e-05,
+    0.000779,
+    0.642852
+   ]
+  ],
+  "layers": [
+   0,
+   1
+  ],
+  "columns": [
+   "0",
+   "1",
+   "2",
+   "3",
+   "4"
+  ]
+ },
+ "plot": "experiments/E0009_activation_patching.png",
+ "seconds": 0.34,
+ "timestamp": "2026-11-13T12:57:27",
+ "prereg_id": "N0013",
+ "exploratory": false,
+ "score": {
+  "metric": "data.effect[1][2]",
+  "op": "between",
+  "threshold": [
+   -0.05,
+   0.05
+  ],
+  "statement": "Patching resid_pre at layer 1, position 2 restores less than 5% of the clean-corrupt logit difference.",
+  "verdict": "confirmed",
+  "observed": 2.1e-05
+ }
+}

@@ -1,0 +1,54 @@
+{
+ "seed": 1,
+ "tasks": [
+  {
+   "id": "t1",
+   "track": "trained",
+   "n_layers": 2,
+   "n_heads": 2,
+   "d_model": 48
+  },
+  {
+   "id": "t2",
+   "track": "compiled",
+   "n_layers": 4,
+   "n_heads": 3,
+   "d_model": 73
+  },
+  {
+   "id": "t3",
+   "track": "compiled",
+   "n_layers": 3,
+   "n_heads": 4,
+   "d_model": 46
+  },
+  {
+   "id": "t4",
+   "track": "compiled",
+   "n_layers": 2,
+   "n_heads": 3,
+   "d_model": 36
+  },
+  {
+   "id": "t5",
+   "track": "compiled",
+   "n_layers": 1,
+   "n_heads": 2,
+   "d_model": 29
+  },
+  {
+   "id": "t6",
+   "track": "compiled",
+   "n_layers": 2,
+   "n_heads": 3,
+   "d_model": 38
+  },
+  {
+   "id": "t7",
+   "track": "trained",
+   "n_layers": 2,
+   "n_heads": 2,
+   "d_model": 48
+  }
+ ]
+}

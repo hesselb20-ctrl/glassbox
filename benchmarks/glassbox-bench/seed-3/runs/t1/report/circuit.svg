@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 188" width="100%" font-family="Consolas, DejaVu Sans Mono, monospace">
+<defs><filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3df5d0"/></marker></defs>
+<rect width="920" height="188" fill="#070b1a" rx="10"/>
+<path d="M178,94 C222,94 222,94 263,94" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="222" y="88" fill="#8793c2" font-size="11" text-anchor="middle">token identity</text>
+<path d="M416,94 C460,94 460,65 501,65" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="460" y="73" fill="#8793c2" font-size="11" text-anchor="middle">class at each position (query and key)</text>
+<path d="M654,65 C579,65 579,123 501,123" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="579" y="88" fill="#8793c2" font-size="11" text-anchor="middle">attention fraction at last position</text>
+<path d="M654,123 C698,123 698,94 739,94" fill="none" stroke="#3df5d0" stroke-width="2" filter="url(#glow)" marker-end="url(#arr)" opacity="0.9"/>
+<text x="698" y="103" fill="#8793c2" font-size="11" text-anchor="middle">count</text>
+<rect x="28" y="72" width="150" height="44" rx="8" fill="#0e1530" stroke="#8793c2" stroke-width="1.5"/>
+<text x="103" y="98" fill="#e6ebff" font-size="12" text-anchor="middle">token embeddings (pos </text>
+<rect x="266" y="72" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="341" y="98" fill="#e6ebff" font-size="12" text-anchor="middle">mlp0: per-position cla</text>
+<rect x="504" y="43" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="579" y="69" fill="#e6ebff" font-size="12" text-anchor="middle">head 1.1: last pos att</text>
+<rect x="504" y="101" width="150" height="44" rx="8" fill="#0e1530" stroke="#3df5d0" stroke-width="1.5"/>
+<text x="579" y="127" fill="#e6ebff" font-size="12" text-anchor="middle">mlp1 @ last pos: 1/(1+</text>
+<rect x="742" y="72" width="150" height="44" rx="8" fill="#0e1530" stroke="#8793c2" stroke-width="1.5"/>
+<text x="817" y="98" fill="#e6ebff" font-size="12" text-anchor="middle">digit logit</text>
+</svg>

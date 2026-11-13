@@ -1,0 +1,126 @@
+{
+ "id": "E0012",
+ "primitive": "attention_patterns",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t6/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t6",
+   "n": 150,
+   "seed": 2
+  },
+  "head": "0.1",
+  "query_pos": 5
+ },
+ "summary": {
+  "score": "max mean attention from pos 5",
+  "n": 150,
+  "top": [
+   {
+    "head": "0.1",
+    "score": 1.0
+   },
+   {
+    "head": "0.2",
+    "score": 0.59763
+   },
+   {
+    "head": "0.0",
+    "score": 0.314937
+   }
+  ],
+  "most_attended_key_from_query": {
+   "0.0": 5,
+   "0.1": 4,
+   "0.2": 4
+  }
+ },
+ "data": {
+  "score": [
+   [
+    0.314937,
+    1.0,
+    0.59763
+   ]
+  ],
+  "top_key": [
+   [
+    5.0,
+    4.0,
+    4.0
+   ]
+  ],
+  "layers": [
+   0
+  ],
+  "pattern": [
+   [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0
+   ]
+  ]
+ },
+ "plot": "experiments/E0012_attention_patterns.png",
+ "seconds": 0.18,
+ "timestamp": "2026-11-13T13:09:18",
+ "prereg_id": "N0018",
+ "exploratory": false,
+ "score": {
+  "metric": "data.pattern[5][4]",
+  "op": ">=",
+  "threshold": 0.9,
+  "statement": "Mean attention of head 0.1 from position 5 to position 4 is at least 0.9.",
+  "verdict": "confirmed",
+  "observed": 1.0
+ }
+}

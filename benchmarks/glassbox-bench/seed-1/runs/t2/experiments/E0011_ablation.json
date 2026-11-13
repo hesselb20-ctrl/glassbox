@@ -1,0 +1,86 @@
+{
+ "id": "E0011",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t2",
+   "n": 200,
+   "seed": 2
+  },
+  "sweep": "mlps",
+  "mode": "mean"
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 0.999855,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "mlp0",
+    "metric": 0.000141,
+    "change": -0.999714,
+    "fraction_of_clean": 0.000141
+   },
+   {
+    "component": "mlp1",
+    "metric": 0.000141,
+    "change": -0.999714,
+    "fraction_of_clean": 0.000141
+   },
+   {
+    "component": "mlp2",
+    "metric": 0.021485,
+    "change": -0.978369,
+    "fraction_of_clean": 0.021489
+   },
+   {
+    "component": "mlp3",
+    "metric": 0.999855,
+    "change": 0.0,
+    "fraction_of_clean": 1.0
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "mlp0",
+   "mlp1",
+   "mlp2",
+   "mlp3"
+  ],
+  "metric": [
+   0.000141,
+   0.000141,
+   0.021485,
+   0.999855
+  ],
+  "change": [
+   -0.999714,
+   -0.999714,
+   -0.978369,
+   0.0
+  ]
+ },
+ "plot": "experiments/E0011_ablation.png",
+ "seconds": 0.62,
+ "timestamp": "2026-11-13T12:48:59",
+ "prereg_id": "N0016",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[component=mlp2].fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.2,
+  "statement": "mean-ablating mlp2 leaves at most 20% of the clean logit difference",
+  "verdict": "confirmed",
+  "observed": 0.021489
+ }
+}

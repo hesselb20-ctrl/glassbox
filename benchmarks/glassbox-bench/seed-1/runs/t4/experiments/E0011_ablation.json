@@ -1,0 +1,61 @@
+{
+ "id": "E0011",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t4/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t4",
+   "n": 128,
+   "seed": 1
+  },
+  "sweep": "mlps",
+  "mode": "mean"
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 128,
+  "metric_clean": 1.0,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "mlp1",
+    "metric": 0.014526,
+    "change": -0.985474,
+    "fraction_of_clean": 0.014526
+   },
+   {
+    "component": "mlp0",
+    "metric": 0.660813,
+    "change": -0.339187,
+    "fraction_of_clean": 0.660813
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "mlp0",
+   "mlp1"
+  ],
+  "metric": [
+   0.660813,
+   0.014526
+  ],
+  "change": [
+   -0.339187,
+   -0.985474
+  ]
+ },
+ "plot": "experiments/E0011_ablation.png",
+ "seconds": 0.26,
+ "timestamp": "2026-11-13T12:59:03",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null
+}

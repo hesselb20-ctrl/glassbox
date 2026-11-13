@@ -1,0 +1,61 @@
+{
+ "id": "E0010",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t6/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t6",
+   "n": 128,
+   "seed": 2
+  },
+  "components": [
+   "mlp0"
+  ],
+  "mode": "mean"
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 128,
+  "metric_clean": 1.0,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "mlp0",
+    "metric": 0.0,
+    "change": -1.0,
+    "fraction_of_clean": 0.0
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "mlp0"
+  ],
+  "metric": [
+   0.0
+  ],
+  "change": [
+   -1.0
+  ]
+ },
+ "plot": "experiments/E0010_ablation.png",
+ "seconds": 0.2,
+ "timestamp": "2026-11-13T13:08:07",
+ "prereg_id": "N0013",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.top[0].fraction_of_clean",
+  "op": "<=",
+  "threshold": 0.2,
+  "statement": "mean-ablating mlp0 leaves at most 20% of the clean metric",
+  "verdict": "confirmed",
+  "observed": 0.0
+ }
+}

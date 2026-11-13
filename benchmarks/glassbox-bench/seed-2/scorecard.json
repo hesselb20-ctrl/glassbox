@@ -1,0 +1,332 @@
+{
+ "seed": 2,
+ "tasks": [
+  {
+   "id": "t1",
+   "track": "compiled",
+   "family": "lookup2",
+   "label": "compiled: mechanism known exactly",
+   "ran": true,
+   "experiments": 16,
+   "wall_clock_seconds": 384.4,
+   "verification_runs": 2,
+   "prereg": {
+    "preregistered": 10,
+    "run": 10,
+    "confirmed": 10,
+    "refuted": 0,
+    "inconclusive": 0,
+    "hit_rate": 1.0
+   },
+   "notebook_chain_ok": true,
+   "final_verification": "verified",
+   "beats_null_controls": true,
+   "claimed_circuit": [
+    "1.2",
+    "mlp0",
+    "mlp1"
+   ],
+   "circuit": {
+    "true": [
+     "1.2",
+     "mlp0",
+     "mlp1"
+    ],
+    "found": [
+     "1.2",
+     "mlp0",
+     "mlp1"
+    ],
+    "missed": [],
+    "extra": [],
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   "model_accuracy_on_true_function": 1.0,
+   "heldout_inputs": 600,
+   "mechanism_match": 1.0,
+   "behavior_prediction": 1.0
+  },
+  {
+   "id": "t2",
+   "track": "compiled",
+   "family": "shift-copy",
+   "label": "compiled: mechanism known exactly",
+   "ran": true,
+   "experiments": 11,
+   "wall_clock_seconds": 132.8,
+   "verification_runs": 1,
+   "prereg": {
+    "preregistered": 7,
+    "run": 7,
+    "confirmed": 7,
+    "refuted": 0,
+    "inconclusive": 0,
+    "hit_rate": 1.0
+   },
+   "notebook_chain_ok": true,
+   "final_verification": "verified",
+   "beats_null_controls": true,
+   "claimed_circuit": [
+    "0.0",
+    "mlp0"
+   ],
+   "circuit": {
+    "true": [
+     "0.0",
+     "mlp0"
+    ],
+    "found": [
+     "0.0",
+     "mlp0"
+    ],
+    "missed": [],
+    "extra": [],
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   "model_accuracy_on_true_function": 1.0,
+   "heldout_inputs": 600,
+   "mechanism_match": 1.0,
+   "behavior_prediction": 1.0
+  },
+  {
+   "id": "t3",
+   "track": "compiled",
+   "family": "count-compare",
+   "label": "compiled: mechanism known exactly",
+   "ran": true,
+   "experiments": 12,
+   "wall_clock_seconds": 175.3,
+   "verification_runs": 1,
+   "prereg": {
+    "preregistered": 6,
+    "run": 6,
+    "confirmed": 6,
+    "refuted": 0,
+    "inconclusive": 0,
+    "hit_rate": 1.0
+   },
+   "notebook_chain_ok": true,
+   "final_verification": "verified",
+   "beats_null_controls": true,
+   "claimed_circuit": [
+    "1.1",
+    "1.2",
+    "mlp0",
+    "mlp1",
+    "mlp2"
+   ],
+   "circuit": {
+    "true": [
+     "1.1",
+     "1.2",
+     "mlp0",
+     "mlp1",
+     "mlp2"
+    ],
+    "found": [
+     "1.1",
+     "1.2",
+     "mlp0",
+     "mlp1",
+     "mlp2"
+    ],
+    "missed": [],
+    "extra": [],
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   "model_accuracy_on_true_function": 1.0,
+   "heldout_inputs": 600,
+   "mechanism_match": 1.0,
+   "behavior_prediction": 1.0
+  },
+  {
+   "id": "t4",
+   "track": "trained",
+   "family": "pair-table",
+   "label": "trained: behaviorally specified, mechanism unknown",
+   "ran": true,
+   "experiments": 17,
+   "wall_clock_seconds": 439.2,
+   "verification_runs": 3,
+   "prereg": {
+    "preregistered": 8,
+    "run": 8,
+    "confirmed": 7,
+    "refuted": 0,
+    "inconclusive": 1,
+    "hit_rate": 1.0
+   },
+   "notebook_chain_ok": true,
+   "final_verification": "verified",
+   "beats_null_controls": true,
+   "claimed_circuit": [
+    "0.0",
+    "1.0",
+    "1.1",
+    "mlp0",
+    "mlp1"
+   ],
+   "circuit": null,
+   "model_accuracy_on_true_function": 1.0,
+   "heldout_inputs": 600,
+   "mechanism_match": 1.0,
+   "behavior_prediction": 1.0
+  },
+  {
+   "id": "t5",
+   "track": "compiled",
+   "family": "hist",
+   "label": "compiled: mechanism known exactly",
+   "ran": true,
+   "experiments": 15,
+   "wall_clock_seconds": 204.5,
+   "verification_runs": 1,
+   "prereg": {
+    "preregistered": 8,
+    "run": 8,
+    "confirmed": 8,
+    "refuted": 0,
+    "inconclusive": 0,
+    "hit_rate": 1.0
+   },
+   "notebook_chain_ok": true,
+   "final_verification": "verified",
+   "beats_null_controls": true,
+   "claimed_circuit": [
+    "1.0",
+    "mlp0",
+    "mlp1"
+   ],
+   "circuit": {
+    "true": [
+     "1.0",
+     "mlp0",
+     "mlp1"
+    ],
+    "found": [
+     "1.0",
+     "mlp0",
+     "mlp1"
+    ],
+    "missed": [],
+    "extra": [],
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   "model_accuracy_on_true_function": 1.0,
+   "heldout_inputs": 600,
+   "mechanism_match": 1.0,
+   "behavior_prediction": 1.0
+  },
+  {
+   "id": "t6",
+   "track": "compiled",
+   "family": "sort-by-key",
+   "label": "compiled: mechanism known exactly",
+   "ran": true,
+   "experiments": 16,
+   "wall_clock_seconds": 338.5,
+   "verification_runs": 1,
+   "prereg": {
+    "preregistered": 11,
+    "run": 11,
+    "confirmed": 7,
+    "refuted": 3,
+    "inconclusive": 1,
+    "hit_rate": 0.7
+   },
+   "notebook_chain_ok": true,
+   "final_verification": "verified",
+   "beats_null_controls": true,
+   "claimed_circuit": [
+    "2.1",
+    "3.1",
+    "mlp0",
+    "mlp1",
+    "mlp2"
+   ],
+   "circuit": {
+    "true": [
+     "2.1",
+     "3.1",
+     "mlp0",
+     "mlp1",
+     "mlp2"
+    ],
+    "found": [
+     "2.1",
+     "3.1",
+     "mlp0",
+     "mlp1",
+     "mlp2"
+    ],
+    "missed": [],
+    "extra": [],
+    "recall": 1.0,
+    "precision": 1.0
+   },
+   "model_accuracy_on_true_function": 1.0,
+   "heldout_inputs": 600,
+   "mechanism_match": 1.0,
+   "behavior_prediction": 1.0
+  },
+  {
+   "id": "t7",
+   "track": "trained",
+   "family": "max-rank",
+   "label": "trained: behaviorally specified, mechanism unknown",
+   "ran": true,
+   "experiments": 15,
+   "wall_clock_seconds": 270.7,
+   "verification_runs": 2,
+   "prereg": {
+    "preregistered": 10,
+    "run": 9,
+    "confirmed": 7,
+    "refuted": 2,
+    "inconclusive": 0,
+    "hit_rate": 0.778
+   },
+   "notebook_chain_ok": true,
+   "final_verification": "not-verified",
+   "beats_null_controls": true,
+   "claimed_circuit": [
+    "0.0",
+    "0.1",
+    "1.1",
+    "mlp0",
+    "mlp1"
+   ],
+   "circuit": null,
+   "model_accuracy_on_true_function": 1.0,
+   "heldout_inputs": 600,
+   "mechanism_match": 1.0,
+   "behavior_prediction": 1.0
+  }
+ ],
+ "summary": {
+  "tasks": 7,
+  "ran": 7,
+  "compiled_circuit_recall": 1.0,
+  "compiled_circuit_precision": 1.0,
+  "compiled_mechanism_match": 1.0,
+  "compiled_solved": 5,
+  "behavior_prediction_all": 1.0,
+  "verified": 6,
+  "beats_null_controls": 7,
+  "experiments_mean": 14.571,
+  "wall_clock_minutes_total": 32.4,
+  "prereg_confirmed": 52,
+  "prereg_refuted": 5,
+  "prereg_hit_rate": 0.912
+ },
+ "definitions": {
+  "mechanism_match": "share of held-out inputs where the recovered predict() equals the true algorithm of the answer key",
+  "behavior_prediction": "share of held-out inputs where the recovered predict() equals the model's own output",
+  "circuit": "heads and MLP layers named in the final verify_hypothesis call, against the components that carry the compiled program",
+  "compiled_solved": "mechanism match >= 0.98 and every true component found"
+ }
+}

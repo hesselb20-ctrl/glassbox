@@ -1,0 +1,231 @@
+{
+ "title": "t6: the model outputs the maximum symbol under tu < gu < vi < za < ze, via a sort-rank circuit",
+ "label": "verified (local-full, full precision)",
+ "behavior": "Input BOS + 5 symbols from {gu, tu, vi, za, ze}; at the last position the model outputs one symbol.",
+ "summary": "The model outputs the highest-ranked symbol present in the input under the order tu < gu < vi < za < ze (token ids 3 < 2 < 4 < 5 < 6, i.e. id order except that gu outranks tu). It does this with five components: mlp0 and mlp1 build a per-position ranking key; head 2.1 at each position attends uniformly to BOS plus every position holding a lower symbol or an equal symbol earlier in the sequence, which encodes that position's stable ascending sort rank; mlp2 processes that; head 3.1 at the last position attends to the position of rank 4 (the last occurrence of the max symbol) and copies its symbol to the output. Heads 0.0, 0.1, 1.0, 1.1, 2.0, 3.0 and mlp3 play no part. All numbers are from the local-full backend (full precision). Held-out verification V0001: verified.",
+ "pseudocode": "order = {tu:0, gu:1, vi:2, za:3, ze:4}\nxs = tokens[1:6]\n# mlp0, mlp1: ranking key per position\n# head 2.1 (+ mlp2): rank_i = #(j : order[x_j] < order[x_i], or x_j == x_i and j < i)\n# head 3.1 at last position: attend to the position with rank 4, copy its symbol\nreturn xs[rank.index(4)]   # == max(xs, key=order)",
+ "claims": [
+  {
+   "text": "The model does the behaviour deterministically: 200/200 clean prompts match the dataset answers (local-full).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The function is max under the order tu < gu < vi < za < ze: all 12 gu/tu-only prompts containing a gu output gu regardless of position or count, and the max-under-order predict() agrees with the model on 200/200 held-out prompts.",
+   "evidence": [
+    "E0003",
+    "V0001"
+   ]
+  },
+  {
+   "text": "Heads 0.0, 0.1, 1.0, 1.1, 2.0, 3.0 and mlp3 play no part: mean-ablating all seven jointly leaves fraction_of_clean = 1.0, and in verification ablating everything outside the circuit leaves accuracy 1.0.",
+   "evidence": [
+    "E0006",
+    "V0001"
+   ]
+  },
+  {
+   "text": "mlp0, mlp1, head 2.1, mlp2 and head 3.1 are the circuit: ablating them drops held-out accuracy to 0.24 and fraction_of_clean to -0.095 (corrupt-reference mean ablation). With clean-reference mean ablation the residual was 0.191, missing my pre-registered <= 0.1 threshold.",
+   "evidence": [
+    "V0001",
+    "E0007"
+   ]
+  },
+  {
+   "text": "Head 2.1 attends uniformly to BOS plus positions holding a lower symbol or an equal earlier symbol: on five identical symbols position i attends 1/i to BOS and each earlier position (5->BOS = 0.2); a unique-max position attends 0.2 to BOS and each of the 4 others and receives no attention. This refuted my first guess that it attends to higher-ranked symbols.",
+   "evidence": [
+    "E0010",
+    "E0011"
+   ]
+  },
+  {
+   "text": "Head 3.1 at the last position attends (0.9999) to the last occurrence of the max symbol, and position 4 attends to the earlier occurrence: a stable ascending sort in which position i reads the element of rank i-1. My first guess (first occurrence) was refuted.",
+   "evidence": [
+    "E0012",
+    "E0009"
+   ]
+  },
+  {
+   "text": "Routing: a symbol's information stays at its own position through layers 0-1 (single-position patch restores 1.0), is spread over positions after layer 2 (0.5 at source, 0.12-0.19 elsewhere), and is at the last position only after layer 3 (1.0).",
+   "evidence": [
+    "E0014"
+   ]
+  },
+  {
+   "text": "mlp0, mlp1 and mlp2 carry ranking information, not the copied symbol: patching their clean outputs makes the model output the corrupt symbol at the top-ranked position, giving exactly the predicted effect 0.125 (mlp3: 0.0).",
+   "evidence": [
+    "E0016"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "embed",
+    "label": "token + position embedding",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0: ranking key (stage 1)",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "mlp1",
+    "label": "mlp1: ranking key (stage 2)",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "2.1",
+    "label": "head 2.1: attend BOS + lower/equal-earlier symbols (sort rank)",
+    "layer": 2,
+    "kind": "head"
+   },
+   {
+    "id": "mlp2",
+    "label": "mlp2: processes rank",
+    "layer": 2,
+    "kind": "mlp"
+   },
+   {
+    "id": "3.1",
+    "label": "head 3.1: last pos attends rank-4 position, copies symbol",
+    "layer": 3,
+    "kind": "head"
+   },
+   {
+    "id": "out",
+    "label": "output symbol",
+    "layer": 4,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "embed",
+    "dst": "mlp0",
+    "label": "symbol at own position"
+   },
+   {
+    "src": "mlp0",
+    "dst": "mlp1",
+    "label": "key (order inferred from layer order, not path-patched)"
+   },
+   {
+    "src": "mlp1",
+    "dst": "2.1",
+    "label": "ranking key"
+   },
+   {
+    "src": "2.1",
+    "dst": "mlp2",
+    "label": "1/(1+rank) via BOS attention"
+   },
+   {
+    "src": "mlp2",
+    "dst": "3.1",
+    "label": "rank (selects which position is attended)"
+   },
+   {
+    "src": "embed",
+    "dst": "3.1",
+    "label": "symbol to copy"
+   },
+   {
+    "src": "3.1",
+    "dst": "out",
+    "label": "max symbol"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0010",
+  "E0012",
+  "E0014",
+  "E0016"
+ ],
+ "limitations": [
+  "The individual roles of mlp0 versus mlp1 are not separated; E0016 only shows both carry ranking (not symbol) information. What exactly mlp2 computes from head 2.1's output was not measured.",
+  "Edges between components are inferred from layer order, attention patterns and patching; path patching could not test them (MLP senders unsupported; exploratory E0013 returned 0 direct effect for every head, including 3.1, which I do not understand).",
+  "The single-component ablation screens E0004/E0005 are exploratory.",
+  "E0015 was scored inconclusive because of a wrong metric path (mlp_out is patched at all positions at once); it was replaced by E0016 on new prompt pairs.",
+  "E0007 missed its threshold (0.191 vs <= 0.1). An untested possible reason is that a mean-ablated model emits a constant, frequently correct symbol.",
+  "V0001 reports random same-size ablation fractions of 1.0, 1.0, 1.0; I did not check how those random sets are drawn.",
+  "Attention-pattern tests used small hand-built prompt sets (5-8 prompts each)."
+ ],
+ "open_questions": [
+  "Does head 3.1 at positions 1-4 really output the full sorted sequence (attention patterns suggest it; outputs at those positions were not read)?",
+  "How is the gu > tu ordering encoded in mlp0/mlp1?"
+ ],
+ "overall_status": "verified \u00b7 verified (local-full, full precision)",
+ "cited": [
+  "E0002",
+  "E0003",
+  "E0006",
+  "E0007",
+  "E0009",
+  "E0010",
+  "E0011",
+  "E0012",
+  "E0014",
+  "E0016",
+  "V0001"
+ ],
+ "prediction_record": {
+  "preregistered": 11,
+  "run": 11,
+  "not_run": [],
+  "confirmed": 7,
+  "refuted": 3,
+  "inconclusive": 1,
+  "hit_rate": 0.7,
+  "refuted_predictions": [
+   {
+    "prereg": "N0012",
+    "experiment": "E0007",
+    "hypothesis": "H2: mlp0, mlp1, 2.1, mlp2 and 3.1 are jointly necessary; mean-ablating them together destroys the behaviour.",
+    "prediction": {
+     "metric": "summary.fraction_of_clean",
+     "op": "<=",
+     "threshold": 0.1,
+     "statement": "Jointly mean-ablating the claimed circuit leaves at most 10% of the clean logit difference"
+    },
+    "observed": 0.19145
+   },
+   {
+    "prereg": "N0018",
+    "experiment": "E0009",
+    "hypothesis": "H3: head 3.1 at the last position attends (nearly) exclusively to the first occurrence of the max symbol. In 8 hand-built prompts whose first max occurrence is at position 2 (several with later ties, and the last position is not the first max), mean attention 5->2 is near 1.",
+    "prediction": {
+     "metric": "data.pattern[5][2]",
+     "op": ">=",
+     "threshold": 0.9,
+     "statement": "Head 3.1's mean attention from the last position to position 2 (first max occurrence in every prompt) is at least 0.9"
+    },
+    "observed": 0.124992
+   },
+   {
+    "prereg": "N0020",
+    "experiment": "E0011",
+    "hypothesis": "H3 ordering: head 2.1 compares symbols in the order ze>za>vi>gu>tu. When position 3 holds the unique maximum under that order (including gu among tu), position 3 attends only to BOS.",
+    "prediction": {
+     "metric": "data.pattern[3][0]",
+     "op": ">=",
+     "threshold": 0.97,
+     "statement": "Head 2.1's attention from position 3 (unique max) to BOS is ~1 in all 8 prompts"
+    },
+    "observed": 0.2
+   }
+  ]
+ },
+ "exploratory_runs": [
+  "E0004",
+  "E0005",
+  "E0008",
+  "E0013"
+ ]
+}

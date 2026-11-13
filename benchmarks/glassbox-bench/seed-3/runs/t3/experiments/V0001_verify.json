@@ -1,0 +1,134 @@
+{
+ "id": "V0001",
+ "name": "t3 priority-max via stable sort",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5,
+  "null_percentile": 95.0
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-3/tasks/t3/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 1.0,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "mlp0",
+    "mlp1",
+    "2.0",
+    "mlp2",
+    "3.1"
+   ],
+   "circuit_size": 5,
+   "total_components": 12,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": -0.097636,
+    "fraction_of_clean": -0.09765,
+    "accuracy": 0.245
+   },
+   "everything_else_ablated": {
+    "metric": 0.999855,
+    "fraction_of_clean": 1.0,
+    "accuracy": 1.0
+   },
+   "random_same_size_ablated_fraction": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": true,
+   "pass": true
+  }
+ },
+ "null_controls": [
+  {
+   "finding": "agreement",
+   "what": "share of held-out inputs where predict() equals the model's output",
+   "effect": 1.0,
+   "null_mean": 0.536333,
+   "null_p95": 0.57775,
+   "null_max": 0.58,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "task-shuffled": 30
+   },
+   "pass": true
+  },
+  {
+   "finding": "necessity",
+   "what": "standardised drop in the metric when the claimed circuit is ablated",
+   "effect": 1.09765,
+   "null_mean": 0.009104,
+   "null_p95": 0.0,
+   "null_max": 0.675452,
+   "percentile_of_effect": 100.0,
+   "n_null": 34,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30,
+    "random-init": 2,
+    "weight-shuffled": 2
+   },
+   "pass": true
+  },
+  {
+   "finding": "sufficiency",
+   "what": "standardised metric (above its no-information floor) with everything except the claimed circuit ablated",
+   "effect": 1.0,
+   "null_mean": -0.09765,
+   "null_p95": -0.09765,
+   "null_max": -0.09765,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30
+   },
+   "pass": true
+  }
+ ],
+ "model_accuracy": 1.0,
+ "metric_clean": 0.999855,
+ "metric_floor": 0.0,
+ "metric_unit": 0.999855,
+ "beats_null_controls": true,
+ "status": "verified",
+ "all_checks_passed": true,
+ "note": "Passed at full precision, and every effect exceeds its null distribution.",
+ "plot": "experiments/V0001_verify.png",
+ "spec": {
+  "name": "t3 priority-max via stable sort",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-3/tasks/t3",
+   "n": 200,
+   "seed": 11
+  },
+  "code": "def predict(tokens, prompt):\n    # E0001/E0003: output = highest-priority symbol present; priority po(5) > gu(3) > se(6) > ba(1) > ku(4)\n    # Mechanism: mlp0+mlp1 build a sort key per position (E0012), head 2.0 counts lower keys (E0009, E0011),\n    # mlp2 decodes the rank (E0012), head 3.1 at the last position copies the top-ranked token (E0008, E0013).\n    prio = {4: 0, 1: 1, 6: 2, 3: 3, 5: 4}\n    seq = [int(t) for t in tokens][1:]\n    return max(seq, key=lambda t: prio[t])\n",
+  "circuit": {
+   "components": [
+    "mlp0",
+    "mlp1",
+    "2.0",
+    "mlp2",
+    "3.1"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-13T12:54:58"
+}

@@ -1,0 +1,68 @@
+{
+ "id": "E0015",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-2/tasks/t5/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-2/tasks/t5",
+   "n": 200,
+   "seed": 3
+  },
+  "sweep": "mlps",
+  "mode": "mean"
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 200,
+  "metric_clean": 1.0,
+  "reference": "clean",
+  "top": [
+   {
+    "component": "mlp1",
+    "metric": -0.000375,
+    "change": -1.000375,
+    "fraction_of_clean": -0.000375
+   },
+   {
+    "component": "mlp0",
+    "metric": 0.0,
+    "change": -1.0,
+    "fraction_of_clean": 0.0
+   }
+  ]
+ },
+ "data": {
+  "components": [
+   "mlp0",
+   "mlp1"
+  ],
+  "metric": [
+   0.0,
+   -0.000375
+  ],
+  "change": [
+   -1.0,
+   -1.000375
+  ]
+ },
+ "plot": "experiments/E0015_ablation.png",
+ "seconds": 0.26,
+ "timestamp": "2026-11-13T13:02:54",
+ "prereg_id": "N0021",
+ "exploratory": false,
+ "score": {
+  "metric": "data.metric[1]",
+  "op": "<=",
+  "threshold": 0.15,
+  "statement": "mean ablation of mlp1 alone leaves <=0.15 metric (clean = 1)",
+  "verdict": "confirmed",
+  "observed": -0.000375
+ }
+}
