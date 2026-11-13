@@ -1,0 +1,184 @@
+{
+ "id": "E0010",
+ "primitive": "attention_patterns",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t2",
+   "n": 120,
+   "seed": 0
+  },
+  "head": "2.0"
+ },
+ "summary": {
+  "score": "max mean attention from pos -1",
+  "n": 120,
+  "top": [
+   {
+    "head": "2.0",
+    "score": 0.4025
+   },
+   {
+    "head": "1.2",
+    "score": 0.358333
+   },
+   {
+    "head": "3.2",
+    "score": 0.333333
+   },
+   {
+    "head": "2.2",
+    "score": 0.308333
+   },
+   {
+    "head": "3.1",
+    "score": 0.283292
+   },
+   {
+    "head": "1.0",
+    "score": 0.266667
+   },
+   {
+    "head": "2.1",
+    "score": 0.258333
+   },
+   {
+    "head": "0.1",
+    "score": 0.255088
+   }
+  ],
+  "most_attended_key_from_query": {
+   "0.0": 0,
+   "0.1": 1,
+   "0.2": 4,
+   "1.0": 3,
+   "1.1": 0,
+   "1.2": 0,
+   "2.0": 0,
+   "2.1": 1,
+   "2.2": 0,
+   "3.0": 3,
+   "3.1": 5,
+   "3.2": 0
+  }
+ },
+ "data": {
+  "score": [
+   [
+    0.166667,
+    0.255088,
+    0.224887
+   ],
+   [
+    0.266667,
+    0.166667,
+    0.358333
+   ],
+   [
+    0.4025,
+    0.258333,
+    0.308333
+   ],
+   [
+    0.241667,
+    0.283292,
+    0.333333
+   ]
+  ],
+  "top_key": [
+   [
+    0.0,
+    1.0,
+    4.0
+   ],
+   [
+    3.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    1.0,
+    0.0
+   ],
+   [
+    3.0,
+    5.0,
+    0.0
+   ]
+  ],
+  "layers": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "pattern": [
+   [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.502917,
+    0.0,
+    0.121667,
+    0.130694,
+    0.126528,
+    0.118194
+   ],
+   [
+    0.48875,
+    0.16375,
+    0.0,
+    0.128333,
+    0.104722,
+    0.114444
+   ],
+   [
+    0.484306,
+    0.15375,
+    0.152361,
+    0.0,
+    0.100972,
+    0.108611
+   ],
+   [
+    0.404861,
+    0.146528,
+    0.1625,
+    0.172917,
+    0.0,
+    0.113194
+   ],
+   [
+    0.4025,
+    0.148333,
+    0.153889,
+    0.151111,
+    0.144167,
+    0.0
+   ]
+  ]
+ },
+ "plot": "experiments/E0010_attention_patterns.png",
+ "seconds": 1.41,
+ "timestamp": "2026-11-13T13:26:23",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null,
+ "null": {
+  "kind": "task-shuffled",
+  "seed": 0
+ }
+}

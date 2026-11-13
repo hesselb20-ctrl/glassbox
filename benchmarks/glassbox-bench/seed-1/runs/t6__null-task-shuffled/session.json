@@ -1,0 +1,15 @@
+{
+ "benchmark": "t6__null-task-shuffled",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 85.8,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 57.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 12,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: null result, nothing verified.** The model does not produce the dataset's answers, so I stopped after the baseline and claim no function, no circuit and no inert components.\n\n**What the baseline showed (local-full, full precision):**\n- **First baseline (E0002, n=200, seed 1):** the model's output matched the dataset answer on 28.5% of inputs. I had pre-registered at least 95%, so that prediction was refuted.\n- **Replication (E0003, n=400, seed 2):** 28.5% again. I had pre-registered at most 0.45, so that prediction was confirmed.\n- **Base rate:** in the 64 examples I inspected (E0001), two symbols carry about 42% and 38% of the labels. Random pairing would give roughly 0.34, and always guessing the most common label roughly 0.42.\n- **Logit difference:** the mean difference between the labelled answer and the foil is 0.05 to 0.08 (std 0.7), no different from the corrupt inputs.\n\nThe model does emit crisp outputs (per-example logit differences are exactly -1, 0 or +1), but the labels in this dataset do not describe them. Patching against these labels would only have produced an artefact circuit.\n\n**Algorithm:** none recovered.\n\n**Verification:** `verify_hypothesis` was not run, because there is no hypothesis to verify.\n\n**Prediction record:** 2 pre-registered, 2 run, 1 confirmed, 1 refuted (hit rate 0.5).\n\n**Budget:** 3 of 25 experiments used (dataset inspection plus two baselines); 22 left unused on purpose.\n\n**Report:** `benchmarks\\glassbox-bench\\seed-1\\runs\\t6__null-task-shuffled\\report\\report.md` (and `report.html` next to it).\n\n[A sentence about the owner's personal note-keeping instructions was removed.]"
+}

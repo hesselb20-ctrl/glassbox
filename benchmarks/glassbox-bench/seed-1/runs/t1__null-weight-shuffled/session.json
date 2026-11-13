@@ -1,0 +1,15 @@
+{
+ "benchmark": "t1__null-weight-shuffled",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 141.2,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 114.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 16,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: not verified, and no mechanism to report.** The loaded checkpoint does not perform the behaviour in the dataset, so I stopped at step 1 as the protocol prescribes. All numbers are from `local-full` at full precision.\n\n**What I found**\n- **The dataset labels follow a clean rule.** The output is a 6x6 lookup on the first and last input token; the two middle tokens are ignored. This matched 200/200 inputs in E0001 and 200/200 held-out inputs in V0001. I found no arithmetic pattern in the table.\n- **The loaded weights do not follow it.** Accuracy against the labels is 26% (E0002, n=200) and 27.5% (E0004, n=400). Chance is 17%, and always guessing the most common label \"ko\" would score about 33%. The mean logit difference is about 0 (std 0.28), the same as on corrupted inputs.\n- **No circuit is claimed.** With no behaviour to carry, there is nothing for heads or MLPs to implement.\n\nThe task statement says the answers are the model's own outputs; that did not hold for the weights loaded here. Either the dataset and checkpoint are mismatched, or these weights are a scrambled control, as the investigation name suggests. I did not inspect any files to find out which.\n\n**Label rule (not what the model computes)**\n```python\nT = {2:[3,6,4,3,6,3], 3:[2,7,3,3,5,4], 4:[2,6,5,7,2,5],\n     5:[7,7,2,7,3,6], 6:[4,3,4,6,6,6], 7:[6,3,4,4,6,5]}\nreturn T[tokens[1]][tokens[4]-2]\n```\n\n**Verification numbers (V0001, held-out seed 3, n=200)**\n\n| Check | Result |\n|---|---|\n| Agreement of the rule with the model | 0.24 (fail; threshold 0.9) |\n| Rule against the dataset labels | 1.0 |\n| Accuracy with nominal circuit (1.0, mlp0, mlp1) ablated | 0.275 |\n| Accuracy with everything else ablated | 0.255 |\n| Unablated model accuracy | 0.24 |\n| Necessity against null controls | does not beat them |\n\nThe circuit in that run was a placeholder taken from the exploratory screen, only there to quantify the failure.\n\n**Prediction record:** 2 pre-registered, 1 confirmed, 1 refuted (hit rate 0.5). The refuted one was my prediction that baseline accuracy would be at least 0.98. The lookup hypothesis is marked rejected as a description of this model.\n\n**Budget:** 4 of 25 experiments used (one dataset, two baselines, one exploratory attribution screen), plus one verification.\n\n**Report:** `benchmarks\\glassbox-bench\\seed-1\\runs\\t1__null-weight-shuffled\\report\\report.md` (and `report.html`) under the working directory.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]"
+}

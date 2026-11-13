@@ -1,0 +1,134 @@
+{
+ "id": "V0001",
+ "name": "priority-max read-out (H1) with circuit mlp0, mlp1, 2.0, mlp2, 3.1",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5,
+  "null_percentile": 95.0
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 1.0,
+   "algorithm_accuracy_vs_ground_truth": 0.445,
+   "disagreements": [],
+   "pass": true
+  },
+  "causal_components": {
+   "circuit": [
+    "mlp0",
+    "mlp1",
+    "2.0",
+    "mlp2",
+    "3.1"
+   ],
+   "circuit_size": 5,
+   "total_components": 16,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": 0.014698,
+    "fraction_of_clean": 0.245,
+    "accuracy": 0.32
+   },
+   "everything_else_ablated": {
+    "metric": 0.059991,
+    "fraction_of_clean": 1.0,
+    "accuracy": 0.445
+   },
+   "random_same_size_ablated_fraction": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "pass_breaks_without_circuit": true,
+   "pass_survives_on_circuit_alone": true,
+   "pass": true
+  }
+ },
+ "null_controls": [
+  {
+   "finding": "agreement",
+   "what": "share of held-out inputs where predict() equals the model's output",
+   "effect": 1.0,
+   "null_mean": 0.428,
+   "null_p95": 0.465,
+   "null_max": 0.485,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "task-shuffled": 30
+   },
+   "pass": true
+  },
+  {
+   "finding": "necessity",
+   "what": "standardised drop in the metric when the claimed circuit is ablated",
+   "effect": 0.049707,
+   "null_mean": -0.001584,
+   "null_p95": 0.005088,
+   "null_max": 0.067084,
+   "percentile_of_effect": 97.058824,
+   "n_null": 34,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30,
+    "random-init": 2,
+    "weight-shuffled": 2
+   },
+   "pass": true
+  },
+  {
+   "finding": "sufficiency",
+   "what": "standardised metric (above its no-information floor) with everything except the claimed circuit ablated",
+   "effect": 0.065837,
+   "null_mean": 0.01613,
+   "null_p95": 0.01613,
+   "null_max": 0.01613,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30
+   },
+   "pass": true
+  }
+ ],
+ "model_accuracy": 0.445,
+ "metric_clean": 0.059991,
+ "metric_floor": 0.0,
+ "metric_unit": 0.911214,
+ "beats_null_controls": true,
+ "status": "verified",
+ "all_checks_passed": true,
+ "note": "Passed at full precision, and every effect exceeds its null distribution.",
+ "plot": "experiments/V0001_verify.png",
+ "spec": {
+  "name": "priority-max read-out (H1) with circuit mlp0, mlp1, 2.0, mlp2, 3.1",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t2",
+   "n": 200,
+   "seed": 7
+  },
+  "code": "def predict(tokens, prompt):\n    # H1: output the highest-priority symbol present among the 5 inputs.\n    # Priority order read off E0001 and matched by the model's printed outputs in E0004/E0005:\n    # bo(1) > nu(4) > pa(5) > la(3) > ri(6) > vu(7). Position and multiplicity are irrelevant.\n    # Head 3.1 copies from the winner's position at the last position (E0011).\n    order = [1, 4, 5, 3, 6, 7]\n    seq = [int(t) for t in tokens[1:]]\n    for s in order:\n        if s in seq:\n            return s\n    return seq[-1]\n",
+  "circuit": {
+   "components": [
+    "mlp0",
+    "mlp1",
+    "2.0",
+    "mlp2",
+    "3.1"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-13T13:27:10"
+}

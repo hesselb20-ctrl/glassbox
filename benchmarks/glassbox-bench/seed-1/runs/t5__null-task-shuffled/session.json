@@ -1,0 +1,15 @@
+{
+ "benchmark": "t5__null-task-shuffled",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 110.4,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 79.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 15,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: null result. No function, circuit or verification is claimed.** The model does not reproduce the bench dataset's answers, so I stopped at step 1 as the protocol requires.\n\n**What was measured (local-full, full precision)**\n\n| Experiment | Inputs | Accuracy vs dataset answers | Mean logit diff (clean / corrupt) |\n|---|---|---|---|\n| E0002 | 200, seed 1 | 23% | 0.005 / -0.015 |\n| E0003 | 64, seed 0 | 15.6% | -0.016 / -0.063 |\n\nChance is 20% for five symbols. The same model output is paired with different expected labels (for example `lu` with both `ka` and `lu`), so the labels are not a relabelling of the model's output either.\n\n**Algorithm:** none recovered. Any patching or ablation would have been scored against labels the model does not track, so I ran no circuit experiments and no `verify_hypothesis`.\n\n**Prediction record:** 2 pre-registered, 1 confirmed, 1 refuted (hit rate 0.5). The refuted one was my opening prediction that baseline accuracy would be at least 95%; the initial hypothesis is marked rejected.\n\n**Budget:** 3 of 25 experiments used (1 dataset view, 2 baselines).\n\n**One untested lead:** the dataset viewer and the scoring disagree about the labels for the same seed-0 inputs.\n- The answers the viewer listed (E0001, exploratory) fit a clean rule on 64 of 64: output = P(3rd input symbol), with P = bo→lu, fe→ka, ka→fe, lu→bo, ri→ri.\n- The labels the baseline scored against for those inputs are different (E0003).\n- The model's four example predictions in E0003 match the viewer's listing.\n\nThat pattern suggests the model computes that rule and the scoring labels are shuffled, but it rests on four examples and an exploratory listing, so it is in the report as an open question only. Testing it would need explicit inputs labelled by the rule instead of the `bench` task labels, which is outside what you specified for this run.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\nReport: `benchmarks\\glassbox-bench\\seed-1\\runs\\t5__null-task-shuffled\\report\\report.md` (and `report.html` alongside)."
+}

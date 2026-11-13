@@ -1,0 +1,15 @@
+{
+ "benchmark": "t3__null-random-init",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 91.0,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 55.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 10,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: null finding, nothing verified.** This checkpoint does not perform the behaviour, so there is no mechanism to explain and I stopped after the baseline, as the protocol prescribes.\n\n- **Baseline (E0002, local-full, full precision, 200 prompts):** top-1 accuracy against the dataset answers is 0.055, below uniform chance over the 11-token vocabulary (0.091).\n- **Logit difference:** correct minus incorrect averages 0.015 (std 0.28) on clean prompts and -0.020 on corrupt prompts, so it carries no signal for the answer.\n- **What it outputs instead:** the four sampled predictions were all the input symbol `ne`, never D, E or M.\n\n**Algorithm:** none recovered. I claim no heads or MLP layers; the circuit is empty.\n\n**Verification:** not run. Any circuit found from here would be fit to noise, so there are no agreement or ablation numbers.\n\n**Prediction hit rate:** 0 of 1. I pre-registered accuracy of at least 0.9 and it was refuted.\n\n**Budget:** 2 of 25 experiments used (one dataset inspection, one baseline).\n\nTwo things to know:\n\n- **Task statement mismatch:** it says the dataset answers are the model's own outputs, but E0002 contradicts that for this checkpoint. Either the checkpoint or the labels are not what the statement describes; I could not tell which from inside the lab.\n- **The labels do have a pattern:** by hand, the seed-0 labels fit \"more `ka` than `se` gives M, more `se` than `ka` gives E, tie gives D\" on 63 of 64 examples. That describes the labels, not this model, and no experiment tested it.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\nThe report is `report/report.md` and `report/report.html` in `benchmarks\\glassbox-bench\\seed-1\\runs\\t3__null-random-init` under the working directory."
+}

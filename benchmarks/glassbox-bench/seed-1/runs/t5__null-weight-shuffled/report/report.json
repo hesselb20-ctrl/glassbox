@@ -1,0 +1,75 @@
+{
+ "title": "t5 (null-weight-shuffled): the model does not perform the behaviour; no circuit claimed",
+ "label": "null finding: no behaviour, no mechanism",
+ "behavior": "BOS + 5 tokens from 5 symbols (bo, fe, ka, lu, ri); one symbol is output at the last position. Dataset task 'bench', path benchmarks/glassbox-bench/seed-1/tasks/t5.",
+ "summary": "On local-full (full precision) the loaded 1-layer, 2-head, d_model=29 checkpoint agrees with the dataset's answers only at chance: 0.203 on 128 prompts (E0002) and 0.200 on 400 independent prompts (E0003), where chance for 5 symbols is 0.20. The mean logit difference between the dataset answer and the foil is about zero (-1.0 and +0.17) with a standard deviation of about 13-14, and the model sometimes predicts PAD, which is never an answer. The investigation was stopped at step 1: there is no behaviour to explain, so no heads or MLP layers are claimed, no predict() was written and verify_hypothesis was not run. Status: no mechanism found (not verified, by design).",
+ "pseudocode": "# No algorithm recovered: the loaded model's outputs do not match the dataset answers above chance (E0002, E0003).\n# Unverified observation about the dataset LABELS only (64 examples, E0001), not about this model:\n#   answer = {bo: lu, lu: bo, fe: ka, ka: fe, ri: ri}[tokens[3]]",
+ "claims": [
+  {
+   "text": "The loaded model does not perform the behaviour: clean accuracy against the dataset answers is 0.203 on n=128, indistinguishable from chance (0.20). The pre-registered prediction of accuracy >= 0.95 was refuted. Backend: local-full, full precision.",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The chance-level result replicates on an independent, larger sample: accuracy 0.200 on n=400 (pre-registered band 0.12-0.30, confirmed); mean logit difference 0.17 with std 14.0, so there is no systematic preference for the dataset answer.",
+   "evidence": [
+    "E0003"
+   ]
+  },
+  {
+   "text": "Because there is no behaviour, no attention head or MLP layer is claimed to implement anything; the circuit is empty.",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002",
+  "E0003"
+ ],
+ "limitations": [
+  "Only baselines were run (3 of 25 experiments). No patching, ablation or attention analysis was done because there was no behaviour to localise.",
+  "verify_hypothesis was not run: there is no algorithm or circuit to verify.",
+  "The label rule (output = fixed permutation of the 3rd input token) was read off 64 examples in an exploratory dataset inspection (E0001) and was not tested on held-out labels; it is an observation about the labels, not a claim about this model.",
+  "The task text says the dataset answers are the model's own outputs, yet the loaded checkpoint disagrees with them 80% of the time. The investigation name suggests the weights in memory are a shuffled null version; this was not independently checked."
+ ],
+ "open_questions": [
+  "Does the loaded model compute some other deterministic function of the input (it is deterministic by construction)? Not investigated: it would not be the behaviour defined by the dataset.",
+  "Is the mismatch between dataset answers and the loaded weights intended (null control) or a loading issue?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 null finding: no behaviour, no mechanism",
+ "cited": [
+  "E0002",
+  "E0003"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 1,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.5,
+  "refuted_predictions": [
+   {
+    "prereg": "N0004",
+    "experiment": "E0002",
+    "hypothesis": "The model performs its behaviour reliably on the bench dataset (answers are its own outputs), with a clear logit margin between its answer and the answer for the corrupt prompt.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.95,
+     "statement": "Clean accuracy at least 95% on 128 prompts"
+    },
+    "observed": 0.203125
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

@@ -1,0 +1,15 @@
+{
+ "benchmark": "t2__null-weight-shuffled",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 64.3,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 40.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 10,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: no behaviour, nothing to explain.** The model does not do the task, so I stopped after the baseline and claim no function and no circuit.\n\n- **Baseline (E0002, local-full, full precision, 200 prompts):** the model matches the dataset answers on 12% of prompts, which is at or below chance (1/6). Its logit differences are around 1e7 with random sign, so the output is not a meaningful readout.\n- **Algorithm:** none recovered. The dataset labels in the 64 examples I inspected (E0001) all fit \"minimum of the five tokens under the order bo < nu < pa < la < {ri, vu}\", but that describes the labels only. This checkpoint does not compute it.\n- **Circuit:** none claimed. Patching against a chance-level metric would only surface noise, so I ran no component experiments.\n- **Verification:** not run, since there was no hypothesis to verify. The report status is \"unverified (no verification run)\".\n- **Prediction record:** 1 pre-registered, 0 confirmed, 1 refuted (I predicted accuracy of at least 0.95 and observed 0.12). Hit rate 0%.\n- **Budget:** 2 of 25 experiments used (one dataset inspection, one baseline).\n\nThe task statement says the answers are the model's own outputs, yet this checkpoint does not reproduce them. That fits the investigation name (a weight-shuffled null), but I did not test it.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\nThe report is in `benchmarks\\glassbox-bench\\seed-1\\runs\\t2__null-weight-shuffled\\report\\` (`report.md` and `report.html`)."
+}

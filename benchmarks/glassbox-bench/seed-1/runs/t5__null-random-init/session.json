@@ -1,0 +1,15 @@
+{
+ "benchmark": "t5__null-random-init",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 83.6,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 55.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 15,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: null finding, nothing verified.** The loaded model does not perform the behaviour, so I stopped at the baseline and claim no circuit.\n\n**What the model does** (local-full, full precision):\n\n| Run | Inputs | Accuracy vs dataset answers (chance 0.20) | Mean logit diff |\n|---|---|---|---|\n| E0002 | 128 | 0.148 | 0.002 ± 0.279 |\n| E0003 | 256 | 0.191 | 0.006 ± 0.319 |\n\nIt also outputs PAD in at least one case, which is never a valid answer.\n\n**Algorithm:** none recovered. The dataset labels do follow a simple rule: the output is a fixed map of the token at index 3 (bo→lu, fe→ka, ka→fe, lu→bo, ri→ri). I checked that by hand on the 64 examples in E0001, but it describes the labels, not anything this model computes.\n\n**Verification:** `verify_hypothesis` was not run. With the model at chance, any circuit would be fitted to noise, so there are no agreement, circuit-alone, circuit-ablated or random-control numbers.\n\n**Prediction record:** 2 pre-registered, 1 confirmed, 1 refuted (hit rate 0.5). The refuted one was my opening prediction that the model reproduces its answers at 95% or better; the confirmed one was the replication predicting accuracy at or below 0.30.\n\n**Budget:** 3 of 25 experiments used.\n\n**Open question:** the task says the answers are the model's own outputs, but this checkpoint does not produce them. That fits a null control, as the investigation name suggests, but I did not test what the model computes instead.\n\n**Report:** `report.md` and `report.html` are in `benchmarks\\glassbox-bench\\seed-1\\runs\\t5__null-random-init\\report\\`\n\n[A sentence about the owner's personal note-keeping instructions was removed.]"
+}

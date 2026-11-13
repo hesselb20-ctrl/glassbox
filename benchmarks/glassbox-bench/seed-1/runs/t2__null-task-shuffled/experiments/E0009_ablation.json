@@ -1,0 +1,66 @@
+{
+ "id": "E0009",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t2",
+   "n": 120,
+   "seed": 0
+  },
+  "components": [
+   "mlp0",
+   "mlp1",
+   "2.0",
+   "mlp2",
+   "3.1"
+  ],
+  "mode": "mean",
+  "joint": true
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 120,
+  "metric_clean": 0.249964,
+  "joint": true,
+  "components": [
+   "mlp0",
+   "mlp1",
+   "2.0",
+   "mlp2",
+   "3.1"
+  ],
+  "metric_ablated": 0.119566,
+  "fraction_of_clean": 0.478333
+ },
+ "data": {
+  "metric_ablated": 0.119566
+ },
+ "plot": "experiments/E0009_ablation.png",
+ "seconds": 1.73,
+ "timestamp": "2026-11-13T13:26:21",
+ "prereg_id": "N0018",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": "between",
+  "threshold": [
+   -0.1,
+   0.1
+  ],
+  "statement": "Joint mean ablation of the five claimed-active components leaves at most 10% of the clean metric.",
+  "verdict": "refuted",
+  "observed": 0.478333
+ },
+ "null": {
+  "kind": "task-shuffled",
+  "seed": 0
+ }
+}

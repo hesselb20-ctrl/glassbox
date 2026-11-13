@@ -1,0 +1,77 @@
+{
+ "title": "t6 (null-random-init): the checkpoint does not perform the behaviour - no circuit claimed",
+ "label": "null result: no behaviour, nothing verified",
+ "behavior": "BOS + 6 tokens from 6 symbols (do, ge, go, ko, no, vu); the model is supposed to output one symbol at the last position. Dataset task 'bench', path benchmarks/glassbox-bench/seed-1/tasks/t6.",
+ "summary": "All numbers are from local-full (full precision). The loaded checkpoint (2 layers, 3 heads per layer, d_model 38) does not produce the dataset's answers: clean accuracy is 0.0078 on two independent samples (1/128 and 2/256), below uniform chance over the 15-token vocabulary, and the logit difference between the dataset answer and the corrupt answer is about 0 +/- 0.2. The model's argmax tokens are a mix of input symbols and wrong digits. Because there is no behaviour, no screening, patching or verification was run and no attention head or MLP is claimed to implement anything. Separately, the dataset labels themselves follow a clean rule (count of tokens in the same pair-class as the last token), but that describes the labels, not this model.",
+ "pseudocode": "# No algorithm is attributed to the model: it does not reproduce the dataset answers (E0002, E0003).\n# For reference only, the rule that the DATASET LABELS follow (read off E0001 by hand, NOT computed by this checkpoint):\ndef label_rule(tokens):\n    last = tokens[-1]\n    partner = 9 - last            # pair-classes by id: {2,7}={do,vu}, {3,6}={ge,no}, {4,5}={go,ko}\n    count = sum(1 for t in tokens[1:] if t in (last, partner))\n    return 8 + count              # id of the digit token '<count>'",
+ "claims": [
+  {
+   "text": "The checkpoint does not perform the behaviour: clean accuracy against the dataset answers is 0.0078 on n=128 (seed 1) and 0.0078 on n=256 (seed 2), with mean logit diff -0.015 +/- 0.19 and -0.007 +/- 0.21, the same as on corrupt prompts (local-full, full precision).",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  },
+  {
+   "text": "The model's top tokens are not consistently in the expected answer set: shown predictions include input symbols ('vu', 'do', 'ko') and wrong digits ('5' where '4' or '3' was expected).",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  },
+  {
+   "text": "No attention head or MLP layer is claimed as part of a circuit: with no behaviour present there is nothing for a circuit to implement, and no component-level experiment was run.",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002",
+  "E0003"
+ ],
+ "limitations": [
+  "Only the baseline was measured (3 of 25 experiments used). No component-level experiment was run, by design, because the behaviour is absent.",
+  "The label rule in the pseudocode was checked by hand on roughly 35 of the 64 examples in E0001 (a dataset inspection, exploratory). It was not tested by any scored experiment and is not a claim about the model.",
+  "The task statement says the dataset answers are the model's own outputs; that did not hold for this checkpoint. I did not determine why (the investigation name suggests a randomly initialised null model, but I did not test the weights for that).",
+  "verify_hypothesis was not run, so there are no agreement or causal numbers."
+ ],
+ "open_questions": [
+  "Is this checkpoint a random-initialisation control, as the investigation name suggests? A weights_svd or logit-scale check could test it.",
+  "Does the model compute any stable non-trivial function of its input at all, different from the dataset labels?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 null result: no behaviour, nothing verified",
+ "cited": [
+  "E0002",
+  "E0003"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 1,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.5,
+  "refuted_predictions": [
+   {
+    "prereg": "N0004",
+    "experiment": "E0002",
+    "hypothesis": "The model performs its behaviour reliably on the bench dataset: its top output at the last position is the dataset answer (its own output) with a clear logit margin over the corrupt-prompt answer.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.95,
+     "statement": "Clean accuracy on the bench dataset is at least 0.95"
+    },
+    "observed": 0.007812
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

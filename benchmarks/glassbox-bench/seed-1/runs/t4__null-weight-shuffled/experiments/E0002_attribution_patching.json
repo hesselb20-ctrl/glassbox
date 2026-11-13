@@ -1,0 +1,184 @@
+{
+ "id": "E0002",
+ "primitive": "attribution_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t4/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t4",
+   "n": 200,
+   "seed": 1
+  }
+ },
+ "summary": {
+  "direction": "denoise",
+  "metric_base": 0.047651,
+  "metric_source": 2.063331,
+  "n": 200,
+  "top_heads": [
+   {
+    "component": "0.2",
+    "effect": -28.411255
+   },
+   {
+    "component": "0.1",
+    "effect": -23.692442
+   },
+   {
+    "component": "0.0",
+    "effect": -5.172946
+   },
+   {
+    "component": "1.0",
+    "effect": -4.341212
+   },
+   {
+    "component": "1.2",
+    "effect": 1.513107
+   },
+   {
+    "component": "1.1",
+    "effect": 1.506612
+   }
+  ],
+  "top_resid": [
+   {
+    "component": "resid_pre.1 @ pos 0",
+    "effect": -46.210213
+   },
+   {
+    "component": "resid_pre.0 @ pos 3",
+    "effect": -36.932465
+   },
+   {
+    "component": "resid_pre.0 @ pos 2",
+    "effect": -18.15737
+   },
+   {
+    "component": "resid_pre.1 @ pos 6",
+    "effect": 17.672983
+   },
+   {
+    "component": "resid_pre.1 @ pos 5",
+    "effect": 13.743521
+   },
+   {
+    "component": "resid_pre.0 @ pos 5",
+    "effect": -10.353949
+   },
+   {
+    "component": "resid_pre.1 @ pos 4",
+    "effect": -8.779406
+   },
+   {
+    "component": "resid_pre.0 @ pos 1",
+    "effect": -8.096992
+   }
+  ],
+  "attn_by_layer": [
+   -57.276646,
+   -1.321494
+  ],
+  "note": "first-order estimate; confirm the top components with activation_patching",
+  "forward_passes": 4,
+  "backward_passes": 1,
+  "mlp_by_layer": [
+   -5.296042,
+   2.740472
+  ]
+ },
+ "data": {
+  "layers": [
+   0,
+   1
+  ],
+  "resid_pre": [
+   [
+    0.0,
+    -8.096992,
+    -18.15737,
+    -36.932465,
+    -6.429036,
+    -10.353949,
+    2.770154
+   ],
+   [
+    -46.210213,
+    0.725339,
+    1.808619,
+    -1.589979,
+    -8.779406,
+    13.743521,
+    17.672983
+   ]
+  ],
+  "attn_out_by_pos": [
+   [
+    -64.586014,
+    -0.668341,
+    3.246819,
+    -1.470184,
+    -11.140019,
+    32.278694,
+    -14.937595
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -1.321494
+   ]
+  ],
+  "heads": [
+   [
+    -5.172946,
+    -23.692442,
+    -28.411255
+   ],
+   [
+    -4.341212,
+    1.506612,
+    1.513107
+   ]
+  ],
+  "mlp_out_by_pos": [
+   [
+    -22.312014,
+    0.98769,
+    0.454683,
+    -1.903954,
+    -2.21408,
+    5.804757,
+    13.886876
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    2.740472
+   ]
+  ]
+ },
+ "plot": "experiments/E0002_attribution_patching.png",
+ "seconds": 1.11,
+ "timestamp": "2026-11-13T13:36:54",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null,
+ "null": {
+  "kind": "weight-shuffled",
+  "seed": 0
+ }
+}

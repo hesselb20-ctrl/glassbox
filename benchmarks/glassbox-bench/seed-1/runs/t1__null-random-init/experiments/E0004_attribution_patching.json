@@ -1,0 +1,162 @@
+{
+ "id": "E0004",
+ "primitive": "attribution_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t1/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t1",
+   "n": 160,
+   "seed": 1
+  }
+ },
+ "summary": {
+  "direction": "denoise",
+  "metric_base": 0.00925,
+  "metric_source": -0.038955,
+  "n": 160,
+  "top_heads": [
+   {
+    "component": "1.0",
+    "effect": -0.085671
+   },
+   {
+    "component": "0.1",
+    "effect": 0.083255
+   },
+   {
+    "component": "0.0",
+    "effect": 0.009824
+   },
+   {
+    "component": "1.1",
+    "effect": -0.003474
+   }
+  ],
+  "top_resid": [
+   {
+    "component": "resid_pre.1 @ pos 4",
+    "effect": 0.804345
+   },
+   {
+    "component": "resid_pre.0 @ pos 4",
+    "effect": 0.77262
+   },
+   {
+    "component": "resid_pre.0 @ pos 1",
+    "effect": 0.139973
+   },
+   {
+    "component": "resid_pre.0 @ pos 3",
+    "effect": -0.12629
+   },
+   {
+    "component": "resid_pre.1 @ pos 1",
+    "effect": -0.088395
+   },
+   {
+    "component": "resid_pre.1 @ pos 2",
+    "effect": 0.03275
+   },
+   {
+    "component": "resid_pre.0 @ pos 2",
+    "effect": -0.018544
+   },
+   {
+    "component": "resid_pre.1 @ pos 3",
+    "effect": -0.009953
+   }
+  ],
+  "attn_by_layer": [
+   0.093079,
+   -0.089145
+  ],
+  "note": "first-order estimate; confirm the top components with activation_patching",
+  "forward_passes": 4,
+  "backward_passes": 1,
+  "mlp_by_layer": [
+   0.238659,
+   0.527076
+  ]
+ },
+ "data": {
+  "layers": [
+   0,
+   1
+  ],
+  "resid_pre": [
+   [
+    -0.0,
+    0.139973,
+    -0.018544,
+    -0.12629,
+    0.77262
+   ],
+   [
+    -0.0,
+    -0.088395,
+    0.03275,
+    -0.009953,
+    0.804345
+   ]
+  ],
+  "attn_out_by_pos": [
+   [
+    -0.0,
+    0.006816,
+    0.007536,
+    0.002273,
+    0.076453
+   ],
+   [
+    -0.0,
+    -0.0,
+    -0.0,
+    -0.0,
+    -0.089145
+   ]
+  ],
+  "heads": [
+   [
+    0.009824,
+    0.083255
+   ],
+   [
+    -0.085671,
+    -0.003474
+   ]
+  ],
+  "mlp_out_by_pos": [
+   [
+    -0.0,
+    -0.017976,
+    0.008996,
+    0.02441,
+    0.223229
+   ],
+   [
+    -0.0,
+    -0.0,
+    -0.0,
+    -0.0,
+    0.527076
+   ]
+  ]
+ },
+ "plot": "experiments/E0004_attribution_patching.png",
+ "seconds": 0.42,
+ "timestamp": "2026-11-13T13:16:45",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null,
+ "null": {
+  "kind": "random-init",
+  "seed": 0
+ }
+}

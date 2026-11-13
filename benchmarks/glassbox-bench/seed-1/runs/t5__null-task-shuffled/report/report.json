@@ -1,0 +1,75 @@
+{
+ "title": "t5 (null: task-shuffled): no behaviour to explain",
+ "label": "null result: no mechanism claimed",
+ "behavior": "BOS + 5 tokens from 5 symbols; one symbol output at the last position. Bench dataset 'benchmarks/glassbox-bench/seed-1/tasks/t5', whose answers were stated to be the model's own outputs.",
+ "summary": "The model does not reproduce the bench dataset's answers. On local-full (full precision) its top output matches the dataset answer on 23% of 200 inputs (seed 1, E0002) and 15.6% of 64 inputs (seed 0, E0003); chance is 20%. Mean logit difference between answer and foil is 0.005 and -0.016, the same as on the corrupt inputs. Following the protocol the investigation stopped at step 1: with labels the model does not track, any patching or ablation metric would be noise, so no function, no circuit and no verification are claimed. 3 of 25 experiments used.",
+ "pseudocode": "# No algorithm recovered. The labelled behaviour is absent (E0002, E0003), so no predict() is offered.",
+ "claims": [
+  {
+   "text": "On 200 inputs (seed 1) the model's top output equals the dataset answer on 23% of inputs, at the 20% chance level; mean logit diff 0.005 vs -0.015 on corrupt inputs (local-full).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The mismatch is not a seed fluke: on seed 0 (64 inputs) accuracy is 15.6% and mean logit diff -0.016 (local-full).",
+   "evidence": [
+    "E0003"
+   ]
+  },
+  {
+   "text": "The dataset answers are not a relabelling of the model's output: the same model output is paired with different expected labels (lu with ka and lu in E0002; fe with bo and ri in E0003).",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002",
+  "E0003"
+ ],
+ "limitations": [
+  "No circuit analysis was run: no head or MLP is claimed to matter or to be inert.",
+  "No verify_hypothesis was run; status is a null result, not verified or screening.",
+  "The pre-registered baseline prediction (accuracy >= 0.95) was refuted; the initial hypothesis H1/H2 is rejected as an explanation of the bench behaviour.",
+  "The model's actual input-output function was not measured. Only the handful of example predictions in the baseline outputs are available."
+ ],
+ "open_questions": [
+  "The answers shown by the dataset primitive for seed 0 (E0001, exploratory) fit a clean rule: output = P(3rd input symbol) with P = bo->lu, fe->ka, ka->fe, lu->bo, ri->ri, 64 of 64. The labels the baseline scored against for the same inputs are different (E0003), and the model's four example predictions in E0003 agree with the E0001 listing. This suggests the model computes that rule and the scoring labels are shuffled, but it rests on an exploratory listing and four examples and is not claimed.",
+  "Testing that lead would need explicit clean/metric inputs labelled by the rule rather than the bench task labels, which is outside the instructions for this run."
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 null result: no mechanism claimed",
+ "cited": [
+  "E0002",
+  "E0003"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 1,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.5,
+  "refuted_predictions": [
+   {
+    "prereg": "N0004",
+    "experiment": "E0002",
+    "hypothesis": "The model performs the bench behaviour: its top output at the last position matches the dataset answers.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.95,
+     "statement": "Model accuracy on the dataset answers is at least 95%"
+    },
+    "observed": 0.23
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

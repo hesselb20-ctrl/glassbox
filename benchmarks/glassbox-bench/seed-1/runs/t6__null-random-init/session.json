@@ -1,0 +1,15 @@
+{
+ "benchmark": "t6__null-random-init",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 153.2,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 121.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 14,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: null result, nothing verified.** This checkpoint does not perform the behaviour, so I stopped at step 1 and claim no circuit.\n\n**What I measured (local-full, full precision)**\n- **Baseline, E0002 (n=128, seed 1):** accuracy against the dataset answers is 0.0078, below uniform chance over the 15 tokens. Mean logit diff is -0.015 ± 0.19, the same as on corrupt prompts.\n- **Replication, E0003 (n=256, seed 2):** accuracy is again 0.0078, with logit diff -0.007 ± 0.21.\n- **What it outputs instead:** a mix of input symbols (`vu`, `do`, `ko`) and wrong digits, with nearly flat logits.\n\n**Algorithm:** none attributed to the model. The dataset labels do follow a clean rule: the output digit is the number of the six tokens in the same pair as the last token, with pairs {do,vu}, {ge,no}, {go,ko}. I read that off the E0001 examples by hand (about 35 of 64, no exceptions). It describes the labels, not this checkpoint, and I rejected it as a model hypothesis.\n\n**Circuit:** no heads or MLP layers claimed. I ran no component-level experiments, because a circuit search on a model without the behaviour would only produce false discoveries.\n\n**Verification numbers:** none; `verify_hypothesis` was not run because there is no mechanism to test.\n\n**Prediction record:** 2 pre-registered, 1 confirmed, 1 refuted (hit rate 0.5). The refuted one was my prediction that the model would do the task at ≥ 0.95 accuracy.\n\n**Budget:** 3 of 25 experiments used.\n\nThe task statement says the dataset answers are the model's own outputs; that did not hold here. The investigation name suggests a random-init control, but I did not test the weights for that.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\n**Report:** `benchmarks\\glassbox-bench\\seed-1\\runs\\t6__null-random-init\\report\\report.md` (with `report.html` alongside)"
+}

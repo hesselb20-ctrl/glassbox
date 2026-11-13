@@ -1,0 +1,11 @@
+{
+ "backend": "local-full",
+ "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t2/model.pt",
+ "options": {},
+ "null": {
+  "kind": "random-init",
+  "seed": 0
+ },
+ "budget": 25,
+ "started": "2026-11-13T13:21:18"
+}

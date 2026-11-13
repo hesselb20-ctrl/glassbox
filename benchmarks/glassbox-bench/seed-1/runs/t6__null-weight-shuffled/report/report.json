@@ -1,0 +1,75 @@
+{
+ "title": "t6 (null-weight-shuffled): the loaded model does not perform the labelled behaviour",
+ "label": "no mechanism found (stopped at baseline)",
+ "behavior": "BOS + 6 tokens from 6 symbols -> one digit token at the last position; the function was to be recovered from the model.",
+ "summary": "Negative result. On local-full (full precision) the loaded checkpoint agrees with the dataset's recorded answers on only 34.0% of 200 inputs (E0002) and 34.5% of 400 fresh inputs (E0003). That is the majority-class level: the label '3' covers roughly 37% of the seed-0 sample (E0001), and every example prediction shown in both baselines is '3' whatever the input. Logit differences are degenerate (std about 12000 around a mean of a few hundred). The investigation stopped at step 1, as the protocol prescribes: no function, no circuit and no verification are claimed.",
+ "pseudocode": "# No algorithm recovered.\n# The loaded model does not reproduce the recorded answers (E0002, E0003),\n# so there is no input-dependent behaviour to write down.",
+ "claims": [
+  {
+   "text": "The loaded model agrees with the dataset's recorded answers on 34.0% of 200 inputs (seed 1), refuting the pre-registered prediction of >= 99%.",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The miss replicates on an independent sample: 34.5% agreement on 400 inputs (seed 2), inside the pre-registered majority-class band 0.20-0.50.",
+   "evidence": [
+    "E0003"
+   ]
+  },
+  {
+   "text": "The logit-difference metric is degenerate: std about 12000 with mean 882 (seed 1) and 291 (seed 2), and the clean and corrupt means are of the same order (882 vs 801; 291 vs 728) although the inputs differ.",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002",
+  "E0003"
+ ],
+ "limitations": [
+  "Only the baseline was measured. No attribution, patching, ablation, attention-pattern or verify_hypothesis run was made, so nothing is known about individual heads or MLPs.",
+  "That the model outputs '3' on every input is suggested by 8 of 8 displayed example predictions and by the 34% agreement matching the share of that label, but the full prediction distribution was not measured, so a constant output is not claimed.",
+  "The function that generated the labels was not identified from the 64 inspected examples (E0001); several simple counting and comparison rules were checked by hand against them and failed.",
+  "The dataset description says its answers are the model's own outputs. That does not hold for the weights that were loaded here; why (for example a weight-shuffled null model behind the same path) was not determined."
+ ],
+ "open_questions": [
+  "Is the model's output literally constant, or weakly input-dependent?",
+  "Which weights produced the recorded answers?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 no mechanism found (stopped at baseline)",
+ "cited": [
+  "E0002",
+  "E0003"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 1,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.5,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0002",
+    "hypothesis": "The model deterministically outputs a digit token at the last position; since dataset answers are its own outputs, accuracy is 1.0 and the mean logit difference is clearly positive.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.99,
+     "statement": "Model agrees with its own recorded outputs on >=99% of 200 inputs"
+    },
+    "observed": 0.34
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

@@ -1,0 +1,226 @@
+{
+ "title": "t2 (null: task-shuffled): priority-max over 5 symbols, read out by head 3.1",
+ "label": "function verified against the model's own outputs; dataset labels are shuffled; circuit effect sizes weak",
+ "behavior": "BOS + 5 tokens from 6 symbols (bo=1, la=3, nu=4, pa=5, ri=6, vu=7); the model emits one symbol at the last position.",
+ "summary": "All numbers are from local-full (full precision). The answer labels that the lab scores against in this investigation are NOT the model's outputs: the model matches them on only 42-54% of prompts (E0002, E0004, V0001: 44.5%), and when I supplied my own labels the lab scored against a permuted version of them (E0005). There is therefore no label-following behaviour to explain, and every logit-diff number here is measured against shuffled labels. The model itself is deterministic and computes a clean function: it outputs the highest-priority symbol present, with priority bo > nu > pa > la > ri > vu. That rule equals the model's actual output on 200/200 held-out prompts (V0001; shuffled-label null p95 = 0.465). Eleven of the sixteen components are exactly inert (E0008, V0001). The remaining five - mlp0, mlp1, head 2.0, mlp2, head 3.1 - are the only ones whose ablation changes outputs; head 3.1 is the read-out and attends from the last position to the winner's position with weight 0.9999 (E0011). Three of six pre-registered predictions were refuted, two of them (E0002, E0005) because of the shuffled labels.",
+ "pseudocode": "def predict(tokens, prompt):\n    order = [1, 4, 5, 3, 6, 7]   # bo > nu > pa > la > ri > vu  (E0001 listing, V0001 agreement 200/200)\n    seq = tokens[1:]             # drop BOS\n    for s in order:              # position and multiplicity do not matter\n        if s in seq:\n            return s             # head 3.1 copies it from the winner's position (E0011)\n",
+ "claims": [
+  {
+   "text": "The lab's answer labels in this investigation are decoupled from the model's outputs: the model matches them on 42% (seed 1), 54% (seed 0) and 44.5% (seed 7) of prompts, with per-prompt logit diffs of exactly +1/-1/0.",
+   "evidence": [
+    "E0002",
+    "E0004",
+    "V0001"
+   ]
+  },
+  {
+   "text": "Labels supplied explicitly are also permuted before scoring: on 24 hand-built prompts the 'expected' tokens shown differ from the ones I passed, while the model's printed outputs equal the priority-rule answers.",
+   "evidence": [
+    "E0005"
+   ]
+  },
+  {
+   "text": "The model computes: output the highest-priority symbol present among the five inputs, priority bo(1) > nu(4) > pa(5) > la(3) > ri(6) > vu(7). The rule equals the model's actual output on 200/200 held-out prompts, above every shuffled-label null (max 0.485).",
+   "evidence": [
+    "V0001",
+    "E0001"
+   ]
+  },
+  {
+   "text": "Heads 0.0, 0.1, 0.2, 1.0, 1.1, 1.2, 2.1, 2.2, 3.0, 3.2 and mlp3 play no part: mean-ablating all of them together leaves the metric exactly unchanged (fraction 1.000) on seed 0 and on held-out seed 7.",
+   "evidence": [
+    "E0008",
+    "V0001",
+    "E0006",
+    "E0007"
+   ]
+  },
+  {
+   "text": "Head 3.1 is the read-out: from the last position it attends with weight 0.9999 to the position that holds the winning symbol (12 hand-built prompts, winner at position 2; uniform would be 0.17).",
+   "evidence": [
+    "E0011"
+   ]
+  },
+  {
+   "text": "mlp0, mlp1, head 2.0, mlp2 and head 3.1 are the only components whose ablation changes the outputs; ablating the five together drops the held-out metric to 24.5% of clean (97th percentile of the null), but that metric is only 0.06 against shuffled labels and my own pre-registered collapse prediction on seed 0 failed (48% left).",
+   "evidence": [
+    "V0001",
+    "E0009",
+    "E0006",
+    "E0007"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [
+   {
+    "id": "emb",
+    "label": "token + position embeddings",
+    "layer": -1,
+    "kind": "input"
+   },
+   {
+    "id": "mlp0",
+    "label": "mlp0 (needed; role not measured)",
+    "layer": 0,
+    "kind": "mlp"
+   },
+   {
+    "id": "mlp1",
+    "label": "mlp1 (needed; role not measured)",
+    "layer": 1,
+    "kind": "mlp"
+   },
+   {
+    "id": "2.0",
+    "label": "head 2.0: BOS + other positions, never self",
+    "layer": 2,
+    "kind": "head"
+   },
+   {
+    "id": "mlp2",
+    "label": "mlp2 (needed; role not measured)",
+    "layer": 2,
+    "kind": "mlp"
+   },
+   {
+    "id": "3.1",
+    "label": "head 3.1: last pos -> winner's position, copies symbol",
+    "layer": 3,
+    "kind": "head"
+   },
+   {
+    "id": "out",
+    "label": "output symbol",
+    "layer": 4,
+    "kind": "output"
+   }
+  ],
+  "edges": [
+   {
+    "src": "emb",
+    "dst": "mlp0",
+    "label": "order inferred from layer index only"
+   },
+   {
+    "src": "mlp0",
+    "dst": "mlp1",
+    "label": "not path-patched"
+   },
+   {
+    "src": "mlp1",
+    "dst": "2.0",
+    "label": "not path-patched"
+   },
+   {
+    "src": "2.0",
+    "dst": "mlp2",
+    "label": "not path-patched"
+   },
+   {
+    "src": "mlp2",
+    "dst": "3.1",
+    "label": "presumably selects where 3.1 looks; not path-patched"
+   },
+   {
+    "src": "emb",
+    "dst": "3.1",
+    "label": "symbol identity copied by 3.1 (attention, E0011)"
+   },
+   {
+    "src": "3.1",
+    "dst": "out",
+    "label": "writes the answer"
+   }
+  ]
+ },
+ "key_plots": [
+  "E0011",
+  "E0008",
+  "E0006",
+  "E0007",
+  "E0004"
+ ],
+ "limitations": [
+  "Every logit-diff metric in this investigation is scored against shuffled labels, so causal effect sizes (E0006, E0007, E0009, V0001 necessity/sufficiency) are small and noisy; only 'exactly unchanged' results and the predict-vs-model agreement are label-independent.",
+  "Pre-registered prediction E0009 (joint ablation of the five active components collapses the metric to <=10%) was refuted: 48% remained. With shuffled labels a constant output still scores a non-zero logit diff, so this neither confirms nor rules out that ablating the five destroys the behaviour.",
+  "The single-component ablation sweeps (E0006, E0007) and the head 2.0 attention pattern (E0010) are exploratory.",
+  "The internal roles of mlp0, mlp1, head 2.0 and mlp2 were not measured; the edges between them in the diagram are ordering by layer, not path-patching results.",
+  "The gradient screen E0003 pointed at head 3.1 and mlp3 only; mlp3 turned out to be exactly inert and three MLPs it scored at zero matter. Attribution patching is unreliable on this model.",
+  "V0001's three random same-size control sets all gave fraction 1.000, which suggests they were drawn from non-circuit components; they do not test much.",
+  "The priority order was read from the dataset listing and confirmed by agreement on 200 random prompts; prompts containing only ri/vu are rare (about 0.4%), so the ri > vu end of the order rests on few cases (one in E0001, two printed in E0005)."
+ ],
+ "open_questions": [
+  "What do mlp0, mlp1, head 2.0 and mlp2 compute? Head 2.0's pattern (BOS plus other positions, zero on self) and 3.1's rank-like lookup are compatible with a sort (count how many tokens outrank me, then look up by rank), but that was not tested.",
+  "With faithful labels, how large is the drop when the five components are ablated?"
+ ],
+ "overall_status": "verified \u00b7 function verified against the model's own outputs; dataset labels are shuffled; circuit effect sizes weak",
+ "cited": [
+  "E0001",
+  "E0002",
+  "E0004",
+  "E0005",
+  "E0006",
+  "E0007",
+  "E0008",
+  "E0009",
+  "E0011",
+  "V0001"
+ ],
+ "prediction_record": {
+  "preregistered": 6,
+  "run": 6,
+  "not_run": [],
+  "confirmed": 3,
+  "refuted": 3,
+  "inconclusive": 0,
+  "hit_rate": 0.5,
+  "refuted_predictions": [
+   {
+    "prereg": "N0004",
+    "experiment": "E0002",
+    "hypothesis": "The model deterministically performs the bench behaviour: on the bench dataset its top token at the last position matches the dataset answer (its own outputs) with a positive logit difference.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.98,
+     "statement": "Clean accuracy on the bench dataset is at least 98%."
+    },
+    "observed": 0.42
+   },
+   {
+    "prereg": "N0011",
+    "experiment": "E0005",
+    "hypothesis": "H1: the model outputs the highest-priority symbol present, priority bo(1) > nu(4) > pa(5) > la(3) > ri(6) > vu(7). On 24 hand-built prompts covering every adjacent priority pair, all-same inputs and the rare ri/vu-only cases, with labels computed from H1, the model is right every time.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.98,
+     "statement": "With H1-derived labels the model is correct on all 24 hand-built prompts."
+    },
+    "observed": 0.333333
+   },
+   {
+    "prereg": "N0018",
+    "experiment": "E0009",
+    "hypothesis": "H2 active set: mlp0, mlp1, head 2.0, mlp2 and head 3.1 carry the computation: mean-ablating them together makes the output input-independent, so the metric collapses to about zero.",
+    "prediction": {
+     "metric": "summary.fraction_of_clean",
+     "op": "between",
+     "threshold": [
+      -0.1,
+      0.1
+     ],
+     "statement": "Joint mean ablation of the five claimed-active components leaves at most 10% of the clean metric."
+    },
+    "observed": 0.478333
+   }
+  ]
+ },
+ "exploratory_runs": [
+  "E0003",
+  "E0006",
+  "E0007",
+  "E0010"
+ ]
+}

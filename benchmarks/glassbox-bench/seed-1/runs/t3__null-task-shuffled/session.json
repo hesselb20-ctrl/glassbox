@@ -1,0 +1,15 @@
+{
+ "benchmark": "t3__null-task-shuffled",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 86.6,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 55.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 12,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: null result. No mechanism is claimed and nothing was verified.** The model does not produce the answers this dataset supplies, so I stopped at step 1 as the protocol requires.\n\n**What I measured (local-full, full precision)**\n\n| Run | Inputs | Agreement with dataset answers | Mean logit diff (clean / corrupt) |\n|---|---|---|---|\n| E0002 | 200, seed 0 | 40.5% | 0.09 / 0.06 |\n| E0003 | 500, seed 1 | 34.6% | 0.016 / -0.018 |\n\nChance for three output symbols (D, E, M) is about 33%. The 40.5% on the first run was about two standard errors above chance; the larger fresh sample put it back at chance.\n\n**Algorithm:** none recovered. The labels are statistically unrelated to the model's output, so any circuit found against this metric would be a false discovery. I name no heads or MLP layers and offer no `predict()`.\n\n**Verification:** `verify_hypothesis` was not run, because there is no hypothesis to verify.\n\n**Prediction record:** 2 pre-registered, 1 confirmed, 1 refuted (hit rate 0.5).\n- Refuted: \"the model reproduces the dataset answers on at least 90% of inputs\" (observed 40.5%).\n- Confirmed: \"agreement on a fresh sample stays in the near-chance band 0.25–0.42\" (observed 34.6%).\n\n**Budget:** 3 of 25 experiments used (one dataset inspection, two baselines).\n\n**Caveat:** the brief says the answers are the model's own outputs, and the measurements contradict that for this dataset path. The model may still compute a deterministic function, but characterising it needs a dataset labelled with its real outputs.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\nReport is in `benchmarks\\glassbox-bench\\seed-1\\runs\\t3__null-task-shuffled\\report\\` (`report.md` and `report.html`)."
+}

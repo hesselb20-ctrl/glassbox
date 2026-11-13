@@ -1,0 +1,72 @@
+{
+ "title": "t2 (null-weight-shuffled): the model does not perform the behaviour; no circuit claimed",
+ "label": "no behaviour - nothing to explain",
+ "behavior": "BOS + 5 tokens from 6 symbols -> one symbol at the last position (glassbox-bench seed-1 task t2).",
+ "summary": "Negative result. At full precision on local-full, the loaded checkpoint matches the dataset answers on 12% of 200 prompts (E0002), at or below chance (1/6), with logit differences of order 1e7 and random sign. The pre-registered prediction (accuracy >= 0.95) was refuted. The investigation was stopped after the baseline as the protocol requires: there is no behaviour to localise, so no function, heads or MLPs are attributed to this model and no verification was run. The dataset labels alone are consistent with 'minimum of the inputs under the order bo < nu < pa < la < {ri, vu}' (E0001), but this model does not compute that.",
+ "pseudocode": "# No algorithm recovered: the model's outputs do not follow the dataset answers (E0002).\n# Observation about the LABELS only (E0001, 64 examples; not a claim about the model):\n#   answer == min(tokens[1:], key=rank) with rank bo < nu < pa < la < {ri, vu}",
+ "claims": [
+  {
+   "text": "The loaded model does not do the behaviour: 12% agreement with the dataset answers on 200 prompts, at or below the 1/6 chance level (local-full, full precision).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "Its output logits are not a calibrated readout: logit differences have mean -2.9e6 and std 2.1e7, with random sign.",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The dataset labels in the inspected sample are consistent with a minimum under the order bo < nu < pa < la < {ri, vu}; this describes the labels, and the model fails to reproduce it.",
+   "evidence": [
+    "E0001",
+    "E0002"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002"
+ ],
+ "limitations": [
+  "Only the baseline was run (2 of 25 experiments); no component-level experiment was performed, by design, because the behaviour is absent.",
+  "The label rule was read off 64 examples and never tested against the model; the relative order of ri and vu is unresolved.",
+  "No verify_hypothesis run: status is neither verified nor partial, it is 'no behaviour'."
+ ],
+ "open_questions": [
+  "The task statement says the dataset answers are the model's own outputs, yet this checkpoint does not reproduce them; consistent with the weights having been altered (the investigation name suggests a weight-shuffled null), but that was not tested here."
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 no behaviour - nothing to explain",
+ "cited": [
+  "E0001",
+  "E0002"
+ ],
+ "prediction_record": {
+  "preregistered": 1,
+  "run": 1,
+  "not_run": [],
+  "confirmed": 0,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.0,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0002",
+    "hypothesis": "The model reliably produces its dataset answers (which look like 'minimum of the 5 tokens under the order bo<nu<pa<la<{ri,vu}') at the last position.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.95,
+     "statement": "The model outputs the dataset answer on at least 95% of clean prompts"
+    },
+    "observed": 0.12
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

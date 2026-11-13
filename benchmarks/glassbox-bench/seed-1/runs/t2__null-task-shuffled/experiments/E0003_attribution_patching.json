@@ -1,0 +1,250 @@
+{
+ "id": "E0003",
+ "primitive": "attribution_patching",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t2",
+   "n": 200,
+   "seed": 1
+  }
+ },
+ "summary": {
+  "direction": "denoise",
+  "metric_base": -0.054992,
+  "metric_source": 0.129981,
+  "n": 200,
+  "top_heads": [
+   {
+    "component": "3.1",
+    "effect": 1.0
+   },
+   {
+    "component": "0.2",
+    "effect": -0.0
+   },
+   {
+    "component": "2.2",
+    "effect": -0.0
+   },
+   {
+    "component": "3.0",
+    "effect": -0.0
+   },
+   {
+    "component": "1.0",
+    "effect": -0.0
+   },
+   {
+    "component": "0.1",
+    "effect": 0.0
+   },
+   {
+    "component": "1.2",
+    "effect": -0.0
+   },
+   {
+    "component": "2.1",
+    "effect": -0.0
+   }
+  ],
+  "top_resid": [
+   {
+    "component": "resid_pre.3 @ pos 4",
+    "effect": 0.378882
+   },
+   {
+    "component": "resid_pre.2 @ pos 4",
+    "effect": 0.378381
+   },
+   {
+    "component": "resid_pre.0 @ pos 4",
+    "effect": 0.378378
+   },
+   {
+    "component": "resid_pre.1 @ pos 4",
+    "effect": 0.378378
+   },
+   {
+    "component": "resid_pre.2 @ pos 3",
+    "effect": -0.243267
+   },
+   {
+    "component": "resid_pre.0 @ pos 3",
+    "effect": -0.243243
+   },
+   {
+    "component": "resid_pre.1 @ pos 3",
+    "effect": -0.243243
+   },
+   {
+    "component": "resid_pre.3 @ pos 3",
+    "effect": -0.24248
+   }
+  ],
+  "attn_by_layer": [
+   0.0,
+   -4e-06,
+   5.7e-05,
+   1.037418
+  ],
+  "note": "first-order estimate; confirm the top components with activation_patching",
+  "forward_passes": 4,
+  "backward_passes": 1,
+  "mlp_by_layer": [
+   -0.0,
+   -3.1e-05,
+   0.000632,
+   0.114459
+  ]
+ },
+ "data": {
+  "layers": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "resid_pre": [
+   [
+    0.0,
+    0.216216,
+    0.216216,
+    -0.243243,
+    0.378378,
+    0.054054
+   ],
+   [
+    -0.0,
+    0.216216,
+    0.216216,
+    -0.243243,
+    0.378378,
+    0.054054
+   ],
+   [
+    -0.0,
+    0.216221,
+    0.21623,
+    -0.243267,
+    0.378381,
+    0.054013
+   ],
+   [
+    5e-06,
+    0.218531,
+    0.21704,
+    -0.24248,
+    0.378882,
+    0.051099
+   ]
+  ],
+  "attn_out_by_pos": [
+   [
+    -0.0,
+    0.0,
+    0.0,
+    0.0,
+    -0.0,
+    0.0
+   ],
+   [
+    -0.0,
+    -2e-06,
+    0.0,
+    -0.0,
+    -1e-06,
+    -1e-06
+   ],
+   [
+    -3e-06,
+    -0.000271,
+    5.3e-05,
+    -0.000241,
+    -4.3e-05,
+    0.000561
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.037418
+   ]
+  ],
+  "heads": [
+   [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    -0.0
+   ],
+   [
+    -0.0,
+    -0.0,
+    -0.0
+   ],
+   [
+    -0.0,
+    1.0,
+    -0.0
+   ]
+  ],
+  "mlp_out_by_pos": [
+   [
+    -0.0,
+    -0.0,
+    -0.0,
+    0.0,
+    -0.0,
+    0.0
+   ],
+   [
+    0.0,
+    -1.4e-05,
+    -1.2e-05,
+    1.5e-05,
+    4e-06,
+    -2.4e-05
+   ],
+   [
+    -5e-06,
+    0.000139,
+    0.000785,
+    -0.000851,
+    0.000601,
+    -3.6e-05
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.114459
+   ]
+  ]
+ },
+ "plot": "experiments/E0003_attribution_patching.png",
+ "seconds": 1.08,
+ "timestamp": "2026-11-13T13:24:12",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null,
+ "null": {
+  "kind": "task-shuffled",
+  "seed": 0
+ }
+}

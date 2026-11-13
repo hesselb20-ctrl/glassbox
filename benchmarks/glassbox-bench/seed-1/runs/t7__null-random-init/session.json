@@ -1,0 +1,15 @@
+{
+ "benchmark": "t7__null-random-init",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 133.8,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 79.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 15,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: null finding, nothing verified.** This checkpoint does not perform the labelled behaviour, so there is no mechanism to explain and I claim no circuit.\n\n- **Baseline (local-full, full precision):** the model's top token matches the dataset answer on 25.5% of 200 prompts (E0003) and 20.0% of 400 fresh prompts (E0004). Chance for 6 symbols is about 17%.\n- **No margin:** the mean logit difference between the answer and the foil is about zero (-0.020 and -0.036, std 0.27). The model sometimes outputs PAD, which is not one of the 6 symbols.\n- **The labels do follow a rule:** the dataset answers are the highest-ranked symbol present under the ordering pa > bo > pu > ri > ti > so. I checked this by hand on about 40 of the 200 rows; it describes the labels, not this model.\n- **Algorithm:** none recovered. No heads or MLP layers are assigned to the behaviour.\n- **Verification:** `verify_hypothesis` was not run, because there was no hypothesis left to verify.\n- **Predictions:** 1 of 2 held. The refuted one was my opening prediction that the model reproduces its labels at 95% or better (observed 25.5%). The confirmed one was that accuracy stays at or below 40% on a fresh seed.\n- **Budget:** 4 of 25 experiments used; I stopped at the baseline as the protocol requires.\n\nThe task statement says the dataset answers are the model's own outputs, and here they are not. The investigation name suggests this is a deliberate random-init null, but I did not test whether the checkpoint is untrained or just mis-paired with the task folder.\n\nThe early exploratory attribution screen (E0002) should be ignored: its effects are normalised by a clean-versus-corrupt gap of about 0.01.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\nThe report is in `benchmarks\\glassbox-bench\\seed-1\\runs\\t7__null-random-init\\report\\` as `report.md` and `report.html`."
+}

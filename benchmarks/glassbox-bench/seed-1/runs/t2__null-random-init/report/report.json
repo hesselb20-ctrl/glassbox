@@ -1,0 +1,74 @@
+{
+ "title": "t2 (null-random-init): the loaded checkpoint does not perform the behaviour",
+ "label": "no behaviour - nothing to explain",
+ "behavior": "BOS + 5 tokens from 6 symbols -> one symbol at the last position (glassbox-bench seed-1 task t2). Asked: recover the function and the heads/MLPs implementing it.",
+ "summary": "Negative result. On local-full (full precision) the loaded checkpoint agrees with the dataset's answers at chance level: 17.5% on 200 prompts (E0002) and 12.25% on 400 fresh prompts (E0003), against 16.7% chance for 6 symbols. The mean logit difference between the labelled answer and the foil is ~0 (-0.009 and -0.029, std ~0.23) and is no larger on clean than on corrupt prompts. The model therefore does not compute the function the labels encode, and the investigation was stopped at step 1 as the protocol requires. No function, no circuit and no predict() are claimed for this model; verify_hypothesis was deliberately not run.",
+ "pseudocode": "# No algorithm recovered: the loaded model's outputs are unrelated to the dataset answers (E0002, E0003).\n# No predict() is offered.",
+ "claims": [
+  {
+   "text": "The loaded checkpoint does not produce the dataset's answers: argmax agreement is 17.5% on 200 prompts, at chance (16.7%), with mean logit diff -0.009 +/- 0.229 (local-full, full precision). My pre-registered prediction of >=98% was refuted.",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The chance-level result replicates on an independent sample: 12.25% agreement on 400 prompts (seed 2), mean logit diff -0.029 +/- 0.223, below both the 30% threshold and the ~60% a majority-label predictor would reach (local-full).",
+   "evidence": [
+    "E0003"
+   ]
+  },
+  {
+   "text": "Because the behaviour is absent, no attention head or MLP layer can be said to implement it; no circuit is claimed.",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002",
+  "E0003"
+ ],
+ "limitations": [
+  "Only the baseline was measured (3 of 25 experiments used); no component-level experiments were run because there is no behaviour to attribute.",
+  "The task statement says the dataset's answers are the model's own outputs; that is not true of the checkpoint as loaded here. I did not determine why (the investigation name suggests a null control with re-initialised weights, but that was not measured).",
+  "Side observation, not a claim about this model: in the 64 labels inspected in E0001 (exploratory) the answers are consistent with a fixed priority rule bo > nu > pa > la > {ri, vu} (output the highest-priority symbol present). This describes the labels only, is unverified beyond those 64 examples, and the ri/vu order was not observed."
+ ],
+ "open_questions": [
+  "Is this checkpoint an intentional null (random-init) variant of the t2 model, with labels taken from the original?",
+  "Does the original t2 model implement the priority rule suggested by the labels?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 no behaviour - nothing to explain",
+ "cited": [
+  "E0002",
+  "E0003"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 1,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.5,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0002",
+    "hypothesis": "The model deterministically does the behaviour: on the bench dataset its top output at the last position equals the recorded answer (the dataset's answers are its own outputs), with a clear logit margin.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.98,
+     "statement": "The model's argmax matches the dataset answer on at least 98% of 200 prompts."
+    },
+    "observed": 0.175
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

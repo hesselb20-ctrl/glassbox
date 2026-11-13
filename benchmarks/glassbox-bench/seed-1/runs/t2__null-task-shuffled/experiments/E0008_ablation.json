@@ -1,0 +1,78 @@
+{
+ "id": "E0008",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t2/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t2",
+   "n": 120,
+   "seed": 0
+  },
+  "components": [
+   "0.0",
+   "0.1",
+   "0.2",
+   "1.0",
+   "1.1",
+   "1.2",
+   "2.1",
+   "2.2",
+   "3.0",
+   "3.2",
+   "mlp3"
+  ],
+  "mode": "mean",
+  "joint": true
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 120,
+  "metric_clean": 0.249964,
+  "joint": true,
+  "components": [
+   "0.0",
+   "0.1",
+   "0.2",
+   "1.0",
+   "1.1",
+   "1.2",
+   "2.1",
+   "2.2",
+   "3.0",
+   "3.2",
+   "mlp3"
+  ],
+  "metric_ablated": 0.249964,
+  "fraction_of_clean": 1.0
+ },
+ "data": {
+  "metric_ablated": 0.249964
+ },
+ "plot": "experiments/E0008_ablation.png",
+ "seconds": 0.95,
+ "timestamp": "2026-11-13T13:26:19",
+ "prereg_id": "N0017",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.fraction_of_clean",
+  "op": "between",
+  "threshold": [
+   0.99,
+   1.01
+  ],
+  "statement": "Joint mean ablation of the eleven claimed-inert components keeps the metric within 1% of clean.",
+  "verdict": "confirmed",
+  "observed": 1.0
+ },
+ "null": {
+  "kind": "task-shuffled",
+  "seed": 0
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "title": "t5 (null-random-init): no behaviour to explain",
+ "label": "null finding: model does not perform the behaviour",
+ "behavior": "BOS + 5 tokens from 5 symbols; one symbol is read at the last position. The task was to recover the function and the heads/MLPs that implement it.",
+ "summary": "The loaded model (1 layer, 2 heads, 1 MLP, d_model 29; local-full, full precision) does not reproduce the dataset's answers. Accuracy is 0.148 (n=128) and 0.191 (n=256) against a chance level of 0.20, and the mean logit difference between the correct and a wrong symbol is 0.002 and 0.006 with a standard deviation near 0.3. The dataset labels themselves follow a simple rule (a fixed map of the token at index 3), but that rule is a property of the labels, not of this model. The investigation was stopped after the baseline: no circuit is claimed and no verification was run.",
+ "pseudocode": "# No algorithm recovered: the model is at chance on the behaviour (E0002, E0003).\n# Rule that fits the dataset LABELS only (E0001, 64/64, not implemented by this model):\n#   out = {bo: lu, fe: ka, ka: fe, lu: bo, ri: ri}[tokens[3]]",
+ "claims": [
+  {
+   "text": "The model does not perform the bench behaviour: clean accuracy 0.148 on 128 inputs, mean logit diff 0.002 +/- 0.279 (local-full, full precision). The pre-registered prediction of >= 0.95 accuracy was refuted.",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The null replicates on a fresh, larger sample: accuracy 0.191 on 256 inputs (chance 0.20), mean logit diff 0.006 +/- 0.319; the model also outputs PAD, which is never a valid answer.",
+   "evidence": [
+    "E0003"
+   ]
+  },
+  {
+   "text": "Because the model is at chance, no attention head or MLP layer can be said to implement the behaviour; no circuit is claimed.",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002",
+  "E0003"
+ ],
+ "limitations": [
+  "No verify_hypothesis run: with no behaviour there is nothing to verify, so the status is a null finding, not 'verified'.",
+  "The label rule (map of token at index 3) was checked by hand on 64 examples from E0001 only, and it describes the dataset labels, not this model.",
+  "No mechanism experiments were run; what this model does compute instead (if anything structured) was not investigated.",
+  "Accuracy 0.148 at n=128 is slightly below chance; consistent with sampling noise (0.191 at n=256), not tested further."
+ ],
+ "open_questions": [
+  "The task statement says the answers are the model's own outputs, but the loaded checkpoint does not produce them. Is the checkpoint served under this investigation the intended one?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 null finding: model does not perform the behaviour",
+ "cited": [
+  "E0002",
+  "E0003"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 1,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.5,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0002",
+    "hypothesis": "The model deterministically performs the bench behaviour: its top logit at the last position equals the dataset answer (the answers are its own outputs), so there is a behaviour to explain.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.95,
+     "statement": "Clean accuracy against the dataset answers is at least 95%."
+    },
+    "observed": 0.148438
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

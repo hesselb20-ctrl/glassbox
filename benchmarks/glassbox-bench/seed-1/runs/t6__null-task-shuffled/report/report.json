@@ -1,0 +1,75 @@
+{
+ "title": "t6 (task-shuffled): the model does not produce the dataset's answers; no mechanism claimed",
+ "label": "null result: no behaviour to explain",
+ "behavior": "BOS + 6 tokens from 6 symbols; one symbol output at the last position. The dataset 'bench' (seed-1/t6) was supposed to carry the model's own outputs as answers.",
+ "summary": "At full precision (local-full) the model's last-position output matches the dataset answer on 28.5% of inputs in two independent samples (n=200 and n=400). The label distribution is concentrated on two symbols (about 42% and 38% in the 64 inspected examples), so random pairing would give roughly 0.34 and always guessing the mode roughly 0.42. The mean logit difference between the labelled answer and the foil is 0.05-0.08 with std 0.7, the same on clean and corrupt inputs. The labels therefore do not describe what this model computes. The investigation was stopped after the baseline, as the protocol requires: no circuit, no algorithm and no verification are claimed.",
+ "pseudocode": "# No algorithm recovered.\n# The dataset labels are not the model's outputs (E0002, E0003), so there is no labelled behaviour to reverse-engineer.",
+ "claims": [
+  {
+   "text": "The model's output equals the dataset answer on only 28.5% of 200 inputs (seed 1), refuting the pre-registered prediction of >= 95%.",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The mismatch replicates on 400 fresh inputs (seed 2): 28.5% again, at or below the label base rate; pre-registered prediction <= 0.45 confirmed.",
+   "evidence": [
+    "E0003"
+   ]
+  },
+  {
+   "text": "Mean logit difference between labelled answer and foil is near zero (0.075 and 0.0525, std about 0.7) and not separated from the corrupt inputs (-0.08, -0.0125): the labels carry no signal about the model's output.",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002",
+  "E0003"
+ ],
+ "limitations": [
+  "Only the dataset inspection and two baselines were run (3 of 25 experiments). Nothing about heads, MLPs or inert components was measured, so nothing is claimed about them.",
+  "The base-rate comparison uses the label distribution of the 64 seed-0 examples (E0001), a small sample.",
+  "The model does emit crisp outputs (per-example logit diffs are exactly -1, 0 or +1). What function those outputs follow was not investigated, because the supplied dataset gives no valid labels to test it against.",
+  "verify_hypothesis was not run: there is no hypothesis to verify."
+ ],
+ "open_questions": [
+  "What does the model actually compute? Answering that needs a dataset whose answers really are the model's outputs.",
+  "Are the labels a permutation of the true outputs across examples (same marginal distribution), or something else?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 null result: no behaviour to explain",
+ "cited": [
+  "E0002",
+  "E0003"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 1,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.5,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0002",
+    "hypothesis": "The model reproduces the dataset's answers at the last position: the dataset labels are the model's own argmax outputs, so accuracy is essentially 1.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.95,
+     "statement": "The model outputs the dataset answer on at least 95% of 200 inputs."
+    },
+    "observed": 0.285
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

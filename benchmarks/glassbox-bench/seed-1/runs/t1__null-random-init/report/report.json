@@ -1,0 +1,91 @@
+{
+ "title": "t1 (seed-1): the loaded checkpoint does not perform the labelled behaviour - no circuit claimed",
+ "label": "null result: no behaviour, no mechanism",
+ "behavior": "BOS + 4 tokens from 6 symbols -> one symbol at the last position (bench task t1, glassbox-bench seed-1).",
+ "summary": "On local-full (full precision) the loaded checkpoint agrees with the dataset answers on 1.0% (n=96) and 3.3% (n=400) of inputs, below the 1/6 chance level, with a mean logit difference between the labelled answer and the foil of about -0.04 (std 0.23). Its predictions are mostly 'pe' and sometimes the non-symbol 'PAD'. The model therefore does not do the behaviour, and per protocol the investigation stops: no heads or MLPs are claimed as a circuit and no verification was run. Separately, the dataset labels themselves follow a simple rule (a lookup on the first and last input token, middle tokens ignored; 255 of 256 inspected rows), but that rule describes the labels, not the weights that were loaded.",
+ "pseudocode": "# No algorithm is attributed to the loaded model (E0003, E0005: accuracy 0.010 / 0.033).\n# For reference only - the rule the dataset LABELS follow (hand-tabulated from E0001, E0002; NOT implemented by this checkpoint):\n# T[first][last], token ids 2..7\n# T = {2:[3,6,4,3,6,3], 3:[2,7,3,3,5,4], 4:[2,6,5,7,2,5], 5:[7,7,2,7,3,6], 6:[4,3,4,6,6,6], 7:[6,3,4,4,6,5]}\n# label = T[tokens[1]][tokens[4]-2]   (one exception seen: [0,4,6,4,4] -> 6)",
+ "claims": [
+  {
+   "text": "The loaded checkpoint does not reproduce the dataset answers: accuracy 0.010 on 96 inputs (pre-registered >=0.99, refuted) and 0.033 on 400 fresh inputs (pre-registered <=0.20, confirmed); chance is 0.167. Backend: local-full, full precision.",
+   "evidence": [
+    "E0003",
+    "E0005"
+   ]
+  },
+  {
+   "text": "The model has no preference for the labelled answer over the foil: mean logit difference -0.037 (std 0.24) and -0.051 (std 0.23), indistinguishable from the corrupt-input values (-0.012, +0.022).",
+   "evidence": [
+    "E0003",
+    "E0005"
+   ]
+  },
+  {
+   "text": "The model's outputs are not confined to the six symbols: example predictions are mostly 'pe' and include 'PAD'.",
+   "evidence": [
+    "E0003",
+    "E0005"
+   ]
+  },
+  {
+   "text": "The dataset labels are consistent with a lookup table on (first token, last token) that ignores the two middle tokens (255/256 rows inspected by hand; one exception). This is a property of the labels only; the baselines show the loaded weights do not implement it.",
+   "evidence": [
+    "E0001",
+    "E0002",
+    "E0003",
+    "E0005"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0003",
+  "E0005",
+  "E0004"
+ ],
+ "limitations": [
+  "No verify_hypothesis run: with no behaviour there is no hypothesis to verify; status is neither verified nor screening-pass.",
+  "The label rule was tabulated by hand from two dataset samples (256 rows); it was not tested by the lab and is reported only as context.",
+  "What the loaded model does compute (near-constant 'pe' with tiny margins) was not characterised beyond the baseline example predictions.",
+  "The single attribution screen (E0004) is exploratory and its effects are on a ~0.05-logit gap, i.e. noise; nothing is concluded from it.",
+  "20 of 25 experiments were left unused on purpose."
+ ],
+ "open_questions": [
+  "The task statement says the dataset answers are the model's own outputs; for the weights loaded here that is false. Is the checkpoint at this path (or in this investigation) a random-init null substitute, or is the dataset mislabelled?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 null result: no behaviour, no mechanism",
+ "cited": [
+  "E0001",
+  "E0002",
+  "E0003",
+  "E0005"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 1,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.5,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0003",
+    "hypothesis": "The model reproduces its own labelled outputs on the bench dataset (labels are its own argmax), so the behaviour exists and is deterministic.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.99,
+     "statement": "clean accuracy against the dataset answers is at least 99%"
+    },
+    "observed": 0.010417
+   }
+  ]
+ },
+ "exploratory_runs": [
+  "E0004"
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "benchmark": "t1__null-random-init",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 143.7,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 116.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 14,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: null result, nothing verified.** The loaded checkpoint does not perform the behaviour, so I stopped at step 1 and claimed no circuit.\n\n**What the model does** (local-full, full precision):\n- **Accuracy:** it matches the dataset answers on 1.0% of 96 inputs (E0003) and 3.3% of 400 fresh inputs (E0005). Chance is 16.7%.\n- **Logit difference:** the labelled answer versus the foil averages about -0.04 to -0.05 (std 0.23), the same as on corrupted inputs.\n- **Outputs:** the example predictions shown are mostly `pe`, and one is `PAD`, which is not even one of the six symbols.\n\n**Algorithm:** none attributed to these weights. The dataset labels do follow a clean rule: a lookup on the first and last input token, ignoring the two middle ones. I tabulated it by hand from 256 rows, with 255 matching and one exception (`[0,4,6,4,4]` gives 6). That rule describes the labels, not this checkpoint, and it is in the report for reference only.\n\n**Verification:** not run. With no behaviour there is no hypothesis to test, and any circuit would be fitted to noise.\n\n**Predictions:** 2 pre-registered, 1 confirmed, 1 refuted (50%). The refuted one was my first baseline, where I predicted at least 99% accuracy because the brief said the answers are the model's own outputs. The second predicted at most 20% on a fresh sample and held.\n\n**Budget:** 5 of 25 experiments used (two dataset pulls, two baselines, one exploratory attribution screen that showed only noise).\n\n**Open question for you:** the brief's premise that the answers are the model's own outputs is false for the weights that were loaded. The investigation name suggests this is a random-init null control, in which case this is the expected outcome, but I did not confirm that.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\nReport folder: `benchmarks\\glassbox-bench\\seed-1\\runs\\t1__null-random-init\\report\\` (`report.md` and `report.html`)"
+}

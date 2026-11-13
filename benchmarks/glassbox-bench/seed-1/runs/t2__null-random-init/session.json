@@ -1,0 +1,15 @@
+{
+ "benchmark": "t2__null-random-init",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 82.4,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 56.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 12,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: no behaviour, nothing to explain.** The checkpoint as loaded does not compute the function the dataset labels encode, so I stopped at step 1 as the protocol requires and claim no circuit.\n\n**What I measured (local-full, full precision)**\n\n| Run | Prompts | Agreement with dataset answers | Mean logit diff |\n|---|---|---|---|\n| E0002 (seed 1) | 200 | 17.5% | -0.009 ± 0.229 |\n| E0003 (seed 2) | 400 | 12.25% | -0.029 ± 0.223 |\n\nChance for 6 symbols is 16.7%. The logit difference on clean prompts is no better than on corrupt prompts (about -0.10 in both runs).\n\n- **Algorithm:** none recovered. I offer no `predict()`.\n- **Circuit:** none. No head or MLP layer can be said to implement a behaviour the model does not show.\n- **Verification:** not run. `verify_hypothesis` on a chance-level model would only fit a circuit to noise, so the report status is \"unverified\".\n- **Prediction hit rate:** 1 of 2. My first prediction (at least 98% agreement) was refuted; the replication prediction (at most 30%) was confirmed.\n- **Budget:** 3 of 25 experiments used (the dataset inspection plus two baselines).\n\nThe task statement says the dataset's answers are the model's own outputs, and that is not true of this checkpoint. The investigation name suggests a random-init null control, but I did not measure why the mismatch exists.\n\nOne side observation about the labels, not the model: in the 64 examples from E0001, the answers fit a fixed priority rule, bo > nu > pa > la > {ri, vu}, outputting the highest-priority symbol present. That is from eyeballing an exploratory run, and the ri/vu order never came up.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\nThe report is at `benchmarks\\glassbox-bench\\seed-1\\runs\\t2__null-random-init\\report\\report.md` (with `report.html` alongside)."
+}

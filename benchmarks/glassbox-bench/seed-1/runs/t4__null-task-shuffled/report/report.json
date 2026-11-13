@@ -1,0 +1,65 @@
+{
+ "title": "t4 (seed-1): no behaviour to explain - dataset answers do not match the model's outputs",
+ "label": "null result - behaviour absent, nothing verified",
+ "behavior": "BOS + 6 tokens over 5 symbols -> one symbol at the last position, as labelled by dataset task 'bench' (benchmarks/glassbox-bench/seed-1/tasks/t4).",
+ "summary": "The investigation stopped at the baseline. On 200 inputs at full precision (local-full) the model's top token equals the dataset's answer only 17% of the time, against 20% chance for five symbols; the mean logit difference is -0.025. The pre-registered prediction (accuracy >= 0.95) was refuted. The model does emit a crisp output (per-prompt logit differences are exactly -1, 0 or +1), but that output is unrelated to the dataset labels, so the labelled behaviour does not exist in this model. No function, circuit or predict() is claimed and no verification was run.",
+ "pseudocode": "# No algorithm recovered.\n# The dataset labels are at chance relative to the model's outputs (E0002),\n# so there is no labelled behaviour to write as code.",
+ "claims": [
+  {
+   "text": "The model does not produce the dataset's answers: accuracy 0.17 on n=200 (chance 0.20), mean logit diff -0.025, full precision local-full. Pre-registered prediction of >= 0.95 accuracy refuted.",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The model's output is nonetheless crisp: every per-prompt logit difference between the labelled answer and the foil is exactly -1, 0 or +1, so the mismatch is in the labels' relation to the model, not in a noisy model.",
+   "evidence": [
+    "E0002"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002"
+ ],
+ "limitations": [
+  "No circuit, no function and no verify_hypothesis run: status is neither verified nor screening-pass.",
+  "One baseline on one seed (n=200); 0.17 is far from the 0.95 threshold and within sampling noise of chance (0.20), so it was not replicated.",
+  "What the model actually computes on its own outputs was not investigated; the supplied dataset gives no access to correct labels for it."
+ ],
+ "open_questions": [
+  "What function does the model compute? Answering this needs a dataset whose answers really are the model's outputs.",
+  "Why does this dataset's answer column disagree with the model, contrary to the task description?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 null result - behaviour absent, nothing verified",
+ "cited": [
+  "E0002"
+ ],
+ "prediction_record": {
+  "preregistered": 1,
+  "run": 1,
+  "not_run": [],
+  "confirmed": 0,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.0,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0002",
+    "hypothesis": "The model deterministically produces the dataset's answer token at the last position (the answers are stated to be the model's own outputs), so accuracy is ~1.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.95,
+     "statement": "The model's top token at the last position equals the dataset answer on at least 95% of inputs."
+    },
+    "observed": 0.17
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

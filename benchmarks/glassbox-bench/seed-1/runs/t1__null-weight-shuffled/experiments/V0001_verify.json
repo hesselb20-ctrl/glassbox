@@ -1,0 +1,186 @@
+{
+ "id": "V0001",
+ "name": "label-rule lookup T[first][last] vs loaded model (expected to fail: model does not do the behaviour)",
+ "n_heldout": 200,
+ "thresholds": {
+  "agreement_min": 0.9,
+  "circuit_alone_min": 0.7,
+  "without_circuit_max": 0.5,
+  "null_percentile": 95.0
+ },
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/glassbox-bench/seed-1/tasks/t1/model.pt",
+  "counts_as_verification": true
+ },
+ "checks": {
+  "agreement": {
+   "agreement_with_model": 0.24,
+   "algorithm_accuracy_vs_ground_truth": 1.0,
+   "disagreements": [
+    {
+     "input": [
+      0,
+      3,
+      6,
+      6,
+      3
+     ],
+     "algorithm": "fo",
+     "model": "ko"
+    },
+    {
+     "input": [
+      0,
+      4,
+      6,
+      5,
+      7
+     ],
+     "algorithm": "pe",
+     "model": "ko"
+    },
+    {
+     "input": [
+      0,
+      6,
+      2,
+      6,
+      2
+     ],
+     "algorithm": "nu",
+     "model": "fo"
+    },
+    {
+     "input": [
+      0,
+      5,
+      4,
+      6,
+      3
+     ],
+     "algorithm": "fo",
+     "model": "ko"
+    },
+    {
+     "input": [
+      0,
+      3,
+      7,
+      5,
+      6
+     ],
+     "algorithm": "pe",
+     "model": "ko"
+    }
+   ],
+   "pass": false
+  },
+  "causal_components": {
+   "circuit": [
+    "1.0",
+    "mlp0",
+    "mlp1"
+   ],
+   "circuit_size": 3,
+   "total_components": 6,
+   "ablation": "mean",
+   "reference": "corrupt",
+   "circuit_ablated": {
+    "metric": 0.011742,
+    "fraction_of_clean": 0.671021,
+    "accuracy": 0.275
+   },
+   "everything_else_ablated": {
+    "metric": 0.012679,
+    "fraction_of_clean": 0.724596,
+    "accuracy": 0.255
+   },
+   "random_same_size_ablated_fraction": [
+    0.724596,
+    0.724596,
+    0.724596
+   ],
+   "pass_breaks_without_circuit": false,
+   "pass_survives_on_circuit_alone": true,
+   "pass": false
+  }
+ },
+ "null_controls": [
+  {
+   "finding": "agreement",
+   "what": "share of held-out inputs where predict() equals the model's output",
+   "effect": 0.24,
+   "null_mean": 0.191333,
+   "null_p95": 0.21825,
+   "null_max": 0.235,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "task-shuffled": 30
+   },
+   "pass": true
+  },
+  {
+   "finding": "necessity",
+   "what": "standardised drop in the metric when the claimed circuit is ablated",
+   "effect": 0.020434,
+   "null_mean": 0.013082,
+   "null_p95": 0.024254,
+   "null_max": 0.106685,
+   "percentile_of_effect": 94.117647,
+   "n_null": 34,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30,
+    "random-init": 2,
+    "weight-shuffled": 2
+   },
+   "pass": false
+  },
+  {
+   "finding": "sufficiency",
+   "what": "standardised metric (above its no-information floor) with everything except the claimed circuit ablated",
+   "effect": 0.045007,
+   "null_mean": 0.041679,
+   "null_p95": 0.041679,
+   "null_max": 0.041679,
+   "percentile_of_effect": 100.0,
+   "n_null": 30,
+   "null_samples_by_kind": {
+    "random-same-size-set": 30
+   },
+   "pass": true
+  }
+ ],
+ "model_accuracy": 0.24,
+ "metric_clean": 0.017498,
+ "metric_floor": 0.0,
+ "metric_unit": 0.281711,
+ "beats_null_controls": false,
+ "status": "not-verified",
+ "all_checks_passed": false,
+ "note": "At least one check failed; the explanation is partial or wrong. See the numbers.",
+ "plot": "experiments/V0001_verify.png",
+ "spec": {
+  "name": "label-rule lookup T[first][last] vs loaded model (expected to fail: model does not do the behaviour)",
+  "dataset": {
+   "task": "bench",
+   "path": "benchmarks/glassbox-bench/seed-1/tasks/t1",
+   "n": 200,
+   "seed": 3
+  },
+  "code": "def predict(tokens, prompt):\n    # Rule read off the dataset labels in E0001 (200/200): output depends only on first and last input token.\n    # E0002/E0004 show the loaded weights do NOT follow these labels; this run quantifies that.\n    T = {2:[3,6,4,3,6,3], 3:[2,7,3,3,5,4], 4:[2,6,5,7,2,5], 5:[7,7,2,7,3,6], 6:[4,3,4,6,6,6], 7:[6,3,4,4,6,5]}\n    return T[tokens[1]][tokens[4]-2]\n",
+  "circuit": {
+   "components": [
+    "1.0",
+    "mlp0",
+    "mlp1"
+   ],
+   "mode": "mean",
+   "reference": "corrupt"
+  }
+ },
+ "timestamp": "2026-11-13T13:19:15"
+}

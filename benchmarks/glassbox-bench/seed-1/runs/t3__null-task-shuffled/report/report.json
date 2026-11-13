@@ -1,0 +1,75 @@
+{
+ "title": "t3 (null-task-shuffled): no behaviour to explain",
+ "label": "null result: no mechanism claimed",
+ "behavior": "BOS + 5 tokens from 6 symbols -> one output symbol (D/E/M) at the last position, as labelled by dataset task 'bench' at benchmarks/glassbox-bench/seed-1/tasks/t3.",
+ "summary": "The model does not produce the answers this dataset supplies. At full precision (local-full) its top output matches the dataset answer on 40.5% of 200 inputs (seed 0) and 34.6% of 500 fresh inputs (seed 1); chance for three output symbols is about 33%. The mean logit difference between the labelled answer and the foil is 0.016 on clean inputs versus -0.018 on corrupt inputs. Per the protocol the investigation stopped at step 1: with labels unrelated to the model's output there is no function to recover against this dataset and no circuit to attribute. No algorithm, no circuit and no verification are claimed.",
+ "pseudocode": "# No algorithm recovered. The dataset answers are at chance relative to the model's output (E0002, E0003),\n# so no predict() is offered and verify_hypothesis was not run.",
+ "claims": [
+  {
+   "text": "On 200 inputs (seed 0) the model's output equals the dataset answer 40.5% of the time, refuting the pre-registered prediction of >= 90%.",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "On 500 fresh inputs (seed 1) agreement is 34.6%, inside the pre-registered near-chance band 0.25-0.42; mean logit diff 0.016 clean vs -0.018 corrupt. The labels are statistically unrelated to the model's output.",
+   "evidence": [
+    "E0003"
+   ]
+  },
+  {
+   "text": "No attention head or MLP layer is claimed as part of a circuit, because there is no above-chance behaviour to attribute.",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002",
+  "E0003"
+ ],
+ "limitations": [
+  "The model may well compute some deterministic function of its input; this investigation did not characterise it, because the only labels available (the dataset's) do not track the model's output and every patching/ablation metric in the lab is defined against those labels.",
+  "Seed 0 at n=200 gave 40.5%, about 2 standard errors above 1/3; the n=500 replication at 34.6% indicates that was sampling noise, but a small label-marginal overlap is not excluded.",
+  "No mechanism experiments (patching, ablation, attention patterns) were run; 22 of 25 budgeted experiments unused.",
+  "verify_hypothesis was not run: there is no hypothesis to verify."
+ ],
+ "open_questions": [
+  "What function does the model compute on its true outputs? Answering needs a dataset whose answers are the model's actual argmax outputs.",
+  "The task description says the answers are the model's own outputs; the measurements contradict that for this dataset path. Is the dataset a deliberate shuffled-label control?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 null result: no mechanism claimed",
+ "cited": [
+  "E0002",
+  "E0003"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 1,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.5,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0002",
+    "hypothesis": "The dataset answers are the model's own outputs, so the model reproduces them at the last position nearly perfectly.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.9,
+     "statement": "The model outputs the dataset answer on at least 90% of clean inputs."
+    },
+    "observed": 0.405
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

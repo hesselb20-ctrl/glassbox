@@ -1,0 +1,64 @@
+{
+ "title": "t1 (null-task-shuffled): no behaviour to explain, baseline at chance",
+ "label": "no mechanism: baseline at chance",
+ "behavior": "BOS + 4 tokens from 6 symbols -> one output symbol at the last position, scored against the answers of dataset task 'bench' (benchmarks/glassbox-bench/seed-1/tasks/t1).",
+ "summary": "On local-full (full precision) the model's top token matches the scored answer on 19% of 200 inputs, which is chance for 6 symbols (16.7%); the mean logit difference is 1.10 with std 14.96, indistinguishable from the corrupt-input value 1.46. The pre-registered prediction (accuracy >= 0.9) was refuted. The investigation was stopped at step 1: no function was recovered, no circuit is claimed, and verify_hypothesis was not run. 2 of 25 experiments used.",
+ "pseudocode": "# No algorithm recovered. The scored labels are not predictable from the model's output (E0002),\n# so no predict() is offered.",
+ "claims": [
+  {
+   "text": "The model does not produce the scored answers: clean accuracy 0.19 on 200 inputs (chance 0.167), mean logit diff 1.10 +/- 14.96 vs 1.46 on corrupt inputs (local-full, full precision).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The pre-registered prediction that accuracy would be >= 0.9 was refuted; the alternative 'answers unrelated to the model's outputs' fits the observed number.",
+   "evidence": [
+    "E0002"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002"
+ ],
+ "limitations": [
+  "No mechanism, function, or component attribution is claimed. No held-out verification was run because there was nothing to verify.",
+  "Observation, not a tested claim: the four example predictions in E0002 (lo, nu, fo, po) equal the first four answers listed by the dataset view in E0001, while the 'expected' labels used for scoring differ. This suggests the model is deterministic and confident, and that the scoring labels are decoupled from the inputs (as the investigation name 'null-task-shuffled' implies). It rests on 4 examples and one exploratory run.",
+  "Only one dataset seed (0, n=200) was examined."
+ ],
+ "open_questions": [
+  "Under un-shuffled labels (the model's own outputs), what function does the model compute and which heads/MLPs implement it? That needs a separate investigation with a non-null dataset."
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 no mechanism: baseline at chance",
+ "cited": [
+  "E0002"
+ ],
+ "prediction_record": {
+  "preregistered": 1,
+  "run": 1,
+  "not_run": [],
+  "confirmed": 0,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.0,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0002",
+    "hypothesis": "The model reproduces the dataset answers at the last position (the answers are stated to be its own outputs), so there is a behaviour to explain.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.9,
+     "statement": "The model's top token at the last position matches the dataset answer on at least 90% of 200 inputs."
+    },
+    "observed": 0.19
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

@@ -1,0 +1,15 @@
+{
+ "benchmark": "t7__null-weight-shuffled",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 100.1,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 65.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 15,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: null result — the loaded model does not do the behaviour, so I claim no circuit and ran no verification.**\n\nI stopped at the baseline step, as the protocol says to when accuracy is at chance. All numbers are from `local-full` (full precision).\n\n- **Algorithm:** none recovered. The dataset labels follow a clean rule — output the highest-priority symbol present, with pa > bo > pu > ri > {so, ti} — but that describes the labels, not these weights.\n- **Baseline:** the model matches the labelled outputs on 2.5% of 200 prompts (E0003) and 2.8% of 500 fresh prompts (E0004). Chance over 6 symbols is 16.7%.\n- **Margin:** the mean logit difference is about zero (0.001 and -0.022, std about 0.16), the same as on corrupt prompts. The top prediction is often BOS or PAD, which are never valid outputs.\n- **Circuit:** no heads or MLP layers claimed. The one attribution screen (E0002, exploratory) ran on a metric that is noise, so its scores mean nothing.\n- **Verification:** `verify_hypothesis` was not run, because there was no mechanism to test.\n- **Prediction record:** 2 pre-registered, 1 confirmed, 1 refuted (hit rate 0.5). The refuted one was my opening prediction that accuracy would be at least 98%; the confirmed one was the replication predicting at or below chance.\n- **Budget:** 4 of 25 experiments used.\n\nThe brief says the dataset answers are the model's own outputs; for the weights actually loaded, that is not the case. The investigation name suggests this is a weight-shuffled null control, but I did not test that.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\nReport: `benchmarks\\glassbox-bench\\seed-1\\runs\\t7__null-weight-shuffled\\report\\report.md` (and `report.html` alongside it)."
+}

@@ -1,0 +1,15 @@
+{
+ "benchmark": "t6__null-weight-shuffled",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 158.0,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 126.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 13,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: no mechanism found, nothing verified.** The loaded model does not perform the behaviour, so I stopped at the baseline step as the protocol prescribes.\n\n**What the experiments showed (local-full, full precision):**\n- **Baseline, seed 1 (E0002):** the model matches the dataset's recorded answers on only 34.0% of 200 inputs. My pre-registered prediction of at least 99% was refuted.\n- **Replication, seed 2 (E0003):** 34.5% on 400 fresh inputs, inside the pre-registered 0.20–0.50 majority-class band. Confirmed.\n- **Why 34% is chance level:** the label \"3\" covers roughly 37% of the seed-0 sample (E0001), and all 8 example predictions shown across both baselines are \"3\" regardless of input.\n- **Logit differences are degenerate:** std around 12,000 on a mean of a few hundred, with clean and corrupt means of the same order even though the inputs differ.\n\n**Algorithm:** none recovered. No function, heads or MLP layers are claimed; any circuit found by pressing on would have been explaining noise.\n\n**Verification numbers:** none. `verify_hypothesis` was not run because there was no hypothesis to test.\n\n**Prediction hit rate:** 1 of 2 (one refuted, one confirmed).\n\n**Experiments used:** 3 of 25 (one dataset inspection, two baselines).\n\n**Limits:**\n- I did not measure the full output distribution, so \"the model always outputs 3\" is suggested but not claimed.\n- I could not identify the labelling function by hand from the 64 examples; the simple counting and comparison rules I tried all failed.\n- The task says the answers are the model's own outputs. That is not true of the weights that were loaded. The investigation name suggests a weight-shuffled null model behind the same path, but I did not confirm that.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\nThe report is in `benchmarks\\glassbox-bench\\seed-1\\runs\\t6__null-weight-shuffled\\report\\` (`report.md` and `report.html`)."
+}

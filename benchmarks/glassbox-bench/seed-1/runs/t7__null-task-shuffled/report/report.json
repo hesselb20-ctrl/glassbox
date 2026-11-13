@@ -1,0 +1,95 @@
+{
+ "title": "t7 (null-task-shuffled): no labelled behaviour to explain",
+ "label": "null result - no mechanism claimed",
+ "behavior": "BOS + 4 tokens from 6 symbols -> one symbol at the last position (glassbox-bench seed-1 t7, dataset task 'bench'). Backend: local-full, full precision.",
+ "summary": "The investigation stopped at step 1. Against the labels the lab scores with, the model is at chance: accuracy 0.375 and mean logit difference 0.38 +/- 32.4 on 200 inputs (E0002), which is what the label marginal alone gives. A follow-up diagnostic with explicit inputs and the answers printed in the dataset view reached only 0.50 on 24 rows (E0005). Both pre-registered predictions were refuted. No function, circuit or predict() is claimed, and verify_hypothesis was not run because there is no validated behaviour to verify.",
+ "pseudocode": "# No algorithm recovered. The labels supplied for this task are not the model's outputs (E0002, E0005),\n# so no predict(tokens, prompt) can be justified from this investigation.",
+ "claims": [
+  {
+   "text": "On the task's own metric the model performs at chance: clean accuracy 0.375, mean logit diff 0.38 with std 32.4 (corrupt mean 0.62), n=200, local-full.",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The answers shown in the dataset view (which fit 'max under the ordering pa>bo>pu>ri>ti>so' on the rows checked) are not the model's outputs either: with explicit inputs and those labels accuracy is 0.50 on 24 rows.",
+   "evidence": [
+    "E0005",
+    "E0001"
+   ]
+  },
+  {
+   "text": "No component can be assigned a role: mean-ablating any single head or MLP moves the task metric by less than 1 logit against a per-example std of 32, and every ablation nominally 'improves' it, which is the signature of a metric with no signal.",
+   "evidence": [
+    "E0002",
+    "E0003",
+    "E0004"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002",
+  "E0005"
+ ],
+ "limitations": [
+  "No circuit, no algorithm and no held-out verification: the investigation was stopped as the protocol requires when baseline accuracy is at chance.",
+  "The model's true input-output function was not characterised. The lab exposes model predictions only for 4 example rows per baseline, so the model may well compute something systematic that neither label set captures.",
+  "E0005 used only 24 rows; 0.50 is above the 0.375 marginal-chance figure but that gap is not statistically meaningful at n=24 and was not followed up.",
+  "E0003 and E0004 are exploratory and are cited only alongside the pre-registered E0002."
+ ],
+ "open_questions": [
+  "Why does the brief say the task answers are the model's own outputs when E0002 shows they are not? In E0002 the 'expected' labels differed from the answers listed for the same rows in E0001, consistent with the labels having been shuffled relative to the inputs.",
+  "What does the model actually output across all 1296 inputs? Answering this needs a primitive that returns raw argmax predictions per input."
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 null result - no mechanism claimed",
+ "cited": [
+  "E0001",
+  "E0002",
+  "E0003",
+  "E0004",
+  "E0005"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 0,
+  "refuted": 2,
+  "inconclusive": 0,
+  "hit_rate": 0.0,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0002",
+    "hypothesis": "The model deterministically outputs a symbol at the last position; since dataset answers are the model's own outputs, clean accuracy should be ~1.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.95,
+     "statement": "clean accuracy at least 0.95"
+    },
+    "observed": 0.375
+   },
+   {
+    "prereg": "N0008",
+    "experiment": "E0005",
+    "hypothesis": "Diagnostic: the model's outputs on the first 24 rows of E0001 equal the answers printed in the E0001 dataset view (which fit 'max under the ordering pa>bo>pu>ri>ti>so'), so the chance-level baseline is a label/input misalignment in the scored task, not a noise model.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.9,
+     "statement": "with explicit inputs and the E0001-view labels, accuracy is at least 0.9"
+    },
+    "observed": 0.5
+   }
+  ]
+ },
+ "exploratory_runs": [
+  "E0003",
+  "E0004"
+ ]
+}

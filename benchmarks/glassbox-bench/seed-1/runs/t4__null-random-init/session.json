@@ -1,0 +1,15 @@
+{
+ "benchmark": "t4__null-random-init",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 108.8,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 74.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 14,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: null finding. No function recovered, no circuit claimed, nothing verified.** The model doesn't do the behaviour, so I stopped after the baseline, as the protocol prescribes.\n\n**What the experiments showed** (local-full, full precision):\n- **Accuracy is at chance.** The model matches the dataset answers on 9% of 200 prompts (E0002, seed 0) and 11.75% of 400 prompts (E0003, seed 1). Chance is 14% over the 7-token vocabulary, or 20% over the 5 symbols.\n- **There is no margin for the labelled answer.** The logit difference between the labelled answer and a wrong symbol averages -0.07 and -0.08, with a standard deviation of about 0.27.\n- **The task premise did not hold.** The brief says the dataset answers are the model's own outputs; the lab's baseline contradicts that. In the examples shown the model mostly emits `ko` or `fu` regardless of the expected answer.\n\n**Algorithm:** none. Any `predict()` fitted to these labels would describe the labels, not the model, so I did not write one.\n\n**Verification numbers:** none. `verify_hypothesis` was not run, because there is no circuit to test; the report status is \"unverified (no verification run)\".\n\n**Prediction record:** 2 pre-registered, 1 confirmed, 1 refuted (50% hit rate). The refuted one was my opening prediction that accuracy would be at least 99%; the confirmed one was the replication predicting it would stay at or below 30%.\n\n**Budget:** 3 of 25 experiments used (one dataset inspection, two baselines).\n\n**Not determined:** whether the checkpoint is an untrained control or the labels belong to a different model, and whether the model's own low-margin output map has any compact description. Both are listed as open questions in the report.\n\n[A sentence about the owner's personal note-keeping instructions was removed.] \n\nReport: `benchmarks\\glassbox-bench\\seed-1\\runs\\t4__null-random-init\\report\\report.md` (with `report.html` alongside)."
+}

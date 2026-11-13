@@ -1,0 +1,84 @@
+{
+ "title": "t7 (null-weight-shuffled): no behaviour found, no circuit claimed",
+ "label": "null result: no mechanism",
+ "behavior": "BOS + 4 tokens from 6 symbols; the model is said to output one symbol at the last position by a deterministic function.",
+ "summary": "The loaded checkpoint does not do the behaviour. On local-full (full precision) its last-position output matches the dataset's labelled outputs on 2.5% of 200 prompts (E0003) and 2.8% of 500 fresh prompts (E0004), below the 1/6 chance level, with a mean logit difference indistinguishable from zero (0.001 and -0.022, std about 0.16) and frequent top predictions of BOS and PAD, which are never valid outputs. The investigation stopped at the baseline step: there is no mechanism to explain, so no heads or MLP layers are claimed and no verification was run.",
+ "pseudocode": "# No algorithm recovered.\n# The dataset labels (E0001) are consistent with: return the highest-priority symbol present,\n# priority pa > bo > pu > ri > {so, ti}. This describes the LABELS only; the loaded weights do not\n# compute it (E0003, E0004), so no predict() is offered for the model.",
+ "claims": [
+  {
+   "text": "The loaded model does not reproduce the labelled outputs: accuracy 0.025 on n=200 (pre-registered prediction of >= 0.98 was refuted).",
+   "evidence": [
+    "E0003"
+   ]
+  },
+  {
+   "text": "The failure replicates on a fresh, larger sample: accuracy 0.028 on n=500, at or below chance as pre-registered (<= 0.2); mean logit diff -0.022, std 0.15.",
+   "evidence": [
+    "E0004"
+   ]
+  },
+  {
+   "text": "The model has no confident output on this task: the logit difference between labelled and alternative answer is about zero on both clean and corrupt prompts, and top predictions include BOS and PAD.",
+   "evidence": [
+    "E0003",
+    "E0004"
+   ]
+  },
+  {
+   "text": "No attention head or MLP layer is claimed as part of a circuit; the attribution screen was computed on a metric that is noise (base -0.018, source 0.001) and is not interpretable.",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0003",
+  "E0004"
+ ],
+ "limitations": [
+  "The task brief states that the dataset answers are the model's own outputs; that is contradicted by E0003/E0004 for the weights actually loaded. I did not determine why (the investigation name suggests a weight-shuffled null control, but that was not tested).",
+  "The rule read off the labels (priority pa > bo > pu > ri > {so, ti}) comes from inspecting 64 examples in E0001 only; the relative order of so and ti was not determined, and it is not a claim about the model.",
+  "No verify_hypothesis run: there was no hypothesis about a mechanism to verify.",
+  "I did not characterise what the loaded weights do compute (their near-flat logits were not analysed further)."
+ ],
+ "open_questions": [
+  "Do the labels belong to a different (unshuffled) checkpoint of t7?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 null result: no mechanism",
+ "cited": [
+  "E0002",
+  "E0003",
+  "E0004"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 1,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.5,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0003",
+    "hypothesis": "The model deterministically outputs a symbol with a clear margin; from E0001 the outputs look like 'the highest-priority symbol present' with priority pa(7) > bo(5) > pu(4) > ri(3) > {so(6), ti(2)}. Since labels are the model's own argmax, accuracy should be 1 and the logit diff vs the corrupt-prompt answer should be clearly positive.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.98,
+     "statement": "The model reproduces its own labelled outputs on at least 98% of prompts (behaviour is real and deterministic)."
+    },
+    "observed": 0.025
+   }
+  ]
+ },
+ "exploratory_runs": [
+  "E0002"
+ ]
+}

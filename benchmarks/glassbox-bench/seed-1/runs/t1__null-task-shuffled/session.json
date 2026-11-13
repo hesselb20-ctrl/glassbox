@@ -1,0 +1,15 @@
+{
+ "benchmark": "t1__null-task-shuffled",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 62.5,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 39.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 10,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: no mechanism, stopped at step 1.** The model does not do the scored behaviour, so I recovered no function, claim no circuit, and ran no verification.\n\n- **Baseline (local-full, full precision):** the model's top token matches the scored answer on 19% of 200 inputs, against 16.7% chance for 6 symbols (E0002). Mean logit difference is 1.10 ± 14.96, versus 1.46 on corrupt inputs.\n- **Algorithm:** none. No `predict()` is offered.\n- **Verification:** `verify_hypothesis` was not run, because there was nothing to verify.\n- **Prediction record:** 1 pre-registered, 0 confirmed, 1 refuted (I predicted accuracy ≥ 0.9 and observed 0.19), so the hit rate is 0%.\n- **Budget:** 2 of 25 experiments used (one dataset inspection, one baseline).\n\nOne thing I noticed but did not test: the four example predictions in the baseline (`lo`, `nu`, `fo`, `po`) equal the first four answers shown by the dataset view (E0001), while the labels the lab scored against were different. That suggests the scoring labels are decoupled from the inputs, as the investigation name `null-task-shuffled` implies, rather than the model being broken. It rests on four examples, so it is in the report as a limitation, not a claim.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\nThe report is in `benchmarks\\glassbox-bench\\seed-1\\runs\\t1__null-task-shuffled\\report\\` (`report.md` and `report.html`)."
+}

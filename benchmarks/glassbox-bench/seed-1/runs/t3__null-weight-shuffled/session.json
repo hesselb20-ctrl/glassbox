@@ -1,0 +1,15 @@
+{
+ "benchmark": "t3__null-weight-shuffled",
+ "prompt_arguments": "",
+ "wall_clock_seconds": 97.0,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 64.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 12,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: no behaviour found, so nothing is verified and no circuit is claimed.** The checkpoint does not produce the dataset's answers, so I stopped at step 1 as the protocol says.\n\n**What I measured (local-full, full precision)**\n- **E0002, baseline, seed 1, n=200:** accuracy against the dataset answers was 0.04. The logit difference had mean -107 and std 4096. I had predicted at least 0.99, so this prediction was refuted.\n- **E0003, baseline, seed 2, n=200:** accuracy was again 0.04, with logit difference mean -281 and std 4097. I had predicted at most 0.2, so this one was confirmed.\n- In both runs the example top predictions were often input symbols (`va`, `ve`) rather than D, E or M.\n\n**Algorithm:** none recovered. With 4% agreement, any `predict()` or circuit would describe the labels and not this model.\n\n**Verification:** `verify_hypothesis` was not run, because there is no hypothesis to test. The report status reads \"unverified (no verification run) · no behaviour found (null result)\".\n\n**Prediction record:** 2 pre-registered, 2 run, 1 confirmed, 1 refuted (hit rate 0.5).\n\n**Budget:** 3 of 25 experiments used (one dataset inspection, two baselines).\n\n**Observation about the labels only:** by hand, 62 of the 64 labels in E0001 fit \"E if there are more `se` than `ka`, M if more `ka` than `se`, D if equal\". I did not test this against the model, and it is listed in the report as a limitation, not a claim.\n\nThe task brief says the dataset answers are the model's own outputs, which these baselines contradict. The investigation name suggests this checkpoint is a weight-shuffled null of the model that generated the labels, but I did not test that.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\nReport: `benchmarks\\glassbox-bench\\seed-1\\runs\\t3__null-weight-shuffled\\report\\report.md` (with `report.html` alongside)."
+}

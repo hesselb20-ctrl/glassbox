@@ -1,0 +1,77 @@
+{
+ "title": "t7 (null-random-init): no behaviour to explain",
+ "label": "null finding: model does not perform the behaviour",
+ "behavior": "BOS + 4 tokens from 6 symbols; the model is said to output one symbol at the last position, with dataset answers equal to the model's own outputs.",
+ "summary": "The checkpoint does not do the labelled behaviour. On local-full (full precision) its top token matches the dataset answer on 25.5% of 200 prompts (E0003) and 20.0% of 400 fresh prompts (E0004), near the 1/6 chance level, with a mean answer-vs-foil logit difference of about zero (std 0.27). The dataset labels themselves follow a clean rule (maximum under the ordering pa > bo > pu > ri > ti > so, read off E0001), but the model does not implement it. The pre-registered prediction that the model reproduces its labels was refuted, and the investigation stopped there: no circuit is claimed and nothing was submitted for verification.",
+ "pseudocode": "# No algorithm recovered: the model's output does not track the dataset answers (E0003, E0004).\n# For reference only, the rule the dataset LABELS follow (from E0001, not implemented by this checkpoint):\n#   order = [7, 5, 4, 3, 2, 6]  # pa > bo > pu > ri > ti > so\n#   answer = first symbol in order that appears in tokens[1:]",
+ "claims": [
+  {
+   "text": "The model does not perform the labelled behaviour: accuracy against the dataset answers is 0.255 (n=200, seed 0), against a pre-registered prediction of >= 0.95.",
+   "evidence": [
+    "E0003"
+   ]
+  },
+  {
+   "text": "The failure replicates on a fresh, larger sample: accuracy 0.20 (n=400, seed 1), pre-registered <= 0.40; mean logit difference -0.036 with std 0.27, and the model sometimes outputs PAD, which is not one of the 6 symbols.",
+   "evidence": [
+    "E0004"
+   ]
+  },
+  {
+   "text": "No attention head or MLP layer can be assigned to the behaviour: there is no logit margin for any component to carry (clean mean logit diff -0.020, corrupt -0.009).",
+   "evidence": [
+    "E0003",
+    "E0004"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0003",
+  "E0004"
+ ],
+ "limitations": [
+  "Only 4 of 25 experiments were used; the protocol says to stop when the baseline is at chance.",
+  "The labelling rule (max under pa > bo > pu > ri > ti > so) was checked by hand on about 40 of the 200 rows of E0001, not exhaustively, and it describes the labels, not the model.",
+  "The exploratory attribution screen E0002 was run before the baseline; its effects are normalised by a clean-corrupt gap of about 0.01 and should be ignored.",
+  "verify_hypothesis was not run: there is no hypothesis or circuit to verify.",
+  "Whether the checkpoint is untrained or merely mismatched with the dataset labels was not tested; only that it does not produce the labelled outputs."
+ ],
+ "open_questions": [
+  "The task statement says the dataset answers are the model's own outputs; here they are not. Is the checkpoint a deliberate null (the investigation name suggests so) or is the task folder mis-paired?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 null finding: model does not perform the behaviour",
+ "cited": [
+  "E0003",
+  "E0004"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 1,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.5,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0003",
+    "hypothesis": "The model deterministically outputs the maximum of the 4 input symbols under the ordering pa(7) > bo(5) > pu(4) > ri(3) > ti(2) > so(6); the dataset answers are its own argmax, so baseline accuracy is ~1 with a positive logit diff.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.95,
+     "statement": "The model's top token matches the dataset answer on at least 95% of prompts"
+    },
+    "observed": 0.255
+   }
+  ]
+ },
+ "exploratory_runs": [
+  "E0002"
+ ]
+}
