@@ -30,3 +30,6 @@ tutorial/build/
 
 # local runs (benchmarks/ and demos/ are committed on purpose)
 glassbox_runs/
+
+# audit caches: prompts from third-party datasets and cached activations stay local
+cache/

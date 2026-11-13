@@ -1,0 +1,7070 @@
+[
+{
+"comparison": "edit",
+"tensor": "blk.0.attn_qkv.weight",
+"layer": 0,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04535630561066122,
+"delta_norm": 5.151798801048353,
+"top1_energy": 0.0015746962983176965,
+"top4_energy": 0.006096928126472654,
+"effective_rank": 2552.90420658434,
+"sigma1": 0.20443596330020025,
+"sigma2": 0.20212379913503184,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0114393464553064,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.0.ffn_down.weight",
+"layer": 0,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.09758102487650776,
+"delta_norm": 9.778257719421035,
+"top1_energy": 0.02868456668222991,
+"top4_energy": 0.033483127205962984,
+"effective_rank": 909.7984716697644,
+"sigma1": 1.6560964504945905,
+"sigma2": 0.45200884308023087,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.6638585192472353,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.0.ffn_up.weight",
+"layer": 0,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q3_K",
+"Q3_K"
+],
+"relative_norm": 0.14242857108743373,
+"delta_norm": 13.168172973991986,
+"top1_energy": 0.0010662992741660123,
+"top4_energy": 0.0038519507289308127,
+"effective_rank": 2740.813719359131,
+"sigma1": 0.4299966573031142,
+"sigma2": 0.4181369165423972,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0283632951110513,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.0.ssm_out.weight",
+"layer": 0,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.03881073490281391,
+"delta_norm": 3.420953266682251,
+"top1_energy": 0.10078434917708992,
+"top4_energy": 0.10584459946859283,
+"effective_rank": 95.1627888692249,
+"sigma1": 1.0860346688465323,
+"sigma2": 0.17075394689039683,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 6.360231717183287,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.1.attn_qkv.weight",
+"layer": 1,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07425596268197351,
+"delta_norm": 8.303019239761472,
+"top1_energy": 0.0008816137913662232,
+"top4_energy": 0.0032596442090967316,
+"effective_rank": 2814.7332449744467,
+"sigma1": 0.24653309729223008,
+"sigma2": 0.23811909049707009,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0353352886473566,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.1.ffn_down.weight",
+"layer": 1,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ4_NL",
+"IQ4_NL"
+],
+"relative_norm": 0.08613088222886507,
+"delta_norm": 8.774689714211434,
+"top1_energy": 0.0031947406042984444,
+"top4_energy": 0.005712939653725979,
+"effective_rank": 3431.97558257722,
+"sigma1": 0.49596333185193664,
+"sigma2": 0.2579415891140979,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.9227738091996949,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.1.ffn_up.weight",
+"layer": 1,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.0795687489704481,
+"delta_norm": 7.818250169896913,
+"top1_energy": 0.0009674070274038657,
+"top4_energy": 0.003544566237194314,
+"effective_rank": 2889.6029273743457,
+"sigma1": 0.24317234444928762,
+"sigma2": 0.23764452662143853,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0232608674242885,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.1.ssm_out.weight",
+"layer": 1,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.018288704963934088,
+"delta_norm": 1.646323693905516,
+"top1_energy": 0.06472495811595988,
+"top4_energy": 0.06937952131318734,
+"effective_rank": 218.24290944918576,
+"sigma1": 0.41884286115655955,
+"sigma2": 0.06761456727133065,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 6.194565432561064,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.2.attn_qkv.weight",
+"layer": 2,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.0745989595086477,
+"delta_norm": 8.489664070586139,
+"top1_energy": 0.0008661458554921411,
+"top4_energy": 0.003185081050881124,
+"effective_rank": 2842.2948273745887,
+"sigma1": 0.24985383609161857,
+"sigma2": 0.2403214792899903,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0396650221602781,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.2.ffn_down.weight",
+"layer": 2,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ4_NL",
+"IQ4_NL"
+],
+"relative_norm": 0.08773661542195642,
+"delta_norm": 9.073259583353385,
+"top1_energy": 0.0050905546608821985,
+"top4_energy": 0.008112238430925761,
+"effective_rank": 3285.2673021883807,
+"sigma1": 0.647360041098421,
+"sigma2": 0.30236581515236,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.140982904341289,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.2.ffn_up.weight",
+"layer": 2,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07727376969165477,
+"delta_norm": 7.7424332929927,
+"top1_energy": 0.0009211692284909295,
+"top4_energy": 0.0032545595760696913,
+"effective_rank": 3016.971384655736,
+"sigma1": 0.2349888106999165,
+"sigma2": 0.22129190042557834,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0618952173486553,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.2.ssm_out.weight",
+"layer": 2,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04407332031850077,
+"delta_norm": 4.001433539509341,
+"top1_energy": 0.013573581830621368,
+"top4_energy": 0.01720207216313728,
+"effective_rank": 1721.9258890846284,
+"sigma1": 0.4661898790308886,
+"sigma2": 0.14160435965190463,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.2922000436772443,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.3.attn_output.weight",
+"layer": 3,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.018625617169845635,
+"delta_norm": 1.6636178258179055,
+"top1_energy": 0.07091160187403202,
+"top4_energy": 0.0868581016064613,
+"effective_rank": 181.79730850346448,
+"sigma1": 0.44300865724952904,
+"sigma2": 0.16380913576966416,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.704419720963877,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.3.attn_q.weight",
+"layer": 3,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.03825754834099854,
+"delta_norm": 5.232063344228547,
+"top1_energy": 0.0009319507966388265,
+"top4_energy": 0.003156014734500522,
+"effective_rank": 3071.2071566082195,
+"sigma1": 0.1597237453113087,
+"sigma2": 0.1496703632437468,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0671701588055171,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.3.ffn_down.weight",
+"layer": 3,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ4_NL",
+"IQ4_NL"
+],
+"relative_norm": 0.08709456292206641,
+"delta_norm": 8.995365725112219,
+"top1_energy": 0.0038468153027096047,
+"top4_energy": 0.008069001651196046,
+"effective_rank": 3402.9961234320986,
+"sigma1": 0.5579168688466286,
+"sigma2": 0.4537430070607215,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.2295878066765802,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.3.ffn_up.weight",
+"layer": 3,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.08140703422269535,
+"delta_norm": 8.300601583963347,
+"top1_energy": 0.0007733685903487144,
+"top4_energy": 0.002878145580589608,
+"effective_rank": 3199.9313244773816,
+"sigma1": 0.2308356245360753,
+"sigma2": 0.2284201746648879,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.010574590772164,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.4.attn_qkv.weight",
+"layer": 4,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07794173238883399,
+"delta_norm": 9.006527061812273,
+"top1_energy": 0.0008480186633799151,
+"top4_energy": 0.0031849840153055395,
+"effective_rank": 2852.5924310180244,
+"sigma1": 0.26227691306275475,
+"sigma2": 0.2547552529441178,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0295250442599777,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.4.ffn_down.weight",
+"layer": 4,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.08833734143459128,
+"delta_norm": 9.141202167603925,
+"top1_energy": 0.001342170291948593,
+"top4_energy": 0.0033469048686979946,
+"effective_rank": 3710.0680096693563,
+"sigma1": 0.3348938134549421,
+"sigma2": 0.24426293949021594,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.371038169580189,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.4.ffn_up.weight",
+"layer": 4,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.08099359700528365,
+"delta_norm": 8.342466953204243,
+"top1_energy": 0.0007729820928668738,
+"top4_energy": 0.002853241843695746,
+"effective_rank": 3222.041204003718,
+"sigma1": 0.23194190055383732,
+"sigma2": 0.2274312404018408,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0198330719386959,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.4.ssm_out.weight",
+"layer": 4,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04427362705742643,
+"delta_norm": 4.028131850616593,
+"top1_energy": 0.03214331241413861,
+"top4_energy": 0.036027402149858986,
+"effective_rank": 708.7552871401757,
+"sigma1": 0.7221858789686186,
+"sigma2": 0.14965319687168782,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 4.82572971419928,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.5.attn_qkv.weight",
+"layer": 5,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08530471230851333,
+"delta_norm": 9.675799422323049,
+"top1_energy": 0.000871277794001693,
+"top4_energy": 0.002862041033940772,
+"effective_rank": 3134.4824560815982,
+"sigma1": 0.2856045879428896,
+"sigma2": 0.25113256086234403,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.1372662587526479,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.5.ffn_down.weight",
+"layer": 5,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.08688617491819892,
+"delta_norm": 8.957160462373102,
+"top1_energy": 0.0021741321736529224,
+"top4_energy": 0.005104713272894224,
+"effective_rank": 3645.831603960345,
+"sigma1": 0.41765080795166876,
+"sigma2": 0.37525228609148154,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.1129867116914807,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.5.ffn_up.weight",
+"layer": 5,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07559119331427451,
+"delta_norm": 7.722152978479234,
+"top1_energy": 0.0008167166314675672,
+"top4_energy": 0.003003266630192072,
+"effective_rank": 3117.2273544864556,
+"sigma1": 0.22068565326914671,
+"sigma2": 0.21467921407489743,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.027978671433713,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.5.ssm_out.weight",
+"layer": 5,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.042706394895762466,
+"delta_norm": 3.8403421497020713,
+"top1_energy": 0.024526980094946832,
+"top4_energy": 0.029023536596240223,
+"effective_rank": 1008.2430553894416,
+"sigma1": 0.6014395151161361,
+"sigma2": 0.1646237891655811,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.6534180033433636,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.6.attn_qkv.weight",
+"layer": 6,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07366090345402906,
+"delta_norm": 8.505677478382067,
+"top1_energy": 0.000793306743439603,
+"top4_energy": 0.002991301411712774,
+"effective_rank": 2895.810262845463,
+"sigma1": 0.23956837328169375,
+"sigma2": 0.2318909718541734,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0331078065098125,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.6.ffn_down.weight",
+"layer": 6,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.08648407013401975,
+"delta_norm": 8.824681359935065,
+"top1_energy": 0.0025978546907055007,
+"top4_energy": 0.004815046564955135,
+"effective_rank": 3598.324447082666,
+"sigma1": 0.44978654593898604,
+"sigma2": 0.24667407050948378,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.8234042394889383,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.6.ffn_up.weight",
+"layer": 6,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07488890584055889,
+"delta_norm": 7.615405457099655,
+"top1_energy": 0.0015421533385374983,
+"top4_energy": 0.00390751037522259,
+"effective_rank": 3087.736084082464,
+"sigma1": 0.29905895405780647,
+"sigma2": 0.22447932792109695,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.3322338267286855,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.6.ssm_out.weight",
+"layer": 6,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.016825143168447874,
+"delta_norm": 1.510005444720036,
+"top1_energy": 0.02078396003022454,
+"top4_energy": 0.025275119541507168,
+"effective_rank": 1173.6601851615912,
+"sigma1": 0.21769209681869203,
+"sigma2": 0.06726641975655051,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.2362670349716782,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.7.attn_output.weight",
+"layer": 7,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04492449280474631,
+"delta_norm": 3.9028543352053773,
+"top1_energy": 0.030520963587810798,
+"top4_energy": 0.035562656084515976,
+"effective_rank": 757.4098474501408,
+"sigma1": 0.6818384104072517,
+"sigma2": 0.20575513631388528,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.3138342139225525,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.7.attn_q.weight",
+"layer": 7,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.06784322987058275,
+"delta_norm": 8.795602714195391,
+"top1_energy": 0.0007171911733834379,
+"top4_energy": 0.002771696523601377,
+"effective_rank": 3037.421138867296,
+"sigma1": 0.23554998049278156,
+"sigma2": 0.23080774017098635,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0205462794197546,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.7.ffn_down.weight",
+"layer": 7,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.08193307848215406,
+"delta_norm": 8.444767309400806,
+"top1_energy": 0.0013661685976930666,
+"top4_energy": 0.0033064239288940734,
+"effective_rank": 3680.988914965758,
+"sigma1": 0.31213310788643017,
+"sigma2": 0.2213381951109564,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.4102089688133512,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.7.ffn_up.weight",
+"layer": 7,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.0798352851696745,
+"delta_norm": 8.196578221402667,
+"top1_energy": 0.0007792930297512614,
+"top4_energy": 0.002778021060252839,
+"effective_rank": 3236.879176733034,
+"sigma1": 0.22881420569150138,
+"sigma2": 0.21575001163757201,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0605524604831784,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.8.attn_qkv.weight",
+"layer": 8,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.0768924496487815,
+"delta_norm": 8.752258702027671,
+"top1_energy": 0.0008216599536984271,
+"top4_energy": 0.003083895538274803,
+"effective_rank": 2863.2242709871866,
+"sigma1": 0.2508800956323316,
+"sigma2": 0.24320510772718526,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.03155767564617,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.8.ffn_down.weight",
+"layer": 8,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.0855953951856986,
+"delta_norm": 8.872430939151442,
+"top1_energy": 0.0018680098968860688,
+"top4_energy": 0.003668177850439427,
+"effective_rank": 3694.5564320281896,
+"sigma1": 0.3834707245169542,
+"sigma2": 0.21917501686198954,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.749609649891888,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.8.ffn_up.weight",
+"layer": 8,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07475380857899114,
+"delta_norm": 7.698542266567967,
+"top1_energy": 0.0008699757381012261,
+"top4_energy": 0.0030042008430825034,
+"effective_rank": 3121.9758979884896,
+"sigma1": 0.22707120731797747,
+"sigma2": 0.21010500117466147,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0807510818327066,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.8.ssm_out.weight",
+"layer": 8,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.042582284818944056,
+"delta_norm": 3.802694018183012,
+"top1_energy": 0.022455869731677486,
+"top4_energy": 0.025855583124975278,
+"effective_rank": 1125.1818501250748,
+"sigma1": 0.5698444484827262,
+"sigma2": 0.13026926124564087,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 4.3743584866748035,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.9.attn_qkv.weight",
+"layer": 9,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07689190546859262,
+"delta_norm": 8.750558434725543,
+"top1_energy": 0.0007863270265252391,
+"top4_energy": 0.0030356579692081324,
+"effective_rank": 2862.01536072943,
+"sigma1": 0.2453789878516617,
+"sigma2": 0.24084790778823428,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.018813034769691,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.9.ffn_down.weight",
+"layer": 9,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.08106716893243618,
+"delta_norm": 8.359417923884449,
+"top1_energy": 0.0019809590021528426,
+"top4_energy": 0.003817174357200238,
+"effective_rank": 3653.684751882894,
+"sigma1": 0.3720606854206386,
+"sigma2": 0.21005023938626044,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.7712937938454707,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.9.ffn_up.weight",
+"layer": 9,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07487319890025797,
+"delta_norm": 7.693550206484746,
+"top1_energy": 0.0008389886336731585,
+"top4_energy": 0.0029729524062557045,
+"effective_rank": 3110.280048591069,
+"sigma1": 0.2228459937247232,
+"sigma2": 0.20778061035294831,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0725062042419835,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.9.ssm_out.weight",
+"layer": 9,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.0426353446076957,
+"delta_norm": 3.8099931011291805,
+"top1_energy": 0.015884014667115906,
+"top4_energy": 0.019745469749526307,
+"effective_rank": 1550.6040882169739,
+"sigma1": 0.4801802893674685,
+"sigma2": 0.14646423152468765,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.278481608573015,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.10.attn_qkv.weight",
+"layer": 10,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07703469095368966,
+"delta_norm": 8.802247433619948,
+"top1_energy": 0.0007966541333595535,
+"top4_energy": 0.003034689861372651,
+"effective_rank": 2855.6583359121732,
+"sigma1": 0.24844398087175962,
+"sigma2": 0.24114214452085853,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.030280216531248,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.10.ffn_down.weight",
+"layer": 10,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07925116919466466,
+"delta_norm": 8.077835689849525,
+"top1_energy": 0.0007464564120766708,
+"top4_energy": 0.0023755270670763233,
+"effective_rank": 3708.087987900986,
+"sigma1": 0.22069741252864547,
+"sigma2": 0.1899456619554776,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.1618976198591782,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.10.ffn_up.weight",
+"layer": 10,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07513437759050348,
+"delta_norm": 7.652808326563958,
+"top1_energy": 0.0008896081567056197,
+"top4_energy": 0.0030640642377826213,
+"effective_rank": 3088.560315740074,
+"sigma1": 0.2282549550682544,
+"sigma2": 0.2079887951869848,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0974387099220901,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.10.ssm_out.weight",
+"layer": 10,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04251624070816344,
+"delta_norm": 3.7786324260117587,
+"top1_energy": 0.01409631244769551,
+"top4_energy": 0.018329024432209757,
+"effective_rank": 1678.9273023428802,
+"sigma1": 0.4486290643166539,
+"sigma2": 0.15578221199642245,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.879847824518994,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.11.attn_output.weight",
+"layer": 11,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04510719810913355,
+"delta_norm": 3.90012034541324,
+"top1_energy": 0.027216723736119545,
+"top4_energy": 0.03030378642528829,
+"effective_rank": 887.8753983645817,
+"sigma1": 0.6434220361488299,
+"sigma2": 0.12867556278752476,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 5.000343672180234,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.11.attn_q.weight",
+"layer": 11,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.06499383725423119,
+"delta_norm": 8.368895588301196,
+"top1_energy": 0.012117333019591793,
+"top4_energy": 0.021470137005731065,
+"effective_rank": 1903.017563972025,
+"sigma1": 0.921237634349856,
+"sigma2": 0.6206455456984711,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.4843216723856452,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.11.ffn_down.weight",
+"layer": 11,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07782298826381669,
+"delta_norm": 7.989264564151593,
+"top1_energy": 0.0023304124511788907,
+"top4_energy": 0.003983218299419602,
+"effective_rank": 3649.812848420402,
+"sigma1": 0.3856765193275221,
+"sigma2": 0.1913087221896605,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.015990253414418,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.11.ffn_up.weight",
+"layer": 11,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07472024978527676,
+"delta_norm": 7.665909164026451,
+"top1_energy": 0.0009415611643454072,
+"top4_energy": 0.0032824906997376913,
+"effective_rank": 3081.6284927652337,
+"sigma1": 0.23522741581566575,
+"sigma2": 0.22888046152394642,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.027730432949408,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.12.attn_qkv.weight",
+"layer": 12,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.11026217512710329,
+"delta_norm": 12.680003678331497,
+"top1_energy": 0.004322224797346542,
+"top4_energy": 0.007209702090104939,
+"effective_rank": 3002.739801166336,
+"sigma1": 0.8336294617183504,
+"sigma2": 0.46527035098201464,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.7917098305509154,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.12.ffn_down.weight",
+"layer": 12,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07680907763516333,
+"delta_norm": 7.881128358254661,
+"top1_energy": 0.0010543233810392536,
+"top4_energy": 0.0026482097360738355,
+"effective_rank": 3700.820030262718,
+"sigma1": 0.2559029660803562,
+"sigma2": 0.18318308123967464,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.3969792643979806,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.12.ffn_up.weight",
+"layer": 12,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07493069752270501,
+"delta_norm": 7.674941937851885,
+"top1_energy": 0.000900305592965662,
+"top4_energy": 0.003265015874712412,
+"effective_rank": 3069.9698157125918,
+"sigma1": 0.23028734495567899,
+"sigma2": 0.22656695105773997,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0164207263264573,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.12.ssm_out.weight",
+"layer": 12,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.042767243279624306,
+"delta_norm": 3.807393144073445,
+"top1_energy": 0.015543411184320073,
+"top4_energy": 0.01893760975114298,
+"effective_rank": 1580.1898644436578,
+"sigma1": 0.4746799539029123,
+"sigma2": 0.1387533336932829,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.421034588993747,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.13.attn_qkv.weight",
+"layer": 13,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07530789409983236,
+"delta_norm": 8.74698744962885,
+"top1_energy": 0.0007986860839839682,
+"top4_energy": 0.003036228728789325,
+"effective_rank": 2869.6812239598444,
+"sigma1": 0.24719891609276534,
+"sigma2": 0.2422221609181378,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0205462421595253,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.13.ffn_down.weight",
+"layer": 13,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q3_K",
+"IQ4_XS"
+],
+"relative_norm": 0.1719235271044213,
+"delta_norm": 17.552493197958192,
+"top1_energy": 0.0007747111324804524,
+"top4_energy": 0.002368201457137379,
+"effective_rank": 3807.031803827052,
+"sigma1": 0.48854965595704125,
+"sigma2": 0.42019381994734656,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.162676918994811,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.13.ffn_up.weight",
+"layer": 13,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07456872308551897,
+"delta_norm": 7.600612182347993,
+"top1_energy": 0.0008826828981122512,
+"top4_energy": 0.0032161366923940306,
+"effective_rank": 3060.783724030925,
+"sigma1": 0.22581403419999954,
+"sigma2": 0.2211463398890906,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0211068124086968,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.13.ssm_out.weight",
+"layer": 13,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.06898182843324831,
+"delta_norm": 6.1603257497059225,
+"top1_energy": 0.009250886985784131,
+"top4_energy": 0.012990330579262842,
+"effective_rank": 1975.9725340817893,
+"sigma1": 0.5925095646363686,
+"sigma2": 0.23054078775192832,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.570085625255753,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.14.attn_qkv.weight",
+"layer": 14,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07503263305745717,
+"delta_norm": 8.637973817537342,
+"top1_energy": 0.000796024950709708,
+"top4_energy": 0.0030398164483522376,
+"effective_rank": 2861.7396372235776,
+"sigma1": 0.24371105157192902,
+"sigma2": 0.23898605460892527,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0197710153872186,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.14.ffn_down.weight",
+"layer": 14,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ3_S",
+"IQ3_S"
+],
+"relative_norm": 0.13007170325731418,
+"delta_norm": 13.622924372028509,
+"top1_energy": 0.0007293959128873605,
+"top4_energy": 0.0023350830753585583,
+"effective_rank": 3667.2825727657305,
+"sigma1": 0.36791882395648995,
+"sigma2": 0.31558468881692986,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.1658323011035527,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.14.ffn_up.weight",
+"layer": 14,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q3_K",
+"IQ3_S"
+],
+"relative_norm": 0.20899872697742136,
+"delta_norm": 21.856620972826352,
+"top1_energy": 0.0006973178297521599,
+"top4_energy": 0.0023930952090440555,
+"effective_rank": 3581.518921779136,
+"sigma1": 0.5771628987143412,
+"sigma2": 0.5315310703689292,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0858497854391458,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.14.ssm_out.weight",
+"layer": 14,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07533356944441384,
+"delta_norm": 6.682553794219709,
+"top1_energy": 0.012312334616545085,
+"top4_energy": 0.015433178169635171,
+"effective_rank": 1784.0893404741041,
+"sigma1": 0.7415025834278723,
+"sigma2": 0.2251479827713532,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.293400963671515,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.15.attn_output.weight",
+"layer": 15,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07546295601991868,
+"delta_norm": 6.501588369304749,
+"top1_energy": 0.008864783938760674,
+"top4_energy": 0.012138085684322248,
+"effective_rank": 2010.8013892516242,
+"sigma1": 0.6121439299191599,
+"sigma2": 0.21886275440865693,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.796930576758505,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.15.attn_q.weight",
+"layer": 15,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07182062081040606,
+"delta_norm": 9.049038733338381,
+"top1_energy": 0.0007469442829368698,
+"top4_energy": 0.0028048706842649183,
+"effective_rank": 3026.498256709208,
+"sigma1": 0.24731277523553838,
+"sigma2": 0.2392704773380393,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0336117434418663,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.15.ffn_down.weight",
+"layer": 15,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ3_S",
+"IQ4_XS"
+],
+"relative_norm": 0.16731302172982387,
+"delta_norm": 17.12623622239795,
+"top1_energy": 0.0010774991165989184,
+"top4_energy": 0.002609802604358917,
+"effective_rank": 3801.2218682304774,
+"sigma1": 0.5621735279169296,
+"sigma2": 0.3952107314116028,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.4224652400226425,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.15.ffn_up.weight",
+"layer": 15,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07397811774177851,
+"delta_norm": 7.58629019921253,
+"top1_energy": 0.0008834192957303735,
+"top4_energy": 0.0032369585940814714,
+"effective_rank": 3068.1827708127553,
+"sigma1": 0.22548252643790015,
+"sigma2": 0.2243584247548156,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0050102940610008,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.16.attn_qkv.weight",
+"layer": 16,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07521046170589041,
+"delta_norm": 8.695534805231395,
+"top1_energy": 0.0008094572880876889,
+"top4_energy": 0.0030847535989249495,
+"effective_rank": 2862.8629320100763,
+"sigma1": 0.24739633785666554,
+"sigma2": 0.24283554367278876,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0187814111348636,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.16.ffn_down.weight",
+"layer": 16,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.0735719629605661,
+"delta_norm": 7.533302932126783,
+"top1_energy": 0.001728876516214077,
+"top4_energy": 0.003323868301413354,
+"effective_rank": 3679.9868762078027,
+"sigma1": 0.3132329346790933,
+"sigma2": 0.17401819026106966,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.8000011045349205,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.16.ffn_up.weight",
+"layer": 16,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07393937287109997,
+"delta_norm": 7.614989487893619,
+"top1_energy": 0.0009436968401971408,
+"top4_energy": 0.003333366918109667,
+"effective_rank": 3063.855419067779,
+"sigma1": 0.23392980489019763,
+"sigma2": 0.22734476465840003,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0289649961444771,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.16.ssm_out.weight",
+"layer": 16,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.06906594743703741,
+"delta_norm": 6.113043357457163,
+"top1_energy": 0.010903228964045221,
+"top4_energy": 0.015542926373291653,
+"effective_rank": 1839.827837057307,
+"sigma1": 0.6383149882352792,
+"sigma2": 0.26729971352979137,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.388012242161034,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.17.attn_qkv.weight",
+"layer": 17,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.042383949238233014,
+"delta_norm": 4.9974160583211775,
+"top1_energy": 0.0010497476842008255,
+"top4_energy": 0.003462142317343998,
+"effective_rank": 2928.3125264802043,
+"sigma1": 0.1619153304847746,
+"sigma2": 0.14956256471035861,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.082592631373621,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.17.ffn_down.weight",
+"layer": 17,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ3_S",
+"IQ4_XS"
+],
+"relative_norm": 0.1682389529680599,
+"delta_norm": 17.317524218542008,
+"top1_energy": 0.0018975336414024902,
+"top4_energy": 0.0034492144135273724,
+"effective_rank": 3777.158128314852,
+"sigma1": 0.7543632897647469,
+"sigma2": 0.3998760776618323,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.886492670868643,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.17.ffn_up.weight",
+"layer": 17,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07381980725168777,
+"delta_norm": 7.633915393059741,
+"top1_energy": 0.0009576929251978519,
+"top4_energy": 0.003343823892147697,
+"effective_rank": 3060.9403353328007,
+"sigma1": 0.23624383385744507,
+"sigma2": 0.2256414375018575,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.046987807173052,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.17.ssm_out.weight",
+"layer": 17,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.06773677226638815,
+"delta_norm": 6.015849599367167,
+"top1_energy": 0.006470691405398445,
+"top4_energy": 0.01007997162478917,
+"effective_rank": 2148.8488503029957,
+"sigma1": 0.48391859903530066,
+"sigma2": 0.21843766929620975,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.215362398776965,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.18.attn_qkv.weight",
+"layer": 18,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07542862417672506,
+"delta_norm": 8.808402579380491,
+"top1_energy": 0.0008418426002323225,
+"top4_energy": 0.003135333905763839,
+"effective_rank": 2858.9508488613296,
+"sigma1": 0.2555716076290925,
+"sigma2": 0.2478086159530493,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.031326560806562,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.18.ffn_down.weight",
+"layer": 18,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07651621047332281,
+"delta_norm": 7.8610212219181035,
+"top1_energy": 0.004207413155021218,
+"top4_energy": 0.006633820324033221,
+"effective_rank": 3463.4659145471787,
+"sigma1": 0.5099018045699047,
+"sigma2": 0.238625093899627,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.136832284639708,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.18.ffn_up.weight",
+"layer": 18,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07426103695960383,
+"delta_norm": 7.698071423056853,
+"top1_energy": 0.0012020685637825603,
+"top4_energy": 0.003692534172854697,
+"effective_rank": 3051.2132143882272,
+"sigma1": 0.2668987599806775,
+"sigma2": 0.2328813245752029,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.14607197664959,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.18.ssm_out.weight",
+"layer": 18,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07183515991225209,
+"delta_norm": 6.320760892647853,
+"top1_energy": 0.011096498502812647,
+"top4_energy": 0.01629266336153692,
+"effective_rank": 1797.303360111073,
+"sigma1": 0.6658284394864195,
+"sigma2": 0.2766331802052943,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.4069001375478405,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.19.attn_output.weight",
+"layer": 19,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04444415126005761,
+"delta_norm": 3.973569733741241,
+"top1_energy": 0.005695140031421461,
+"top4_energy": 0.009001655159405883,
+"effective_rank": 2295.7914477888994,
+"sigma1": 0.2998700157645514,
+"sigma2": 0.13359103639848932,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.244686648511864,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.19.attn_q.weight",
+"layer": 19,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07527803911112627,
+"delta_norm": 9.52292582464183,
+"top1_energy": 0.0007761396763338202,
+"top4_energy": 0.0029895937722492936,
+"effective_rank": 2978.1125989640527,
+"sigma1": 0.2653018901615157,
+"sigma2": 0.2633877696767579,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.007267309667062,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.19.ffn_down.weight",
+"layer": 19,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07722929281413854,
+"delta_norm": 8.043584116374527,
+"top1_energy": 0.0038358828992285723,
+"top4_energy": 0.006031382869261614,
+"effective_rank": 3518.1461939690475,
+"sigma1": 0.49817540000036065,
+"sigma2": 0.2488918903285696,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.0015734516006307,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.19.ffn_up.weight",
+"layer": 19,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07396085370740756,
+"delta_norm": 7.692113038463503,
+"top1_energy": 0.001153411288264593,
+"top4_energy": 0.0035545136773482496,
+"effective_rank": 3071.3462066342936,
+"sigma1": 0.26123884589970453,
+"sigma2": 0.2251899394869779,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.1600822243429363,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.20.attn_qkv.weight",
+"layer": 20,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07630938432297038,
+"delta_norm": 8.969982424636614,
+"top1_energy": 0.0008424269081981239,
+"top4_energy": 0.0031414811088094265,
+"effective_rank": 2857.873481796704,
+"sigma1": 0.2603500750896637,
+"sigma2": 0.25100635121383064,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.037225049607901,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.20.ffn_down.weight",
+"layer": 20,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.08199179455004997,
+"delta_norm": 8.544183655538951,
+"top1_energy": 0.0018327631078742654,
+"top4_energy": 0.003610086369898039,
+"effective_rank": 3684.255367233839,
+"sigma1": 0.36578318907651125,
+"sigma2": 0.2165913075616673,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.6888174931598603,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.20.ffn_up.weight",
+"layer": 20,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07441546510421063,
+"delta_norm": 7.7150891692959425,
+"top1_energy": 0.000987771392948328,
+"top4_energy": 0.0033272356337141536,
+"effective_rank": 3108.6023588251423,
+"sigma1": 0.2424762305736543,
+"sigma2": 0.2244906152203606,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.080117448721137,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.20.ssm_out.weight",
+"layer": 20,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04417335583619084,
+"delta_norm": 3.9046829818408346,
+"top1_energy": 0.008961422126615163,
+"top4_energy": 0.016546648946787864,
+"effective_rank": 2018.0487595144416,
+"sigma1": 0.3696359874984312,
+"sigma2": 0.2241946068406389,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.648728275436056,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.21.attn_qkv.weight",
+"layer": 21,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"IQ4_NL",
+"IQ4_NL"
+],
+"relative_norm": 0.07012606087911599,
+"delta_norm": 8.049952509714021,
+"top1_energy": 0.002511076334482315,
+"top4_energy": 0.005403641898445261,
+"effective_rank": 2679.6834888120716,
+"sigma1": 0.4033882797232071,
+"sigma2": 0.25331015546772906,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.5924678541938582,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.21.ffn_down.weight",
+"layer": 21,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.08137816184495304,
+"delta_norm": 8.487782886494115,
+"top1_energy": 0.0008771227825710818,
+"top4_energy": 0.002473972556065075,
+"effective_rank": 3724.3505310736464,
+"sigma1": 0.25137637421234854,
+"sigma2": 0.19660075019344622,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.2786135046026303,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.21.ffn_up.weight",
+"layer": 21,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.10879426400885221,
+"delta_norm": 11.31705339600702,
+"top1_energy": 0.0007386387932468639,
+"top4_energy": 0.0024140578881571206,
+"effective_rank": 3630.9645734817186,
+"sigma1": 0.30757385892811584,
+"sigma2": 0.2718182848428237,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.131542195941555,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.21.ssm_out.weight",
+"layer": 21,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.017781317551414405,
+"delta_norm": 1.5629871639775856,
+"top1_energy": 0.007984682248103867,
+"top4_energy": 0.017818966515059508,
+"effective_rank": 1949.6518027635211,
+"sigma1": 0.13966392096624708,
+"sigma2": 0.10647923255610764,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.3116540907885794,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.22.attn_qkv.weight",
+"layer": 22,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07788126427110903,
+"delta_norm": 8.89702110378227,
+"top1_energy": 0.0008164146214858583,
+"top4_energy": 0.0030775349858996473,
+"effective_rank": 2886.0738478925477,
+"sigma1": 0.25421431815653944,
+"sigma2": 0.2463693381284469,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0318423554151956,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.22.ffn_down.weight",
+"layer": 22,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q6_K",
+"Q4_K"
+],
+"relative_norm": 0.07908443243766479,
+"delta_norm": 8.198920113944203,
+"top1_energy": 0.05303903253136161,
+"top4_energy": 0.05848182399909903,
+"effective_rank": 326.7866532948354,
+"sigma1": 1.8882280797163977,
+"sigma2": 0.4903860450548208,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.8504930936713557,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.22.ffn_up.weight",
+"layer": 22,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04376331318795777,
+"delta_norm": 4.54982360928482,
+"top1_energy": 0.0007090143902239157,
+"top4_energy": 0.0026801729302411625,
+"effective_rank": 3363.927232918851,
+"sigma1": 0.12114962797019578,
+"sigma2": 0.1183026876893116,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0240648825186531,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.22.ssm_out.weight",
+"layer": 22,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.0921358201123044,
+"delta_norm": 8.089029030074881,
+"top1_energy": 0.040198583496468585,
+"top4_energy": 0.051061771878752826,
+"effective_rank": 496.92033657161807,
+"sigma1": 1.621816703235363,
+"sigma2": 0.6950809249580749,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.333277529279322,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.23.attn_output.weight",
+"layer": 23,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.017772500179740778,
+"delta_norm": 1.5762348039756806,
+"top1_energy": 0.006231344469219747,
+"top4_energy": 0.010682060252727442,
+"effective_rank": 2153.387890003952,
+"sigma1": 0.1244261870156588,
+"sigma2": 0.06635381787801713,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.8751925811473302,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.23.attn_q.weight",
+"layer": 23,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07694915326434089,
+"delta_norm": 9.422312110025796,
+"top1_energy": 0.0007793974457501418,
+"top4_energy": 0.003031535351763026,
+"effective_rank": 2988.2338890178357,
+"sigma1": 0.26304919377086616,
+"sigma2": 0.26192704023961066,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0042842217826344,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.23.ffn_down.weight",
+"layer": 23,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.08710571156562881,
+"delta_norm": 9.126276558169089,
+"top1_energy": 0.04535100480060944,
+"top4_energy": 0.0476585671154426,
+"effective_rank": 435.6384402621063,
+"sigma1": 1.9435113541797158,
+"sigma2": 0.32683530754822954,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 5.946454710658582,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.23.ffn_up.weight",
+"layer": 23,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07474973789043418,
+"delta_norm": 7.843139664064089,
+"top1_energy": 0.0012774629713965772,
+"top4_energy": 0.0035802600593797845,
+"effective_rank": 3158.8102198930137,
+"sigma1": 0.28032647042892217,
+"sigma2": 0.2231207962735061,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.2563888042300289,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.24.attn_qkv.weight",
+"layer": 24,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04368448583342892,
+"delta_norm": 4.983882211699717,
+"top1_energy": 0.0011374570359263681,
+"top4_energy": 0.003583169902622648,
+"effective_rank": 2933.9134991570986,
+"sigma1": 0.16808744293734879,
+"sigma2": 0.14791590812021096,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.1363716389500476,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.24.ffn_down.weight",
+"layer": 24,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08275274225168933,
+"delta_norm": 8.719836525331486,
+"top1_energy": 0.05080368321044144,
+"top4_energy": 0.054183163780081145,
+"effective_rank": 354.88246952152053,
+"sigma1": 1.9654225870219768,
+"sigma2": 0.43397694960377675,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 4.528864007216093,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.24.ffn_up.weight",
+"layer": 24,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.0796154196903406,
+"delta_norm": 8.419813637710918,
+"top1_energy": 0.0007274360075060106,
+"top4_energy": 0.002686896851538694,
+"effective_rank": 3293.3743568485547,
+"sigma1": 0.22709097570269965,
+"sigma2": 0.2198704281170267,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0328400123996202,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.24.ssm_out.weight",
+"layer": 24,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08322272111491705,
+"delta_norm": 7.288718772590763,
+"top1_energy": 0.050342780912859646,
+"top4_energy": 0.05890102098192482,
+"effective_rank": 344.2562912888904,
+"sigma1": 1.6353841896388925,
+"sigma2": 0.6038473286838153,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.7082742805263074,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.25.attn_qkv.weight",
+"layer": 25,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04371277420790742,
+"delta_norm": 5.062658980234426,
+"top1_energy": 0.0011905879827256306,
+"top4_energy": 0.0036507490147286484,
+"effective_rank": 2928.9315448265716,
+"sigma1": 0.17468653148226437,
+"sigma2": 0.1530099255843779,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.1416679722906788,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.25.ffn_down.weight",
+"layer": 25,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q6_K",
+"Q5_K"
+],
+"relative_norm": 0.045303190233401416,
+"delta_norm": 4.814540609143969,
+"top1_energy": 0.16746354117750556,
+"top4_energy": 0.17048448857446624,
+"effective_rank": 35.42413491074723,
+"sigma1": 1.970221207289533,
+"sigma2": 0.22578384548722832,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 8.726138945139812,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.25.ffn_up.weight",
+"layer": 25,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04401891556626575,
+"delta_norm": 4.7226307533626715,
+"top1_energy": 0.0007233638899097073,
+"top4_energy": 0.002735576943234794,
+"effective_rank": 3366.730240804748,
+"sigma1": 0.12701716157910742,
+"sigma2": 0.1243748893424757,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0212444187938614,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.25.ssm_out.weight",
+"layer": 25,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q6_K"
+],
+"relative_norm": 0.0768251396959661,
+"delta_norm": 6.813253898241771,
+"top1_energy": 0.059566935734666954,
+"top4_energy": 0.06696576605143989,
+"effective_rank": 256.4524972105998,
+"sigma1": 1.6628658069943065,
+"sigma2": 0.515384674987035,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.2264556702935288,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.26.attn_qkv.weight",
+"layer": 26,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.043946725130870536,
+"delta_norm": 5.098325316873016,
+"top1_energy": 0.0012169314846158076,
+"top4_energy": 0.003684167933516119,
+"effective_rank": 2925.0844545131736,
+"sigma1": 0.17785275928884056,
+"sigma2": 0.15333344359141504,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.1599084656492924,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.26.ffn_down.weight",
+"layer": 26,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08306766376164702,
+"delta_norm": 8.864055704999304,
+"top1_energy": 0.05396800269168488,
+"top4_energy": 0.05858256961060363,
+"effective_rank": 316.8410919980511,
+"sigma1": 2.0592100512692264,
+"sigma2": 0.5395670670484705,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.8164116696993355,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.26.ffn_up.weight",
+"layer": 26,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.08017498837892026,
+"delta_norm": 8.671016560069742,
+"top1_energy": 0.0007525106461756684,
+"top4_energy": 0.002730316109963104,
+"effective_rank": 3262.4349760360833,
+"sigma1": 0.2378626975971689,
+"sigma2": 0.22585157463194547,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.053181488704682,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.26.ssm_out.weight",
+"layer": 26,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08361710299057783,
+"delta_norm": 7.3691772332550896,
+"top1_energy": 0.05403289130828986,
+"top4_energy": 0.061911779203180375,
+"effective_rank": 305.08726786776197,
+"sigma1": 1.7129634853581204,
+"sigma2": 0.5558395336557185,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.0817589999258908,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.27.attn_output.weight",
+"layer": 27,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.0179236225364518,
+"delta_norm": 1.5650867738534475,
+"top1_energy": 0.003705504222810064,
+"top4_energy": 0.006917102218082398,
+"effective_rank": 2274.5342168034804,
+"sigma1": 0.09527129699426218,
+"sigma2": 0.05196516461125609,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.8333685211424429,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.27.attn_q.weight",
+"layer": 27,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.0740778443411764,
+"delta_norm": 9.197560539501676,
+"top1_energy": 0.004783351012312148,
+"top4_energy": 0.009287514933906501,
+"effective_rank": 2609.347412592748,
+"sigma1": 0.6361196053448867,
+"sigma2": 0.44720062075822364,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.4224479480067649,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.27.ffn_down.weight",
+"layer": 27,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08297661270486309,
+"delta_norm": 8.920465808087453,
+"top1_energy": 0.05484784754283725,
+"top4_energy": 0.05804321023651178,
+"effective_rank": 308.11525921619153,
+"sigma1": 2.08913895544053,
+"sigma2": 0.42321356872751,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 4.936370451736725,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.27.ffn_up.weight",
+"layer": 27,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_NL",
+"IQ4_NL"
+],
+"relative_norm": 0.07235559011068417,
+"delta_norm": 7.88426354297349,
+"top1_energy": 0.003070361188078783,
+"top4_energy": 0.005578668824307676,
+"effective_rank": 3012.295968397741,
+"sigma1": 0.4368736655960282,
+"sigma2": 0.24067897825739087,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.8151716812127212,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.28.attn_qkv.weight",
+"layer": 28,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08626526230391902,
+"delta_norm": 10.106498872842195,
+"top1_energy": 0.00125416798207533,
+"top4_energy": 0.003319384442418669,
+"effective_rank": 3115.7621187006475,
+"sigma1": 0.3579139177541699,
+"sigma2": 0.26902370855586616,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.3304177526786438,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.28.ffn_down.weight",
+"layer": 28,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q6_K",
+"IQ4_XS"
+],
+"relative_norm": 0.08374900908624838,
+"delta_norm": 8.984365819427364,
+"top1_energy": 0.05293950028581464,
+"top4_energy": 0.055435084376604285,
+"effective_rank": 328.56940557531016,
+"sigma1": 2.067175483673802,
+"sigma2": 0.3486826343877594,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 5.928530072349283,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.28.ffn_up.weight",
+"layer": 28,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07507324257004193,
+"delta_norm": 8.16788199898914,
+"top1_energy": 0.003169522341866718,
+"top4_energy": 0.005689849085078877,
+"effective_rank": 3039.1934652605983,
+"sigma1": 0.4598395946429307,
+"sigma2": 0.24601778903054067,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.8691314821378473,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.28.ssm_out.weight",
+"layer": 28,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08336606593802494,
+"delta_norm": 7.33118742668012,
+"top1_energy": 0.055814681918985636,
+"top4_energy": 0.06292647614040214,
+"effective_rank": 287.9588570720243,
+"sigma1": 1.7320026402708086,
+"sigma2": 0.5456234371273446,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.1743552831777855,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.29.attn_qkv.weight",
+"layer": 29,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07784393327865163,
+"delta_norm": 9.15112518277718,
+"top1_energy": 0.0008733626958328692,
+"top4_energy": 0.003295038414055006,
+"effective_rank": 2875.0704117975292,
+"sigma1": 0.2704405529563194,
+"sigma2": 0.265332812124879,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0192503173299066,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.29.ffn_down.weight",
+"layer": 29,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.10812723555743746,
+"delta_norm": 11.554056515962552,
+"top1_energy": 0.030731213958459312,
+"top4_energy": 0.033640076188369894,
+"effective_rank": 835.9027860394322,
+"sigma1": 2.0254631470680264,
+"sigma2": 0.4961988187024022,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 4.081958825224065,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.29.ffn_up.weight",
+"layer": 29,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07461317300805043,
+"delta_norm": 8.097497740411363,
+"top1_energy": 0.00319189449852106,
+"top4_energy": 0.005679720017935041,
+"effective_rank": 3032.6520424981,
+"sigma1": 0.4574831466467646,
+"sigma2": 0.24165122927847754,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.8931546427995347,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.29.ssm_out.weight",
+"layer": 29,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.08850043695146795,
+"delta_norm": 7.802701250442255,
+"top1_energy": 0.0460113454176169,
+"top4_energy": 0.05230745491687469,
+"effective_rank": 402.7643875185359,
+"sigma1": 1.6736993416826527,
+"sigma2": 0.5334055453883335,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.137761420279489,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.30.attn_qkv.weight",
+"layer": 30,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04345870095977822,
+"delta_norm": 5.091990644313873,
+"top1_energy": 0.001257635229649683,
+"top4_energy": 0.0037483701169192312,
+"effective_rank": 2924.558551213254,
+"sigma1": 0.18057804393629218,
+"sigma2": 0.150283502741273,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.2015826131439993,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.30.ffn_down.weight",
+"layer": 30,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"IQ4_NL"
+],
+"relative_norm": 0.1078326603341577,
+"delta_norm": 11.546563160861359,
+"top1_energy": 0.0318982524251497,
+"top4_energy": 0.03580050336562303,
+"effective_rank": 786.541212706237,
+"sigma1": 2.0622256332110322,
+"sigma2": 0.6197596487848268,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.327460310225864,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.30.ffn_up.weight",
+"layer": 30,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07421835638894475,
+"delta_norm": 8.066957719665286,
+"top1_energy": 0.0038882159891889235,
+"top4_energy": 0.006451909321416612,
+"effective_rank": 2981.937746035656,
+"sigma1": 0.5030196742741903,
+"sigma2": 0.24812836487476655,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 2.0272558299736128,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.30.ssm_out.weight",
+"layer": 30,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08370410704116416,
+"delta_norm": 7.3052333156168014,
+"top1_energy": 0.05035363238139891,
+"top4_energy": 0.059398119698960014,
+"effective_rank": 342.36850768285547,
+"sigma1": 1.6392662348898017,
+"sigma2": 0.6180312517477773,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.6524002309818426,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.31.attn_output.weight",
+"layer": 31,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.01772370929114861,
+"delta_norm": 1.5625878806447788,
+"top1_energy": 0.0037650874216056092,
+"top4_energy": 0.0069053787789693745,
+"effective_rank": 2269.12530837404,
+"sigma1": 0.09588087393584645,
+"sigma2": 0.05245381191310487,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.82791050714642,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.31.attn_q.weight",
+"layer": 31,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07252676584115984,
+"delta_norm": 8.618188725005815,
+"top1_energy": 0.005847659157691615,
+"top4_energy": 0.010085226113849703,
+"effective_rank": 2553.037105317051,
+"sigma1": 0.6590327936218852,
+"sigma2": 0.4035240797036317,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.6331932263024103,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.31.ffn_down.weight",
+"layer": 31,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q6_K",
+"IQ4_XS"
+],
+"relative_norm": 0.08376239788106034,
+"delta_norm": 9.013276675493293,
+"top1_energy": 0.053536270565166064,
+"top4_energy": 0.05713224096494252,
+"effective_rank": 321.3585055530494,
+"sigma1": 2.085483507263564,
+"sigma2": 0.4528129236216623,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 4.605618343627584,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.31.ffn_up.weight",
+"layer": 31,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07354925993466331,
+"delta_norm": 8.027545457815453,
+"top1_energy": 0.0033117523007762484,
+"top4_energy": 0.005804741479893451,
+"effective_rank": 3033.5082319652233,
+"sigma1": 0.46196779084901296,
+"sigma2": 0.24322935572514456,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.8993093554506983,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.32.attn_qkv.weight",
+"layer": 32,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04333613807792678,
+"delta_norm": 5.076360800707511,
+"top1_energy": 0.0012777892996455806,
+"top4_energy": 0.0037441799519920592,
+"effective_rank": 2937.836797169476,
+"sigma1": 0.18146050089533142,
+"sigma2": 0.14708137174095764,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.233742239057458,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.32.ffn_down.weight",
+"layer": 32,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.10888897293947854,
+"delta_norm": 11.71749504070137,
+"top1_energy": 0.03259999372546725,
+"top4_energy": 0.036973619997934117,
+"effective_rank": 758.8490326034874,
+"sigma1": 2.115648608216751,
+"sigma2": 0.67331276943866,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.1421483510264694,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.32.ffn_up.weight",
+"layer": 32,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.10983067955608485,
+"delta_norm": 11.985713165714735,
+"top1_energy": 0.0020682858806827208,
+"top4_energy": 0.003958284245469942,
+"effective_rank": 3600.8977567470843,
+"sigma1": 0.5450911912703177,
+"sigma2": 0.31717455676152834,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.7185842295671634,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.32.ssm_out.weight",
+"layer": 32,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08358915630083213,
+"delta_norm": 7.282293078257865,
+"top1_energy": 0.06262763476014846,
+"top4_energy": 0.07078549834566215,
+"effective_rank": 233.04465815640745,
+"sigma1": 1.8224312689277962,
+"sigma2": 0.5896847270377584,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.0905180096534925,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.33.attn_qkv.weight",
+"layer": 33,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.043227290541827876,
+"delta_norm": 5.130413058200056,
+"top1_energy": 0.001290181845287938,
+"top4_energy": 0.003770890593406757,
+"effective_rank": 2942.602232618669,
+"sigma1": 0.18427982685454852,
+"sigma2": 0.1506592669569225,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.2231562689551585,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.33.ffn_down.weight",
+"layer": 33,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.1091408402424751,
+"delta_norm": 11.769383093759428,
+"top1_energy": 0.033864968032664255,
+"top4_energy": 0.037126587549264504,
+"effective_rank": 717.3732492820523,
+"sigma1": 2.1658532860543076,
+"sigma2": 0.5513596387456569,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.928204267874275,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.33.ffn_up.weight",
+"layer": 33,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07331940816477378,
+"delta_norm": 8.02837308456685,
+"top1_energy": 0.0035045251377358194,
+"top4_energy": 0.0060784727027563944,
+"effective_rank": 3027.8885313633064,
+"sigma1": 0.47527189805343456,
+"sigma2": 0.2496464753446318,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.9037797244977384,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.33.ssm_out.weight",
+"layer": 33,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.10913421021238708,
+"delta_norm": 9.545228502953384,
+"top1_energy": 0.040108772053575485,
+"top4_energy": 0.04722587234635376,
+"effective_rank": 505.3126698551274,
+"sigma1": 1.9116395736724878,
+"sigma2": 0.7035481694934119,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.7171409955468424,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.34.attn_qkv.weight",
+"layer": 34,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.0432193225003673,
+"delta_norm": 5.071959038843487,
+"top1_energy": 0.0013281590050147319,
+"top4_energy": 0.0038543842596553044,
+"effective_rank": 2933.807812331822,
+"sigma1": 0.1848420485825094,
+"sigma2": 0.15121612996655387,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.2223699192896482,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.34.ffn_down.weight",
+"layer": 34,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q6_K",
+"Q4_K"
+],
+"relative_norm": 0.08131409621069466,
+"delta_norm": 8.792646444315908,
+"top1_energy": 0.05595392299448951,
+"top4_energy": 0.060354651162655606,
+"effective_rank": 296.4503570841913,
+"sigma1": 2.0798637266205935,
+"sigma2": 0.5177157212937349,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 4.01738568306012,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.34.ffn_up.weight",
+"layer": 34,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.11053004871277725,
+"delta_norm": 12.161854293164966,
+"top1_energy": 0.002328783590149694,
+"top4_energy": 0.004314296628816507,
+"effective_rank": 3572.105055749782,
+"sigma1": 0.5869003412965331,
+"sigma2": 0.32790919572001437,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.7898258083547576,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.34.ssm_out.weight",
+"layer": 34,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08466413193727787,
+"delta_norm": 7.330505059255418,
+"top1_energy": 0.06334629853389981,
+"top4_energy": 0.07002121221401807,
+"effective_rank": 229.51711175614122,
+"sigma1": 1.844992136063623,
+"sigma2": 0.4966771373400554,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.7146709549475982,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.35.attn_output.weight",
+"layer": 35,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.044537367699013244,
+"delta_norm": 4.100782210031795,
+"top1_energy": 0.004305738893480272,
+"top4_energy": 0.006959735737324841,
+"effective_rank": 2384.360780583235,
+"sigma1": 0.2690856573092779,
+"sigma2": 0.12309136367931152,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.1860644749238753,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.35.attn_q.weight",
+"layer": 35,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07359840337692167,
+"delta_norm": 8.514744001147747,
+"top1_energy": 0.003963294669869123,
+"top4_energy": 0.00792222895544562,
+"effective_rank": 2648.2723424986657,
+"sigma1": 0.5360431824217695,
+"sigma2": 0.36754867875671593,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.4584277223768276,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.35.ffn_down.weight",
+"layer": 35,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08337059583784556,
+"delta_norm": 9.06994336317641,
+"top1_energy": 0.05247868098160169,
+"top4_energy": 0.055471807381493106,
+"effective_rank": 334.4222085319733,
+"sigma1": 2.077763106582592,
+"sigma2": 0.4115247136467029,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 5.048938830843505,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.35.ffn_up.weight",
+"layer": 35,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.11000788861979341,
+"delta_norm": 12.036396124403913,
+"top1_energy": 0.00208054604794511,
+"top4_energy": 0.003945109167109975,
+"effective_rank": 3579.59461306625,
+"sigma1": 0.5490161732265675,
+"sigma2": 0.30314755150271133,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.8110526392348483,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.36.attn_qkv.weight",
+"layer": 36,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07497030614389796,
+"delta_norm": 8.824109199626767,
+"top1_energy": 0.004570545989361773,
+"top4_energy": 0.008464691541998061,
+"effective_rank": 2576.982598141556,
+"sigma1": 0.5965610789195772,
+"sigma2": 0.3450564311982626,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.7288797569948928,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.36.ffn_down.weight",
+"layer": 36,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08270241371234704,
+"delta_norm": 8.82422428808726,
+"top1_energy": 0.04962110936391659,
+"top4_energy": 0.05161548595836181,
+"effective_rank": 370.72269633893734,
+"sigma1": 1.9656662132879503,
+"sigma2": 0.28890066733539727,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 6.803951792212108,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.36.ffn_up.weight",
+"layer": 36,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07588973391162446,
+"delta_norm": 8.078609175479965,
+"top1_energy": 0.002689641690613093,
+"top4_energy": 0.005272336104323911,
+"effective_rank": 3057.323843364067,
+"sigma1": 0.4189708543895547,
+"sigma2": 0.2504721932462484,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.672724021614843,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.36.ssm_out.weight",
+"layer": 36,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08369167623694984,
+"delta_norm": 7.332404945550341,
+"top1_energy": 0.05168428820396824,
+"top4_energy": 0.05721184746299414,
+"effective_rank": 332.0139133532763,
+"sigma1": 1.6669620447419637,
+"sigma2": 0.47038762017045316,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.5438050944833774,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.37.attn_qkv.weight",
+"layer": 37,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07624385229408254,
+"delta_norm": 8.778723400999935,
+"top1_energy": 0.003940974802726888,
+"top4_energy": 0.007547130418700805,
+"effective_rank": 2630.620292894734,
+"sigma1": 0.5511035322549389,
+"sigma2": 0.32173462100646605,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.7129133648438262,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.37.ffn_down.weight",
+"layer": 37,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q6_K",
+"IQ4_XS"
+],
+"relative_norm": 0.08317944297164687,
+"delta_norm": 8.808607181905266,
+"top1_energy": 0.04783627692124965,
+"top4_energy": 0.04970122381809812,
+"effective_rank": 395.66368840541315,
+"sigma1": 1.9265750372403767,
+"sigma2": 0.26643099483527716,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 7.231046967457729,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.37.ffn_up.weight",
+"layer": 37,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07642459810765627,
+"delta_norm": 8.094517900319502,
+"top1_energy": 0.0022435992098830946,
+"top4_energy": 0.004739815671467866,
+"effective_rank": 3097.339363574735,
+"sigma1": 0.3834101687607715,
+"sigma2": 0.2454874317537462,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.5618321721063855,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.37.ssm_out.weight",
+"layer": 37,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08425704654326967,
+"delta_norm": 7.297973159164098,
+"top1_energy": 0.04621132497875205,
+"top4_energy": 0.05139793456843566,
+"effective_rank": 403.7649225135306,
+"sigma1": 1.5688321191732686,
+"sigma2": 0.44066224802913373,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.5601691004616023,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.38.attn_qkv.weight",
+"layer": 38,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07592882370781814,
+"delta_norm": 8.72002231940489,
+"top1_energy": 0.004288919014408214,
+"top4_energy": 0.007661099680316112,
+"effective_rank": 2639.807807920788,
+"sigma1": 0.5710728579181883,
+"sigma2": 0.3032799258673975,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.8829893085897067,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.38.ffn_down.weight",
+"layer": 38,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08264078248332728,
+"delta_norm": 8.558563826317407,
+"top1_energy": 0.04712120814524329,
+"top4_energy": 0.052091919857361654,
+"effective_rank": 405.1989467240434,
+"sigma1": 1.857843392584817,
+"sigma2": 0.5455851447453713,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.4052308983813817,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.38.ffn_up.weight",
+"layer": 38,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.0438695573806146,
+"delta_norm": 4.565727328896602,
+"top1_energy": 0.0007591027323179214,
+"top4_energy": 0.0027743439839542907,
+"effective_rank": 3371.371864974366,
+"sigma1": 0.12579409314387155,
+"sigma2": 0.12218167452919963,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0295659609232857,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.38.ssm_out.weight",
+"layer": 38,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.1090835230251401,
+"delta_norm": 9.448769476259335,
+"top1_energy": 0.02800892904317003,
+"top4_energy": 0.03454275294664292,
+"effective_rank": 875.2178844405908,
+"sigma1": 1.5813336230736013,
+"sigma2": 0.5505473467804969,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.8722936043938083,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.39.attn_output.weight",
+"layer": 39,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04529246165501614,
+"delta_norm": 4.0572048065886,
+"top1_energy": 0.004446416094019672,
+"top4_energy": 0.007314837680661461,
+"effective_rank": 2351.173583129528,
+"sigma1": 0.27054030918291017,
+"sigma2": 0.13000753178845031,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.0809587372455955,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.39.attn_q.weight",
+"layer": 39,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.11075451266369102,
+"delta_norm": 12.87921290657455,
+"top1_energy": 0.002438917236007922,
+"top4_energy": 0.00491448858180023,
+"effective_rank": 3204.689797665988,
+"sigma1": 0.6360450162502262,
+"sigma2": 0.37315358968780166,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.7045126559880404,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.39.ffn_down.weight",
+"layer": 39,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08236752477170413,
+"delta_norm": 8.624924599904713,
+"top1_energy": 0.048386162997052146,
+"top4_energy": 0.051231586950871245,
+"effective_rank": 388.0038527323432,
+"sigma1": 1.897212158256222,
+"sigma2": 0.37973359433173376,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 4.996166224363138,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.39.ffn_up.weight",
+"layer": 39,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07551108211172229,
+"delta_norm": 7.9336875266686455,
+"top1_energy": 0.002441105977241291,
+"top4_energy": 0.004906919537670709,
+"effective_rank": 3115.4650674293075,
+"sigma1": 0.3919840615716653,
+"sigma2": 0.2396976564543282,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.6353270506270206,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.40.attn_qkv.weight",
+"layer": 40,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07638973891019818,
+"delta_norm": 8.652036127516647,
+"top1_energy": 0.004397153008049615,
+"top4_energy": 0.008135706316311523,
+"effective_rank": 2611.004980203073,
+"sigma1": 0.5737254473315916,
+"sigma2": 0.32570291278891383,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.7614992829475238,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.40.ffn_down.weight",
+"layer": 40,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q6_K",
+"Q5_K"
+],
+"relative_norm": 0.0452407026110377,
+"delta_norm": 4.729480496139702,
+"top1_energy": 0.15809525006045796,
+"top4_energy": 0.16163603976520158,
+"effective_rank": 39.705029157282475,
+"sigma1": 1.880497886892747,
+"sigma2": 0.24505255499337442,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 7.673855459060979,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.40.ffn_up.weight",
+"layer": 40,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.0841026932227615,
+"delta_norm": 8.845354635319627,
+"top1_energy": 0.0006918795919414202,
+"top4_energy": 0.0025157285648510623,
+"effective_rank": 3612.1158002431544,
+"sigma1": 0.23266470700504327,
+"sigma2": 0.22477243985476314,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0351122546668965,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.40.ssm_out.weight",
+"layer": 40,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08316898375410181,
+"delta_norm": 7.164998441526001,
+"top1_energy": 0.04546185808908488,
+"top4_energy": 0.05200740918646812,
+"effective_rank": 413.6702128569112,
+"sigma1": 1.5277056726807448,
+"sigma2": 0.5048848428304836,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.0258497445004027,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.41.attn_qkv.weight",
+"layer": 41,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.11124400779174191,
+"delta_norm": 12.603420105559197,
+"top1_energy": 0.004106124398315647,
+"top4_energy": 0.007065487240251292,
+"effective_rank": 3008.761815116373,
+"sigma1": 0.8076151624717322,
+"sigma2": 0.48177316910560386,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.676339020645428,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.41.ffn_down.weight",
+"layer": 41,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.10807736651076476,
+"delta_norm": 11.440906164240708,
+"top1_energy": 0.028779151413288476,
+"top4_energy": 0.03273286501364058,
+"effective_rank": 926.5423371769934,
+"sigma1": 1.9408832662652775,
+"sigma2": 0.6247897682279201,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.10645814794658,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.41.ffn_up.weight",
+"layer": 41,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04376824001462109,
+"delta_norm": 4.704916481453102,
+"top1_energy": 0.0007447820220059731,
+"top4_energy": 0.002778424016885956,
+"effective_rank": 3376.3188831934444,
+"sigma1": 0.12840043969786774,
+"sigma2": 0.12652957689555944,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0147859721672234,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.41.ssm_out.weight",
+"layer": 41,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.0830640409234469,
+"delta_norm": 7.2189392559984125,
+"top1_energy": 0.04716260141829588,
+"top4_energy": 0.05228406251314413,
+"effective_rank": 390.0090656366378,
+"sigma1": 1.567733589775882,
+"sigma2": 0.4367944481896556,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.5891792953723027,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.42.attn_qkv.weight",
+"layer": 42,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.11175487502447616,
+"delta_norm": 12.654813891094342,
+"top1_energy": 0.00433637739848652,
+"top4_energy": 0.007349795375915762,
+"effective_rank": 2992.612171420168,
+"sigma1": 0.8333343785099866,
+"sigma2": 0.4887484576205419,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.7050373571858446,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.42.ffn_down.weight",
+"layer": 42,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.10860786000423883,
+"delta_norm": 11.57776318371321,
+"top1_energy": 0.029642625641523635,
+"top4_energy": 0.03474951590098016,
+"effective_rank": 880.0201634671206,
+"sigma1": 1.9933474125428525,
+"sigma2": 0.7410993301048795,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.6897169266915357,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.42.ffn_up.weight",
+"layer": 42,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08496116722188246,
+"delta_norm": 9.247564239351245,
+"top1_energy": 0.000730905566892602,
+"top4_energy": 0.002602637345611542,
+"effective_rank": 3590.4121892934827,
+"sigma1": 0.2500103520853299,
+"sigma2": 0.2369722149354545,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.055019687238129,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.42.ssm_out.weight",
+"layer": 42,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08371296996450503,
+"delta_norm": 7.240476915295066,
+"top1_energy": 0.048989527887297386,
+"top4_energy": 0.05556246134975455,
+"effective_rank": 363.66675834112715,
+"sigma1": 1.6025766118193274,
+"sigma2": 0.4808900629320068,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.332521786888984,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.43.attn_output.weight",
+"layer": 43,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04528088566614234,
+"delta_norm": 3.996449808538344,
+"top1_energy": 0.0030487783160377618,
+"top4_energy": 0.006522299553842632,
+"effective_rank": 2378.102038020493,
+"sigma1": 0.22066694702426287,
+"sigma2": 0.14334810703163836,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.5393781724341813,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.43.attn_q.weight",
+"layer": 43,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.11191098690466895,
+"delta_norm": 12.93095421429912,
+"top1_energy": 0.0038160876809160984,
+"top4_energy": 0.007062848707252537,
+"effective_rank": 3055.6363151964583,
+"sigma1": 0.7988031087257359,
+"sigma2": 0.4373310896611576,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.826540869400905,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.43.ffn_down.weight",
+"layer": 43,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q6_K",
+"IQ4_XS"
+],
+"relative_norm": 0.0838797250796985,
+"delta_norm": 9.080637386345154,
+"top1_energy": 0.04894270954148466,
+"top4_energy": 0.0527613250204536,
+"effective_rank": 378.6572724696778,
+"sigma1": 2.008909340054093,
+"sigma2": 0.48297969293319826,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 4.1594074646363,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.43.ffn_up.weight",
+"layer": 43,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07485602912424906,
+"delta_norm": 8.249085562382962,
+"top1_energy": 0.0037947608329327986,
+"top4_energy": 0.006391192148161603,
+"effective_rank": 3005.2342913799657,
+"sigma1": 0.5081571176081013,
+"sigma2": 0.25833637775227963,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.967036628869111,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.44.attn_qkv.weight",
+"layer": 44,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.0783729161199181,
+"delta_norm": 9.047190782728594,
+"top1_energy": 0.0010315902708458644,
+"top4_energy": 0.003615319655258112,
+"effective_rank": 2843.873884663557,
+"sigma1": 0.29058110262219344,
+"sigma2": 0.27015309380028746,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.075616416360597,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.44.ffn_down.weight",
+"layer": 44,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.10852909413249955,
+"delta_norm": 11.767338211258132,
+"top1_energy": 0.02909066575515974,
+"top4_energy": 0.03206482899926187,
+"effective_rank": 913.0637385628694,
+"sigma1": 2.0070355548471057,
+"sigma2": 0.5232023559032142,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.8360598575331757,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.44.ffn_up.weight",
+"layer": 44,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07519869255609303,
+"delta_norm": 8.297396157364124,
+"top1_energy": 0.0038018295352965446,
+"top4_energy": 0.006421106876924699,
+"effective_rank": 2984.9563177099585,
+"sigma1": 0.5116089649234593,
+"sigma2": 0.2613401437724477,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.9576363490827646,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.44.ssm_out.weight",
+"layer": 44,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08365897366694405,
+"delta_norm": 7.220208699160699,
+"top1_energy": 0.050038609982522166,
+"top4_energy": 0.05527052553668274,
+"effective_rank": 351.2967125973524,
+"sigma1": 1.61511097945065,
+"sigma2": 0.4399456944123924,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.671159872601666,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.45.attn_qkv.weight",
+"layer": 45,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07828875023120915,
+"delta_norm": 9.027583611166904,
+"top1_energy": 0.0010236022420498547,
+"top4_energy": 0.0035787336443477116,
+"effective_rank": 2858.5779021411236,
+"sigma1": 0.288826563964879,
+"sigma2": 0.27561832417609555,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.047922212096263,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.45.ffn_down.weight",
+"layer": 45,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.1084209467133786,
+"delta_norm": 11.746545472550656,
+"top1_energy": 0.02966484257464548,
+"top4_energy": 0.03241261878973555,
+"effective_rank": 886.0757831404159,
+"sigma1": 2.0231644640687687,
+"sigma2": 0.4817661867713625,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 4.199473768857352,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.45.ffn_up.weight",
+"layer": 45,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07499864217975676,
+"delta_norm": 8.27551158202386,
+"top1_energy": 0.003953260282720681,
+"top4_energy": 0.006573915712104505,
+"effective_rank": 2971.8431096665695,
+"sigma1": 0.5203224391483043,
+"sigma2": 0.2612412078111911,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.9917318692093977,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.45.ssm_out.weight",
+"layer": 45,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.09002974001190105,
+"delta_norm": 7.872050195283092,
+"top1_energy": 0.0434815795868956,
+"top4_energy": 0.04762631365876853,
+"effective_rank": 446.4732515325793,
+"sigma1": 1.6414985785135603,
+"sigma2": 0.4014253068476444,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 4.089175621248436,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.46.attn_qkv.weight",
+"layer": 46,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07817158896687292,
+"delta_norm": 9.045475930413746,
+"top1_energy": 0.0010012269816721188,
+"top4_energy": 0.00354482573153933,
+"effective_rank": 2847.3043472353816,
+"sigma1": 0.2862184956060747,
+"sigma2": 0.2724349866258914,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0505937550492033,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.46.ffn_down.weight",
+"layer": 46,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q6_K",
+"IQ4_XS"
+],
+"relative_norm": 0.08433661206075375,
+"delta_norm": 9.141913687340796,
+"top1_energy": 0.049095345189370136,
+"top4_energy": 0.052931058845138906,
+"effective_rank": 376.6946605519979,
+"sigma1": 2.025616731316332,
+"sigma2": 0.47792388402424196,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 4.238366817452432,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.46.ffn_up.weight",
+"layer": 46,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.0750205277131374,
+"delta_norm": 8.281131011520122,
+"top1_energy": 0.003962438390926793,
+"top4_energy": 0.00666185941553903,
+"effective_rank": 2958.794486295846,
+"sigma1": 0.5212798249886945,
+"sigma2": 0.266915221374385,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.9529790107306337,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.46.ssm_out.weight",
+"layer": 46,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08404166424865285,
+"delta_norm": 7.223483844972581,
+"top1_energy": 0.05124010270889958,
+"top4_energy": 0.056883861573627154,
+"effective_rank": 336.4807669846898,
+"sigma1": 1.6351277973089526,
+"sigma2": 0.45737684475965384,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.575012194087335,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.47.attn_output.weight",
+"layer": 47,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04541833894036524,
+"delta_norm": 4.184385463984753,
+"top1_energy": 0.002391234468305042,
+"top4_energy": 0.0052853425252290965,
+"effective_rank": 2419.4519103875305,
+"sigma1": 0.2046174960657259,
+"sigma2": 0.1354957945492324,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.5101390913751063,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.47.attn_q.weight",
+"layer": 47,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.0744962011743124,
+"delta_norm": 8.458114444660271,
+"top1_energy": 0.004415235721425757,
+"top4_energy": 0.008631859731955762,
+"effective_rank": 2584.8974121145116,
+"sigma1": 0.562018361585214,
+"sigma2": 0.366456454492339,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.5336566042036064,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.47.ffn_down.weight",
+"layer": 47,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.1090360921219483,
+"delta_norm": 11.872218331846232,
+"top1_energy": 0.029339789226360834,
+"top4_energy": 0.0323145735966278,
+"effective_rank": 901.1247788130518,
+"sigma1": 2.0335758210990815,
+"sigma2": 0.5272957831030501,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.85661309318997,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.47.ffn_up.weight",
+"layer": 47,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.11004834337827947,
+"delta_norm": 12.223053432368477,
+"top1_energy": 0.0022219398708208577,
+"top4_energy": 0.004232394520388799,
+"effective_rank": 3570.9751613140224,
+"sigma1": 0.5761636579618153,
+"sigma2": 0.33690714676531563,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.7101556422700708,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.48.attn_qkv.weight",
+"layer": 48,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07855131286835136,
+"delta_norm": 9.125633918716725,
+"top1_energy": 0.0010245254092609492,
+"top4_energy": 0.003586093643572231,
+"effective_rank": 2841.8598376860095,
+"sigma1": 0.29209519286295843,
+"sigma2": 0.2743654849864941,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.064620766264886,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.48.ffn_down.weight",
+"layer": 48,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.10956055294308636,
+"delta_norm": 11.94418566459951,
+"top1_energy": 0.028312137510901624,
+"top4_energy": 0.031426107334086455,
+"effective_rank": 952.4866254040585,
+"sigma1": 2.00975387680671,
+"sigma2": 0.5533675267840148,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.6318608872600833,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.48.ffn_up.weight",
+"layer": 48,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07512368939597334,
+"delta_norm": 8.364878779877523,
+"top1_energy": 0.0031594594991534663,
+"top4_energy": 0.005963173546121814,
+"effective_rank": 2999.2418062439892,
+"sigma1": 0.470182053076519,
+"sigma2": 0.2705739996847172,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.7377207478338366,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.48.ssm_out.weight",
+"layer": 48,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08390024996746193,
+"delta_norm": 7.192510993465805,
+"top1_energy": 0.05501520395551426,
+"top4_energy": 0.06110874082981713,
+"effective_rank": 296.60274221736677,
+"sigma1": 1.6870264745398076,
+"sigma2": 0.4853363519538089,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.47599446805989,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.49.attn_qkv.weight",
+"layer": 49,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.0439677380604843,
+"delta_norm": 5.262191520416577,
+"top1_energy": 0.0013039797130432696,
+"top4_energy": 0.0040908228045743785,
+"effective_rank": 2893.847296273649,
+"sigma1": 0.19002120501666242,
+"sigma2": 0.1664363363136857,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.141705046057526,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.49.ffn_down.weight",
+"layer": 49,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q6_K",
+"IQ4_XS"
+],
+"relative_norm": 0.08557212166569868,
+"delta_norm": 9.3491031817255,
+"top1_energy": 0.046585412964562936,
+"top4_energy": 0.04982066218409817,
+"effective_rank": 414.4613871245055,
+"sigma1": 2.0178781037549065,
+"sigma2": 0.44534630485321886,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 4.531031428272379,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.49.ffn_up.weight",
+"layer": 49,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.07944804074849252,
+"delta_norm": 8.888972034337778,
+"top1_energy": 0.0008144809828725559,
+"top4_energy": 0.002986551073353414,
+"effective_rank": 3215.7615626900506,
+"sigma1": 0.2536833792177341,
+"sigma2": 0.24211524589208458,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.047779450166495,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.49.ssm_out.weight",
+"layer": 49,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08401854551014037,
+"delta_norm": 7.337512683539641,
+"top1_energy": 0.05218375321639983,
+"top4_energy": 0.05752992451900392,
+"effective_rank": 326.39495268655224,
+"sigma1": 1.6761640463303527,
+"sigma2": 0.4584149336911403,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.6564342108882473,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.50.attn_qkv.weight",
+"layer": 50,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.0872747439905072,
+"delta_norm": 10.306499973363525,
+"top1_energy": 0.0019895920446878455,
+"top4_energy": 0.0045799034183916605,
+"effective_rank": 3053.976221727445,
+"sigma1": 0.45971981615281754,
+"sigma2": 0.333175127806014,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.379814331220073,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.50.ffn_down.weight",
+"layer": 50,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08451540096682386,
+"delta_norm": 9.216270478113724,
+"top1_energy": 0.04568090458162541,
+"top4_energy": 0.04932621386987766,
+"effective_rank": 430.22350968240755,
+"sigma1": 1.969801934138374,
+"sigma2": 0.4776071530389745,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 4.124314138941782,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.50.ffn_up.weight",
+"layer": 50,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.044485734384006936,
+"delta_norm": 4.994984060648577,
+"top1_energy": 0.0010631847827871233,
+"top4_energy": 0.0033998543624991374,
+"effective_rank": 3266.6697808579165,
+"sigma1": 0.16286901981388102,
+"sigma2": 0.14615740997773274,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.1143398055472815,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.50.ssm_out.weight",
+"layer": 50,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08472893655472967,
+"delta_norm": 7.21232685971201,
+"top1_energy": 0.05275597327636927,
+"top4_energy": 0.05774944900929883,
+"effective_rank": 320.2812814889579,
+"sigma1": 1.6565754477019718,
+"sigma2": 0.39347693514621146,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 4.210095433132333,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.51.attn_output.weight",
+"layer": 51,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04539290413644356,
+"delta_norm": 4.467080252848247,
+"top1_energy": 0.004813236161303469,
+"top4_energy": 0.008154880675337303,
+"effective_rank": 2354.5643344408395,
+"sigma1": 0.30991481694275036,
+"sigma2": 0.15088393017105023,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.0539948594354223,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.51.attn_q.weight",
+"layer": 51,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07779023386812331,
+"delta_norm": 8.696487594768168,
+"top1_energy": 0.0022434487222450054,
+"top4_energy": 0.006214936232757704,
+"effective_rank": 2602.606934098064,
+"sigma1": 0.4119096395888535,
+"sigma2": 0.33707425918190775,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.2220145216326341,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.51.ffn_down.weight",
+"layer": 51,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08375301462430174,
+"delta_norm": 9.311488408536325,
+"top1_energy": 0.04630030574977756,
+"top4_energy": 0.04875008322120701,
+"effective_rank": 420.5922340297275,
+"sigma1": 2.0036000619318606,
+"sigma2": 0.3652445084310065,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 5.485640483792063,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.51.ffn_up.weight",
+"layer": 51,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.08090968080901643,
+"delta_norm": 9.199463105722215,
+"top1_energy": 0.0008396543482204191,
+"top4_energy": 0.003033776343936616,
+"effective_rank": 3168.996160298038,
+"sigma1": 0.26657090886309687,
+"sigma2": 0.2512221394885298,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0610964041856186,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.52.attn_qkv.weight",
+"layer": 52,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.08174335424581028,
+"delta_norm": 10.02344045431228,
+"top1_energy": 0.0009811963986597492,
+"top4_energy": 0.0036169503272466784,
+"effective_rank": 2772.497102494226,
+"sigma1": 0.313974796402873,
+"sigma2": 0.3082876577553409,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0184475067504826,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.52.ffn_down.weight",
+"layer": 52,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q6_K",
+"Q5_K"
+],
+"relative_norm": 0.0420472861795624,
+"delta_norm": 4.632283567286178,
+"top1_energy": 0.0009255155874611254,
+"top4_energy": 0.0024214678966802765,
+"effective_rank": 3829.1771540065747,
+"sigma1": 0.14092466328229686,
+"sigma2": 0.10365053373111488,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.3596134839775809,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.52.ffn_up.weight",
+"layer": 52,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04485775840194782,
+"delta_norm": 5.008366787664902,
+"top1_energy": 0.0008710235312370659,
+"top4_energy": 0.0031154219440506963,
+"effective_rank": 3272.077411808091,
+"sigma1": 0.1478124688403355,
+"sigma2": 0.14045259049629738,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.052401157700485,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.52.ssm_out.weight",
+"layer": 52,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q5_K"
+],
+"relative_norm": 0.08221159173384338,
+"delta_norm": 7.053173004869599,
+"top1_energy": 0.00239431936036053,
+"top4_energy": 0.005266107677436593,
+"effective_rank": 2717.6476511793185,
+"sigma1": 0.3451243289754965,
+"sigma2": 0.23978177411517876,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.4393267805655514,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.53.attn_qkv.weight",
+"layer": 53,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.0817699585438478,
+"delta_norm": 9.992873329983116,
+"top1_energy": 0.0009751601043334621,
+"top4_energy": 0.0035666482006795354,
+"effective_rank": 2798.284183179104,
+"sigma1": 0.3120529876088729,
+"sigma2": 0.3032059677564282,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0291782510677747,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.53.ffn_down.weight",
+"layer": 53,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.045768128184108046,
+"delta_norm": 5.022475369544493,
+"top1_energy": 0.0011350935070462544,
+"top4_energy": 0.002770544822001164,
+"effective_rank": 3721.31253128292,
+"sigma1": 0.16921296498854024,
+"sigma2": 0.12062336693213663,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.4028207742181529,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.53.ffn_up.weight",
+"layer": 53,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.044852826133589783,
+"delta_norm": 4.978756601544279,
+"top1_energy": 0.0008617706251793954,
+"top4_energy": 0.0030386566899648407,
+"effective_rank": 3293.4308508287772,
+"sigma1": 0.1461560301984011,
+"sigma2": 0.13750287123689542,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0629307510720825,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.53.ssm_out.weight",
+"layer": 53,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.045414694429447365,
+"delta_norm": 3.9466507798703243,
+"top1_energy": 0.00692212427184246,
+"top4_energy": 0.014754351654034133,
+"effective_rank": 2152.43421633719,
+"sigma1": 0.3283586000502819,
+"sigma2": 0.22701147185223508,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.4464405581406699,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.54.attn_qkv.weight",
+"layer": 54,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.11185508775765934,
+"delta_norm": 13.355554653114911,
+"top1_energy": 0.0013708200192773642,
+"top4_energy": 0.00417636660996434,
+"effective_rank": 3094.729561700779,
+"sigma1": 0.49448389099534906,
+"sigma2": 0.45106974956859064,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0962470692576487,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.54.ffn_down.weight",
+"layer": 54,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04550856253811029,
+"delta_norm": 5.014400444469323,
+"top1_energy": 0.001363357525469172,
+"top4_energy": 0.003023662939673556,
+"effective_rank": 3712.5127566907418,
+"sigma1": 0.18515007535340494,
+"sigma2": 0.12159269295849572,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.5227072519612985,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.54.ffn_up.weight",
+"layer": 54,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.044771186209223233,
+"delta_norm": 5.002815670818018,
+"top1_energy": 0.0008827478184339993,
+"top4_energy": 0.00306037100982246,
+"effective_rank": 3298.838779180101,
+"sigma1": 0.14863901820180636,
+"sigma2": 0.14055258034345824,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0575331867873778,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.54.ssm_out.weight",
+"layer": 54,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.043910506464703965,
+"delta_norm": 3.8339744144807395,
+"top1_energy": 0.002662456834174032,
+"top4_energy": 0.009086171665602357,
+"effective_rank": 2365.509452733399,
+"sigma1": 0.1978292470452612,
+"sigma2": 0.1847923434594006,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.0705489380230997,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.55.attn_output.weight",
+"layer": 55,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04510362782003498,
+"delta_norm": 4.525545859804863,
+"top1_energy": 0.0051669877394433334,
+"top4_energy": 0.008510052356948869,
+"effective_rank": 2291.567993971392,
+"sigma1": 0.32530421139731464,
+"sigma2": 0.1558783156220394,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.0869112557392837,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.55.attn_q.weight",
+"layer": 55,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07996267986497543,
+"delta_norm": 9.250602904808323,
+"top1_energy": 0.0014745884538323853,
+"top4_energy": 0.004790938940550727,
+"effective_rank": 2696.2774137946385,
+"sigma1": 0.35522657880811287,
+"sigma2": 0.323738573116085,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0972636822018025,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.55.ffn_down.weight",
+"layer": 55,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04639886153774568,
+"delta_norm": 5.158654890803956,
+"top1_energy": 0.0009131619996751053,
+"top4_energy": 0.003286050094076474,
+"effective_rank": 3667.4109573125,
+"sigma1": 0.15588717621371287,
+"sigma2": 0.1550174066844347,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.0056107862199548,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.55.ffn_up.weight",
+"layer": 55,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04454347460639338,
+"delta_norm": 4.993332922046016,
+"top1_energy": 0.0008524517397623856,
+"top4_energy": 0.0029409944227746275,
+"effective_rank": 3304.6288129613235,
+"sigma1": 0.14578922375631342,
+"sigma2": 0.13450928268146542,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0838599452021487,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.56.attn_qkv.weight",
+"layer": 56,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"IQ4_XS",
+"Q5_K"
+],
+"relative_norm": 0.09096783331825738,
+"delta_norm": 11.213514827166954,
+"top1_energy": 0.001367068588375996,
+"top4_energy": 0.00438529212672509,
+"effective_rank": 3043.6384074354314,
+"sigma1": 0.4146072708061666,
+"sigma2": 0.3828714219297914,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.082889051150427,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.56.ffn_down.weight",
+"layer": 56,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04644433083467653,
+"delta_norm": 5.189951499176009,
+"top1_energy": 0.0008360151130202567,
+"top4_energy": 0.0028083567377070687,
+"effective_rank": 3660.7529018485507,
+"sigma1": 0.15006187325750905,
+"sigma2": 0.14275996355251952,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.0511481617344576,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.56.ffn_up.weight",
+"layer": 56,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04450848818930276,
+"delta_norm": 5.010193554575951,
+"top1_energy": 0.0008411798390952274,
+"top4_energy": 0.0029243308113098485,
+"effective_rank": 3316.3833021560945,
+"sigma1": 0.1453111472294615,
+"sigma2": 0.13423245670801418,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0825336196114326,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.56.ssm_out.weight",
+"layer": 56,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.018668793481374287,
+"delta_norm": 1.6302779772483378,
+"top1_energy": 0.00872511830281978,
+"top4_energy": 0.018043642672726602,
+"effective_rank": 1818.53422448152,
+"sigma1": 0.15228156239687504,
+"sigma2": 0.09879438538905046,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.5413989549830496,
+"above_null_p95": true
+},
+{
+"comparison": "edit",
+"tensor": "blk.57.attn_qkv.weight",
+"layer": 57,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.11186218364669784,
+"delta_norm": 13.812337608293308,
+"top1_energy": 0.0011093945215785354,
+"top4_energy": 0.0037059013604386097,
+"effective_rank": 3066.2172510106197,
+"sigma1": 0.4600554644268817,
+"sigma2": 0.4256110702087852,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0809292723546868,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.57.ffn_down.weight",
+"layer": 57,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.046207992773726524,
+"delta_norm": 5.2338792101591185,
+"top1_energy": 0.0007541683948665852,
+"top4_energy": 0.0029399311152495462,
+"effective_rank": 3650.3676945160623,
+"sigma1": 0.14373345323761286,
+"sigma2": 0.14271962819594133,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.007103613248485,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.57.ffn_up.weight",
+"layer": 57,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04439370850085373,
+"delta_norm": 5.065905025690459,
+"top1_energy": 0.0008253385044263155,
+"top4_energy": 0.0028717512856954136,
+"effective_rank": 3333.656091165872,
+"sigma1": 0.1455368922268757,
+"sigma2": 0.13425341498278145,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0840461097063445,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.57.ssm_out.weight",
+"layer": 57,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.045088847893714534,
+"delta_norm": 3.9950170724662444,
+"top1_energy": 0.004061449921788837,
+"top4_energy": 0.011745473865570464,
+"effective_rank": 2308.45961794096,
+"sigma1": 0.2546004640756288,
+"sigma2": 0.2232351256213462,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.1405035984681229,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.58.attn_qkv.weight",
+"layer": 58,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.07860563329943361,
+"delta_norm": 9.576447898304325,
+"top1_energy": 0.0012899705527443276,
+"top4_energy": 0.004388814719631065,
+"effective_rank": 2712.490692675461,
+"sigma1": 0.34394923542693234,
+"sigma2": 0.3278789796267595,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0490127662909845,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.58.ffn_down.weight",
+"layer": 58,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04526928002037415,
+"delta_norm": 5.2288627880841885,
+"top1_energy": 0.0008000784747323628,
+"top4_energy": 0.002512252341285371,
+"effective_rank": 3662.330595444024,
+"sigma1": 0.14790182697797233,
+"sigma2": 0.12629622903959103,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.1710708079146879,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.58.ffn_up.weight",
+"layer": 58,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04433981138906305,
+"delta_norm": 5.150374709507953,
+"top1_energy": 0.0008015248320936563,
+"top4_energy": 0.0028441164146359157,
+"effective_rank": 3345.3104534160157,
+"sigma1": 0.14581336002983733,
+"sigma2": 0.13647514063335595,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0684243251418861,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.58.ssm_out.weight",
+"layer": 58,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.0448139317335329,
+"delta_norm": 3.967653814209013,
+"top1_energy": 0.0030042690358669344,
+"top4_energy": 0.009924425431274489,
+"effective_rank": 2367.9765231127235,
+"sigma1": 0.21747191706623448,
+"sigma2": 0.20937420005117605,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.0386758111222831,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.59.attn_output.weight",
+"layer": 59,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.0450717462823648,
+"delta_norm": 4.936286301816831,
+"top1_energy": 0.0028595683333756837,
+"top4_energy": 0.005698259214644628,
+"effective_rank": 2415.106748535397,
+"sigma1": 0.2639675734439031,
+"sigma2": 0.1529263924149879,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.7261086806232169,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.59.attn_q.weight",
+"layer": 59,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ4_XS"
+],
+"relative_norm": 0.08038477569043107,
+"delta_norm": 9.051876483281225,
+"top1_energy": 0.001633589685965284,
+"top4_energy": 0.004947166295488244,
+"effective_rank": 2694.2958690608552,
+"sigma1": 0.3658559399743807,
+"sigma2": 0.30564507315551914,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.1969960326768458,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.59.ffn_down.weight",
+"layer": 59,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04570325350633425,
+"delta_norm": 5.299786803786582,
+"top1_energy": 0.000997863046609387,
+"top4_energy": 0.0030257901441552416,
+"effective_rank": 3678.810388749137,
+"sigma1": 0.16741480810850898,
+"sigma2": 0.15759322971715153,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.0623223371269517,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.59.ffn_up.weight",
+"layer": 59,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04410002310890616,
+"delta_norm": 5.1527438064608475,
+"top1_energy": 0.0008078614983768008,
+"top4_energy": 0.002810462257103227,
+"effective_rank": 3358.472854967083,
+"sigma1": 0.14645594495727948,
+"sigma2": 0.13564865531671771,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0796711888910988,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.60.attn_qkv.weight",
+"layer": 60,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.044670844223496556,
+"delta_norm": 5.641487446656614,
+"top1_energy": 0.002227517855704613,
+"top4_energy": 0.006176060395991712,
+"effective_rank": 2801.420647679167,
+"sigma1": 0.2662589549535805,
+"sigma2": 0.22063750427066092,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.2067710602226298,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.60.ffn_down.weight",
+"layer": 60,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04632937294843815,
+"delta_norm": 5.393807287899959,
+"top1_energy": 0.0007335143925501362,
+"top4_energy": 0.0023796079849852545,
+"effective_rank": 3669.490454242395,
+"sigma1": 0.14608302237939932,
+"sigma2": 0.12782476121988973,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.1428382183957375,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.60.ffn_up.weight",
+"layer": 60,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.044075651645697836,
+"delta_norm": 5.19525798854273,
+"top1_energy": 0.0008400484383386988,
+"top4_energy": 0.002894389680515581,
+"effective_rank": 3351.114551547575,
+"sigma1": 0.15057722291785142,
+"sigma2": 0.1388363471481561,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.084566297017065,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.60.ssm_out.weight",
+"layer": 60,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04396280792471241,
+"delta_norm": 3.8973624710435697,
+"top1_energy": 0.0028767225212838273,
+"top4_energy": 0.008543933760416216,
+"effective_rank": 2391.4614479143725,
+"sigma1": 0.20903537388923157,
+"sigma2": 0.19233620653291703,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.0868227966919821,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.61.attn_qkv.weight",
+"layer": 61,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.11107049963116372,
+"delta_norm": 13.222524226484738,
+"top1_energy": 0.0009972345679809876,
+"top4_energy": 0.003501654942568439,
+"effective_rank": 3134.3078636435953,
+"sigma1": 0.4175543703598785,
+"sigma2": 0.4106261278100508,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0168723860480515,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.61.ffn_down.weight",
+"layer": 61,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04662192817033362,
+"delta_norm": 5.492447471372304,
+"top1_energy": 0.0006891548238141207,
+"top4_energy": 0.0024640776430812825,
+"effective_rank": 3664.7953405685835,
+"sigma1": 0.14418640453714568,
+"sigma2": 0.14292759056031484,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.0088073546324816,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.61.ffn_up.weight",
+"layer": 61,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.0440368269093408,
+"delta_norm": 5.274057242602555,
+"top1_energy": 0.0008660478823163288,
+"top4_energy": 0.002939140263497246,
+"effective_rank": 3341.713243114941,
+"sigma1": 0.1552086034485916,
+"sigma2": 0.1408400662131756,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.1020202391389662,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.61.ssm_out.weight",
+"layer": 61,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04520561066654246,
+"delta_norm": 4.077958725508983,
+"top1_energy": 0.003330249074454109,
+"top4_energy": 0.010186998165490055,
+"effective_rank": 2312.036044205633,
+"sigma1": 0.23533210740824775,
+"sigma2": 0.22100566234249053,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.064823882401509,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.62.attn_qkv.weight",
+"layer": 62,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.0448406662138231,
+"delta_norm": 5.437735289609175,
+"top1_energy": 0.0017378424350628697,
+"top4_energy": 0.004678416975543403,
+"effective_rank": 2829.57826890964,
+"sigma1": 0.22668524935838802,
+"sigma2": 0.17574793788918985,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.2898316309197007,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.62.ffn_down.weight",
+"layer": 62,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.047270239409159164,
+"delta_norm": 5.512429278093405,
+"top1_energy": 0.0008957250289468764,
+"top4_energy": 0.003173528614143002,
+"effective_rank": 3649.6467441236964,
+"sigma1": 0.1649796529083339,
+"sigma2": 0.16330331881625917,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.010265156300717,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.62.ffn_up.weight",
+"layer": 62,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.043996760341335234,
+"delta_norm": 5.305474577675426,
+"top1_energy": 0.0008713108517815841,
+"top4_energy": 0.002972518382812731,
+"effective_rank": 3324.857789890922,
+"sigma1": 0.1566068662777612,
+"sigma2": 0.1425607871677737,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0985269469188415,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.62.ssm_out.weight",
+"layer": 62,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04462817723157061,
+"delta_norm": 4.086465810099251,
+"top1_energy": 0.003754606874158571,
+"top4_energy": 0.008399361226514322,
+"effective_rank": 2374.936895647886,
+"sigma1": 0.2503975672607261,
+"sigma2": 0.17365073490871694,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.4419608842562786,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.63.attn_output.weight",
+"layer": 63,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.047050753467031636,
+"delta_norm": 4.716515701280837,
+"top1_energy": 0.00367811562458715,
+"top4_energy": 0.008811955947227761,
+"effective_rank": 2315.128970814492,
+"sigma1": 0.2860447447773936,
+"sigma2": 0.20366979105894667,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.4044534699532625,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.63.attn_q.weight",
+"layer": 63,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"Q5_K",
+"Q5_K"
+],
+"relative_norm": 0.04521326102587238,
+"delta_norm": 5.114271119883146,
+"top1_energy": 0.0010565315915308537,
+"top4_energy": 0.004034298165330321,
+"effective_rank": 2917.2465090356523,
+"sigma1": 0.1662359658494826,
+"sigma2": 0.16220353506019142,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.024860313850711,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.63.ffn_down.weight",
+"layer": 63,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.019768302153145737,
+"delta_norm": 2.1656597632358285,
+"top1_energy": 0.0034917423851594286,
+"top4_energy": 0.006554686857269034,
+"effective_rank": 3407.4231740106015,
+"sigma1": 0.12797092967890683,
+"sigma2": 0.07122308487805165,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.7967619613502979,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.63.ffn_up.weight",
+"layer": 63,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.017591730868441763,
+"delta_norm": 2.1807383800602103,
+"top1_energy": 0.0013673360639287065,
+"top4_energy": 0.004467609455831518,
+"effective_rank": 3037.8065067822868,
+"sigma1": 0.08063826989315259,
+"sigma2": 0.07599611619612574,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0610840912586466,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.64.attn_output.weight",
+"layer": 64,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.0,
+"delta_norm": 0.0,
+"top1_energy": 0.0,
+"top4_energy": 0.0,
+"effective_rank": 0.0,
+"sigma1": 0.0,
+"sigma2": 0.0,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": null,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.64.attn_q.weight",
+"layer": 64,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.0,
+"delta_norm": 0.0,
+"top1_energy": 0.0,
+"top4_energy": 0.0,
+"effective_rank": 0.0,
+"sigma1": 0.0,
+"sigma2": 0.0,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": null,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.64.ffn_down.weight",
+"layer": 64,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.0,
+"delta_norm": 0.0,
+"top1_energy": 0.0,
+"top4_energy": 0.0,
+"effective_rank": 0.0,
+"sigma1": 0.0,
+"sigma2": 0.0,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": null,
+"above_null_p95": false
+},
+{
+"comparison": "edit",
+"tensor": "blk.64.ffn_up.weight",
+"layer": 64,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.0,
+"delta_norm": 0.0,
+"top1_energy": 0.0,
+"top4_energy": 0.0,
+"effective_rank": 0.0,
+"sigma1": 0.0,
+"sigma2": 0.0,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": null,
+"above_null_p95": false
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.0.attn_qkv.weight",
+"layer": 0,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q5_K",
+"IQ4_XS"
+],
+"relative_norm": 0.08710325698940731,
+"delta_norm": 9.87020981643478,
+"top1_energy": 0.0015635443386274486,
+"top4_energy": 0.006034907072049522,
+"effective_rank": 2934.558550494088,
+"sigma1": 0.39028466329276307,
+"sigma2": 0.3838582827945836,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0167415444350811
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.0.ffn_down.weight",
+"layer": 0,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ4_XS",
+"IQ2_S"
+],
+"relative_norm": 0.2737626651143294,
+"delta_norm": 28.02137072959212,
+"top1_energy": 0.02681775667707177,
+"top4_energy": 0.028386906269153973,
+"effective_rank": 1036.1852898719876,
+"sigma1": 4.588815525184952,
+"sigma2": 0.6440833360513631,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 7.124567999720787
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.0.ffn_up.weight",
+"layer": 0,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q3_K",
+"IQ2_XXS"
+],
+"relative_norm": 0.37391926721467467,
+"delta_norm": 35.575122475375466,
+"top1_energy": 0.0005022314980597322,
+"top4_energy": 0.0019677610654972666,
+"effective_rank": 3847.3495996278516,
+"sigma1": 0.797257066273913,
+"sigma2": 0.7887530563785102,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0107815872491805
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.0.ssm_out.weight",
+"layer": 0,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"IQ4_XS"
+],
+"relative_norm": 0.09013075016746752,
+"delta_norm": 7.922864269034356,
+"top1_energy": 0.079202332286315,
+"top4_energy": 0.08295018136361572,
+"effective_rank": 150.8230073772741,
+"sigma1": 2.229724475629712,
+"sigma2": 0.2887724302667476,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 7.721389723977632
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.8.attn_qkv.weight",
+"layer": 8,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ3_S"
+],
+"relative_norm": 0.15783513147846281,
+"delta_norm": 18.48411826168995,
+"top1_energy": 0.0010883003162131199,
+"top4_energy": 0.004277415033905302,
+"effective_rank": 3172.1568703390462,
+"sigma1": 0.6097799160311754,
+"sigma2": 0.6049504337779464,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0079832693450084
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.8.ffn_down.weight",
+"layer": 8,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"IQ3_XXS"
+],
+"relative_norm": 0.19894778662612017,
+"delta_norm": 20.885192226300287,
+"top1_energy": 0.0018281628614603923,
+"top4_energy": 0.003268549692484771,
+"effective_rank": 3850.082362089918,
+"sigma1": 0.8929886066793025,
+"sigma2": 0.45857659035568715,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.9473052603637508
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.8.ffn_up.weight",
+"layer": 8,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ3_XXS"
+],
+"relative_norm": 0.19690512456319856,
+"delta_norm": 20.551644797633294,
+"top1_energy": 0.00047533293442188706,
+"top4_energy": 0.0018953962914172978,
+"effective_rank": 3905.1355351455545,
+"sigma1": 0.44806966075957655,
+"sigma2": 0.44760940567611984,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0010282515908295
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.8.ssm_out.weight",
+"layer": 8,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q5_K",
+"IQ3_XXS"
+],
+"relative_norm": 0.19433968422416859,
+"delta_norm": 17.556215038507293,
+"top1_energy": 0.02321549319174645,
+"top4_energy": 0.028349158618841064,
+"effective_rank": 1084.9180230209677,
+"sigma1": 2.674975747271854,
+"sigma2": 0.7406063439497836,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.611872581330777
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.16.attn_qkv.weight",
+"layer": 16,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ3_XXS"
+],
+"relative_norm": 0.20017204127309265,
+"delta_norm": 23.412443827629126,
+"top1_energy": 0.0010945752974599204,
+"top4_energy": 0.0042243914036336995,
+"effective_rank": 3203.684152926852,
+"sigma1": 0.774585868982296,
+"sigma2": 0.7658885947265616,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0113557954976984
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.16.ffn_down.weight",
+"layer": 16,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"IQ4_XS",
+"Q2_K"
+],
+"relative_norm": 0.2857311726852014,
+"delta_norm": 29.06949565340009,
+"top1_energy": 0.0016267354523390926,
+"top4_energy": 0.0030623415749672935,
+"effective_rank": 3875.5922675498045,
+"sigma1": 1.1724544052870947,
+"sigma2": 0.6419195169489279,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.826481941006908
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.16.ffn_up.weight",
+"layer": 16,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ3_XXS"
+],
+"relative_norm": 0.19792436598724572,
+"delta_norm": 20.651333012370305,
+"top1_energy": 0.00048205771553093277,
+"top4_energy": 0.0019221778122090842,
+"effective_rank": 3879.947644444783,
+"sigma1": 0.4534168016064862,
+"sigma2": 0.4527254858523795,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0015270086966832
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.16.ssm_out.weight",
+"layer": 16,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"IQ4_XS",
+"IQ3_S"
+],
+"relative_norm": 0.1617118128625688,
+"delta_norm": 14.751287210918099,
+"top1_energy": 0.012615805478739727,
+"top4_energy": 0.015266981219068186,
+"effective_rank": 1889.6385520598008,
+"sigma1": 1.6568660950260585,
+"sigma2": 0.4623526626330445,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 3.5835547817339246
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.24.attn_qkv.weight",
+"layer": 24,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q5_K",
+"IQ3_S"
+],
+"relative_norm": 0.14404887962138785,
+"delta_norm": 16.907403013059284,
+"top1_energy": 0.0011091248979205194,
+"top4_energy": 0.0042121638548227045,
+"effective_rank": 3196.954482039372,
+"sigma1": 0.5630761495166822,
+"sigma2": 0.5486712160023136,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0262542176338767
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.24.ffn_down.weight",
+"layer": 24,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.10439261013581923,
+"delta_norm": 10.982367396458228,
+"top1_energy": 0.0031377421585523195,
+"top4_energy": 0.004555500049513834,
+"effective_rank": 3768.681623718959,
+"sigma1": 0.6151833810655429,
+"sigma2": 0.23890011418451074,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.575065245010372
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.24.ffn_up.weight",
+"layer": 24,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ3_S"
+],
+"relative_norm": 0.153903460175072,
+"delta_norm": 16.751486975681534,
+"top1_energy": 0.0006154333707128622,
+"top4_energy": 0.002425312727996827,
+"effective_rank": 3878.160157720729,
+"sigma1": 0.41556970947806243,
+"sigma2": 0.4134368822686928,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0051587734448508
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.24.ssm_out.weight",
+"layer": 24,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"IQ3_S"
+],
+"relative_norm": 0.15622023401458585,
+"delta_norm": 14.075739461239186,
+"top1_energy": 0.007058852932020528,
+"top4_energy": 0.009710774829670319,
+"effective_rank": 2392.1196038105477,
+"sigma1": 1.1826011211100929,
+"sigma2": 0.42749462132723354,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.766353217353931
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.32.attn_qkv.weight",
+"layer": 32,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q5_K",
+"IQ4_XS"
+],
+"relative_norm": 0.08761402554294907,
+"delta_norm": 10.244257389188304,
+"top1_energy": 0.000830717962554934,
+"top4_energy": 0.0031907453606816855,
+"effective_rank": 3316.052811235498,
+"sigma1": 0.29526181312854116,
+"sigma2": 0.2903493931237054,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.016918995255977
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.32.ffn_down.weight",
+"layer": 32,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"IQ3_S"
+],
+"relative_norm": 0.1533985932196362,
+"delta_norm": 17.009713200321844,
+"top1_energy": 0.0029856222227982255,
+"top4_energy": 0.004574112792075481,
+"effective_rank": 3705.289699880872,
+"sigma1": 0.9294251461306512,
+"sigma2": 0.3994682126399831,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.326656081064169
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.32.ffn_up.weight",
+"layer": 32,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ3_XXS"
+],
+"relative_norm": 0.19788236429866157,
+"delta_norm": 21.885827802372948,
+"top1_energy": 0.0007089092425244357,
+"top4_energy": 0.0027332161896847728,
+"effective_rank": 3838.4526757406966,
+"sigma1": 0.5827178170176853,
+"sigma2": 0.5736981279965464,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0157220122935335
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.32.ssm_out.weight",
+"layer": 32,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.10510147235038943,
+"delta_norm": 9.137429662418565,
+"top1_energy": 0.006879210795302897,
+"top4_energy": 0.009381451835707287,
+"effective_rank": 2392.1533935457724,
+"sigma1": 0.7578676260276012,
+"sigma2": 0.27590297791256585,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.7468627985152474
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.40.attn_qkv.weight",
+"layer": 40,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ3_S"
+],
+"relative_norm": 0.16188240279389537,
+"delta_norm": 18.890925257149576,
+"top1_energy": 0.000986629056614277,
+"top4_energy": 0.0034869214995888343,
+"effective_rank": 3245.9404441875217,
+"sigma1": 0.5933762784733504,
+"sigma2": 0.5481542241337578,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0824987792642782
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.40.ffn_down.weight",
+"layer": 40,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q6_K",
+"IQ4_XS"
+],
+"relative_norm": 0.07894687500247538,
+"delta_norm": 8.240030095366052,
+"top1_energy": 0.0032528297566859956,
+"top4_energy": 0.0046784085051463226,
+"effective_rank": 3758.7920981408047,
+"sigma1": 0.46995845242084333,
+"sigma2": 0.17988428676540505,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.6125597786855983
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.40.ffn_up.weight",
+"layer": 40,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.10695980354082235,
+"delta_norm": 11.23105140426218,
+"top1_energy": 0.0005207177991252433,
+"top4_energy": 0.0020434935581404618,
+"effective_rank": 3829.191221536954,
+"sigma1": 0.2562840783507331,
+"sigma2": 0.25388376600055296,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0094543750787708
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.40.ssm_out.weight",
+"layer": 40,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"IQ4_XS"
+],
+"relative_norm": 0.10575721914971675,
+"delta_norm": 9.09101371148563,
+"top1_energy": 0.005367116367335922,
+"top4_energy": 0.007750348885921279,
+"effective_rank": 2587.6755735617976,
+"sigma1": 0.6660131721592608,
+"sigma2": 0.26648161692802147,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.4992837398579564
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.48.attn_qkv.weight",
+"layer": 48,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"Q4_K",
+"IQ3_XXS"
+],
+"relative_norm": 0.20094004751861824,
+"delta_norm": 23.621741047705477,
+"top1_energy": 0.0008919133728554915,
+"top4_energy": 0.0034573101513003727,
+"effective_rank": 3244.961274274803,
+"sigma1": 0.7054613774836972,
+"sigma2": 0.6966371829845771,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0126668439679245
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.48.ffn_down.weight",
+"layer": 48,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q4_K",
+"IQ3_S"
+],
+"relative_norm": 0.1550056797918708,
+"delta_norm": 17.407205363845616,
+"top1_energy": 0.002184070489284929,
+"top4_energy": 0.0036658749937538886,
+"effective_rank": 3802.32978668368,
+"sigma1": 0.8135090307496669,
+"sigma2": 0.38915453742388756,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.090452384635953
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.48.ffn_up.weight",
+"layer": 48,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ3_S"
+],
+"relative_norm": 0.15873529709298573,
+"delta_norm": 18.20526882244152,
+"top1_energy": 0.0007429665580979851,
+"top4_energy": 0.002669520333126766,
+"effective_rank": 3831.1146509291166,
+"sigma1": 0.4962285292811447,
+"sigma2": 0.46492403791787135,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0673324861916544
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.48.ssm_out.weight",
+"layer": 48,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q4_K",
+"Q4_K"
+],
+"relative_norm": 0.08176390291656059,
+"delta_norm": 6.999759784951131,
+"top1_energy": 0.004677741866041134,
+"top4_energy": 0.007065816610146851,
+"effective_rank": 2553.037166261343,
+"sigma1": 0.4787417053172444,
+"sigma2": 0.19976494001240075,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 2.396525162461069
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.56.attn_qkv.weight",
+"layer": 56,
+"role": "attn_in",
+"shape": [
+10240,
+5120
+],
+"quant": [
+"IQ4_XS",
+"IQ3_S"
+],
+"relative_norm": 0.16050189522725586,
+"delta_norm": 20.358784857961254,
+"top1_energy": 0.0006749387705852514,
+"top4_energy": 0.0025846180699394196,
+"effective_rank": 3274.895841868766,
+"sigma1": 0.5289127557805546,
+"sigma2": 0.5168439330436798,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0233510001090693
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.56.ffn_down.weight",
+"layer": 56,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q5_K",
+"Q4_K"
+],
+"relative_norm": 0.08292855032269512,
+"delta_norm": 9.256257675143448,
+"top1_energy": 0.0008624270956458983,
+"top4_energy": 0.0023529651692385627,
+"effective_rank": 3832.6915487665624,
+"sigma1": 0.2718295288073797,
+"sigma2": 0.2099515391273161,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.2947251062662626
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.56.ffn_up.weight",
+"layer": 56,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q5_K",
+"IQ3_S"
+],
+"relative_norm": 0.14044266344831433,
+"delta_norm": 16.261700250240626,
+"top1_energy": 0.0005157263971862681,
+"top4_energy": 0.0019717845366358493,
+"effective_rank": 3863.8335389150657,
+"sigma1": 0.3692968744988855,
+"sigma2": 0.35904005413664764,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": 1.0285673429581597
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.56.ssm_out.weight",
+"layer": 56,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q6_K",
+"Q4_K"
+],
+"relative_norm": 0.07894134916329124,
+"delta_norm": 6.881407698152498,
+"top1_energy": 0.0033107158848220703,
+"top4_energy": 0.006159954211353757,
+"effective_rank": 2633.9552408525064,
+"sigma1": 0.3959480835446661,
+"sigma2": 0.22395698121564803,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": 1.76796490734713
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.64.attn_output.weight",
+"layer": 64,
+"role": "attn_out",
+"shape": [
+5120,
+6144
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.0,
+"delta_norm": 0.0,
+"top1_energy": 0.0,
+"top4_energy": 0.0,
+"effective_rank": 0.0,
+"sigma1": 0.0,
+"sigma2": 0.0,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": null
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.64.attn_q.weight",
+"layer": 64,
+"role": "attn_in",
+"shape": [
+12288,
+5120
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.0,
+"delta_norm": 0.0,
+"top1_energy": 0.0,
+"top4_energy": 0.0,
+"effective_rank": 0.0,
+"sigma1": 0.0,
+"sigma2": 0.0,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": null
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.64.ffn_down.weight",
+"layer": 64,
+"role": "mlp_out",
+"shape": [
+5120,
+17408
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.0,
+"delta_norm": 0.0,
+"top1_energy": 0.0,
+"top4_energy": 0.0,
+"effective_rank": 0.0,
+"sigma1": 0.0,
+"sigma2": 0.0,
+"side": "writes to the residual stream",
+"sigma1_over_sigma2": null
+},
+{
+"comparison": "noise_floor",
+"tensor": "blk.64.ffn_up.weight",
+"layer": 64,
+"role": "mlp_in",
+"shape": [
+17408,
+5120
+],
+"quant": [
+"Q6_K",
+"Q6_K"
+],
+"relative_norm": 0.0,
+"delta_norm": 0.0,
+"top1_energy": 0.0,
+"top4_energy": 0.0,
+"effective_rank": 0.0,
+"sigma1": 0.0,
+"sigma2": 0.0,
+"side": "reads from the residual stream",
+"sigma1_over_sigma2": null
+}
+]
