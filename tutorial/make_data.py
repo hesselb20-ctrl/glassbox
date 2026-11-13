@@ -184,8 +184,49 @@ def audit() -> dict:
             "beats_nulls": X["beats_all_nulls"], "confirmed": pr["confirmed"], "refuted": pr["refuted"]}
 
 
+def backends() -> dict:
+    """Capability table of the four backends, straight from the code."""
+    import sys
+
+    sys.path.insert(0, str(ROOT))
+    from glassbox.backends import capability_table
+
+    tab = capability_table()
+    return {"available": True, "backends": {n: {"verifies": b["verifies"], "tag": b["tag"]} for n, b in tab["backends"].items()},
+            "primitives": tab["primitives"]}
+
+
+def prereg() -> dict:
+    """Prediction record over the glassbox-bench investigations (null runs excluded), with three refuted examples."""
+    import sys
+
+    sys.path.insert(0, str(ROOT))
+    from glassbox.notebook import Notebook
+
+    books = [b for b in sorted((ROOT / "benchmarks" / "glassbox-bench").glob("seed-*/runs/t*/notebook.jsonl")) if "__null-" not in b.parent.name]
+    if not books:
+        return {"available": False}
+    tot = {"confirmed": 0, "refuted": 0, "inconclusive": 0}
+    refuted = []
+    for b in books:
+        r = Notebook(b).prediction_record()
+        for k in tot:
+            tot[k] += r[k]
+        for x in r["refuted_predictions"]:
+            pr = x["prediction"]
+            obs = f"{x['observed']:.3f}" if isinstance(x["observed"], float) else str(x["observed"])
+            refuted.append({"hypothesis": x["hypothesis"], "predicted": f"{pr['metric'].split('.', 1)[1][:40]} {pr['op']} {pr['threshold']}",
+                            "observed": obs, "where": f"{b.parent.parent.parent.name} {b.parent.name}"})
+    a = optional(ROOT / "audits" / "abliteration" / "summary.json")
+    return {"available": True, "investigations": len(books), **tot, "hit_rate": tot["confirmed"] / max(1, tot["confirmed"] + tot["refuted"]),
+            "examples": sorted(refuted, key=lambda r: len(r["hypothesis"]))[:3],
+            "audit": {"confirmed": a["predictions"]["confirmed"], "refuted": a["predictions"]["refuted"]} if a["available"] else None}
+
+
 def main() -> None:
     data = {
+        "backends": backends(),
+        "prereg": prereg(),
         "bench": bench(),
         "nulls": nulls(),
         "audit": audit(),

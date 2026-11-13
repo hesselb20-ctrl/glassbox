@@ -111,7 +111,26 @@ export interface Audit {
   refuted?: number;
 }
 
+export interface BackendTable {
+  available?: boolean;
+  backends?: Record<string, {verifies?: boolean; tag?: string}>;
+  primitives?: Record<string, Record<string, boolean>>;
+}
+
+export interface PreregRecord {
+  available?: boolean;
+  investigations?: number;
+  confirmed?: number;
+  refuted?: number;
+  inconclusive?: number;
+  hit_rate?: number;
+  examples?: {hypothesis?: string; predicted?: string; observed?: string; where?: string}[];
+  audit?: {confirmed?: number; refuted?: number} | null;
+}
+
 export interface Data {
+  backends?: BackendTable;
+  prereg?: PreregRecord;
   bench?: Bench;
   nulls?: Nulls;
   audit?: Audit;

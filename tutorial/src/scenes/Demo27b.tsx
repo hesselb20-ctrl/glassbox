@@ -131,8 +131,8 @@ export const Demo27b: React.FC<SceneProps> = ({data, dur, frame}) => {
               return (
                 <div key={i} style={{display: 'flex', alignItems: 'center', gap: 14, marginTop: 12}}>
                   <div style={{width: 110, fontFamily: MONO, fontSize: 22, color: C.muted}}>alpha {a}</div>
-                  <div style={{flex: 1, height: 14, background: C.grid, borderRadius: 4}}>
-                    <div style={{width: `${(Math.abs(v) / mx) * 100 * prog(f, t3 + i * 8, t3 + 20 + i * 8)}%`, height: '100%', background: C.muted, borderRadius: 4}} />
+                  <div style={{flex: 1, height: 14, background: C.grid, borderRadius: 0}}>
+                    <div style={{width: `${(Math.abs(v) / mx) * 100 * prog(f, t3 + i * 8, t3 + 20 + i * 8)}%`, height: '100%', background: C.muted, borderRadius: 0}} />
                   </div>
                   <div style={{width: 90, textAlign: 'right', fontFamily: MONO, fontSize: 22, color: C.text}}>{v}</div>
                 </div>
@@ -169,11 +169,11 @@ export const Demo27b: React.FC<SceneProps> = ({data, dur, frame}) => {
             </div>
             <div style={{fontFamily: MONO, fontSize: 24, color: C.muted, marginTop: 16}}>{truncate(g.prompt, 80)}</div>
             <div style={{display: 'flex', gap: 24, marginTop: 18}}>
-              <div style={{flex: 1, border: `1.5px solid ${C.grid}`, borderRadius: 12, padding: 18}}>
+              <div style={{flex: 1, border: `1px solid ${C.grid}`, borderRadius: 0, padding: 18}}>
                 <div style={{fontFamily: MONO, fontSize: T.tiny, color: C.muted}}>before</div>
                 <div style={{fontFamily: SANS, fontSize: 26, color: C.text, marginTop: 8, lineHeight: 1.35}}>{truncate(g.before, 110)}</div>
               </div>
-              <div style={{flex: 1, border: `1.5px solid ${C.accent}`, borderRadius: 12, padding: 18}}>
+              <div style={{flex: 1, border: `1px solid ${C.accent}`, borderRadius: 0, padding: 18}}>
                 <div style={{fontFamily: MONO, fontSize: T.tiny, color: C.accent}}>after</div>
                 <div style={{fontFamily: SANS, fontSize: 26, color: C.text, marginTop: 8, lineHeight: 1.35}}>{truncate(g.after, 110)}</div>
               </div>

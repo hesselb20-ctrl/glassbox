@@ -1,4 +1,143 @@
 {
+ "backends": {
+  "available": true,
+  "backends": {
+   "local-full": {
+    "verifies": true,
+    "tag": "full precision (local)"
+   },
+   "local-gguf": {
+    "verifies": false,
+    "tag": "screening (gguf quantized)"
+   },
+   "local-4bit": {
+    "verifies": false,
+    "tag": "screening (4-bit)"
+   },
+   "ndif": {
+    "verifies": true,
+    "tag": "full precision (NDIF remote)"
+   }
+  },
+  "primitives": {
+   "dataset": {
+    "local-full": true,
+    "local-gguf": true,
+    "local-4bit": true,
+    "ndif": true
+   },
+   "baseline": {
+    "local-full": true,
+    "local-gguf": true,
+    "local-4bit": true,
+    "ndif": true
+   },
+   "attribution_patching": {
+    "local-full": true,
+    "local-gguf": false,
+    "local-4bit": true,
+    "ndif": false
+   },
+   "activation_patching": {
+    "local-full": true,
+    "local-gguf": false,
+    "local-4bit": true,
+    "ndif": true
+   },
+   "path_patching": {
+    "local-full": true,
+    "local-gguf": false,
+    "local-4bit": true,
+    "ndif": true
+   },
+   "ablation": {
+    "local-full": true,
+    "local-gguf": false,
+    "local-4bit": true,
+    "ndif": true
+   },
+   "logit_lens": {
+    "local-full": true,
+    "local-gguf": true,
+    "local-4bit": true,
+    "ndif": true
+   },
+   "direct_logit_attribution": {
+    "local-full": true,
+    "local-gguf": false,
+    "local-4bit": false,
+    "ndif": false
+   },
+   "linear_probe": {
+    "local-full": true,
+    "local-gguf": true,
+    "local-4bit": true,
+    "ndif": true
+   },
+   "attention_patterns": {
+    "local-full": true,
+    "local-gguf": false,
+    "local-4bit": false,
+    "ndif": false
+   },
+   "diff_of_means": {
+    "local-full": true,
+    "local-gguf": true,
+    "local-4bit": true,
+    "ndif": true
+   },
+   "steering": {
+    "local-full": true,
+    "local-gguf": true,
+    "local-4bit": true,
+    "ndif": true
+   },
+   "periodicity": {
+    "local-full": true,
+    "local-gguf": false,
+    "local-4bit": false,
+    "ndif": false
+   },
+   "weights_svd": {
+    "local-full": true,
+    "local-gguf": false,
+    "local-4bit": false,
+    "ndif": false
+   }
+  }
+ },
+ "prereg": {
+  "available": true,
+  "investigations": 21,
+  "confirmed": 165,
+  "refuted": 16,
+  "inconclusive": 13,
+  "hit_rate": 0.9116022099447514,
+  "examples": [
+   {
+    "hypothesis": "H2: mlp0, mlp1, 2.1, mlp2 and 3.1 are jointly necessary; mean-ablating them together destroys the behaviour.",
+    "predicted": "fraction_of_clean <= 0.1",
+    "observed": "0.191",
+    "where": "seed-2 t6"
+   },
+   {
+    "hypothesis": "Heads 1.0 and 1.1 are jointly the (redundant) route by which x1 reaches the last position; removing both destroys the behaviour.",
+    "predicted": "fraction_of_clean <= 0.3",
+    "observed": "0.366",
+    "where": "seed-1 t1"
+   },
+   {
+    "hypothesis": "Everything except head 1.1 and mlp1 is inert: jointly mean-ablating heads 0.0, 0.1, 0.2, 1.0, 1.2 and mlp0 leaves the behaviour intact.",
+    "predicted": "fraction_of_clean >= 0.9",
+    "observed": "0.661",
+    "where": "seed-1 t4"
+   }
+  ],
+  "audit": {
+   "confirmed": 3,
+   "refuted": 5
+  }
+ },
  "bench": {
   "available": true,
   "seeds": 3,

@@ -1,14 +1,14 @@
 """One palette and type scale for every plot, diagram and video frame."""
 from __future__ import annotations
 
-NAVY = "#070b1a"        # page background
-PANEL = "#0e1530"       # card / axes background
-GRID = "#1c2750"        # hairlines
-TEXT = "#e6ebff"        # primary text
-MUTED = "#8793c2"       # secondary text
-ACCENT = "#3df5d0"      # the one glowing colour: active circuit paths, key results
-DIM = "#3a4780"         # inactive components
-WARN = "#ff6b8a"        # negative effects / failures, used sparingly
+NAVY = "#000000"        # page background (the name is historical)
+PANEL = "#0a0a0a"        # card / axes background
+GRID = "#262626"        # hairlines
+TEXT = "#f2f2f2"        # primary text
+MUTED = "#8a8a8a"        # secondary text
+ACCENT = "#ffffff"        # active circuit paths, key results
+DIM = "#3d3d3d"        # inactive components
+WARN = "#ff5a36"        # the one signal colour: negative effects / failures, used sparingly
 MONO = ["JetBrains Mono", "Cascadia Mono", "Consolas", "DejaVu Sans Mono", "monospace"]
 
 PALETTE = dict(navy=NAVY, panel=PANEL, grid=GRID, text=TEXT, muted=MUTED, accent=ACCENT, dim=DIM, warn=WARN)
@@ -51,8 +51,8 @@ def apply_matplotlib() -> None:
         "lines.linewidth": 2.0,
     })
     for name, colors in {
-        "glass": [PANEL, "#14506a", ACCENT],
-        "glass_div": [WARN, "#5a2a55", PANEL, "#14506a", ACCENT],
+        "glass": [PANEL, "#5c5c5c", ACCENT],
+        "glass_div": [WARN, "#5a2416", PANEL, "#5c5c5c", ACCENT],
     }.items():
         if name not in matplotlib.colormaps:
             matplotlib.colormaps.register(LinearSegmentedColormap.from_list(name, colors))

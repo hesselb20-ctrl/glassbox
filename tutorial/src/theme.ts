@@ -1,15 +1,15 @@
-// One palette and type scale, mirrored from glassbox/style.py.
+// One palette and type scale, mirrored from glassbox/style.py: black, white, hairlines, one signal colour.
 import {Easing, interpolate, useCurrentFrame} from 'remotion';
 
 export const C = {
-  navy: '#070b1a',
-  panel: '#0e1530',
-  grid: '#1c2750',
-  text: '#e6ebff',
-  muted: '#8793c2',
-  accent: '#3df5d0',
-  dim: '#3a4780',
-  warn: '#ff6b8a',
+  navy: '#000000', // page background (the key keeps its old name)
+  panel: '#0a0a0a',
+  grid: '#262626',
+  text: '#f2f2f2',
+  muted: '#8a8a8a',
+  accent: '#ffffff',
+  dim: '#3d3d3d',
+  warn: '#ff5a36',
 };
 
 export const MONO = '"JetBrains Mono", "Cascadia Mono", Consolas, "DejaVu Sans Mono", monospace';
@@ -41,7 +41,8 @@ export const envelope = (f: number, dur: number, inF = 14, outF = 14) => {
   return Math.min(i, o);
 };
 
-export const glow = (color = C.accent, r = 14) => `0 0 ${r}px ${color}`;
+/** No glow in this theme; kept so scenes can ask for one without caring. */
+export const glow = (_color = C.accent, _r = 14) => 'none';
 
 /** Cut text at a word boundary so it fits `max` characters. */
 export const truncate = (s: string | undefined, max: number) => {

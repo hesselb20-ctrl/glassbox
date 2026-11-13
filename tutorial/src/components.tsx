@@ -2,19 +2,27 @@ import React from 'react';
 import {AbsoluteFill} from 'remotion';
 import {C, MONO, SANS, T} from './theme';
 
-/** Navy background with a faint lab-notebook grid. */
-export const Backdrop: React.FC<{children?: React.ReactNode; step?: number}> = ({children, step = 60}) => (
+/** Black page with a barely visible survey grid and four registration marks. */
+export const Backdrop: React.FC<{children?: React.ReactNode; step?: number}> = ({children, step = 120}) => (
   <AbsoluteFill style={{backgroundColor: C.navy}}>
     <AbsoluteFill
       style={{
-        backgroundImage: `linear-gradient(${C.grid} 1px, transparent 1px), linear-gradient(90deg, ${C.grid} 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(#141414 1px, transparent 1px), linear-gradient(90deg, #141414 1px, transparent 1px)`,
         backgroundSize: `${step}px ${step}px`,
-        opacity: 0.22,
+        opacity: 0.55,
       }}
     />
-    <AbsoluteFill
-      style={{background: `radial-gradient(ellipse at 50% 45%, transparent 35%, ${C.navy} 100%)`}}
-    />
+    {[
+      {left: 36, top: 36},
+      {right: 36, top: 36},
+      {left: 36, bottom: 36},
+      {right: 36, bottom: 36},
+    ].map((pos, i) => (
+      <div key={i} style={{position: 'absolute', width: 14, height: 14, ...pos}}>
+        <div style={{position: 'absolute', left: 0, right: 0, top: 6.5, height: 1, background: C.dim}} />
+        <div style={{position: 'absolute', top: 0, bottom: 0, left: 6.5, width: 1, background: C.dim}} />
+      </div>
+    ))}
     {children}
   </AbsoluteFill>
 );
@@ -34,10 +42,11 @@ export const Pill: React.FC<{
       lineHeight: 1.2,
       color: fill ? C.navy : color,
       background: fill ? color : 'transparent',
-      border: `1.5px solid ${color}`,
-      borderRadius: 999,
+      border: `1px solid ${color}`,
+      borderRadius: 0,
       padding: `${size * 0.22}px ${size * 0.6}px`,
       whiteSpace: 'nowrap',
+      textTransform: 'uppercase',
       ...style,
     }}
   >
@@ -53,8 +62,8 @@ export const Card: React.FC<{
   <div
     style={{
       background: C.panel,
-      border: `1.5px solid ${border}`,
-      borderRadius: 18,
+      border: `1px solid ${border}`,
+      borderRadius: 0,
       padding: 32,
       boxSizing: 'border-box',
       ...style,
@@ -66,7 +75,7 @@ export const Card: React.FC<{
 
 /** Small mono label above a scene. */
 export const Kicker: React.FC<{children: React.ReactNode; style?: React.CSSProperties}> = ({children, style}) => (
-  <div style={{fontFamily: MONO, fontSize: T.tiny, color: C.muted, letterSpacing: 3, textTransform: 'uppercase', ...style}}>
+  <div style={{fontFamily: MONO, fontSize: T.tiny, color: C.muted, letterSpacing: 5, textTransform: 'uppercase', ...style}}>
     {children}
   </div>
 );
@@ -76,7 +85,7 @@ export const Heading: React.FC<{children: React.ReactNode; style?: React.CSSProp
   style,
   size = T.h2,
 }) => (
-  <div style={{fontFamily: SANS, fontSize: size, fontWeight: 600, color: C.text, letterSpacing: -0.5, ...style}}>
+  <div style={{fontFamily: SANS, fontSize: size, fontWeight: 500, color: C.text, letterSpacing: -1.4, ...style}}>
     {children}
   </div>
 );
@@ -180,7 +189,7 @@ export const Circuit: React.FC<{
       {/* tokens */}
       {tokens.map((t) => (
         <g key={t.id}>
-          <rect x={40} y={t.y - 32} width={70} height={64} rx={14} fill={C.panel} stroke={nodeColor(0)} strokeWidth={2.4} />
+          <rect x={40} y={t.y - 32} width={70} height={64} rx={0} fill={C.panel} stroke={nodeColor(0)} strokeWidth={2.4} />
           <text x={75} y={t.y + 11} textAnchor="middle" fontFamily={MONO} fontSize={32} fill={C.text}>
             {t.id}
           </text>
@@ -188,7 +197,7 @@ export const Circuit: React.FC<{
       ))}
 
       {/* embedding block with Fourier waves */}
-      <rect x={embed.x} y={embed.y} width={embed.w} height={embed.h} rx={16} fill={C.panel} stroke={nodeColor(1)} strokeWidth={2.4} />
+      <rect x={embed.x} y={embed.y} width={embed.w} height={embed.h} rx={0} fill={C.panel} stroke={nodeColor(1)} strokeWidth={2.4} />
       {[0, 1, 2, 3, 4].map((i) => {
         const y0 = embed.y + 46 + i * 52;
         const k = i + 1;
@@ -220,7 +229,7 @@ export const Circuit: React.FC<{
       ))}
 
       {/* unembedding */}
-      <rect x={unembed.x} y={unembed.y} width={unembed.w} height={unembed.h} rx={16} fill={C.panel} stroke={nodeColor(4)} strokeWidth={2.4} />
+      <rect x={unembed.x} y={unembed.y} width={unembed.w} height={unembed.h} rx={0} fill={C.panel} stroke={nodeColor(4)} strokeWidth={2.4} />
       <text x={unembed.x + unembed.w / 2} y={206} textAnchor="middle" fontFamily={MONO} fontSize={fs} fill={L(4) > 0.5 ? C.text : C.muted}>
         W_U
       </text>
@@ -256,10 +265,10 @@ export const Cube: React.FC<{
   const H = h + dy;
   const g = clamp01(glass);
   const mix = (a: number, b: number) => a + (b - a) * g;
-  const edge = `rgba(${Math.round(mix(46, 190))}, ${Math.round(mix(60, 220))}, ${Math.round(mix(112, 255))}, ${mix(1, 0.55)})`;
-  const front = `rgba(${Math.round(mix(3, 120))}, ${Math.round(mix(5, 150))}, ${Math.round(mix(14, 230))}, ${mix(1, 0.06)})`;
-  const top = `rgba(${Math.round(mix(14, 150))}, ${Math.round(mix(20, 180))}, ${Math.round(mix(44, 255))}, ${mix(1, 0.09)})`;
-  const side = `rgba(${Math.round(mix(8, 110))}, ${Math.round(mix(12, 140))}, ${Math.round(mix(30, 230))}, ${mix(1, 0.07)})`;
+  const edge = `rgba(${Math.round(mix(70, 245))}, ${Math.round(mix(70, 245))}, ${Math.round(mix(70, 245))}, ${mix(1, 0.7)})`;
+  const front = `rgba(${Math.round(mix(6, 255))}, ${Math.round(mix(6, 255))}, ${Math.round(mix(6, 255))}, ${mix(1, 0.03)})`;
+  const top = `rgba(${Math.round(mix(20, 255))}, ${Math.round(mix(20, 255))}, ${Math.round(mix(20, 255))}, ${mix(1, 0.06)})`;
+  const side = `rgba(${Math.round(mix(12, 255))}, ${Math.round(mix(12, 255))}, ${Math.round(mix(12, 255))}, ${mix(1, 0.045)})`;
 
   return (
     <div style={{position: 'relative', width: W, height: H, ...style}}>

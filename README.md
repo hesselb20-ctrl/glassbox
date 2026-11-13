@@ -1,4 +1,4 @@
-<p align="center"><img src="media/hero.png" alt="glassbox: turn black boxes into glass boxes" width="100%"></p>
+<p align="center"><img src="media/hero.gif" alt="glassbox: turn black boxes into glass boxes" width="100%"></p>
 
 # glassbox
 
@@ -17,7 +17,7 @@ has never seen.
 
 ## How it works
 
-<p align="center"><img src="media/how-it-works.svg" alt="Claude Code drives the glassbox lab through MCP; the lab runs on four backends" width="100%"></p>
+<p align="center"><img src="media/how-it-works.gif" alt="Claude Code drives the glassbox lab through MCP; the lab runs on four backends" width="100%"></p>
 
 Claude Code is the scientist. Glassbox is the lab, exposed as an MCP server with ten tools: `list_models`,
 `load_model`, `backend_capabilities`, `preregister`, `run_experiment`, `get_plot`, `notebook_append`, `notebook_read`,
@@ -38,7 +38,7 @@ The full tutorial video is [`media/tutorial.mp4`](media/tutorial.mp4).
 
 ## Runs for $0
 
-<p align="center"><img src="media/free-stack.svg" alt="The zero-cost setup" width="100%"></p>
+<p align="center"><img src="media/free-stack.gif" alt="The zero-cost setup" width="100%"></p>
 
 - **The scientist** is Claude Code on the subscription you already have. No Anthropic API key is needed or used.
 - **Small models and GGUF files** run on your own GPUs.
@@ -56,7 +56,7 @@ NDIF setup (you do this yourself, glassbox never sees your key outside the proce
 
 ## Four backends
 
-<p align="center"><img src="media/backends.svg" alt="Capability table of the four backends" width="100%"></p>
+<p align="center"><img src="media/backends.gif" alt="Capability table of the four backends" width="100%"></p>
 
 | Backend | What it is | Results count as |
 |---|---|---|
@@ -123,7 +123,7 @@ and run `/investigate` with the same investigation name: it reads the notebook a
 
 ## Benchmarks
 
-<p align="center"><img src="media/scorecard.png" alt="Benchmark scorecard" width="100%"></p>
+<p align="center"><img src="media/scorecard.gif" alt="Benchmark scorecard: three published circuits, found blind" width="100%"></p>
 
 Three published circuits, each investigated by a fresh headless Claude Code session that got the `/investigate` prompt,
 one paragraph describing the behavior, and the MCP tools. No file access, no web, no hints.
@@ -149,9 +149,9 @@ not mean discovery from zero knowledge.
 Full scorecard, per-head table and caveats: [`benchmarks/SCORECARD.md`](benchmarks/SCORECARD.md). Every run's notebook,
 experiment records, plots and report are in `benchmarks/<name>/`.
 
-<p align="center"><img src="media/fourier.png" alt="Fourier power of the embedding and unembedding" width="100%"></p>
-<p align="center"><img src="media/circuit-modadd.png" alt="The recovered modular addition circuit" width="100%"></p>
-<p align="center"><img src="media/notebook.png" alt="Notebook excerpt: a hypothesis rejected and revised" width="100%"></p>
+<p align="center"><img src="media/fourier.gif" alt="The research loop reaching the Fourier structure of the embedding" width="100%"></p>
+<p align="center"><img src="media/circuit-modadd.gif" alt="The recovered modular addition circuit" width="100%"></p>
+<p align="center"><img src="media/notebook.gif" alt="Notebook excerpt: a hypothesis rejected and revised" width="100%"></p>
 
 ## Pre-registration and null controls
 
@@ -159,7 +159,7 @@ Interpretability agents can look right for the wrong reasons: they can recall a 
 finding it, and a plausible story can score well on a model that has no circuit at all (see *Pitfalls in Evaluating
 Interpretability Agents* under Related work). Two mechanisms address that here.
 
-<p align="center"><img src="media/prereg-record.png" alt="Prediction record: confirmed, refuted and inconclusive predictions" width="100%"></p>
+<p align="center"><img src="media/prereg-record.gif" alt="Prediction record: confirmed, refuted and inconclusive predictions, with three refuted examples" width="100%"></p>
 
 **Pre-registration.** Before an experiment runs, the scientist writes a `prereg` entry: the hypothesis, the exact
 experiment, a quantitative prediction (metric, direction, threshold) and what the alternatives would predict.
@@ -178,7 +178,7 @@ rate 91% of those decided). In the model-diff audit further down, 3 were confirm
 ones changed the conclusion. The three original benchmarks were run before pre-registration existed and have no
 prediction record.
 
-<p align="center"><img src="media/null-controls.png" alt="Null distributions for the three benchmarks" width="100%"></p>
+<p align="center"><img src="media/null-controls.gif" alt="Null distributions for the three benchmarks" width="100%"></p>
 
 **Null controls.** Three null versions of any investigation: the same architecture with random weights
 (`random-init`), the trained weights shuffled inside each matrix (`weight-shuffled`), and the real model scored
@@ -228,7 +228,7 @@ against shuffled labels (`task-shuffled`). They are used in two ways.
 
 ## glassbox-bench
 
-<p align="center"><img src="media/bench-scorecard.png" alt="glassbox-bench scorecard over three seeds" width="100%"></p>
+<p align="center"><img src="media/bench-scorecard.gif" alt="glassbox-bench: a sealed task solved, and the totals over three seeds" width="100%"></p>
 
 Published circuits are a weak test: the scientist may have read the paper. glassbox-bench makes models whose
 mechanism is known exactly and has never been published, because it is drawn from a seed.
@@ -286,7 +286,7 @@ fresh test.
 
 ## The 27B demo: zero download, two consumer GPUs
 
-<p align="center"><img src="media/steering-27b.png" alt="Language direction and steering in a 27B GGUF model" width="100%"></p>
+<p align="center"><img src="media/steering-27b.gif" alt="Language direction and steering in a 27B GGUF model" width="100%"></p>
 
 **Label: quantized, abliterated community variant, screening result.**
 
@@ -308,7 +308,7 @@ instead and says so. Full record: [`demos/qwen27b-language/`](demos/qwen27b-lang
 
 ## Scale ladder
 
-<p align="center"><img src="media/scale-ladder.png" alt="Scale ladder" width="100%"></p>
+<p align="center"><img src="media/scale-ladder.gif" alt="Scale ladder" width="100%"></p>
 
 Does the algorithm found in a small model show up in a big one? The IOI circuit from the GPT-2 benchmark was turned
 into four fixed predictions, and one script (`ladder/run_ladder.py`) tests them unchanged on every rung:
@@ -353,7 +353,7 @@ Details and per-rung notebooks: [`ladder/LADDER.md`](ladder/LADDER.md).
 
 ## Auditing a model edit
 
-<p align="center"><img src="media/model-diff.png" alt="Where the abliterated 27B differs from the official one" width="100%"></p>
+<p align="center"><img src="media/model-diff.gif" alt="Where the abliterated 27B differs from the official one" width="100%"></p>
 
 **Label: screening (quantized GGUF).** This is a measurement. Nothing here removes or changes a model's behavior: no
 weights are written, no completions to harmful prompts are generated or stored, and no direction vector is published.
@@ -434,7 +434,7 @@ truth.
 
 ## How verification works
 
-<p align="center"><img src="media/verification.png" alt="Verification results" width="100%"></p>
+<p align="center"><img src="media/verification.gif" alt="Verification results" width="100%"></p>
 
 `verify_hypothesis` runs three checks on inputs the investigation has not used:
 
@@ -513,7 +513,7 @@ demos/              the 27B demo
 ladder/             scale ladder protocol and rungs
 open_cases/         unverified investigations
 tutorial/           Remotion project for the video
-media/              images and video (generated by media/make_assets.py and tutorial/)
+media/              the README GIFs and the video, all rendered from tutorial/ (media/make_assets.py still draws static plots)
 ```
 
 ## Related work

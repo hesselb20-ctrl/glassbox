@@ -43,7 +43,7 @@ export const GlassReveal: React.FC<SceneProps & {coldDur?: number}> = ({data, du
             transform: `translateY(${(1 - title) * 16}px)`,
           }}
         >
-          glass<span style={{color: C.accent, textShadow: `0 0 24px ${C.accent}66`}}>box</span>
+          glass<span style={{color: C.accent, textShadow: 'none'}}>box</span>
         </div>
         <div style={{fontFamily: SANS, fontSize: 44, color: C.muted, marginTop: 6, opacity: tag}}>{TAGLINE}</div>
       </div>

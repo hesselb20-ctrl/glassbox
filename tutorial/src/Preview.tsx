@@ -67,7 +67,7 @@ export const Hero: React.FC<{data: Data}> = ({data}) => (
     </div>
     <div style={{position: 'absolute', left: 880, top: 236, width: 660}}>
       <div style={{fontFamily: MONO, fontSize: 124, fontWeight: 700, color: C.text, letterSpacing: -3, lineHeight: 1}}>
-        glass<span style={{color: C.accent, textShadow: `0 0 26px ${C.accent}66`}}>box</span>
+        glass<span style={{color: C.accent, textShadow: 'none'}}>box</span>
       </div>
       <div style={{fontFamily: SANS, fontSize: 42, color: C.muted, marginTop: 22, lineHeight: 1.3}}>{TAGLINE}</div>
       <div style={{display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 44}}>

@@ -48,14 +48,14 @@ const Bar: React.FC<{label: string; sub: string; value: number; color: string; g
       </div>
     </div>
     <div style={{fontFamily: MONO, fontSize: T.tiny, color: C.muted, marginTop: 4}}>{sub}</div>
-    <div style={{marginTop: 12, height: 26, borderRadius: 8, background: C.grid, overflow: 'hidden'}}>
+    <div style={{marginTop: 12, height: 26, borderRadius: 0, background: C.grid, overflow: 'hidden'}}>
       <div
         style={{
           width: `${Math.max(value * grow * 100, grow > 0 ? 0.6 : 0)}%`,
           height: '100%',
           background: color,
-          borderRadius: 8,
-          boxShadow: color === C.accent ? `0 0 14px ${C.accent}88` : undefined,
+          borderRadius: 0,
+          
         }}
       />
     </div>
@@ -89,7 +89,7 @@ export const Verify: React.FC<SceneProps> = ({data, dur, frame}) => {
           <AgreementGrid n={n} agree={agree} reveal={reveal} width={720} />
         </div>
         <div style={{display: 'flex', alignItems: 'baseline', gap: 20, marginTop: 26}}>
-          <div style={{fontFamily: MONO, fontSize: 72, fontWeight: 700, color: C.accent, textShadow: `0 0 22px ${C.accent}55`}}>
+          <div style={{fontFamily: MONO, fontSize: 72, fontWeight: 700, color: C.accent, textShadow: 'none'}}>
             {pct(reveal * agree)}
           </div>
           <div style={{fontFamily: MONO, fontSize: 30, color: C.text}}>

@@ -52,7 +52,7 @@ const CodeLine: React.FC<{text: string; active: boolean}> = ({text, active}) => 
   const comment = h >= 0 ? text.slice(h) : '';
   return (
     <div style={{display: 'flex', alignItems: 'center'}}>
-      <div style={{width: 6, height: 30, borderRadius: 3, marginRight: 18, background: active ? C.accent : 'transparent'}} />
+      <div style={{width: 6, height: 30, borderRadius: 0, marginRight: 18, background: active ? C.accent : 'transparent'}} />
       <span style={{color: C.text}}>{code}</span>
       <span style={{color: active ? C.text : C.muted, opacity: active ? 0.9 : 1}}>{comment}</span>
     </div>
@@ -83,9 +83,9 @@ export const CircuitScene: React.FC<SceneProps> = ({data, dur, frame}) => {
           top: 760 - 70,
           width: 1700,
           height: 330,
-          background: '#050816',
-          border: `1.5px solid ${C.grid}`,
-          borderRadius: 16,
+          background: C.navy,
+          border: `1px solid ${C.grid}`,
+          borderRadius: 0,
           padding: '18px 20px',
           boxSizing: 'border-box',
           fontFamily: MONO,

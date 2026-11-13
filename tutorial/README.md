@@ -1,6 +1,6 @@
 # glassbox tutorial video
 
-The tutorial video, the README GIF and the hero image, drawn in code with [Remotion](https://www.remotion.dev)
+The tutorial video and every README figure (all GIFs), drawn in code with [Remotion](https://www.remotion.dev)
 (React + SVG + CSS, no images, no audio). Every number on screen comes from `src/data.json`, which
 `make_data.py` writes from the benchmark and demo runs.
 
@@ -8,7 +8,8 @@ The tutorial video, the README GIF and the hero image, drawn in code with [Remot
 |---|---|---|
 | `Tutorial` | 1920x1080, 30 fps, 132 s with every section in data.json (sections without data get a short "not run yet" card) | `media/tutorial.mp4` |
 | `Preview` | 960x540, about 11 s, converted to a 15 fps GIF | `media/preview.gif` |
-| `Hero` (still) | 1600x800 | `media/hero.png` |
+| `gif-<name>` (15 figures) | 1280 px wide, a scene clip plus a held last frame | `media/<name>.gif` |
+| `Hero` (still) | 1600x800 | not used by the README any more |
 
 ## Layout
 
@@ -18,7 +19,11 @@ The tutorial video, the README GIF and the hero image, drawn in code with [Remot
 - `src/scenes/*.tsx`: one component per scene; each fades itself in and out. `Upgrade.tsx` holds the three scenes
   on glassbox-bench (a sealed task solved), null controls and the model-diff audit (26 s together).
 - `src/components.tsx`: shared pieces (glass cube, circuit drawing, cards, pills).
-- `src/theme.ts`: palette and type scale, mirrored from `glassbox/style.py`.
+- `src/theme.ts`: palette and type scale, mirrored from `glassbox/style.py`. The theme is black, white, hairlines,
+  square corners and one signal colour (orange, for failures and refuted predictions only).
+- `src/Gifs.tsx`: the list of README figures. Each one replays a stretch of a scene and holds its last frame.
+- `src/scenes/Figures.tsx`: scenes that exist only as figures (architecture, backend table, prediction record).
+- `scripts/gifs.mjs`: renders every figure and converts it to a GIF with ffmpeg.
 - `src/types.ts`: the shape of `data.json`; every field is optional.
 - `scripts/stills.mjs`: renders many review stills from one bundle.
 
@@ -37,6 +42,9 @@ ffmpeg -y -framerate 30 -i out/frames/element-%04d.jpeg -vf "scale=out_color_mat
 # README GIF (every 2nd frame = 15 fps)
 npx remotion render build Preview out/preview.mp4 --gl=swangle --browser-executable="$REMOTION_BROWSER"
 ffmpeg -y -i out/preview.mp4 -vf "fps=15,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle" ../media/preview.gif
+
+# every README figure as a GIF (REMOTION_BROWSER must be set); --only=hero,backends for a subset, --stills for last frames
+node scripts/gifs.mjs out/gifwork --out=../media
 
 # hero still
 npx remotion still build Hero ../media/hero.png --gl=swangle --browser-executable="$REMOTION_BROWSER"

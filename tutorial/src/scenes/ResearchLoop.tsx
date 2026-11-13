@@ -17,9 +17,9 @@ const Terminal: React.FC<{f: number; lines: Line[]; style?: React.CSSProperties}
   return (
     <div
       style={{
-        background: '#050816',
-        border: `1.5px solid ${C.grid}`,
-        borderRadius: 16,
+        background: C.navy,
+        border: `1px solid ${C.grid}`,
+        borderRadius: 0,
         overflow: 'hidden',
         boxSizing: 'border-box',
         ...style,
@@ -29,7 +29,7 @@ const Terminal: React.FC<{f: number; lines: Line[]; style?: React.CSSProperties}
         style={{
           height: 50,
           background: C.panel,
-          borderBottom: `1.5px solid ${C.grid}`,
+          borderBottom: `1px solid ${C.grid}`,
           display: 'flex',
           alignItems: 'center',
           padding: '0 20px',
@@ -37,7 +37,7 @@ const Terminal: React.FC<{f: number; lines: Line[]; style?: React.CSSProperties}
         }}
       >
         {[0, 1, 2].map((i) => (
-          <div key={i} style={{width: 14, height: 14, borderRadius: 7, background: C.dim}} />
+          <div key={i} style={{width: 14, height: 14, borderRadius: 0, background: C.dim}} />
         ))}
         <div style={{fontFamily: MONO, fontSize: T.tiny, color: C.muted, marginLeft: 14}}>claude code · glassbox MCP</div>
       </div>
@@ -93,7 +93,7 @@ const LoopNodes: React.FC<{active: number; width: number}> = ({active, width}) =
               y={10}
               width={164}
               height={44}
-              rx={22}
+              rx={0}
               fill={on ? C.accent : C.panel}
               stroke={on ? C.accent : past ? C.muted : C.dim}
               strokeWidth={1.8}
@@ -210,7 +210,7 @@ export const ResearchLoop: React.FC<SceneProps> = ({data, dur, frame}) => {
             <br />
             period: {p ?? 'p'}
           </div>
-          <div style={{marginTop: 50, height: 10, borderRadius: 5, background: C.grid, overflow: 'hidden'}}>
+          <div style={{marginTop: 50, height: 10, borderRadius: 0, background: C.grid, overflow: 'hidden'}}>
             <div style={{width: `${runP * 100}%`, height: '100%', background: C.muted}} />
           </div>
           <div style={{marginTop: 26, display: 'flex', gap: 16, alignItems: 'center', opacity: prog(f, S[2] - 34, S[2] - 22)}}>
@@ -243,7 +243,7 @@ export const ResearchLoop: React.FC<SceneProps> = ({data, dur, frame}) => {
             />
           </div>
           <div style={{display: 'flex', gap: 14, alignItems: 'center', marginTop: 10}}>
-            <div style={{width: 18, height: 18, borderRadius: 4, background: C.accent}} />
+            <div style={{width: 18, height: 18, borderRadius: 0, background: C.accent}} />
             <div style={{fontFamily: MONO, fontSize: T.tiny, color: C.muted}}>key frequencies ({keys.length})</div>
           </div>
           <div

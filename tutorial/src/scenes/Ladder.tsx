@@ -52,7 +52,7 @@ export const Ladder: React.FC<SceneProps> = ({data, dur, frame}) => {
               left: 110 + i * (cw + gap),
               top: 230 + (n - 1 - i) * rise,
               width: cw,
-              height: 440,
+              height: 500,
               overflow: 'hidden',
               padding: 26,
               opacity: on,

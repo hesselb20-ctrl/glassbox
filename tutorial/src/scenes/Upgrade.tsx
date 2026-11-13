@@ -66,9 +66,9 @@ export const BenchScene: React.FC<SceneProps> = ({data, dur, frame}) => {
                         width: mlp ? cell * 1.5 : cell,
                         height: cell,
                         marginLeft: mlp ? 18 : 0,
-                        borderRadius: mlp ? 14 : cell / 2,
+                        borderRadius: mlp ? 0 : cell / 2,
                         border: `2px solid ${lit > 0.5 ? C.accent : C.dim}`,
-                        background: lit > 0 ? `rgba(61,245,208,${0.16 * lit})` : 'transparent',
+                        background: lit > 0 ? `rgba(255,255,255,${0.16 * lit})` : 'transparent',
                         boxShadow: lit > 0.5 ? glow(C.accent, 12 * lit) : 'none',
                         display: 'flex',
                         alignItems: 'center',
@@ -85,7 +85,7 @@ export const BenchScene: React.FC<SceneProps> = ({data, dur, frame}) => {
                           style={{
                             position: 'absolute',
                             inset: -9,
-                            borderRadius: mlp ? 20 : cell,
+                            borderRadius: mlp ? 0 : cell,
                             border: `2px dashed ${C.text}`,
                             opacity: opened,
                           }}
@@ -228,7 +228,7 @@ export const AuditScene: React.FC<SceneProps> = ({data, dur, frame}) => {
   const shade = (e: number | null | undefined) => {
     if (e == null) return C.panel;
     const t = Math.max(0, Math.min(1, Math.log10(Math.max(e, 1)) / 2));
-    return e > 5 ? `rgba(61,245,208,${0.3 + 0.7 * t})` : `rgba(58,71,128,${0.28 + 0.9 * t})`;
+    return e > 5 ? `rgba(255,255,255,${0.3 + 0.7 * t})` : `rgba(120,120,120,${0.28 + 0.9 * t})`;
   };
   const sweep = prog(f, dur * 0.14, dur * 0.5) * nL;
   const bracket = prog(f, dur * 0.5, dur * 0.58);
@@ -251,7 +251,7 @@ export const AuditScene: React.FC<SceneProps> = ({data, dur, frame}) => {
             <div style={{width: 230, fontFamily: MONO, fontSize: 24, color: ri < 2 ? C.text : C.muted}}>{label}</div>
             <div style={{display: 'flex'}}>
               {(A.over_floor?.[key] ?? []).map((e, l) => (
-                <div key={l} style={{width: cw - 2, height: 70, marginRight: 2, borderRadius: 3, background: l < sweep ? shade(e) : C.panel}} />
+                <div key={l} style={{width: cw - 2, height: 70, marginRight: 2, borderRadius: 0, background: l < sweep ? shade(e) : C.panel}} />
               ))}
             </div>
           </div>
@@ -268,7 +268,7 @@ export const AuditScene: React.FC<SceneProps> = ({data, dur, frame}) => {
             top: -14,
             height: 178,
             border: `2px solid ${C.accent}`,
-            borderRadius: 8,
+            borderRadius: 0,
             opacity: bracket,
             boxShadow: glow(C.accent, 10),
           }}

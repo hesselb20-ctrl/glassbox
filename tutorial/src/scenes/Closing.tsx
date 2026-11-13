@@ -77,7 +77,7 @@ export const Scorecard: React.FC<SceneProps> = ({data, dur, frame}) => {
               </div>
               <div style={{width: 470, display: 'flex', alignItems: 'center', gap: 8}}>
                 {cells.map((c, k) => (
-                  <div key={k} style={{width: 30, height: 30, borderRadius: 6, background: c, opacity: prog(f, 20 + i * 10 + k * 2, 28 + i * 10 + k * 2)}} />
+                  <div key={k} style={{width: 30, height: 30, borderRadius: 0, background: c, opacity: prog(f, 20 + i * 10 + k * 2, 28 + i * 10 + k * 2)}} />
                 ))}
                 <div style={{fontFamily: MONO, fontSize: 25, color: C.text, marginLeft: 14}}>
                   {r.found ?? 0}/{r.partial ?? 0}/{r.missed ?? 0}
@@ -126,7 +126,7 @@ export const ZeroCost: React.FC<SceneProps> = ({dur, frame}) => {
           fontSize: 230,
           fontWeight: 700,
           color: C.accent,
-          textShadow: `0 0 40px ${C.accent}55`,
+          textShadow: 'none',
           lineHeight: 1,
           opacity: prog(f, 4, 22),
           transform: `scale(${0.96 + 0.04 * prog(f, 4, 30)})`,
@@ -165,15 +165,15 @@ export const EndCard: React.FC<SceneProps> = ({data, dur, frame}) => {
       </div>
       <div style={{position: 'absolute', left: 820, top: 300, width: 1000}}>
         <div style={{fontFamily: MONO, fontSize: 110, fontWeight: 700, color: C.text, letterSpacing: -2, lineHeight: 1}}>
-          glass<span style={{color: C.accent, textShadow: `0 0 24px ${C.accent}66`}}>box</span>
+          glass<span style={{color: C.accent, textShadow: 'none'}}>box</span>
         </div>
         <div style={{fontFamily: SANS, fontSize: 40, color: C.muted, marginTop: 18}}>{TAGLINE}</div>
         <div
           style={{
             marginTop: 56,
-            background: '#050816',
-            border: `1.5px solid ${C.grid}`,
-            borderRadius: 14,
+            background: C.navy,
+            border: `1px solid ${C.grid}`,
+            borderRadius: 0,
             padding: '22px 26px',
             fontFamily: MONO,
             fontSize: 25,
