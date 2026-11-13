@@ -1,0 +1,65 @@
+{
+ "title": "Induction on attn-only-2l (this checkpoint): behaviour absent, no mechanism to explain",
+ "label": "no behaviour - nothing to explain",
+ "behavior": "Claimed: shown a sequence of random tokens that then repeats, the 2-layer attention-only model predicts the next token of the repeat correctly. Dataset task 'induction'.",
+ "summary": "The claimed behaviour does not occur in the model loaded as attn-only-2l on local-full (full precision). Top-1 accuracy on the repeated token is 0 of 256 on a pre-registered baseline (E0003) and 0 of 64 on the exploratory first look (E0002). The correct token gets a mean log-prob of about -21 nats, worse than a uniform guess over the vocabulary (-10.8 nats), and replacing the first copy of the sequence with other tokens changes that by only 0.04 nats. The model outputs the same few tokens regardless of input. The investigation was stopped after the baseline; no circuit is claimed and no verification was run.",
+ "pseudocode": "def predict(tokens, prompt):\n    # No induction algorithm exists in this model (E0003: accuracy 0/256).\n    # The output does not depend on the first copy of the sequence (E0003: clean -21.22 vs corrupt -21.18 nats).\n    # No input-dependent rule was measured, so none is claimed.\n    raise NotImplementedError('behaviour absent; nothing to predict')",
+ "claims": [
+  {
+   "text": "The model does not perform induction: top-1 accuracy on the next token of the repeat is 0.0 on 256 held-out prompts (seed 1), full precision, local-full. Pre-registered prediction (accuracy <= 0.05) confirmed.",
+   "evidence": [
+    "E0003",
+    "E0002"
+   ]
+  },
+  {
+   "text": "The correct token is assigned less probability than a uniform guess: mean log-prob -21.2 nats (std 4.0) versus -10.8 nats for uniform over 48,262 tokens.",
+   "evidence": [
+    "E0003",
+    "E0002"
+   ]
+  },
+  {
+   "text": "The first copy of the sequence carries no usable signal to the output: clean mean log-prob -21.22 versus -21.18 when the first copy is replaced with other random tokens, a 0.04 nat difference (wrong sign, far inside one std).",
+   "evidence": [
+    "E0003"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0003",
+  "E0002"
+ ],
+ "limitations": [
+  "Only the baseline was run (3 of 40 experiments). No screening, patching, ablation or verify_hypothesis: with the behaviour absent, any component ranking would be ranking noise.",
+  "The statement that the model repeats the same few tokens (e.g. 'ISTS') rests on the four example predictions shown per baseline run, not on a full tally.",
+  "Only the lab's 'induction' dataset layout was tested (BOS + 12 random tokens + repeat of 11). Other sequence lengths were not tried.",
+  "Why this checkpoint fails (e.g. how its weights were produced) was not investigated; this report only establishes that it fails."
+ ],
+ "open_questions": [
+  "Is this checkpoint the intended one? The investigation name suggests a weight-shuffled null control, which would match what was measured, but that was not tested here.",
+  "Does the model have any input-dependent behaviour at all, or is its output essentially constant?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 no behaviour - nothing to explain",
+ "cited": [
+  "E0002",
+  "E0003"
+ ],
+ "prediction_record": {
+  "preregistered": 1,
+  "run": 1,
+  "not_run": [],
+  "confirmed": 1,
+  "refuted": 0,
+  "inconclusive": 0,
+  "hit_rate": 1.0,
+  "refuted_predictions": []
+ },
+ "exploratory_runs": [
+  "E0002"
+ ]
+}

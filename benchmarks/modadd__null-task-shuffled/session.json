@@ -1,0 +1,15 @@
+{
+ "benchmark": "modadd__null-task-shuffled",
+ "prompt_arguments": "local-full checkpoint:benchmarks/modadd/model/model.pt \"This 1-layer transformer was trained from scratch. Its input is three tokens [a, b, =] with a and b integers from 0 to 112 (the '=' token has id 113), and at the last position it outputs (a + b) mod 113. What algorithm did it learn to compute the answer? The dataset task is 'modadd' (n='all' gives the full 113x113 grid).\" budget=40 investigation=modadd__null-task-shuffled",
+ "wall_clock_seconds": 72.3,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 46.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 13,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: null result, unverified.** Against the labels this investigation is scored with, the model does not do the behaviour, so I stopped after the baseline as the protocol requires.\n\n**Algorithm:** none recovered. The model's output is unrelated to the scored labels, so there is no input-to-label computation to describe.\n\n**Numbers (all local-full, full precision):**\n\n| Run | Data | Accuracy | Logit diff (mean ± std) |\n|---|---|---|---|\n| E0002 | full 113x113 grid, 12,769 pairs | 0.0087 | 0.07 ± 47 |\n| E0003 | 200 sampled pairs, seed 0 | 0.010 | 6.4 ± 49.6 |\n\nChance is 1/113 = 0.0088.\n\n**Verification:** not run. There is no algorithm or circuit to verify, and any patching or ablation metric would compare two labels that are both unrelated to the model's output.\n\n**Prediction hit rate:** 0 of 2. I pre-registered accuracy of at least 95% on both baselines and both were refuted; they are recorded as refuted in the report.\n\n**Budget:** 3 of 40 experiments used.\n\nTwo things worth knowing:\n\n- **The scored labels are not the displayed ones.** The dataset primitive showed answers 38, 97, 57, 103 for the first four prompts (true sums mod 113), but the baseline scored those same prompts against 65, 41, 92, 1.\n- **The model looks like it is doing real modular addition.** All 8 example predictions the baselines printed equal the true (a + b) mod 113, and the large logit-diff spread shows it is confident. That is 8 examples, not a measured accuracy, so it is in the report as an open question, not a claim.\n\nI did not substitute my own labels to route around the scored task; given the investigation name, the shuffled labels look like the intended null control. The real mechanism would need a run against the unshuffled task.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\nReport is in `benchmarks\\modadd__null-task-shuffled\\report\\` (`report.md` and `report.html`)."
+}

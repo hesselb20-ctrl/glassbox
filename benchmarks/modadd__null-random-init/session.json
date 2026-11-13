@@ -1,0 +1,15 @@
+{
+ "benchmark": "modadd__null-random-init",
+ "prompt_arguments": "local-full checkpoint:benchmarks/modadd/model/model.pt \"This 1-layer transformer was trained from scratch. Its input is three tokens [a, b, =] with a and b integers from 0 to 112 (the '=' token has id 113), and at the last position it outputs (a + b) mod 113. What algorithm did it learn to compute the answer? The dataset task is 'modadd' (n='all' gives the full 113x113 grid).\" budget=40 investigation=modadd__null-random-init",
+ "wall_clock_seconds": 55.5,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 29.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 11,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: null result. This checkpoint does not do modular addition, so there is no algorithm to report and nothing was verified.**\n\n- **Behaviour:** on the full 113x113 grid (E0003, local-full, full precision) accuracy is 0.0086, which is 110 of 12,769 correct. Chance is 1/113 = 0.0088.\n- **Logit preference:** the mean logit difference between the correct and a wrong answer is -0.0001 (std 0.157), the same as on corrupted prompts (-0.0003).\n- **Small sample:** the 64-example exploratory run (E0002) agreed, with 0 of 64 correct.\n- **Algorithm:** none recovered. I stopped after the baseline, as the protocol requires when accuracy is at chance.\n- **Verification:** `verify_hypothesis` was not run, because there is no mechanism hypothesis to test.\n- **Prediction hit rate:** 1 of 1 pre-registered predictions confirmed (accuracy at most 0.05; observed 0.0086).\n- **Budget:** 3 of 40 experiments used (one dataset inspection, one exploratory baseline, one pre-registered baseline).\n\nI did not look inside the model, so I can't say why it fails. Untrained weights, a wrong checkpoint file, or a loading mismatch are all untested. The investigation name suggests a random-init null control, but I did not measure that. A `weights_svd` or `periodicity` run on the embeddings would show whether the weights carry any structure.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\nThe report is at `benchmarks\\modadd__null-random-init\\report\\report.md`, with `report.html` next to it."
+}

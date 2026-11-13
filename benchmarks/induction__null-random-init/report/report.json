@@ -1,0 +1,77 @@
+{
+ "title": "Null result: attn-only-2l does not perform induction on repeated random tokens",
+ "label": "null result: behaviour absent, no mechanism",
+ "behavior": "Claimed: when shown a sequence of random tokens that then repeats, the 2-layer attention-only model predicts the next token of the repeat correctly (dataset task 'induction').",
+ "summary": "The claimed behaviour does not exist in this model (local-full, full precision). On 320 induction prompts across two seeds the model got 0 correct. The mean log-probability of the correct token is -11.13, slightly below what a uniform guess over the 48,262-token vocabulary would give (-10.78). Showing the model the first copy of the sequence gives no measurable benefit over replacing it with unrelated tokens: the clean-minus-corrupt gap was +0.19 nats on seed 0 (n=64) and -0.02 nats on seed 1 (n=256). The investigation stopped after the baseline step because there is no behaviour to explain; no circuit is claimed and no verification was run.",
+ "pseudocode": "# No algorithm recovered: the model does not do the task (E0002, E0003).\ndef predict(tokens, prompt):\n    raise NotImplementedError('behaviour absent: 0/320 correct, answer logprob at or below uniform')",
+ "claims": [
+  {
+   "text": "The model does not predict the next token of the repeat: top-1 accuracy is 0/64 (seed 0) and 0/256 (seed 1) on local-full at full precision.",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  },
+  {
+   "text": "The correct token gets a mean log-probability of -11.13 on both seeds, slightly below the uniform level of ln(48262) = -10.78, so the model has no preference for the correct token.",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  },
+  {
+   "text": "The first copy of the sequence does not help: clean-minus-corrupt log-probability is +0.19 nats on seed 0 and -0.02 nats on seed 1; the small seed-0 gap did not replicate.",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002",
+  "E0003"
+ ],
+ "limitations": [
+  "Only the supplied 'induction' dataset format was tested (BOS + 12 random tokens + the first 11 repeated, 24 positions). Other sequence lengths or natural-text repetition were not tested.",
+  "No internal experiments (attribution, patching, attention patterns) were run, by design: with a clean-vs-corrupt difference of about zero they would only characterise noise.",
+  "The seed-0 pre-registered prediction (accuracy >= 0.5, taking the task statement at face value) was refuted; this is the central finding, not a miss to explain away.",
+  "Why the model fails (for example whether its weights are untrained) was not measured and is not claimed here."
+ ],
+ "open_questions": [
+  "Is this checkpoint untrained or the wrong file? A weights_svd of W_E / W_U or a baseline on ordinary text would tell.",
+  "Does a different checkpoint of the same architecture do the task? If so, rerun this investigation against it."
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 null result: behaviour absent, no mechanism",
+ "cited": [
+  "E0002",
+  "E0003"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 1,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.5,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0002",
+    "hypothesis": "The model performs induction as described: on repeated random-token sequences it predicts the next token of the repeat correctly on most prompts.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.5,
+     "statement": "Top-1 accuracy on the clean (repeated) prompts is at least 50%; chance is 1/48262."
+    },
+    "observed": 0.0
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

@@ -1,0 +1,77 @@
+{
+ "title": "IOI on the loaded gpt2 (local-full): behaviour absent, no mechanism to explain",
+ "label": "no behaviour - no circuit claimed",
+ "behavior": "Given 'When Mary and John went to the store, John gave a drink to', continue with the non-repeated name (' Mary') rather than the repeated one (' John'). Dataset task: ioi.",
+ "summary": "The model loaded as gpt2 on local-full (full precision) does not perform indirect object identification. On 64 prompts (seed 0) and 200 fresh prompts (seed 1) its top-1 prediction was never the indirect-object name (accuracy 0.0 in both), with top predictions being unrelated tokens such as ' Declaration', ' woes' and ' monument'. The mean IO-minus-S logit difference is indistinguishable from zero (-1.31 with SE ~0.93, then -0.29 with SE ~0.49) while the per-prompt spread is large (std ~7). Clean and corrupted prompts give nearly the same mean logit difference, so the difference reflects which two answer tokens are being compared rather than anything in the sentence. Following the protocol, the investigation stopped here: no screening, patching, circuit or verification was run, because any 'circuit' found would be a fit to noise. 3 of 60 experiments were used.",
+ "pseudocode": "def predict(tokens, prompt):\n    # No algorithm recovered. The model does not output the IO name (E0002, E0003):\n    # its top token is a sentence-unrelated token and the IO-vs-S preference is at chance.\n    raise NotImplementedError('behaviour absent in the loaded model')",
+ "claims": [
+  {
+   "text": "The loaded model never outputs the indirect-object name as its top prediction on the ioi task (top-1 accuracy 0.0 on n=64 seed 0 and n=200 seed 1; local-full, full precision).",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  },
+  {
+   "text": "The model has no systematic preference for the IO name over the subject name: mean logit difference -1.31 (std 7.43, n=64) and -0.29 (std 6.96, n=200), both within about 1.5 standard errors of zero.",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  },
+  {
+   "text": "The IO-minus-S logit difference does not depend on the sentence's name structure: clean and corrupted prompts (different, non-repeated names) give nearly the same mean (-1.31 vs -1.18; -0.29 vs -0.32).",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002",
+  "E0003"
+ ],
+ "limitations": [
+  "Only the baseline was measured; no internal components were examined, by design, because the behaviour is absent.",
+  "The 'accuracy' figure is top-1 over the whole vocabulary; the sign-of-logit-diff rate was not reported separately by the tool, so the at-chance claim rests on the mean and spread of the logit difference.",
+  "The initial pre-registered prediction (accuracy >= 0.8) was refuted; this is the main finding, not a footnote.",
+  "No verify_hypothesis run: there is no hypothesis about a mechanism to verify."
+ ],
+ "open_questions": [
+  "Why does this copy of gpt2 emit unrelated tokens (' Declaration', ' woes') on ordinary English? The outputs are consistent with weights that are not those of a functioning language model; this was not tested here.",
+  "Would a positive-control model show the behaviour on the same dataset and harness?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 no behaviour - no circuit claimed",
+ "cited": [
+  "E0002",
+  "E0003"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 1,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.5,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0002",
+    "hypothesis": "The loaded model does the IOI behaviour: it prefers the non-repeated name (IO) over the repeated one (S) at the final position.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.8,
+     "statement": "On at least 80% of clean prompts the IO name logit exceeds the S name logit."
+    },
+    "observed": 0.0
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

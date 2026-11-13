@@ -1,0 +1,235 @@
+{
+ "id": "E0001",
+ "primitive": "dataset",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "task": "ioi",
+  "n": 8,
+  "seed": 0
+ },
+ "summary": {
+  "task": "ioi",
+  "description": "Complete the sentence with the name that was NOT repeated (the indirect object).",
+  "n": 8,
+  "example_clean": [
+   "When Kevin and Susan went to the store, Susan gave a bone to",
+   "When Peter and Maria went to the library, Peter gave a kiss to",
+   "When Alex and Kate went to the garden, Kate gave a book to"
+  ],
+  "example_corrupt": [
+   "When Adam and Rachel went to the store, Ryan gave a bone to",
+   "When Paul and Jack went to the library, Anna gave a kiss to",
+   "When Dan and Alice went to the garden, Jane gave a book to"
+  ],
+  "example_answers": [
+   " Kevin",
+   " Maria",
+   " Alex"
+  ],
+  "metric_type": "logit_diff",
+  "meta": {
+   "name_order": [
+    "IO-first",
+    "S-first",
+    "IO-first",
+    "S-first",
+    "IO-first",
+    "S-first",
+    "IO-first",
+    "S-first"
+   ],
+   "template": "When{A} and{B} went to the{P},{C} gave a{O} to",
+   "corruption": "abc",
+   "token_strs": [
+    "<|endoftext|>",
+    "When",
+    " Kevin",
+    " and",
+    " Susan",
+    " went",
+    " to",
+    " the",
+    " store",
+    ",",
+    " Susan",
+    " gave",
+    " a",
+    " bone",
+    " to"
+   ]
+  },
+  "positions_example": [
+   {
+    "IO": 2,
+    "S1": 4,
+    "S2": 10,
+    "END": 14
+   },
+   {
+    "IO": 4,
+    "S1": 2,
+    "S2": 10,
+    "END": 14
+   }
+  ],
+  "usage": "pass the same spec as params['dataset'] to any primitive"
+ },
+ "data": {
+  "task": "ioi",
+  "description": "Complete the sentence with the name that was NOT repeated (the indirect object).",
+  "clean": {
+   "prompts": [
+    "When Kevin and Susan went to the store, Susan gave a bone to",
+    "When Peter and Maria went to the library, Peter gave a kiss to",
+    "When Alex and Kate went to the garden, Kate gave a book to",
+    "When Peter and Anna went to the restaurant, Peter gave a basketball to",
+    "When Adam and Alex went to the store, Alex gave a letter to",
+    "When Simon and Mary went to the house, Simon gave a kiss to",
+    "When Jennifer and Laura went to the school, Laura gave a letter to",
+    "When Simon and Jane went to the park, Simon gave a bone to"
+   ]
+  },
+  "corrupt": {
+   "prompts": [
+    "When Adam and Rachel went to the store, Ryan gave a bone to",
+    "When Paul and Jack went to the library, Anna gave a kiss to",
+    "When Dan and Alice went to the garden, Jane gave a book to",
+    "When Jennifer and Jane went to the restaurant, Maria gave a basketball to",
+    "When Mary and Sarah went to the store, Susan gave a letter to",
+    "When George and Sarah went to the house, Robert gave a kiss to",
+    "When Maria and Sarah went to the school, Peter gave a letter to",
+    "When Jack and Mark went to the park, George gave a bone to"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " Kevin",
+    " Maria",
+    " Alex",
+    " Anna",
+    " Adam",
+    " Mary",
+    " Jennifer",
+    " Jane"
+   ],
+   "incorrect": [
+    " Susan",
+    " Peter",
+    " Kate",
+    " Peter",
+    " Alex",
+    " Simon",
+    " Laura",
+    " Simon"
+   ]
+  },
+  "answers": [
+   " Kevin",
+   " Maria",
+   " Alex",
+   " Anna",
+   " Adam",
+   " Mary",
+   " Jennifer",
+   " Jane"
+  ],
+  "meta": {
+   "positions": [
+    {
+     "IO": 2,
+     "S1": 4,
+     "S2": 10,
+     "END": 14
+    },
+    {
+     "IO": 4,
+     "S1": 2,
+     "S2": 10,
+     "END": 14
+    },
+    {
+     "IO": 2,
+     "S1": 4,
+     "S2": 10,
+     "END": 14
+    },
+    {
+     "IO": 4,
+     "S1": 2,
+     "S2": 10,
+     "END": 14
+    },
+    {
+     "IO": 2,
+     "S1": 4,
+     "S2": 10,
+     "END": 14
+    },
+    {
+     "IO": 4,
+     "S1": 2,
+     "S2": 10,
+     "END": 14
+    },
+    {
+     "IO": 2,
+     "S1": 4,
+     "S2": 10,
+     "END": 14
+    },
+    {
+     "IO": 4,
+     "S1": 2,
+     "S2": 10,
+     "END": 14
+    }
+   ],
+   "name_order": [
+    "IO-first",
+    "S-first",
+    "IO-first",
+    "S-first",
+    "IO-first",
+    "S-first",
+    "IO-first",
+    "S-first"
+   ],
+   "template": "When{A} and{B} went to the{P},{C} gave a{O} to",
+   "corruption": "abc",
+   "token_strs": [
+    "<|endoftext|>",
+    "When",
+    " Kevin",
+    " and",
+    " Susan",
+    " went",
+    " to",
+    " the",
+    " store",
+    ",",
+    " Susan",
+    " gave",
+    " a",
+    " bone",
+    " to"
+   ]
+  }
+ },
+ "plot": null,
+ "seconds": 0.01,
+ "timestamp": "2026-11-13T12:09:31",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null,
+ "null": {
+  "kind": "weight-shuffled",
+  "seed": 0
+ }
+}

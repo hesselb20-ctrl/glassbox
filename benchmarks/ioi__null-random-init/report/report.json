@@ -1,0 +1,74 @@
+{
+ "title": "IOI in the loaded gpt2 (local-full): behaviour absent, no mechanism to explain",
+ "label": "null result: behaviour not present",
+ "behavior": "Given 'When Mary and John went to the store, John gave a drink to', the model is supposed to continue with the non-repeated name (' Mary') rather than the repeated one (' John'). Dataset task: ioi.",
+ "summary": "The model loaded as gpt2 on local-full (full precision) does not do this. On 264 clean IOI prompts across two seeds its top-1 prediction was never the indirect object (accuracy 0.0); the top tokens were unrelated word pieces such as ' ali', ' Sov', ' calves'. The mean logit difference between the correct and the repeated name was 0.07 (n=64, std 1.19) and 0.12 (n=200, std 1.16), both within about 1.5 standard errors of zero and no different from the corrupted prompts (-0.15 and 0.04). The investigation was stopped after the baseline, as the protocol requires: there is no behaviour, so no circuit was searched for, no algorithm was written and no verification was attempted.",
+ "pseudocode": "# No algorithm recovered. The model does not prefer IO over S (E0002, E0003).\n# Its output on these prompts is not a name at all, so no predict() is claimed.",
+ "claims": [
+  {
+   "text": "On 64 clean IOI prompts (seed 0, local-full, full precision) top-1 accuracy is 0.0 and the mean IO-minus-S logit difference is 0.072 with std 1.19, i.e. indistinguishable from zero; the pre-registered prediction of at least 90% accuracy was refuted.",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The null replicates on 200 fresh prompts (seed 1, local-full, full precision): accuracy 0.0, mean logit difference 0.123 with std 1.16 (standard error about 0.08); the pre-registered prediction that the mean lies within +/-0.3 of zero was confirmed.",
+   "evidence": [
+    "E0003"
+   ]
+  },
+  {
+   "text": "Clean and corrupted prompts give the same logit difference within noise (clean 0.072 / 0.123 versus corrupt -0.151 / 0.040), so the repetition of the subject name has no measurable effect on the name preference.",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002",
+  "E0003"
+ ],
+ "limitations": [
+  "Only the baseline was measured. Nothing in this report says anything about internal components.",
+  "Why the behaviour is absent was not measured. The investigation name suggests a randomly initialised null model, and the nonsense top-1 tokens are consistent with that, but no experiment here tested the weights, so this is not a finding.",
+  "A very small IO preference (below roughly 0.3 logits) cannot be excluded with 264 prompts; it would be far too weak to produce the described behaviour.",
+  "No verify_hypothesis run: there was no hypothesis about a mechanism to verify."
+ ],
+ "open_questions": [
+  "Is the loaded checkpoint the trained gpt2 or a null (random-init) model? A baseline on the pretrained weights would settle whether the question applies to that model."
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 null result: behaviour not present",
+ "cited": [
+  "E0002",
+  "E0003"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 1,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.5,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0002",
+    "hypothesis": "The loaded gpt2 does the IOI behaviour: on clean prompts it prefers the non-repeated name (IO) over the repeated one (S) in the large majority of cases.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.9,
+     "statement": "The model picks IO over S on at least 90% of clean prompts."
+    },
+    "observed": 0.0
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

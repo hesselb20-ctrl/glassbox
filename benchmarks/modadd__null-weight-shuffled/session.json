@@ -1,0 +1,15 @@
+{
+ "benchmark": "modadd__null-weight-shuffled",
+ "prompt_arguments": "local-full checkpoint:benchmarks/modadd/model/model.pt \"This 1-layer transformer was trained from scratch. Its input is three tokens [a, b, =] with a and b integers from 0 to 112 (the '=' token has id 113), and at the last position it outputs (a + b) mod 113. What algorithm did it learn to compute the answer? The dataset task is 'modadd' (n='all' gives the full 113x113 grid).\" budget=40 investigation=modadd__null-weight-shuffled",
+ "wall_clock_seconds": 45.8,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 22.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 10,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: no behaviour, nothing to explain.** This checkpoint does not do modular addition, so I stopped after the baseline, as the protocol prescribes.\n\n- **Baseline (E0002, local-full, full precision):** accuracy on the full 113x113 grid is 0.92% (117 of 12,769), against a chance level of 0.885% (1/113).\n- **Logit difference:** the mean for the correct answer over a wrong one is -0.003 (std 0.475), the same as on corrupted inputs (-0.005).\n- **Algorithm:** none recovered and none claimed. With accuracy at chance, any circuit found by further experiments would be structure in noise.\n- **Verification:** not run, because there is no mechanism hypothesis to verify. The report is labelled \"unverified (no verification run) · no behaviour - nothing to explain\".\n- **Prediction hit rate:** 0 of 1. I pre-registered accuracy of at least 95% and it was refuted.\n- **Budget:** 2 of 40 experiments used (the dataset inspection and the baseline).\n\nTwo things I did not measure:\n- **What it computes instead:** three of the four example predictions shown were token 63; I did not follow that up.\n- **Whether this is the intended checkpoint:** the investigation name says \"null-weight-shuffled\", but the path loaded is `benchmarks/modadd/model/model.pt`. The result fits a null model, but if you expected the trained model here, the checkpoint path is the thing to check.\n\n[A sentence about the owner's personal note-keeping instructions was removed.] \n\nThe report is in `benchmarks\\modadd__null-weight-shuffled\\report\\` as `report.md` and `report.html`."
+}

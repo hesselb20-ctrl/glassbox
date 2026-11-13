@@ -1,0 +1,11 @@
+{
+ "backend": "local-full",
+ "model": "checkpoint:benchmarks/modadd/model/model.pt",
+ "options": {},
+ "null": {
+  "kind": "task-shuffled",
+  "seed": 0
+ },
+ "budget": 40,
+ "started": "2026-11-13T12:09:59"
+}

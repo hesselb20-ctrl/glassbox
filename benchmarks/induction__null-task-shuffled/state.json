@@ -1,0 +1,11 @@
+{
+ "backend": "local-full",
+ "model": "attn-only-2l",
+ "options": {},
+ "null": {
+  "kind": "task-shuffled",
+  "seed": 0
+ },
+ "budget": 40,
+ "started": "2026-11-13T12:10:25"
+}

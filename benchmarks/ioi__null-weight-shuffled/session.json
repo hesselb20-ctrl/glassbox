@@ -1,0 +1,15 @@
+{
+ "benchmark": "ioi__null-weight-shuffled",
+ "prompt_arguments": "local-full gpt2 \"Given a sentence like 'When Mary and John went to the store, John gave a drink to', GPT-2 small continues with ' Mary' rather than ' John'. How does it work out which name to output? The dataset task is 'ioi'.\" budget=60 investigation=ioi__null-weight-shuffled",
+ "wall_clock_seconds": 68.6,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 38.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 12,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: no behaviour, so no mechanism and nothing verified.** The model loaded as `gpt2` on local-full (full precision) does not do IOI, so I stopped at the baseline as the protocol prescribes.\n\n**What the baseline showed**\n\n| Run | Prompts | Top-1 is the IO name | Mean IO-minus-S logit diff | Std | Corrupt-prompt mean |\n|---|---|---|---|---|---|\n| E0002 (seed 0) | 64 | 0.0 | -1.31 | 7.43 | -1.18 |\n| E0003 (seed 1) | 200 | 0.0 | -0.29 | 6.96 | -0.32 |\n\n- **Outputs are unrelated tokens:** the top predictions are things like \" Declaration\", \" woes\" and \" monument\", never a name from the sentence.\n- **No name preference:** the mean logit difference is within about 1.5 standard errors of zero in both runs.\n- **The sentence does not matter:** clean and corrupted prompts give nearly the same mean, so the logit difference depends on which two answer tokens are compared, not on which name was repeated.\n\n**Algorithm:** none recovered. Any circuit found by screening or patching here would be a fit to noise, so I claimed no circuit.\n\n**Verification numbers:** none. I did not run `verify_hypothesis`, because there is no mechanism hypothesis to test.\n\n**Prediction record:** 2 pre-registered, 1 confirmed, 1 refuted (hit rate 0.5).\n- Refuted: my opening prediction that accuracy would be at least 0.8 (observed 0.0).\n- Confirmed: the replication prediction that the mean logit difference would lie within [-2, 2] (observed -0.29).\n\n**Budget:** 3 of 60 experiments used (one dataset inspection, two baselines).\n\nThe investigation name suggests this is a weight-shuffled null control, and the outputs fit a model that is not a functioning language model. I did not test that directly; it is listed as an open question in the report.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\n**Report:** `benchmarks\\ioi__null-weight-shuffled\\report\\report.md` (with `report.html` beside it)"
+}

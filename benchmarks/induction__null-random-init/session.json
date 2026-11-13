@@ -1,0 +1,15 @@
+{
+ "benchmark": "induction__null-random-init",
+ "prompt_arguments": "local-full attn-only-2l \"When this 2-layer attention-only model is shown a sequence of random tokens that then repeats, it predicts the next token of the repeat correctly. How does it do that? The dataset task is 'induction'.\" budget=40 investigation=induction__null-random-init",
+ "wall_clock_seconds": 72.6,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 44.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 13,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: null result. The model does not do the behaviour, so there is no mechanism to explain.** I stopped after the baseline step, as the protocol prescribes.\n\n**What I measured** (`local-full`, full precision, `attn-only-2l`):\n\n| Run | Seed | Prompts | Top-1 accuracy | Logprob of correct token (clean) | Same, first copy scrambled |\n|---|---|---|---|---|---|\n| E0002 | 0 | 64 | 0.0 | -11.13 | -11.32 |\n| E0003 | 1 | 256 | 0.0 | -11.13 | -11.11 |\n\n- **Accuracy:** 0 of 320 prompts correct; the predicted tokens are unrelated to the expected ones.\n- **Confidence in the answer:** the correct token scores slightly below a uniform guess over the 48,262-token vocabulary (-10.78).\n- **No benefit from the first copy:** the clean-minus-corrupt gap was +0.19 nats on seed 0 and -0.02 on seed 1, so the small seed-0 gap did not replicate.\n\n**Algorithm:** none recovered. I claim no circuit.\n\n**Verification:** not run, because there is no algorithm to verify. The report's status label reads \"unverified (no verification run) · null result\".\n\n**Prediction record:** 2 pre-registered, 1 confirmed, 1 refuted (hit rate 0.5).\n- Refuted: \"accuracy at least 50%\", which took the task statement at face value (E0002).\n- Confirmed: \"accuracy stays at or below 2% on a fresh seed\" (E0003).\n\n**Budget:** 3 of 40 experiments used (one dataset inspection, two baselines).\n\n**Not measured:** why the model fails. The investigation name suggests a randomly initialised checkpoint, but I did not test that and the report does not claim it. A `weights_svd` or a baseline on ordinary text would settle it.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\n**Report:** `benchmarks\\induction__null-random-init\\report\\report.md` (with `report.html` next to it)"
+}

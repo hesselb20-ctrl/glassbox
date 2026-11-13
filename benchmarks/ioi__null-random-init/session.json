@@ -1,0 +1,15 @@
+{
+ "benchmark": "ioi__null-random-init",
+ "prompt_arguments": "local-full gpt2 \"Given a sentence like 'When Mary and John went to the store, John gave a drink to', GPT-2 small continues with ' Mary' rather than ' John'. How does it work out which name to output? The dataset task is 'ioi'.\" budget=60 investigation=ioi__null-random-init",
+ "wall_clock_seconds": 68.5,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 37.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 13,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: null result, no mechanism to explain.** The model loaded as `gpt2` on `local-full` (full precision) does not do the IOI behaviour, so I stopped after the baseline, as the protocol says.\n\n**What I measured**\n\n| Run | Prompts | Top-1 accuracy | Mean logit diff (IO − S) | Std | Corrupt prompts |\n|---|---|---|---|---|---|\n| E0002 | 64 (seed 0) | 0.0 | 0.072 | 1.19 | -0.151 |\n| E0003 | 200 (seed 1) | 0.0 | 0.123 | 1.16 | 0.040 |\n\n- **No name preference:** both logit differences are within about 1.5 standard errors of zero.\n- **Output is not a name at all:** the top predictions are unrelated tokens like ` ali`, ` Sov` and ` calves`.\n- **Repetition has no effect:** clean and corrupted prompts give the same logit difference within noise.\n\n**Algorithm:** none. I wrote no `predict()` and claimed no circuit, because fitting one here would be fitting noise.\n\n**Verification:** not run, since there was no mechanism hypothesis to verify. The report is labelled \"unverified · null result: behaviour not present\".\n\n**Predictions:** 1 of 2 held.\n- Refuted: \"the model picks IO on at least 90% of prompts\" (observed 0.0, E0002).\n- Confirmed: \"mean logit diff on fresh data lies within ±0.3 of zero\" (observed 0.123, E0003).\n\n**Budget:** 3 of 60 experiments used (one dataset inspection, two baselines).\n\n**One thing I did not measure:** why the behaviour is absent. The investigation name points to a randomly initialised null model and the nonsense outputs fit that, but I ran no experiment on the weights, so the report lists it as an open question rather than a finding.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\n**Report:** `benchmarks\\ioi__null-random-init\\report\\report.md` (with `report.html` next to it)"
+}

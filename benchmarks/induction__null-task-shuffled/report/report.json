@@ -1,0 +1,76 @@
+{
+ "title": "Induction on attn-only-2l (task-shuffled run): no behaviour to explain on the task as scored",
+ "label": "null result: no mechanism claimed, not verified",
+ "behavior": "Shown a random token sequence that then repeats, the model is supposed to predict the next token of the repeat (dataset task 'induction').",
+ "summary": "On the task dataset the model is at chance against the scored targets (local-full, full precision): 1/64 top-1, mean target logprob -15.05 on clean vs -14.81 on corrupt prompts, no clean/corrupt gap. The investigation was stopped there, as the protocol requires; no circuit was searched for and verify_hypothesis was not run. Diagnosis: the targets the lab scores against are not the repeat-next tokens of the prompts they are paired with. The same target id is displayed as a different token string depending on the run, and targets passed explicitly are also reassigned across examples. On 8 prompts built so that every example shares one repeat-next token (which makes any permutation of targets a no-op), the model predicts it in 6/8 with logprob -1.60 vs -13.99 on corrupt. So the model appears able to copy, but the input-to-target relation this investigation measures is broken, and no mechanism claim is made.",
+ "pseudocode": "# No algorithm recovered.\n# On the task as scored, the target is unrelated to the prompt (E0002), so there is no\n# input->target function for predict(tokens, prompt) to implement.",
+ "claims": [
+  {
+   "text": "Against the task's scored targets the model does not perform the behaviour: top-1 accuracy 0.0156 (1/64), clean target logprob -15.05 vs corrupt -14.81 (local-full). Pre-registered prediction of >=0.5 accuracy was refuted.",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "Supplying the first 8 seed-0 prompts and their listed repeat-next targets explicitly still gives only 2/8 (local-full); the 'expected' strings shown differ from those in the task run for the same prompts, so scored targets are not tied to their prompts.",
+   "evidence": [
+    "E0004",
+    "E0002"
+   ]
+  },
+  {
+   "text": "When all 8 prompts share the same repeat-next token, so target permutation cannot matter, the model predicts it in 6/8 with logprob -1.60 clean vs -13.99 corrupt (local-full). The failure on the task is therefore due to targets being decoupled from inputs, not to the model being unable to copy. This is an 8-prompt, single-token observation only.",
+   "evidence": [
+    "E0005",
+    "E0004"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002",
+  "E0005"
+ ],
+ "limitations": [
+  "No mechanism was investigated: no attribution, patching, attention, ablation or verification experiments were run (5 of 40 experiments used).",
+  "The claim that the model can copy rests on 8 hand-built prompts with one shared answer token (E0005); it is not a general accuracy estimate.",
+  "The target-decoupling diagnosis is inferred from displayed token strings and accuracies across E0002/E0004/E0005; the lab's internals were not inspected.",
+  "E0001 and E0003 are dataset listings (exploratory) and support no claim on their own."
+ ],
+ "open_questions": [
+  "With correctly paired targets, what is the model's induction accuracy on a full dataset, and which heads implement it? This needs a run of the task without shuffled labels."
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 null result: no mechanism claimed, not verified",
+ "cited": [
+  "E0002",
+  "E0004",
+  "E0005"
+ ],
+ "prediction_record": {
+  "preregistered": 3,
+  "run": 3,
+  "not_run": [],
+  "confirmed": 2,
+  "refuted": 1,
+  "inconclusive": 0,
+  "hit_rate": 0.667,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0002",
+    "hypothesis": "The model performs the induction behaviour: on a repeated random sequence it predicts the next token of the repeat well above chance.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.5,
+     "statement": "Top-1 accuracy on the clean repeated sequences is at least 50% (chance is ~1/48262)."
+    },
+    "observed": 0.015625
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

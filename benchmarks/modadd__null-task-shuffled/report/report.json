@@ -1,0 +1,94 @@
+{
+ "title": "modadd (task-shuffled labels): no behaviour to explain",
+ "label": "null result: behaviour absent as scored",
+ "behavior": "1-layer transformer, input [a, b, =], claimed to output (a + b) mod 113 at the last position. Dataset task 'modadd'.",
+ "summary": "Against the labels this investigation is scored with, the model is at chance: top-1 accuracy 0.0087 on the full 113x113 grid (E0002) and 0.010 on a 200-pair sample (E0003); chance is 1/113 = 0.0088. Both pre-registered predictions of >=95% accuracy were refuted. Per protocol the investigation stopped after the baseline: there is no mechanism to explain, no algorithm was written and no verification was run. All numbers are from local-full (full precision). 3 of 40 experiments used.",
+ "pseudocode": "# No algorithm recovered.\n# The model's output is unrelated to the scored labels (accuracy = chance, E0002, E0003),\n# so there is no input->label computation to describe.",
+ "claims": [
+  {
+   "text": "On the full 113x113 grid the model's top-1 accuracy against the scored labels is 0.0087, indistinguishable from chance (1/113 = 0.0088); mean logit difference is 0.07 with std 47 (local-full).",
+   "evidence": [
+    "E0002"
+   ]
+  },
+  {
+   "text": "The chance-level result is not specific to the full grid: on a 200-pair sample accuracy is 0.010 (local-full).",
+   "evidence": [
+    "E0003"
+   ]
+  },
+  {
+   "text": "The labels used for scoring differ from the answers the dataset primitive displays for the same prompts: the first four prompts show answers 38, 97, 57, 103 in E0001 but are scored against 65, 41, 92, 1 in E0003.",
+   "evidence": [
+    "E0001",
+    "E0003"
+   ]
+  },
+  {
+   "text": "The model is confident rather than uninformative: logit differences between the two scored labels have std 47-50 around a mean near zero, i.e. the model puts large logits on tokens that are unrelated to the scored labels.",
+   "evidence": [
+    "E0002",
+    "E0003"
+   ]
+  }
+ ],
+ "circuit": {
+  "nodes": [],
+  "edges": []
+ },
+ "key_plots": [
+  "E0002",
+  "E0003"
+ ],
+ "limitations": [
+  "No mechanism experiments were run: with scored labels unrelated to the model's output, every patching or ablation metric would be noise.",
+  "No verify_hypothesis run: there is no algorithm to verify.",
+  "The 8 example predictions shown by the baseline runs (0,1,2,3 in E0002; 38,97,57,103 in E0003) all equal true (a+b) mod 113. This is an observation on 8 examples, not a measured accuracy, and was not tested further because the investigation's task is defined by the scored labels."
+ ],
+ "open_questions": [
+  "Does the model compute true (a+b) mod 113 at high accuracy when scored against unshuffled labels? The 8 example predictions suggest so; this needs a baseline with the unshuffled task, which is a separate investigation.",
+  "Why does the dataset primitive display answers that differ from the labels the baseline scores against?"
+ ],
+ "overall_status": "unverified (no verification run) \u00b7 null result: behaviour absent as scored",
+ "cited": [
+  "E0001",
+  "E0002",
+  "E0003"
+ ],
+ "prediction_record": {
+  "preregistered": 2,
+  "run": 2,
+  "not_run": [],
+  "confirmed": 0,
+  "refuted": 2,
+  "inconclusive": 0,
+  "hit_rate": 0.0,
+  "refuted_predictions": [
+   {
+    "prereg": "N0003",
+    "experiment": "E0002",
+    "hypothesis": "The model computes (a+b) mod 113 at the last position with high accuracy on the full grid.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.95,
+     "statement": "Top-1 accuracy on the full 113x113 grid is at least 95%"
+    },
+    "observed": 0.008693
+   },
+   {
+    "prereg": "N0006",
+    "experiment": "E0003",
+    "hypothesis": "On a sampled dataset (n=200, seed 0), whose labels in E0001 matched true (a+b) mod 113, the model scores high accuracy; the chance result in E0002 is specific to the labels of the n=all grid.",
+    "prediction": {
+     "metric": "summary.clean_accuracy",
+     "op": ">=",
+     "threshold": 0.95,
+     "statement": "Accuracy on 200 sampled pairs is at least 95%"
+    },
+    "observed": 0.01
+   }
+  ]
+ },
+ "exploratory_runs": []
+}

@@ -1,0 +1,149 @@
+{
+ "id": "E0003",
+ "primitive": "baseline",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "gpt2",
+  "counts_as_verification": true
+ },
+ "params": {
+  "clean": {
+   "prompts": [
+    "When Kevin and Susan went to the store, Susan gave a bone to",
+    "When Peter and Maria went to the library, Peter gave a kiss to",
+    "When Alex and Kate went to the garden, Kate gave a book to",
+    "When Mary and John went to the store, John gave a drink to",
+    "When Sarah and David went to the park, Sarah gave a ball to",
+    "When Tom and Laura went to the school, Tom gave a pen to",
+    "When Emma and Mark went to the office, Mark gave a letter to",
+    "When Paul and Anna went to the station, Paul gave a ticket to",
+    "When Lisa and James went to the market, James gave a apple to",
+    "When Daniel and Helen went to the beach, Daniel gave a towel to",
+    "When Robert and Linda went to the hospital, Linda gave a flower to",
+    "When Karen and Steve went to the restaurant, Karen gave a menu to"
+   ]
+  },
+  "corrupt": {
+   "prompts": [
+    "When Adam and Rachel went to the store, Ryan gave a bone to",
+    "When Paul and Jack went to the library, Anna gave a kiss to",
+    "When Dan and Alice went to the garden, Jane gave a book to",
+    "When Sam and Emily went to the store, Peter gave a drink to",
+    "When Chris and Julia went to the park, Mike gave a ball to",
+    "When Ben and Nancy went to the school, Frank gave a pen to",
+    "When Amy and Luke went to the office, Carl gave a letter to",
+    "When Eric and Diana went to the station, Brian gave a ticket to",
+    "When Rose and Henry went to the market, Scott gave a apple to",
+    "When Jason and Grace went to the beach, Victor gave a towel to",
+    "When Simon and Carol went to the hospital, Ruth gave a flower to",
+    "When Megan and Roger went to the restaurant, Alan gave a menu to"
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    " Kevin",
+    " Maria",
+    " Alex",
+    " Mary",
+    " David",
+    " Laura",
+    " Emma",
+    " Anna",
+    " Lisa",
+    " Helen",
+    " Robert",
+    " Steve"
+   ],
+   "incorrect": [
+    " Susan",
+    " Peter",
+    " Kate",
+    " John",
+    " Sarah",
+    " Tom",
+    " Mark",
+    " Paul",
+    " James",
+    " Daniel",
+    " Linda",
+    " Karen"
+   ]
+  }
+ },
+ "summary": {
+  "n": 12,
+  "metric_type": "logit_diff",
+  "clean_metric_mean": 0.311115,
+  "clean_metric_std": 2.677639,
+  "clean_accuracy": 0.166667,
+  "example_predictions": [
+   {
+    "predicted": " Kevin",
+    "expected": " Robert"
+   },
+   {
+    "predicted": " Maria",
+    "expected": " Steve"
+   },
+   {
+    "predicted": " Alex",
+    "expected": " Lisa"
+   },
+   {
+    "predicted": " Mary",
+    "expected": " Alex"
+   }
+  ],
+  "corrupt_metric_mean": -0.453004
+ },
+ "data": {
+  "clean_metric": [
+   0.950807,
+   0.064879,
+   -1.165792,
+   -0.90644,
+   -0.796914,
+   5.00885,
+   0.270221,
+   -2.129045,
+   -1.082061,
+   6.402057,
+   -1.826784,
+   -1.0564
+  ],
+  "corrupt_metric": [
+   0.107927,
+   -1.060789,
+   -0.857862,
+   -2.006631,
+   2.582108,
+   -2.115086,
+   -0.567848,
+   2.019024,
+   1.109802,
+   0.222998,
+   -2.588215,
+   -2.281479
+  ]
+ },
+ "plot": "experiments/E0003_baseline.png",
+ "seconds": 0.23,
+ "timestamp": "2026-11-13T12:11:08",
+ "prereg_id": "N0006",
+ "exploratory": false,
+ "score": {
+  "metric": "summary.clean_metric_mean",
+  "op": ">=",
+  "threshold": 1.5,
+  "statement": "Mean logit diff (non-repeated minus repeated name) is at least 1.5 on 12 hand-written prompts.",
+  "verdict": "refuted",
+  "observed": 0.311115
+ },
+ "null": {
+  "kind": "task-shuffled",
+  "seed": 0
+ }
+}

@@ -1,0 +1,15 @@
+{
+ "benchmark": "ioi__null-task-shuffled",
+ "prompt_arguments": "local-full gpt2 \"Given a sentence like 'When Mary and John went to the store, John gave a drink to', GPT-2 small continues with ' Mary' rather than ' John'. How does it work out which name to output? The dataset task is 'ioi'.\" budget=60 investigation=ioi__null-task-shuffled",
+ "wall_clock_seconds": 78.8,
+ "resumed_from_interrupted_session": false,
+ "notebook_span_seconds": 52.0,
+ "scientist": "Claude Code (headless, subscription), MCP tools only",
+ "model_usage": [
+  "claude-fable-5-2"
+ ],
+ "turns": 13,
+ "is_error": false,
+ "exit_code": 0,
+ "final_message": "**Status: no mechanism, unverified.** I stopped at the baseline: scored against the labels this investigation serves, GPT-2 small is at chance, so there is nothing to explain.\n\n**What I measured (local-full, full precision)**\n- **Dataset baseline (E0002):** mean logit diff was -0.016 (std 2.11) and top-1 accuracy 1/64. The scored target names (e.g. \" Jack\" for the Kevin/Susan prompt) do not appear in their prompts.\n- **Hand-written baseline (E0003):** on 12 of my own prompts with explicit answers, mean logit diff was 0.31 and accuracy 2/12. The lab permuted my labels across prompts before scoring; prompt 0 was scored against \" Robert\", which I had supplied for prompt 10.\n- **Conclusion:** every metric in this investigation is scored against labels shuffled relative to the prompts, which matches the \"null-task-shuffled\" name. A circuit search against these labels would only fit noise, so I ran no patching, ablation or attribution.\n\n**Algorithm:** none recovered, and no `predict()` was written.\n\n**Verification numbers:** none. I did not run `verify_hypothesis` because there is no hypothesis to verify.\n\n**Prediction hit rate:** 0 of 2; both pre-registered predictions were refuted and are recorded as such. The second one failed because of the label shuffle, not because of anything it showed about the model.\n\n**Experiments used:** 3 of 60 (one dataset inspection, two baselines).\n\nOne unscored observation, not a claim: in all 8 example predictions the lab printed, the model's top-1 token was the non-repeated name from the prompt. So the model probably does do the task with aligned labels, but this investigation cannot measure it.\n\n[A sentence about the owner's personal note-keeping instructions was removed.]\n\n**Report:** `benchmarks\\ioi__null-task-shuffled\\report\\report.md` (with `report.html` alongside)"
+}

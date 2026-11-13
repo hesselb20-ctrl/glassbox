@@ -1,0 +1,316 @@
+{
+ "id": "E0001",
+ "primitive": "dataset",
+ "provenance": {
+  "backend": "local-full",
+  "precision": "full",
+  "tag": "full precision (local)",
+  "model": "checkpoint:benchmarks/modadd/model/model.pt",
+  "counts_as_verification": true
+ },
+ "params": {
+  "task": "modadd",
+  "n": 16,
+  "seed": 0
+ },
+ "summary": {
+  "task": "modadd",
+  "description": "Input tokens [a, b, '='] with a, b in 0..112; the model outputs (a + b) mod 113 at the last position.",
+  "n": 16,
+  "example_clean": [
+   [
+    55,
+    96,
+    113
+   ],
+   [
+    109,
+    101,
+    113
+   ],
+   [
+    60,
+    110,
+    113
+   ]
+  ],
+  "example_corrupt": [
+   [
+    17,
+    96,
+    113
+   ],
+   [
+    12,
+    79,
+    113
+   ],
+   [
+    102,
+    32,
+    113
+   ]
+  ],
+  "example_answers": [
+   38,
+   97,
+   57
+  ],
+  "metric_type": "logit_diff",
+  "meta": {
+   "p": 113,
+   "split": "all",
+   "n": 16,
+   "layout": "positions: 0=a, 1=b, 2='=' (token id p)"
+  },
+  "positions_example": [
+   null
+  ],
+  "usage": "pass the same spec as params['dataset'] to any primitive"
+ },
+ "data": {
+  "task": "modadd",
+  "description": "Input tokens [a, b, '='] with a, b in 0..112; the model outputs (a + b) mod 113 at the last position.",
+  "clean": {
+   "tokens": [
+    [
+     55,
+     96,
+     113
+    ],
+    [
+     109,
+     101,
+     113
+    ],
+    [
+     60,
+     110,
+     113
+    ],
+    [
+     5,
+     98,
+     113
+    ],
+    [
+     37,
+     61,
+     113
+    ],
+    [
+     74,
+     14,
+     113
+    ],
+    [
+     70,
+     51,
+     113
+    ],
+    [
+     58,
+     80,
+     113
+    ],
+    [
+     43,
+     110,
+     113
+    ],
+    [
+     69,
+     11,
+     113
+    ],
+    [
+     51,
+     103,
+     113
+    ],
+    [
+     84,
+     66,
+     113
+    ],
+    [
+     31,
+     75,
+     113
+    ],
+    [
+     73,
+     19,
+     113
+    ],
+    [
+     20,
+     21,
+     113
+    ],
+    [
+     40,
+     97,
+     113
+    ]
+   ]
+  },
+  "corrupt": {
+   "tokens": [
+    [
+     17,
+     96,
+     113
+    ],
+    [
+     12,
+     79,
+     113
+    ],
+    [
+     102,
+     32,
+     113
+    ],
+    [
+     68,
+     90,
+     113
+    ],
+    [
+     103,
+     77,
+     113
+    ],
+    [
+     18,
+     39,
+     113
+    ],
+    [
+     12,
+     93,
+     113
+    ],
+    [
+     9,
+     108,
+     113
+    ],
+    [
+     87,
+     42,
+     113
+    ],
+    [
+     60,
+     71,
+     113
+    ],
+    [
+     12,
+     45,
+     113
+    ],
+    [
+     55,
+     40,
+     113
+    ],
+    [
+     78,
+     81,
+     113
+    ],
+    [
+     26,
+     70,
+     113
+    ],
+    [
+     61,
+     56,
+     113
+    ],
+    [
+     110,
+     66,
+     113
+    ]
+   ]
+  },
+  "metric": {
+   "type": "logit_diff",
+   "correct": [
+    38,
+    97,
+    57,
+    103,
+    98,
+    88,
+    8,
+    25,
+    40,
+    80,
+    41,
+    37,
+    106,
+    92,
+    41,
+    24
+   ],
+   "incorrect": [
+    0,
+    91,
+    21,
+    45,
+    67,
+    57,
+    105,
+    4,
+    16,
+    18,
+    57,
+    95,
+    46,
+    96,
+    4,
+    63
+   ]
+  },
+  "answers": [
+   38,
+   97,
+   57,
+   103,
+   98,
+   88,
+   8,
+   25,
+   40,
+   80,
+   41,
+   37,
+   106,
+   92,
+   41,
+   24
+  ],
+  "meta": {
+   "p": 113,
+   "split": "all",
+   "n": 16,
+   "layout": "positions: 0=a, 1=b, 2='=' (token id p)"
+  }
+ },
+ "plot": null,
+ "seconds": 0.01,
+ "timestamp": "2026-11-13T12:10:01",
+ "prereg_id": null,
+ "exploratory": true,
+ "score": null,
+ "null": {
+  "kind": "task-shuffled",
+  "seed": 0
+ }
+}
