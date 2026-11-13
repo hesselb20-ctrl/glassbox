@@ -74,10 +74,14 @@ work, and who want every claim in the result tied to an experiment that ran.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset=".github/assets/scene-dark.gif">
-  <img src=".github/assets/scene-light.gif" width="100%" alt="TODO-3D-ALT">
+  <img src=".github/assets/scene-light.gif" width="100%" alt="GPT-2 small drawn as 12 stacked layers of 12 attention heads, each head shaded by how much ablating it changes the result; the 12 heads of the recovered IOI circuit light up layer by layer up to the logits, then a label reports verification V0002 at full precision with agreement 0.935.">
 </picture>
 
-<sub>TODO-3D-CAPTION</sub>
+<sub>The IOI circuit the blind run recovered in GPT-2 small, on the model's real 12 by 12 head grid. Head
+shade is the mean-ablation sweep E0014, the lit heads and links come from
+[`benchmarks/ioi/report/report.json`](benchmarks/ioi/report/report.json), and the numbers from
+verification V0002, which passed at full precision. The verified circuit has 30 components; only its 12
+named heads are lit, and supporting heads and MLPs are not drawn.</sub>
 
 <picture>
   <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-04-dark.svg">
