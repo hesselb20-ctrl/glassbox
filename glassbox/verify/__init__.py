@@ -5,16 +5,29 @@ Two independent checks, both on inputs the investigation never used:
 1. Agreement. The hypothesis is written as an executable ``predict`` function. It is run on
    held-out inputs and compared with what the real model outputs.
 2. Causal. The claimed circuit is tested both ways: ablate the circuit and the behaviour
-   should break; ablate everything else and the behaviour should survive. A random set of the
-   same size is ablated as a control.
+   should break; ablate everything else and the behaviour should survive.
+
+Null calibration. Passing a fixed threshold is not enough: every effect is also compared with a
+null distribution of the same measurement where no finding exists.
+
+* necessity and sufficiency are compared with random component sets (or random subspaces) of the
+  same size in the same model, and, on backends with weight access, with the same circuit in
+  null models (fresh random weights, and weights shuffled within each matrix);
+* agreement is compared with the agreement obtained when the pairing between inputs and model
+  outputs is shuffled.
+
+A finding passes only if its effect exceeds the 95th percentile of its null effects. Each finding
+reports the effect, the null mean, the null 95th percentile, the percentile it reaches and the
+number of null samples.
 
 A finding is only ``verified`` when it passes on a full-precision backend. On a quantized
-backend the best possible status is ``screening``.
+backend the best possible status is ``screening-pass``.
 """
 from __future__ import annotations
 
 import math
 import random
+import tempfile
 from typing import Any
 
 import numpy as np
@@ -29,6 +42,7 @@ DEFAULT_THRESHOLDS = {
     "agreement_min": 0.90,               # predict() matches the model on at least this share of held-out inputs
     "circuit_alone_min": 0.70,           # with everything else ablated, at least this share of the metric survives
     "without_circuit_max": 0.50,         # with the circuit ablated, at most this share of the metric survives
+    "null_percentile": 95.0,             # every effect must exceed this percentile of its null distribution
 }
 
 
@@ -60,13 +74,40 @@ def _frac(a: float, b: float, floor: float = 0.0) -> float:
     return (a - floor) / (b - floor) if abs(b - floor) > 1e-9 else float("nan")
 
 
+def null_test(name: str, effect: float, null: list[float], kinds: dict[str, int], percentile: float, what: str) -> dict:
+    """Compare one effect with its null samples. Pass = strictly above the given percentile of the nulls."""
+    vals = [x for x in null if x == x]
+    if not vals:
+        return {"finding": name, "what": what, "effect": effect, "n_null": 0, "pass": False,
+                "why": "no null samples could be drawn (for example the claimed circuit is the whole model)"}
+    p = float(np.percentile(vals, percentile))
+    return {"finding": name, "what": what, "effect": effect, "null_mean": float(np.mean(vals)),
+            f"null_p{percentile:g}": p, "null_max": float(np.max(vals)),
+            "percentile_of_effect": float(100.0 * np.mean([x < effect for x in vals])),
+            "n_null": len(vals), "null_samples_by_kind": kinds, "pass": bool(effect > p)}
+
+
+def _null_backends(lab: Lab, n_seeds: int) -> list[tuple[str, Any]]:
+    """Null copies of the model (fresh random weights; weights shuffled within each matrix), where the backend can make them."""
+    make = getattr(lab.backend, "null_copy", None)
+    if make is None:
+        return []
+    out = []
+    for kind in ("random-init", "weight-shuffled"):
+        for seed in range(n_seeds):
+            out.append((kind, make(kind, seed)))
+    return out
+
+
 def verify(lab: Lab, spec: dict) -> tuple[dict, Any]:
     backend = lab.backend
     th = {**DEFAULT_THRESHOLDS, **spec.get("thresholds", {})}
+    pct = float(th["null_percentile"])
+    n_null = int(spec.get("null_samples", 30 if getattr(backend, "remote", False) is False else 8))
     ds = tasks.make(backend, spec["dataset"]) if "dataset" in spec else spec
     d = lab.data({k: v for k, v in spec.items() if k in ("dataset", "clean", "corrupt", "metric")}, need_corrupt=False)
     out: dict[str, Any] = {"name": spec.get("name", "hypothesis"), "n_heldout": d.n, "thresholds": th,
-                           "provenance": backend.provenance(), "checks": {}}
+                           "provenance": backend.provenance(), "checks": {}, "null_controls": []}
     base = lab.fwd(d.clean, metric=d.metric, keep_logits=True)
     model_pred = base.logits.argmax(-1)
     m_clean = float(base.metric.mean())
@@ -76,6 +117,7 @@ def verify(lab: Lab, spec: dict) -> tuple[dict, Any]:
     floor = metric_floor(d.metric.type, backend.info()["d_vocab"])
     out["metric_floor"] = floor
     passed: list[bool] = []
+    rng = random.Random(0)
 
     # ---- 1. agreement between the written-out algorithm and the model -------------------------
     if spec.get("code"):
@@ -97,12 +139,17 @@ def verify(lab: Lab, spec: dict) -> tuple[dict, Any]:
             "pass": agree >= th["agreement_min"],
         }
         passed.append(agree >= th["agreement_min"])
+        # null: the same predictions against the model's outputs for *other* inputs (pairing shuffled)
+        gen = torch.Generator().manual_seed(0)
+        shuffled = [float((preds_t == model_pred[torch.randperm(d.n, generator=gen)]).float().mean()) for _ in range(max(n_null, 20))]
+        out["null_controls"].append(null_test("agreement", agree, shuffled, {"task-shuffled": len(shuffled)}, pct,
+                                              "share of held-out inputs where predict() equals the model's output"))
 
     # ---- 2. causal check -----------------------------------------------------------------------
     circuit = spec.get("circuit") or {}
 
-    def score(edits: list[Edit]) -> dict:
-        o = lab.fwd(d.clean, edits=edits, metric=d.metric, keep_logits=True)
+    def score(edits: list[Edit], on: Lab = lab, tokens=None, metric=None) -> dict:
+        o = on.fwd(d.clean if tokens is None else tokens, edits=edits, metric=metric or d.metric, keep_logits=True)
         return {"metric": float(o.metric.mean()), "fraction_of_clean": _frac(float(o.metric.mean()), m_clean, floor),
                 "accuracy": float((o.logits.argmax(-1) == correct).float().mean())}
 
@@ -111,21 +158,47 @@ def verify(lab: Lab, spec: dict) -> tuple[dict, Any]:
         comps = [parse_component(c) for c in circuit["components"]]
         universe = lab.all_components()
         rest = [c for c in universe if c not in comps]
-        ref_tokens = d.corrupt if (d.corrupt is not None and circuit.get("reference", "corrupt") == "corrupt") else d.clean
+        use_corrupt = d.corrupt is not None and circuit.get("reference", "corrupt") == "corrupt"
+        ref_tokens = d.corrupt if use_corrupt else d.clean
         sites = sorted({component_site(k, l) for k, l, _ in universe})
         ref = lab.fwd(ref_tokens, read=sites).acts if mode != "zero" else None
         without = score(lab.ablation_edits(comps, mode, ref))
         alone = score(lab.ablation_edits(rest, mode, ref))
-        rng = random.Random(0)
-        controls = [score(lab.ablation_edits(rng.sample(rest, min(len(comps), len(rest))), mode, ref))["fraction_of_clean"]
-                    for _ in range(3)] if rest else []
         ok_alone = alone["fraction_of_clean"] >= th["circuit_alone_min"]
         ok_without = without["fraction_of_clean"] <= th["without_circuit_max"]
+
+        # null: random component sets of the same size, in the same model
+        k = len(comps)
+        null_drop, null_keep = [], []
+        if 0 < k < len(universe):
+            for _ in range(n_null):
+                rand = rng.sample(universe, k)
+                if set(rand) == set(comps):
+                    continue
+                rand_rest = [c for c in universe if c not in rand]
+                null_drop.append(m_clean - score(lab.ablation_edits(rand, mode, ref))["metric"])
+                null_keep.append(score(lab.ablation_edits(rand_rest, mode, ref))["metric"] - floor)
+        kinds_drop = {"random-same-size-set": len(null_drop)}
+        # null: the same circuit in null models (no learned structure), where the backend can build them
+        for kind, nb in _null_backends(lab, int(spec.get("null_model_seeds", 2))):
+            nlab = Lab(nb, tempfile.mkdtemp(prefix="glassbox-null-"))
+            nref = nlab.fwd(ref_tokens, read=sites).acts if mode != "zero" else None
+            m0 = float(nlab.fwd(d.clean, metric=d.metric).metric.mean())
+            m1 = float(nlab.fwd(d.clean, edits=nlab.ablation_edits(comps, mode, nref), metric=d.metric).metric.mean())
+            null_drop.append(m0 - m1)
+            kinds_drop[kind] = kinds_drop.get(kind, 0) + 1
+            nb.unload()
+        out["null_controls"] += [
+            null_test("necessity", m_clean - without["metric"], null_drop, kinds_drop, pct,
+                      "drop in the metric when the claimed circuit is ablated"),
+            null_test("sufficiency", alone["metric"] - floor, null_keep, {"random-same-size-set": len(null_keep)}, pct,
+                      "metric (above its no-information floor) with everything except the claimed circuit ablated"),
+        ]
         out["checks"]["causal_components"] = {
             "circuit": circuit["components"], "circuit_size": len(comps), "total_components": len(universe),
-            "ablation": mode, "reference": "corrupt" if ref_tokens is d.corrupt else "clean",
+            "ablation": mode, "reference": "corrupt" if use_corrupt else "clean",
             "circuit_ablated": without, "everything_else_ablated": alone,
-            "random_same_size_ablated_fraction": controls,
+            "random_same_size_ablated_fraction": [_frac(m_clean - x, m_clean, floor) for x in null_drop[:3]],
             "pass_breaks_without_circuit": ok_without, "pass_survives_on_circuit_alone": ok_alone,
             "pass": ok_alone and ok_without,
         }
@@ -137,14 +210,26 @@ def verify(lab: Lab, spec: dict) -> tuple[dict, Any]:
         keep = [lab.subspace_edit({**s, "op": "keep_only"}) for s in specs]
         without, alone = score(remove), score(keep)
         gen = torch.Generator().manual_seed(0)
-        rand = []
-        for e in remove:
-            k, dim = e.value["basis"].shape
-            q = torch.linalg.qr(torch.randn(dim, k, generator=gen)).Q.T
-            rand.append(Edit(e.site, "project_out", {"basis": q, "mean": e.value["mean"]}, e.pos))
-        control = score(rand)
+
+        def random_like(edits: list[Edit], op: str) -> list[Edit]:
+            res = []
+            for e in edits:
+                kk, dim = e.value["basis"].shape
+                q = torch.linalg.qr(torch.randn(dim, kk, generator=gen)).Q.T
+                res.append(Edit(e.site, op, {"basis": q, "mean": e.value["mean"]}, e.pos))
+            return res
+
+        null_drop = [m_clean - score(random_like(remove, "project_out"))["metric"] for _ in range(n_null)]
+        null_keep = [score(random_like(remove, "keep_only"))["metric"] - floor for _ in range(n_null)]
+        control = score(random_like(remove, "project_out"))
         ok_alone = alone["fraction_of_clean"] >= th["circuit_alone_min"]
         ok_without = without["fraction_of_clean"] <= th["without_circuit_max"]
+        out["null_controls"] += [
+            null_test("necessity (subspace)", m_clean - without["metric"], null_drop, {"random-same-dim-subspace": n_null}, pct,
+                      "drop in the metric when the claimed subspace is removed"),
+            null_test("sufficiency (subspace)", alone["metric"] - floor, null_keep, {"random-same-dim-subspace": n_null}, pct,
+                      "metric (above its no-information floor) with only the claimed subspace kept"),
+        ]
         out["checks"]["causal_subspace"] = {
             "subspaces": [{k: v for k, v in s.items()} for s in specs],
             "dims": [int(e.value["basis"].shape[0]) for e in remove],
@@ -157,18 +242,24 @@ def verify(lab: Lab, spec: dict) -> tuple[dict, Any]:
 
     # ---- verdict -----------------------------------------------------------------------------
     full = bool(backend.spec["verifies"])
+    nulls_ok = all(n["pass"] for n in out["null_controls"])
+    out["beats_null_controls"] = bool(out["null_controls"]) and nulls_ok
     if not passed:
         status = "nothing-to-check"
-    elif all(passed):
+    elif all(passed) and nulls_ok:
         status = "verified" if full else "screening-pass"
     else:
         status = "not-verified"
     out["status"] = status
     out["all_checks_passed"] = bool(passed) and all(passed)
+    failed_nulls = [n["finding"] for n in out["null_controls"] if not n["pass"]]
     out["note"] = (
-        "Passed at full precision." if status == "verified" else
+        "Passed at full precision, and every effect exceeds its null distribution." if status == "verified" else
         f"Passed, but on a quantized backend ({backend.tag}). This is a screening result; confirm on local-full or ndif."
         if status == "screening-pass" else
+        f"The thresholds were met, but these effects do not exceed the {pct:g}th percentile of their null distribution: "
+        f"{', '.join(failed_nulls)}. A random control does about as well, so this is not a finding."
+        if status == "not-verified" and passed and all(passed) else
         "At least one check failed; the explanation is partial or wrong. See the numbers." if status == "not-verified" else
         "Give 'code' and/or 'circuit' to check."
     )

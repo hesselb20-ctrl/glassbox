@@ -64,6 +64,12 @@ class LocalFull(Backend):
         if self.device.startswith("cuda"):
             gpu_preflight()
         self.unload()
+        from ..nulls import WEIGHT_KINDS, parse
+
+        kwargs_null = parse(kwargs.pop("null", None))
+        if kwargs_null and kwargs_null["kind"] not in WEIGHT_KINDS:
+            kwargs_null = None                      # task-shuffled is applied to the labels, not the weights
+        self.vocab = None
         if model is not None:
             self.model = model
             self.model_id = model_id or "in-memory"
@@ -73,15 +79,37 @@ class LocalFull(Backend):
             self.model = HookedTransformer(cfg)
             self.model.load_state_dict(ckpt["state_dict"])
             self.model_id = model_id
+            self.vocab = ckpt.get("vocab")           # token strings for models without a tokenizer
         else:
             dtype = kwargs.pop("dtype", None)
             extra = {"torch_dtype": getattr(torch, dtype)} if dtype else {}
             self.model = HookedTransformer.from_pretrained(model_id, device="cpu", **extra, **kwargs)
             self.model_id = model_id
+        null = kwargs_null
+        if null:
+            from ..nulls import apply_to_hooked_transformer
+
+            apply_to_hooked_transformer(self.model, null["kind"], null["seed"])
+        self.null = null
         self.model.to(self.device, print_details=False)
         self.model.eval()
         self.model.requires_grad_(False)
         return self.info()
+
+    def null_copy(self, kind: str, seed: int = 0) -> "LocalFull":
+        """A null version of the loaded model (same architecture): fresh random weights, or weights shuffled within each matrix."""
+        import copy
+
+        from ..nulls import apply_to_hooked_transformer
+
+        other = LocalFull(device=self.device)
+        other.model = copy.deepcopy(self.model)
+        other.model_id, other.vocab = f"{self.model_id} [{kind} null, seed {seed}]", self.vocab
+        apply_to_hooked_transformer(other.model, kind, seed)
+        other.model.eval()
+        other.model.requires_grad_(False)
+        other.null = {"kind": kind, "seed": seed}
+        return other
 
     def unload(self) -> None:
         self.model = None
@@ -122,6 +150,11 @@ class LocalFull(Backend):
     def token_id(self, tok: str | int) -> int:
         if isinstance(tok, int):
             return tok
+        if self.model.tokenizer is None:
+            v = getattr(self, "vocab", None)
+            if v and tok in v:
+                return v.index(tok)
+            return int(tok)
         ids = self.model.tokenizer.encode(tok, add_special_tokens=False)
         if len(ids) != 1:
             raise ValueError(f"{tok!r} is {len(ids)} tokens, expected exactly one")
@@ -135,7 +168,8 @@ class LocalFull(Backend):
 
     def decode(self, ids: Sequence[int]) -> list[str]:
         if self.model.tokenizer is None:
-            return [str(int(i)) for i in ids]
+            v = getattr(self, "vocab", None)
+            return [str(v[int(i)]) if v and 0 <= int(i) < len(v) else str(int(i)) for i in ids]
         return [self.model.tokenizer.decode([int(i)]) for i in ids]
 
     # -- forward ------------------------------------------------------------ #

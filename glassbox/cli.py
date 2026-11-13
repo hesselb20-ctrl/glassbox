@@ -34,7 +34,40 @@ def main(argv: list[str] | None = None) -> int:
     nb = sub.add_parser("notebook", help="notebook utilities")
     nb.add_argument("action", choices=["verify"])
     nb.add_argument("investigation", help="investigation name under GLASSBOX_HOME, or a path to a notebook.jsonl")
+    nr = sub.add_parser("null-run", help="rerun an investigation on null controls and report the false discovery rate")
+    nr.add_argument("investigation")
+    nr.add_argument("--home", default=None, help="folder holding the investigation (default: GLASSBOX_HOME)")
+    nr.add_argument("--kinds", default="random-init,weight-shuffled,task-shuffled")
+    nr.add_argument("--seed", type=int, default=0)
+    nr.add_argument("--summary-only", action="store_true", help="do not run anything, just collect existing null runs")
     a = ap.parse_args(argv)
+
+    if a.cmd == "null-run":
+        from pathlib import Path
+
+        from . import headless, nulls
+        from .session import home as default_home
+
+        home = Path(a.home).resolve() if a.home else default_home()
+        src = home / a.investigation
+        if not (src / "prompt.md").exists():
+            print(f"{src} has no prompt.md: null-run repeats a headless investigation and needs its original prompt")
+            return 1
+        prompt = (src / "prompt.md").read_text(encoding="utf-8")
+        for kind in ([] if a.summary_only else [k for k in a.kinds.split(",") if k]):
+            name = f"{a.investigation}__null-{kind}"
+            if (home / name / "session.json").exists():
+                print(f"{name}: already run, skipping")
+                continue
+            # same prompt, same budget, same instructions; only the investigation name differs, and the null is
+            # applied inside the MCP server so the scientist is not told
+            p = prompt.replace(f"investigation={a.investigation}", f"investigation={name}")
+            s = headless.run(p, home, name, label=name, env_extra={"GLASSBOX_NULL": f"{kind}:{a.seed}"})
+            print(f"{name}: {s['wall_clock_seconds']} s, {s['turns']} turns")
+        out = nulls.summarize_null_runs(home, a.investigation)
+        (src / "null_runs.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
+        print(json.dumps(out, indent=1))
+        return 0
 
     if a.cmd == "notebook":
         from pathlib import Path

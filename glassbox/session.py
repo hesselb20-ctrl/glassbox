@@ -68,9 +68,13 @@ class Session:
         st = self._state()
         if not st.get("backend"):
             raise RuntimeError("no model loaded in this investigation. Call load_model first.")
+        null = st.get("null")
         self.backend = get_backend(st["backend"])
-        self.backend.load(st["model"], **st.get("options", {}))
+        extra = {"null": null} if null and null["kind"] != "task-shuffled" else {}
+        self.backend.load(st["model"], **st.get("options", {}), **extra)
         self.lab = Lab(self.backend, self._dir())
+        if null and null["kind"] == "task-shuffled":
+            self.lab.label_shuffle_seed = null["seed"]
 
     # -- tools -------------------------------------------------------------- #
     def list_models(self, backend: str | None = None) -> dict:
@@ -108,12 +112,22 @@ class Session:
         self._open(investigation)
         from .lab import Lab
 
-        options = options or {}
+        from . import nulls
+
+        options = dict(options or {})
+        null = nulls.parse(options.pop("null", None)) or nulls.from_env() or self._state().get("null")
         b = get_backend(backend)
-        info = b.load(model, **options)
+        if null and null["kind"] in nulls.WEIGHT_KINDS:
+            if backend != "local-full":
+                raise ValueError("weight nulls (random-init, weight-shuffled) are built on local-full only")
+            info = b.load(model, null=null, **options)
+        else:
+            info = b.load(model, **options)
         self.backend, self.lab = b, Lab(b, self._dir())
+        if null and null["kind"] == "task-shuffled":
+            self.lab.label_shuffle_seed = null["seed"]
         st = self._state()
-        self._save_state(backend=backend, model=model, options=options,
+        self._save_state(backend=backend, model=model, options=options, null=null,
                          budget=budget if budget is not None else st.get("budget"),
                          started=st.get("started") or time.strftime("%Y-%m-%dT%H:%M:%S"))
         self.notebook.append("decision", f"Loaded {model} on {backend} ({b.tag}).", data={"info": info})
@@ -194,6 +208,8 @@ class Session:
         rec = self.lab.run(primitive, params or {})
         score = score_prediction(pre["prediction"], rec) if pre else None
         rec.update({"prereg_id": prereg_id, "exploratory": bool(exploratory), "score": score})
+        if self._state().get("null"):
+            rec["null"] = self._state()["null"]         # on disk only: a null run must look like any other run to the scientist
         (self._dir() / "experiments" / f"{rec['id']}_{primitive}.json").write_text(json.dumps(rec, indent=1), encoding="utf-8")
         self.notebook.append("experiment", note or (pre["hypothesis"][:120] if pre else primitive), refs=[rec["id"]],
                              data={"primitive": primitive, "seconds": rec["seconds"], "tag": rec["provenance"]["tag"],

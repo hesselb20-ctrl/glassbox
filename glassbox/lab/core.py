@@ -44,6 +44,13 @@ class Metric:
         else:
             raise ValueError(f"unknown metric type '{self.type}'")
 
+    def shuffle(self, seed: int) -> None:
+        """Task-shuffled null: reassign the answers across the examples, so the behaviour being scored does not exist."""
+        perm = torch.randperm(len(self.correct), generator=torch.Generator().manual_seed(2000 + seed))
+        self.correct = self.correct[perm]
+        if self.wrong is not None:
+            self.wrong = self.wrong[perm]
+
     def __call__(self, logits: torch.Tensor, idx: torch.Tensor) -> torch.Tensor:
         logits = logits.float()
         c = self.correct[idx.cpu()].to(logits.device)[:, None]
@@ -131,6 +138,7 @@ class Lab:
         self.out_dir = Path(out_dir)
         self.batch_size = batch_size
         self.failed_variants: list[str] = []
+        self.label_shuffle_seed: int | None = None      # set for the task-shuffled null
         (self.out_dir / "experiments").mkdir(parents=True, exist_ok=True)
         (self.out_dir / "artifacts").mkdir(parents=True, exist_ok=True)
 
@@ -214,6 +222,8 @@ class Lab:
         if mspec is None and need_metric:
             raise ValueError("this primitive needs a 'metric' (e.g. {'type': 'logit_diff', 'correct': [...], 'incorrect': [...]})")
         metric = Metric(mspec, self.backend, n) if mspec else None
+        if metric is not None and self.label_shuffle_seed is not None:
+            metric.shuffle(self.label_shuffle_seed)
         return Data(clean, corrupt, metric, ds.get("meta", {}), n)
 
     # -- batched forward ---------------------------------------------------- #
