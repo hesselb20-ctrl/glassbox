@@ -94,8 +94,11 @@ def demo27b() -> dict:
 def ladder() -> dict:
     d = optional(ROOT / "ladder" / "summary.json")
     if d["available"]:
-        names = {"gpt2-local": "GPT-2 small", "gpt2-ndif": "GPT-2 small", "qwen27b-gguf": "Qwen3.8-27B GGUF", "qwen27b-ndif": "Qwen3.8-27B official"}
-        tags = {"gpt2-local": "full precision", "gpt2-ndif": "full precision", "qwen27b-gguf": "screening", "qwen27b-ndif": "full precision"}
+        names = {"gpt2-local": "GPT-2 small", "gpt2-ndif": "GPT-2 small", "qwen27b-gguf": "Qwen3.8-27B GGUF", "qwen27b-ndif": "Qwen3.8-27B official",
+                 "qwen27b-4bit": "Qwen3.8-27B official"}
+        tags = {"gpt2-local": "full precision", "gpt2-ndif": "full precision", "qwen27b-gguf": "screening", "qwen27b-ndif": "full precision",
+                "qwen27b-4bit": "4-bit screening"}
+        d["rungs"] = [r for r in d["rungs"] if r["rung"] != "gpt2-ndif"]      # four cards fit the frame; the table in the README has all five
         for r in d["rungs"]:
             v = r["verdicts"]
             ok = sum(x == "supported" for x in v.values())

@@ -523,11 +523,11 @@ def scale_ladder() -> None:
     table_png("scale-ladder.png", "Scale ladder: the IOI circuit from 124M to 27B",
               "Four predictions taken from the circuit found in GPT-2 small, tested with the same script on every rung. "
               "Green = supported, red = not met, grey = not testable or not run. "
-              "On the 27B at full precision, three of four hold; the behaviour check missed its accuracy threshold on a 6-prompt sample.",
+              "All four hold in the official 27B, both in the local 4-bit screen and at full precision on NDIF.",
               ["model", "backend, precision", "P1 task", "P2 hand-off", "P3 late heads", "P4 backup"],
               rows, [3.0, 2.5, 2.0, 1.8, 2.2, 0.9], colors,
               "P1: top-1 accuracy and logit difference. P2: layer where patching END overtakes patching S2. P3: strongest heads and their joint patching effect. "
-              "P4: logit difference left after ablating them. The local-4bit rung waits for approval of a 52 GB download. Details: ladder/LADDER.md.")
+              "P4: logit difference left after ablating them. Details: ladder/LADDER.md.")
 
 
 ASSETS = {"how-it-works": how_it_works, "free-stack": free_stack, "backends": backends, "fourier": fourier,

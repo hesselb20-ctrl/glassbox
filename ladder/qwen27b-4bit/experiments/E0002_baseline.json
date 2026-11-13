@@ -1,0 +1,86 @@
+{
+ "id": "E0002",
+ "primitive": "baseline",
+ "provenance": {
+  "backend": "local-4bit",
+  "precision": "4bit",
+  "tag": "screening (4-bit)",
+  "model": "Qwen/Qwen3.8-27B",
+  "counts_as_verification": false
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 16,
+   "seed": 11,
+   "corruption": "abc"
+  }
+ },
+ "summary": {
+  "n": 16,
+  "metric_type": "logit_diff",
+  "clean_metric_mean": 6.333984,
+  "clean_metric_std": 1.090484,
+  "clean_accuracy": 0.875,
+  "example_predictions": [
+   {
+    "predicted": " Steve",
+    "expected": " Steve"
+   },
+   {
+    "predicted": " the",
+    "expected": " David"
+   },
+   {
+    "predicted": " Brian",
+    "expected": " Brian"
+   },
+   {
+    "predicted": " Tom",
+    "expected": " Tom"
+   }
+  ],
+  "corrupt_metric_mean": 0.583984
+ },
+ "data": {
+  "clean_metric": [
+   6.0,
+   4.375,
+   7.90625,
+   6.0,
+   5.5,
+   4.5,
+   7.9375,
+   6.4375,
+   6.0625,
+   6.6875,
+   6.375,
+   5.75,
+   6.125,
+   6.25,
+   7.375,
+   8.0625
+  ],
+  "corrupt_metric": [
+   0.59375,
+   0.03125,
+   -0.3125,
+   2.53125,
+   -0.4375,
+   2.6875,
+   -1.28125,
+   -0.5625,
+   -0.5625,
+   0.5625,
+   1.8125,
+   0.71875,
+   0.4375,
+   0.5,
+   2.25,
+   0.375
+  ]
+ },
+ "plot": "experiments/E0002_baseline.png",
+ "seconds": 3.26,
+ "timestamp": "2026-11-13T01:38:12"
+}

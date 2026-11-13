@@ -1,0 +1,49 @@
+{
+ "id": "E0008",
+ "primitive": "ablation",
+ "provenance": {
+  "backend": "local-4bit",
+  "precision": "4bit",
+  "tag": "screening (4-bit)",
+  "model": "Qwen/Qwen3.8-27B",
+  "counts_as_verification": false
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 16,
+   "seed": 11,
+   "corruption": "abc"
+  },
+  "components": [
+   "59.14",
+   "59.8",
+   "59.9"
+  ],
+  "mode": "mean",
+  "reference": "corrupt",
+  "joint": true,
+  "positions": [
+   13
+  ]
+ },
+ "summary": {
+  "mode": "mean",
+  "n": 16,
+  "metric_clean": 6.333984,
+  "joint": true,
+  "components": [
+   "59.14",
+   "59.8",
+   "59.9"
+  ],
+  "metric_ablated": 6.318359,
+  "fraction_of_clean": 0.997533
+ },
+ "data": {
+  "metric_ablated": 6.318359
+ },
+ "plot": "experiments/E0008_ablation.png",
+ "seconds": 3.02,
+ "timestamp": "2026-11-13T01:41:44"
+}

@@ -600,27 +600,6 @@
     "not_run": []
    },
    {
-    "rung": "gpt2-ndif",
-    "model": "GPT-2 small",
-    "params": "124M",
-    "backend": "ndif",
-    "tag": "full precision",
-    "status": "4 of 4 hold",
-    "key_result": "accuracy 0.81, logit diff 3.7. S2 to END hand-off at layer 9/11. top heads 9.9, 9.6, 7.3 restore 1.32. ablating them leaves 0.92",
-    "heads": [
-     "9.9",
-     "9.6",
-     "7.3"
-    ],
-    "verdicts": {
-     "P1": "supported",
-     "P2": "supported",
-     "P3": "supported",
-     "P4": "supported"
-    },
-    "not_run": []
-   },
-   {
     "rung": "qwen27b-gguf",
     "model": "Qwen3.8-27B GGUF",
     "params": "27B",
@@ -642,20 +621,41 @@
     ]
    },
    {
+    "rung": "qwen27b-4bit",
+    "model": "Qwen3.8-27B official",
+    "params": "27B",
+    "backend": "local-4bit",
+    "tag": "4-bit screening",
+    "status": "4 of 4 hold",
+    "key_result": "accuracy 0.88, logit diff 6.3. S2 to END hand-off at layer 55/63. top heads 59.14, 59.8, 59.9 restore 0.36. ablating them leaves 1.00",
+    "heads": [
+     "59.14",
+     "59.8",
+     "59.9"
+    ],
+    "verdicts": {
+     "P1": "supported",
+     "P2": "supported",
+     "P3": "supported",
+     "P4": "supported"
+    },
+    "not_run": []
+   },
+   {
     "rung": "qwen27b-ndif",
     "model": "Qwen3.8-27B official",
     "params": "27B",
     "backend": "ndif",
     "tag": "full precision",
-    "status": "3 of 4 hold",
-    "key_result": "accuracy 0.50, logit diff 5.4. S2 to END hand-off at layer 55/63. top heads 59.8, 59.6, 51.23 restore 0.67. ablating them leaves 0.85",
+    "status": "4 of 4 hold",
+    "key_result": "accuracy 0.81, logit diff 6.0. S2 to END hand-off at layer 55/63. top heads 59.14, 59.8, 59.9 restore 0.37. ablating them leaves 1.00",
     "heads": [
+     "59.14",
      "59.8",
-     "59.6",
-     "51.23"
+     "59.9"
     ],
     "verdicts": {
-     "P1": "rejected",
+     "P1": "supported",
      "P2": "supported",
      "P3": "supported",
      "P4": "supported"
@@ -663,10 +663,8 @@
     "not_run": []
    }
   ],
-  "pending": [
-   "qwen27b-4bit"
-  ],
-  "conclusion": "In GPT-2 small all four predictions hold at full precision (gpt2-local, gpt2-ndif). In the official Qwen3.8-27B at full precision on NDIF, 3 of 4 hold: the S2-to-END hand-off, a few late heads writing the answer, backup. Not met: the behaviour itself (top-1 accuracy 0.50 on only 6 prompts, below the preset 0.8, although the logit difference is 5.4 in favour of the indirect object). So the same three-stage structure shows up at 220 times the size, at a similar relative depth, but this rung is small (NDIF's replica had little spare memory) and is not a full confirmation. Not done yet: qwen27b-4bit."
+  "pending": [],
+  "conclusion": "In GPT-2 small all four predictions hold at full precision (gpt2-local, gpt2-ndif). In the official Qwen3.8-27B screened in 4-bit on two 12 GB GPUs, 4 of 4 hold. At full precision on NDIF, 4 of 4 hold, which confirms the screen. So the same three-stage structure (the repeated name is tracked at S2, handed to the last token late in the network, and written out by a few backed-up attention heads) appears at about 220 times the size, at a similar relative depth. These are four coarse predictions, not the full 26-head circuit. An earlier NDIF run is kept in qwen27b-ndif-first-run: with only 6 prompts (a memory bug in glassbox, since fixed, limited the batch size) its behaviour check missed the accuracy threshold (0.50); the other three predictions held there too."
  },
  "repo": "github.com/hesselb20-ctrl/glassbox",
  "install": "pip install -e . && claude mcp add glassbox -- python -m glassbox.mcp"

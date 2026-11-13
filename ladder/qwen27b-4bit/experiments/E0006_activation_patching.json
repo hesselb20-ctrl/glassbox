@@ -1,0 +1,130 @@
+{
+ "id": "E0006",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-4bit",
+  "precision": "4bit",
+  "tag": "screening (4-bit)",
+  "model": "Qwen/Qwen3.8-27B",
+  "counts_as_verification": false
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 16,
+   "seed": 11,
+   "corruption": "abc"
+  },
+  "component": "head",
+  "layers": [
+   59
+  ],
+  "positions": [
+   13
+  ]
+ },
+ "summary": {
+  "component": "head",
+  "direction": "denoise",
+  "metric_base": 0.583984,
+  "metric_source": 6.333984,
+  "n": 16,
+  "top": [
+   {
+    "component": "59.14",
+    "effect": 0.132473
+   },
+   {
+    "component": "59.8",
+    "effect": 0.126019
+   },
+   {
+    "component": "59.9",
+    "effect": 0.105978
+   },
+   {
+    "component": "59.11",
+    "effect": 0.091712
+   },
+   {
+    "component": "59.20",
+    "effect": 0.077785
+   },
+   {
+    "component": "59.7",
+    "effect": 0.073709
+   },
+   {
+    "component": "59.6",
+    "effect": 0.069293
+   },
+   {
+    "component": "59.3",
+    "effect": 0.061481
+   }
+  ],
+  "variants": 24
+ },
+ "data": {
+  "effect": [
+   [
+    -0.002378,
+    -0.002038,
+    0.003397,
+    0.061481,
+    -0.022758,
+    -0.00034,
+    0.069293,
+    0.073709,
+    0.126019,
+    0.105978,
+    -0.00034,
+    0.091712,
+    -0.007473,
+    0.00034,
+    0.132473,
+    0.036685,
+    -0.008832,
+    0.039062,
+    0.002717,
+    0.003057,
+    0.077785,
+    0.045516,
+    0.005435,
+    0.000679
+   ]
+  ],
+  "layers": [
+   59
+  ],
+  "columns": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23
+  ]
+ },
+ "plot": "experiments/E0006_activation_patching.png",
+ "seconds": 42.83,
+ "timestamp": "2026-11-13T01:40:58"
+}

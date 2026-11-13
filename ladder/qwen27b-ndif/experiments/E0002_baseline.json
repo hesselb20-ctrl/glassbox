@@ -11,17 +11,17 @@
  "params": {
   "dataset": {
    "task": "ioi",
-   "n": 6,
+   "n": 16,
    "seed": 11,
    "corruption": "abc"
   }
  },
  "summary": {
-  "n": 6,
+  "n": 16,
   "metric_type": "logit_diff",
-  "clean_metric_mean": 5.447917,
-  "clean_metric_std": 1.338823,
-  "clean_accuracy": 0.5,
+  "clean_metric_mean": 6.042969,
+  "clean_metric_std": 1.151475,
+  "clean_accuracy": 0.8125,
   "example_predictions": [
    {
     "predicted": " the",
@@ -40,27 +40,47 @@
     "expected": " Tom"
    }
   ],
-  "corrupt_metric_mean": 0.8125
+  "corrupt_metric_mean": 0.554688
  },
  "data": {
   "clean_metric": [
-   4.9375,
-   4.25,
-   7.71875,
+   5.0,
+   4.3125,
+   7.6875,
    6.375,
-   4.96875,
-   4.4375
+   4.9375,
+   4.4375,
+   7.6875,
+   6.1875,
+   5.625,
+   6.3125,
+   6.125,
+   5.4375,
+   5.3125,
+   5.9375,
+   7.4375,
+   7.875
   ],
   "corrupt_metric": [
    0.3125,
-   -0.0625,
+   -0.03125,
    -0.46875,
-   2.875,
-   -0.46875,
-   2.6875
+   2.84375,
+   -0.4375,
+   2.75,
+   -1.46875,
+   -0.5,
+   -0.59375,
+   0.5,
+   1.6875,
+   0.8125,
+   0.0625,
+   0.71875,
+   2.1875,
+   0.5
   ]
  },
  "plot": "experiments/E0002_baseline.png",
- "seconds": 13.51,
- "timestamp": "2026-11-13T00:20:51"
+ "seconds": 8.6,
+ "timestamp": "2026-11-13T01:42:45"
 }

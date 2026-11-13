@@ -1,0 +1,183 @@
+{
+ "id": "E0004",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-4bit",
+  "precision": "4bit",
+  "tag": "screening (4-bit)",
+  "model": "Qwen/Qwen3.8-27B",
+  "counts_as_verification": false
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 16,
+   "seed": 11,
+   "corruption": "flip"
+  },
+  "component": "resid_pre",
+  "layers": [
+   0,
+   4,
+   8,
+   12,
+   16,
+   20,
+   24,
+   28,
+   32,
+   35,
+   39,
+   43,
+   47,
+   51,
+   55,
+   59,
+   63
+  ],
+  "positions": [
+   9,
+   13
+  ]
+ },
+ "summary": {
+  "component": "resid_pre",
+  "direction": "denoise",
+  "metric_base": -6.052734,
+  "metric_source": 6.128906,
+  "n": 16,
+  "top": [
+   {
+    "component": "resid_pre.32 @ pos 9:'Jason'",
+    "effect": 1.011544
+   },
+   {
+    "component": "resid_pre.35 @ pos 9:'Jason'",
+    "effect": 1.007856
+   },
+   {
+    "component": "resid_pre.63 @ pos 13:'to'",
+    "effect": 1.007375
+   },
+   {
+    "component": "resid_pre.28 @ pos 9:'Jason'",
+    "effect": 1.005612
+   },
+   {
+    "component": "resid_pre.16 @ pos 9:'Jason'",
+    "effect": 1.00481
+   },
+   {
+    "component": "resid_pre.20 @ pos 9:'Jason'",
+    "effect": 1.00465
+   },
+   {
+    "component": "resid_pre.24 @ pos 9:'Jason'",
+    "effect": 1.004489
+   },
+   {
+    "component": "resid_pre.8 @ pos 9:'Jason'",
+    "effect": 1.002565
+   }
+  ],
+  "variants": 34
+ },
+ "data": {
+  "effect": [
+   [
+    1.001122,
+    -0.000321
+   ],
+   [
+    0.99984,
+    0.000481
+   ],
+   [
+    1.002565,
+    0.001603
+   ],
+   [
+    1.002405,
+    0.000321
+   ],
+   [
+    1.00481,
+    -0.001283
+   ],
+   [
+    1.00465,
+    -0.000481
+   ],
+   [
+    1.004489,
+    -0.002565
+   ],
+   [
+    1.005612,
+    -0.002886
+   ],
+   [
+    1.011544,
+    -0.008498
+   ],
+   [
+    1.007856,
+    -0.005451
+   ],
+   [
+    1.001283,
+    0.00016
+   ],
+   [
+    0.996152,
+    -0.000641
+   ],
+   [
+    0.987654,
+    0.007055
+   ],
+   [
+    0.460959,
+    0.458714
+   ],
+   [
+    0.091871,
+    0.857945
+   ],
+   [
+    0.058201,
+    0.891294
+   ],
+   [
+    -0.012025,
+    1.007375
+   ]
+  ],
+  "layers": [
+   0,
+   4,
+   8,
+   12,
+   16,
+   20,
+   24,
+   28,
+   32,
+   35,
+   39,
+   43,
+   47,
+   51,
+   55,
+   59,
+   63
+  ],
+  "columns": [
+   "9:'Jason'",
+   "13:'to'"
+  ]
+ },
+ "plot": "experiments/E0004_activation_patching.png",
+ "seconds": 59.97,
+ "timestamp": "2026-11-13T01:39:18"
+}

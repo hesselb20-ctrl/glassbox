@@ -37,9 +37,12 @@ RUNGS = {
     "gpt2-ndif": dict(backend="ndif", model="openai-community/gpt2", params="124M", n=16),
     "qwen27b-gguf": dict(backend="local-gguf", model="Huihui-Qwen3.8-27B-abliterated-UD-DW-Q4_K_M.gguf", params="27B", n=16,
                          options={"n_ctx": 256}),
-    "qwen27b-4bit": dict(backend="local-4bit", model="Qwen/Qwen3.8-27B", params="27B", n=16),
-    # NDIF's replica of this model has little spare GPU memory: few prompts, small batches, fewer layers sampled
-    "qwen27b-ndif": dict(backend="ndif", model="Qwen/Qwen3.8-27B", params="27B", n=6, max_rows=30, resid_k=9, attn_k=17),
+    "qwen27b-4bit": dict(backend="local-4bit", model="Qwen/Qwen3.8-27B", params="27B", n=16, max_rows=32,
+                         # explicit layout for two 12 GB cards: 32 layers + embedding on GPU 0, 32 layers + unembedding on GPU 1
+                         options={"device_map": {"model.embed_tokens": "0", "lm_head": "1", "model.norm": "1", "model.rotary_emb": "0",
+                                                 **{f"model.layers.{i}": ("0" if i < 32 else "1") for i in range(64)}}}),
+    # remote requests take about a minute each: fewer layers sampled than on the local rungs
+    "qwen27b-ndif": dict(backend="ndif", model="Qwen/Qwen3.8-27B", params="27B", n=16, max_rows=96, resid_k=9, attn_k=17),
 }
 BEHAVIOR = "Indirect object identification: 'When Mary and John went to the store, John gave a drink to' -> ' Mary'"
 
@@ -204,22 +207,30 @@ def summary() -> None:
                      "status": r["status"], "key_result": "; ".join(bits),
                      "heads": [h["head"] for h in P["P3"].get("top_heads", [])[:3]],
                      "verdicts": {k: v.get("verdict") for k, v in P.items()}, "not_run": r["not_run"]})
+    names = {"P1": "the behaviour itself", "P2": "the S2-to-END hand-off", "P3": "a few late heads writing the answer", "P4": "backup"}
+
+    def held(r):
+        ok = [names[k] for k, v in r["verdicts"].items() if v == "supported"]
+        return f"{len(ok)} of 4" + ("" if len(ok) == 4 else f" ({', '.join(ok)})")
+
     small = [r for r in rows if r["params"] != "27B" and r["status"] == "confirmed"]
     big = next((r for r in rows if r["rung"] == "qwen27b-ndif"), None)
-    names = {"P1": "the behaviour itself", "P2": "the S2-to-END hand-off", "P3": "a few late heads writing the answer", "P4": "backup"}
+    four = next((r for r in rows if r["rung"] == "qwen27b-4bit"), None)
     concl = (f"In GPT-2 small all four predictions hold at full precision ({', '.join(r['rung'] for r in small)}). " if small else "")
+    if four:
+        concl += f"In the official Qwen3.8-27B screened in 4-bit on two 12 GB GPUs, {held(four)} hold. "
     if big:
-        ok = [names[k] for k, v in big["verdicts"].items() if v == "supported"]
-        bad = [names[k] for k, v in big["verdicts"].items() if v == "rejected"]
-        raw = next(r for r in rungs if r["rung"] == "qwen27b-ndif")
-        concl += (f"In the official Qwen3.8-27B at full precision on NDIF, {len(ok)} of 4 hold: {', '.join(ok)}. "
-                  + (f"Not met: {', '.join(bad)} (top-1 accuracy {raw['predictions']['P1']['accuracy']:.2f} on only {raw['n_prompts']} prompts, "
-                     f"below the preset 0.8, although the logit difference is {raw['predictions']['P1']['logit_diff']:.1f} in favour of the "
-                     f"indirect object). " if bad else "")
-                  + "So the same three-stage structure shows up at 220 times the size, at a similar relative depth, but this rung is "
-                    "small (NDIF's replica had little spare memory) and is not a full confirmation.")
-    else:
-        concl += "The 27B full-precision rung has not run."
+        concl += (f"At full precision on NDIF, {held(big)} hold" + (", which confirms the screen" if big["status"] == "confirmed" else "") + ". ")
+        if big["status"] == "confirmed":
+            concl += ("So the same three-stage structure (the repeated name is tracked at S2, handed to the last token late in the "
+                      "network, and written out by a few backed-up attention heads) appears at about 220 times the size, at a similar "
+                      "relative depth. These are four coarse predictions, not the full 26-head circuit.")
+    first = HERE / "qwen27b-ndif-first-run" / "rung.json"
+    if first.exists():
+        f = json.loads(first.read_text(encoding="utf-8"))
+        concl += (f" An earlier NDIF run is kept in qwen27b-ndif-first-run: with only {f['n_prompts']} prompts (a memory bug in glassbox, "
+                  f"since fixed, limited the batch size) its behaviour check missed the accuracy threshold "
+                  f"({f['predictions']['P1']['accuracy']:.2f}); the other three predictions held there too.")
     if pending:
         concl += " Not done yet: " + ", ".join(pending) + "."
     out = {"behavior": "IOI", "protocol": "four fixed predictions from the GPT-2 circuit, tested unchanged on every rung",

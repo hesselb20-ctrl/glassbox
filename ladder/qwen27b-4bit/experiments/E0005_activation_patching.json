@@ -1,0 +1,244 @@
+{
+ "id": "E0005",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "local-4bit",
+  "precision": "4bit",
+  "tag": "screening (4-bit)",
+  "model": "Qwen/Qwen3.8-27B",
+  "counts_as_verification": false
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 16,
+   "seed": 11,
+   "corruption": "abc"
+  },
+  "component": "heads_all",
+  "layers": [
+   0,
+   2,
+   4,
+   6,
+   8,
+   10,
+   12,
+   14,
+   16,
+   18,
+   20,
+   22,
+   24,
+   26,
+   28,
+   30,
+   32,
+   33,
+   35,
+   37,
+   39,
+   41,
+   43,
+   45,
+   47,
+   49,
+   51,
+   53,
+   55,
+   57,
+   59,
+   61,
+   63
+  ],
+  "positions": [
+   13
+  ]
+ },
+ "summary": {
+  "component": "heads_all",
+  "direction": "denoise",
+  "metric_base": 0.583984,
+  "metric_source": 6.333984,
+  "n": 16,
+  "top": [
+   {
+    "component": "attention of layer 59",
+    "effect": 0.75034
+   },
+   {
+    "component": "attention of layer 55",
+    "effect": 0.15625
+   },
+   {
+    "component": "attention of layer 51",
+    "effect": 0.087296
+   },
+   {
+    "component": "attention of layer 63",
+    "effect": -0.043818
+   },
+   {
+    "component": "attention of layer 53",
+    "effect": 0.02106
+   },
+   {
+    "component": "attention of layer 61",
+    "effect": 0.017323
+   },
+   {
+    "component": "attention of layer 57",
+    "effect": 0.006793
+   },
+   {
+    "component": "attention of layer 41",
+    "effect": 0.006114
+   }
+  ],
+  "variants": 33
+ },
+ "data": {
+  "effect": [
+   [
+    0.00034
+   ],
+   [
+    -0.001019
+   ],
+   [
+    0.000679
+   ],
+   [
+    0.001698
+   ],
+   [
+    -0.00034
+   ],
+   [
+    0.000679
+   ],
+   [
+    0.001698
+   ],
+   [
+    0.0
+   ],
+   [
+    -0.002378
+   ],
+   [
+    -0.001359
+   ],
+   [
+    -0.001019
+   ],
+   [
+    -0.00034
+   ],
+   [
+    0.000679
+   ],
+   [
+    -0.001019
+   ],
+   [
+    0.001019
+   ],
+   [
+    0.0
+   ],
+   [
+    -0.004076
+   ],
+   [
+    0.005095
+   ],
+   [
+    0.000679
+   ],
+   [
+    -0.001359
+   ],
+   [
+    0.002717
+   ],
+   [
+    0.006114
+   ],
+   [
+    -0.00034
+   ],
+   [
+    0.000679
+   ],
+   [
+    -0.002717
+   ],
+   [
+    -0.003736
+   ],
+   [
+    0.087296
+   ],
+   [
+    0.02106
+   ],
+   [
+    0.15625
+   ],
+   [
+    0.006793
+   ],
+   [
+    0.75034
+   ],
+   [
+    0.017323
+   ],
+   [
+    -0.043818
+   ]
+  ],
+  "layers": [
+   0,
+   2,
+   4,
+   6,
+   8,
+   10,
+   12,
+   14,
+   16,
+   18,
+   20,
+   22,
+   24,
+   26,
+   28,
+   30,
+   32,
+   33,
+   35,
+   37,
+   39,
+   41,
+   43,
+   45,
+   47,
+   49,
+   51,
+   53,
+   55,
+   57,
+   59,
+   61,
+   63
+  ],
+  "columns": [
+   "all heads"
+  ]
+ },
+ "plot": "experiments/E0005_activation_patching.png",
+ "seconds": 58.08,
+ "timestamp": "2026-11-13T01:40:16"
+}

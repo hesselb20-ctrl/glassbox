@@ -1,0 +1,66 @@
+{
+ "id": "E0002",
+ "primitive": "baseline",
+ "provenance": {
+  "backend": "ndif",
+  "precision": "full",
+  "tag": "full precision (NDIF remote)",
+  "model": "Qwen/Qwen3.8-27B",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 6,
+   "seed": 11,
+   "corruption": "abc"
+  }
+ },
+ "summary": {
+  "n": 6,
+  "metric_type": "logit_diff",
+  "clean_metric_mean": 5.447917,
+  "clean_metric_std": 1.338823,
+  "clean_accuracy": 0.5,
+  "example_predictions": [
+   {
+    "predicted": " the",
+    "expected": " Steve"
+   },
+   {
+    "predicted": " the",
+    "expected": " David"
+   },
+   {
+    "predicted": " Brian",
+    "expected": " Brian"
+   },
+   {
+    "predicted": " Tom",
+    "expected": " Tom"
+   }
+  ],
+  "corrupt_metric_mean": 0.8125
+ },
+ "data": {
+  "clean_metric": [
+   4.9375,
+   4.25,
+   7.71875,
+   6.375,
+   4.96875,
+   4.4375
+  ],
+  "corrupt_metric": [
+   0.3125,
+   -0.0625,
+   -0.46875,
+   2.875,
+   -0.46875,
+   2.6875
+  ]
+ },
+ "plot": "experiments/E0002_baseline.png",
+ "seconds": 13.51,
+ "timestamp": "2026-11-13T00:20:51"
+}

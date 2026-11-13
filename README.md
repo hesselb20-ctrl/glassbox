@@ -58,7 +58,7 @@ NDIF setup (you do this yourself, glassbox never sees your key outside the proce
 |---|---|---|
 | `local-full` | TransformerLens on your GPU, small models at full precision | verified |
 | `local-gguf` | llama.cpp on any quantized GGUF file, zero download | screening (gguf quantized) |
-| `local-4bit` | official checkpoint, nnsight + bitsandbytes 4-bit, split across GPUs | screening (4-bit) |
+| `local-4bit` | official checkpoint, nnsight + bitsandbytes 4-bit, split across GPUs (a 27B fits on 2 x 12 GB with an explicit layout) | screening (4-bit) |
 | `ndif` | nnsight remote execution on NDIF, large models at full precision | verified |
 
 If a primitive is not supported on a backend, the error names a backend that does support it.
@@ -185,27 +185,34 @@ to the final token (END) late; P3 a few late attention heads write the answer; P
 | GPT-2 small (124M) | local-full, full precision | 0.91 accuracy | layer 9 of 11 | 9.9, 9.6 | 0.85 left |
 | GPT-2 small (124M) | ndif, full precision | 0.81 accuracy | layer 9 of 11 | 9.9, 9.6 | 0.92 left |
 | Qwen3.8-27B abliterated GGUF | local-gguf, screening | 0.81 accuracy | cannot patch | cannot patch | cannot patch |
-| Qwen3.8-27B official | ndif, full precision | **0.50 accuracy, not met** | layer 55 of 63 | 59.8, 59.6 | 0.85 left |
-| Qwen3.8-27B official | local-4bit, screening | not done yet | | | |
+| Qwen3.8-27B official | local-4bit, screening | 0.88 accuracy | layer 55 of 63 | 59.14, 59.8, 59.9 | 1.00 left |
+| Qwen3.8-27B official | ndif, full precision | 0.81 accuracy | layer 55 of 63 | 59.14, 59.8, 59.9 | 1.00 left |
 
-**Result.** In GPT-2 small all four predictions hold, locally and on NDIF. In the official Qwen3.8-27B at full
-precision on NDIF, three of four hold: the S2-to-END hand-off (between layers 47 and 55 of 63, sampled every 8 layers; a similar relative depth
-to layer 9 of 11), a small number of late heads that write the answer (59.8 and 59.6 restore 0.33 and 0.23 of the logit difference
-on their own), and backup (ablating the top three leaves 0.85). The behavior check did not meet its preset threshold:
-top-1 accuracy was 0.50 on a 6-prompt sample, although the logit difference favours the indirect object by 5.4. So
-the same three-stage structure appears at about 220 times the size, but this is not a full confirmation.
+**Result.** All four predictions hold at every rung that can test them. In GPT-2 small they hold locally and on NDIF.
+In the official Qwen3.8-27B they hold in the 4-bit screen on two 12 GB GPUs, and NDIF confirms them at full precision
+with nearly identical numbers: the hand-off from S2 to END happens between layers 47 and 55 of 63 (sampled every 8
+layers; a similar relative depth to layer 9 of 11), the attention of layer 59 carries the answer, the same three heads
+come out on top in both runs (together restoring 0.36 and 0.37 of the logit difference), and ablating them costs almost
+nothing because the rest of the network compensates. So the same three-stage structure appears at about 220 times
+the size.
 
 Said plainly:
 
-- The 27B NDIF rung used only 6 prompts and sampled 9 to 17 of 64 layers. NDIF's replica had almost no spare GPU
-  memory, so larger batches failed.
+- These are four coarse predictions, not the full 26-head circuit, and this is a scripted protocol with fixed
+  hypotheses, not a blind investigation. 16 prompts per rung, one template.
+- Backup is much stronger in the 27B than in GPT-2: no single head, and no trio, is necessary.
+- An earlier NDIF run with only 6 prompts is kept in `ladder/qwen27b-ndif-first-run`. Its behavior check missed the
+  accuracy threshold (0.50), and it named a slightly different top-head trio. The small sample was forced by a memory
+  bug in glassbox (analysis passes kept gradients and state caches), which was then fixed; the rerun uses the same 16
+  prompts as the other rungs.
 - NDIF did host Qwen3.8-27B, so no substitute model was needed.
 - The model card says Qwen3.8-27B is dense (not MoE) and vision-language. Glassbox loads the text stack only. It is a
   hybrid: 48 linear-attention layers and 16 full-attention layers.
-- **Not done yet: the local-4bit rung.** It needs the official safetensors (about 52 GB). Glassbox does not start that
-  download without the owner's approval, and that approval has not been given yet.
-- This is a scripted protocol with fixed hypotheses, not a blind investigation, and it tests four coarse predictions,
-  not the full 26-head circuit.
+- The local-4bit rung needed the official safetensors (52 GB download, approved by the owner, deleted afterwards) and
+  an explicit device layout: 32 layers plus the embedding on one card, 32 layers plus the unembedding on the other,
+  batches of 32 rows.
+- The abliterated GGUF is not a stand-in for the official model; it is listed only to show that the behavior is
+  present there too.
 
 Details and per-rung notebooks: [`ladder/LADDER.md`](ladder/LADDER.md).
 

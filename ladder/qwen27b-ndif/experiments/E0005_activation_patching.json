@@ -11,7 +11,7 @@
  "params": {
   "dataset": {
    "task": "ioi",
-   "n": 6,
+   "n": 16,
    "seed": 11,
    "corruption": "abc"
   },
@@ -42,41 +42,41 @@
  "summary": {
   "component": "heads_all",
   "direction": "denoise",
-  "metric_base": 0.8125,
-  "metric_source": 5.447917,
-  "n": 6,
+  "metric_base": 0.554688,
+  "metric_source": 6.042969,
+  "n": 16,
   "top": [
    {
     "component": "attention of layer 59",
-    "effect": 0.875281
-   },
-   {
-    "component": "attention of layer 51",
-    "effect": 0.116854
+    "effect": 0.782206
    },
    {
     "component": "attention of layer 55",
-    "effect": 0.086517
+    "effect": 0.138434
+   },
+   {
+    "component": "attention of layer 51",
+    "effect": 0.089324
    },
    {
     "component": "attention of layer 63",
-    "effect": -0.047191
+    "effect": -0.061566
    },
    {
-    "component": "attention of layer 43",
-    "effect": 0.006742
+    "component": "attention of layer 24",
+    "effect": -0.005694
    },
    {
     "component": "attention of layer 0",
-    "effect": 0.005618
-   },
-   {
-    "component": "attention of layer 12",
-    "effect": 0.005618
+    "effect": -0.004626
    },
    {
     "component": "attention of layer 16",
-    "effect": 0.005618
+    "effect": -0.004626
+   },
+   {
+    "component": "attention of layer 47",
+    "effect": -0.004626
    }
   ],
   "variants": 17
@@ -84,55 +84,55 @@
  "data": {
   "effect": [
    [
-    0.005618
+    -0.004626
    ],
    [
-    0.004494
+    -0.002847
    ],
    [
-    -0.001124
+    -0.001423
    ],
    [
-    0.005618
+    -0.002491
    ],
    [
-    0.005618
+    -0.004626
    ],
    [
-    0.002247
+    -0.003915
    ],
    [
-    0.004494
+    -0.005694
+   ],
+   [
+    -0.00427
+   ],
+   [
+    -0.001779
+   ],
+   [
+    -0.002135
+   ],
+   [
+    -0.003203
    ],
    [
     0.0
    ],
    [
-    0.002247
+    -0.004626
    ],
    [
-    0.005618
+    0.089324
    ],
    [
-    0.0
+    0.138434
    ],
    [
-    0.006742
+    0.782206
    ],
    [
-    0.005618
-   ],
-   [
-    0.116854
-   ],
-   [
-    0.086517
-   ],
-   [
-    0.875281
-   ],
-   [
-    -0.047191
+    -0.061566
    ]
   ],
   "layers": [
@@ -159,6 +159,6 @@
   ]
  },
  "plot": "experiments/E0005_activation_patching.png",
- "seconds": 135.22,
- "timestamp": "2026-11-13T00:26:18"
+ "seconds": 55.33,
+ "timestamp": "2026-11-13T01:45:48"
 }

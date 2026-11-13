@@ -1,0 +1,164 @@
+{
+ "id": "E0005",
+ "primitive": "activation_patching",
+ "provenance": {
+  "backend": "ndif",
+  "precision": "full",
+  "tag": "full precision (NDIF remote)",
+  "model": "Qwen/Qwen3.8-27B",
+  "counts_as_verification": true
+ },
+ "params": {
+  "dataset": {
+   "task": "ioi",
+   "n": 6,
+   "seed": 11,
+   "corruption": "abc"
+  },
+  "component": "heads_all",
+  "layers": [
+   0,
+   4,
+   8,
+   12,
+   16,
+   20,
+   24,
+   28,
+   32,
+   35,
+   39,
+   43,
+   47,
+   51,
+   55,
+   59,
+   63
+  ],
+  "positions": [
+   13
+  ]
+ },
+ "summary": {
+  "component": "heads_all",
+  "direction": "denoise",
+  "metric_base": 0.8125,
+  "metric_source": 5.447917,
+  "n": 6,
+  "top": [
+   {
+    "component": "attention of layer 59",
+    "effect": 0.875281
+   },
+   {
+    "component": "attention of layer 51",
+    "effect": 0.116854
+   },
+   {
+    "component": "attention of layer 55",
+    "effect": 0.086517
+   },
+   {
+    "component": "attention of layer 63",
+    "effect": -0.047191
+   },
+   {
+    "component": "attention of layer 43",
+    "effect": 0.006742
+   },
+   {
+    "component": "attention of layer 0",
+    "effect": 0.005618
+   },
+   {
+    "component": "attention of layer 12",
+    "effect": 0.005618
+   },
+   {
+    "component": "attention of layer 16",
+    "effect": 0.005618
+   }
+  ],
+  "variants": 17
+ },
+ "data": {
+  "effect": [
+   [
+    0.005618
+   ],
+   [
+    0.004494
+   ],
+   [
+    -0.001124
+   ],
+   [
+    0.005618
+   ],
+   [
+    0.005618
+   ],
+   [
+    0.002247
+   ],
+   [
+    0.004494
+   ],
+   [
+    0.0
+   ],
+   [
+    0.002247
+   ],
+   [
+    0.005618
+   ],
+   [
+    0.0
+   ],
+   [
+    0.006742
+   ],
+   [
+    0.005618
+   ],
+   [
+    0.116854
+   ],
+   [
+    0.086517
+   ],
+   [
+    0.875281
+   ],
+   [
+    -0.047191
+   ]
+  ],
+  "layers": [
+   0,
+   4,
+   8,
+   12,
+   16,
+   20,
+   24,
+   28,
+   32,
+   35,
+   39,
+   43,
+   47,
+   51,
+   55,
+   59,
+   63
+  ],
+  "columns": [
+   "all heads"
+  ]
+ },
+ "plot": "experiments/E0005_activation_patching.png",
+ "seconds": 135.22,
+ "timestamp": "2026-11-13T00:26:18"
+}
