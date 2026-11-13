@@ -136,6 +136,13 @@ class NNsightBackend(Backend):
                 self.cfg["heads_per_layer"] = {"full_attention": self.cfg["n_heads"], "linear_attention": linear_heads}
             self._norm, self._embed = base.norm, base.embed_tokens
         self._head = m.lm_head
+        # Freeze every parameter: otherwise each forward pass builds an autograd graph through the whole model,
+        # which costs gigabytes on a large model. Gradients for attribution are taken w.r.t. activations instead.
+        try:
+            for prm in m.pipeline.model.parameters():
+                prm.requires_grad_(False)
+        except Exception:  # noqa: BLE001  (remote models have no local weights)
+            pass
 
     def attach(self, model: Any, model_id: str) -> dict[str, Any]:
         """Use an already constructed nnsight model (for tests and custom loading)."""
@@ -214,7 +221,9 @@ class NNsightBackend(Backend):
         edit_fn = _edit_inplace
         import nnsight
 
-        with self.model.trace(tokens, remote=self.remote):
+        # use_cache=False: a single analysis pass never reuses the key/value (or recurrent-state) cache, and returning it
+        # costs tens of MB per prompt on large hybrid models
+        with self.model.trace(tokens, remote=self.remote, use_cache=False):
             saved = {}
             grefs = {}
             if want_grad:

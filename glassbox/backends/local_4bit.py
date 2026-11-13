@@ -56,7 +56,7 @@ class Local4Bit(NNsightBackend):
         return out
 
     def load(self, model_id: str, allow_download: bool = False, max_memory: dict | None = None,
-             quantize: bool = True, **kwargs: Any) -> dict[str, Any]:
+             quantize: bool = True, headroom_gb: float = 0.7, **kwargs: Any) -> dict[str, Any]:
         """``max_memory`` e.g. {"0": "10GiB", "1": "10GiB"}; default leaves ~1.5 GB headroom per GPU.
 
         ``quantize=False`` loads at full precision on one GPU (small models only; used by the tests).
@@ -75,21 +75,47 @@ class Local4Bit(NNsightBackend):
         if quantize:
             from transformers import BitsAndBytesConfig
 
-            n = torch.cuda.device_count()
-            if max_memory is None:
-                max_memory = {i: f"{max(1.0, torch.cuda.mem_get_info(i)[0] / 2**30 - 1.5):.1f}GiB" for i in range(n)}
+            from .preflight import gpu_report
+
+            if max_memory is None:      # leave a little room on each card for activations
+                max_memory = {g["index"]: f"{max(1.0, g['free_gb'] - float(headroom_gb)):.1f}GiB" for g in gpu_report()}
             else:
                 max_memory = {(int(k) if str(k).isdigit() else k): v for k, v in max_memory.items()}
-            kwargs.update(
-                quantization_config=BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4",
-                                                       bnb_4bit_compute_dtype=torch.bfloat16,
-                                                       bnb_4bit_use_double_quant=True),
-                device_map="auto", max_memory=max_memory)
-            self.precision_note = "4-bit NF4 (bitsandbytes), bf16 compute"
+
+            kwargs.setdefault("dtype", torch.bfloat16)     # embeddings and norms stay unquantized: keep them in bf16, not fp32
+
+            def build(offload: bool):
+                q = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.bfloat16,
+                                       bnb_4bit_use_double_quant=True, llm_int8_enable_fp32_cpu_offload=offload)
+                mm = {**max_memory, "cpu": "24GiB"} if offload else max_memory
+                return TransformersModel(model_id, task="text-generation", dispatch=True, quantization_config=q,
+                                         device_map="auto", max_memory=mm, **kwargs)
+
+            custom = kwargs.pop("device_map", None)
+            if custom is not None:
+                # An explicit layout, e.g. all layers on the GPUs and the embedding / unembedding on the CPU.
+                q = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.bfloat16,
+                                       bnb_4bit_use_double_quant=True, llm_int8_enable_fp32_cpu_offload=True)
+                custom = {k: (int(v) if str(v).isdigit() else v) for k, v in custom.items()}
+                self.model = TransformersModel(model_id, task="text-generation", dispatch=True, quantization_config=q,
+                                               device_map=custom, **kwargs)
+                self.precision_note = "4-bit NF4 (bitsandbytes), bf16 compute; explicit device map (modules on CPU are unquantized)"
+                self.model_id = model_id
+                self._adapt()
+                return self.info()
+            try:
+                self.model = build(False)
+                self.precision_note = "4-bit NF4 (bitsandbytes), bf16 compute, all on GPU"
+            except ValueError as e:
+                if "dispatched on the CPU" not in str(e):
+                    raise
+                # The quantized model does not fit in VRAM: keep the overflow modules unquantized on the CPU.
+                self.model = build(True)
+                self.precision_note = "4-bit NF4 (bitsandbytes), bf16 compute; modules that did not fit in VRAM run unquantized on CPU"
         else:
             kwargs.setdefault("device_map", os.environ.get("GLASSBOX_DEVICE") or ("cuda:0" if torch.cuda.is_available() else "cpu"))
             self.precision_note = "unquantized (test mode)"
-        self.model = TransformersModel(model_id, task="text-generation", dispatch=True, **kwargs)
+            self.model = TransformersModel(model_id, task="text-generation", dispatch=True, **kwargs)
         self.model_id = model_id
         self._adapt()
         return self.info()
@@ -98,7 +124,9 @@ class Local4Bit(NNsightBackend):
         out = super().info()
         out["quantization"] = getattr(self, "precision_note", None)
         try:
-            out["device_map"] = sorted({str(v) for v in self.model._model.hf_device_map.values()})
+            dm = self.model.pipeline.model.hf_device_map
+            out["device_map"] = sorted({str(v) for v in dm.values()})
+            out["modules_on_cpu"] = sorted(k for k, v in dm.items() if str(v) == "cpu")
         except Exception:  # noqa: BLE001
             pass
         return out
