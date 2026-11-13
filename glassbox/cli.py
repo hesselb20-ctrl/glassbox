@@ -4,6 +4,7 @@
     glassbox tool load_model '{"backend": "local-full", "model": "gpt2", "investigation": "ioi"}'
     glassbox tool run_experiment '{"primitive": "baseline", "params": {"dataset": {"task": "ioi"}}}' -i ioi
     glassbox train-modadd benchmarks/modadd/model
+    glassbox notebook verify ioi            # recompute the hash chain of an investigation's notebook
 
 Each call is a fresh process: the model named in the investigation's state.json is reloaded automatically.
 """
@@ -15,7 +16,7 @@ import sys
 
 from .session import Session
 
-TOOLS = ("list_models", "load_model", "backend_capabilities", "run_experiment", "get_plot", "notebook_append",
+TOOLS = ("list_models", "load_model", "backend_capabilities", "preregister", "run_experiment", "get_plot", "notebook_append",
          "notebook_read", "verify_hypothesis", "write_report")
 
 
@@ -30,7 +31,25 @@ def main(argv: list[str] | None = None) -> int:
     tr.add_argument("out_dir")
     tr.add_argument("--p", type=int, default=113)
     tr.add_argument("--seed", type=int, default=0)
+    nb = sub.add_parser("notebook", help="notebook utilities")
+    nb.add_argument("action", choices=["verify"])
+    nb.add_argument("investigation", help="investigation name under GLASSBOX_HOME, or a path to a notebook.jsonl")
     a = ap.parse_args(argv)
+
+    if a.cmd == "notebook":
+        from pathlib import Path
+
+        from .notebook import Notebook
+
+        path = Path(a.investigation)
+        res = Notebook(path).verify() if path.suffix == ".jsonl" and path.exists() else Session().notebook_verify(a.investigation)
+        print(json.dumps(res, indent=1))
+        if res["ok"]:
+            print(f"OK: {res['chained']} chained entries" + (f", {res['legacy_unchained_prefix']} older entries from before the chain" if res["legacy_unchained_prefix"] else ""))
+        else:
+            fp = res["first_problem"]
+            print(f"TAMPERED: first problem at entry {fp['id']} (position {fp['index'] + 1}): {fp['reason']}")
+        return 0 if res["ok"] else 2
 
     if a.cmd == "train-modadd":
         from .toy import train_modadd

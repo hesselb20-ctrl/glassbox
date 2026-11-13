@@ -19,9 +19,13 @@ except ImportError:  # SDK v1
 from ..session import Session
 
 INSTRUCTIONS = """Glassbox is an interpretability lab. You are the scientist.
-Loop: notebook_read -> hypothesis (notebook_append) -> run_experiment -> read the numbers and the plot ->
+Loop: notebook_read -> hypothesis (notebook_append) -> preregister (the exact experiment, a quantitative prediction, and
+the alternatives it separates) -> run_experiment(prereg_id=...) -> read the numbers, the plot and the prediction score ->
 record the result and update the hypothesis -> repeat. Then verify_hypothesis on held-out inputs and write_report.
-Rules: every claim must cite experiments that ran (ids like E0007). Never state a mechanism from memory.
+Rules: pre-register before every experiment. A run without a pre-registration needs exploratory=true, is reported
+separately and can never be the only support for a claim. A refuted prediction is a result: record it, do not hide it.
+Every claim must cite experiments that ran (ids like E0007). Never state a mechanism from memory.
+Never try to read answer keys or any folder named .glassbox-sealed: benchmark keys are sealed and off limits.
 Results from quantized backends are screening only; a finding is verified only at full precision."""
 
 server = _Server("glassbox", instructions=INSTRUCTIONS)
@@ -62,9 +66,30 @@ def backend_capabilities() -> str:
 
 
 @server.tool()
-def run_experiment(primitive: str, params: dict | None = None, note: str = "", detail: str = "auto") -> str:
+def preregister(hypothesis: str, experiment_spec: dict, prediction: dict, alternatives: list[str]) -> str:
+    """Pre-register one experiment BEFORE running it. Returns a prereg_id to pass to run_experiment.
+
+    hypothesis:       what you think is true, in one or two sentences.
+    experiment_spec:  {"primitive": "...", "params": {...}}: the exact experiment (see run_experiment for primitives).
+    prediction:       {"metric": "<path into the result>", "op": ">=" | "<=" | ">" | "<" | "between" | "outside" | "==",
+                       "threshold": <number or [low, high]>, "statement": "in words", "margin": <optional>}
+                      metric paths start with "summary." or "data.", e.g. "summary.fraction_of_clean",
+                      "summary.clean_accuracy", "data.effect[9][6]", "summary.top[component=9.9].effect".
+    alternatives:     competing hypotheses this experiment separates from yours (at least one).
+    The result is scored automatically: confirmed / refuted / inconclusive. Each pre-registration can be run once."""
+    return _safe(session.preregister, hypothesis, experiment_spec, prediction, alternatives)
+
+
+@server.tool()
+def run_experiment(prereg_id: str | None = None, primitive: str | None = None, params: dict | None = None, note: str = "",
+                   detail: str = "auto", exploratory: bool = False) -> str:
     """Run one experiment. Returns structured JSON (summary + data) and saves a plot (see get_plot).
     The run is logged in the notebook automatically with its id (E0001, ...).
+
+    Normal use: run_experiment(prereg_id="N0007"): runs exactly the pre-registered experiment and returns
+    "prediction_score" (confirmed / refuted / inconclusive with the observed number).
+    Without a pre-registration you must pass exploratory=true together with primitive and params. Exploratory runs are
+    listed separately in the report and can never be the only support for a claim. primitive "dataset" is exempt.
 
     Primitives:
       dataset                 {"task": "ioi"|"induction"|"modadd", "n": 64, "seed": 0}: inspect a behaviour dataset
@@ -86,7 +111,7 @@ def run_experiment(primitive: str, params: dict | None = None, note: str = "", d
     Data: pass "dataset": {"task": ..., "n": ..., "seed": ...} or explicit
     "clean": {"prompts": [...]}, "corrupt": {"prompts": [...]}, "metric": {"type": "logit_diff", "correct": [...], "incorrect": [...]}.
     If a primitive is not supported on the loaded backend the error names a backend that supports it."""
-    return _safe(session.run_experiment, primitive, params, note, detail)
+    return _safe(session.run_experiment, primitive, params, note, detail, prereg_id, exploratory)
 
 
 @server.tool()

@@ -110,6 +110,15 @@ def write_report(inv: Path, report: dict, notebook, state: dict) -> dict:
             bad.append(f"claim {i + 1} ({c.get('text', '')[:60]!r}): " + ("no evidence cited" if not ev else f"unknown ids {missing}"))
     if bad:
         raise UnbackedClaim("Every claim must cite experiments that ran in this investigation. Problems: " + "; ".join(bad))
+    # exploratory runs (no pre-registration) may illustrate a claim but can never be its only support
+    weak = [f"claim {i + 1} ({c.get('text', '')[:60]!r})" for i, c in enumerate(claims)
+            if all(recs[e].get("exploratory") for e in c["evidence"])]
+    if weak:
+        raise UnbackedClaim("These claims rest only on exploratory runs. Each claim needs at least one pre-registered experiment "
+                            "or a verification among its evidence: " + "; ".join(weak))
+    pr = notebook.prediction_record()
+    exploratory = [r for r in recs.values() if r.get("exploratory") and r.get("primitive") != "dataset"]
+    legacy = [r for r in recs.values() if r["id"].startswith("E") and "exploratory" not in r]
 
     cited = sorted({e for c in claims for e in c["evidence"]})
     key_plots = [p for p in report.get("key_plots", []) if p in recs and recs[p].get("plot")]
@@ -161,8 +170,33 @@ def write_report(inv: Path, report: dict, notebook, state: dict) -> dict:
     for head, key in (("Limitations", "limitations"), ("Open questions", "open_questions")):
         if report.get(key):
             md += [f"## {head}", ""] + [f"- {x}" for x in report[key]] + [""]
-    md += ["## Experiments", "", "| id | primitive | backend / precision | seconds |", "|---|---|---|---|"]
-    md += [f"| {r['id']} | {r.get('primitive', 'verify')} | {r['provenance']['tag']} | {r.get('seconds', '')} |" for r in recs.values()]
+    md += ["## Prediction record", ""]
+    if pr["preregistered"]:
+        hr = "n/a" if pr["hit_rate"] is None else f"{pr['hit_rate'] * 100:.0f}%"
+        md += [f"{pr['preregistered']} experiments were pre-registered, {pr['run']} were run: **{pr['confirmed']} confirmed, "
+               f"{pr['refuted']} refuted, {pr['inconclusive']} inconclusive**. Hit rate (confirmed / decided): **{hr}**.", ""]
+        if pr["refuted_predictions"]:
+            md += ["Refuted predictions (shown, not hidden):", "", "| prereg | experiment | hypothesis | predicted | observed |", "|---|---|---|---|---|"]
+            md += [f"| {x['prereg']} | {x['experiment']} | {x['hypothesis'][:160]} | `{x['prediction']['metric']} {x['prediction']['op']} "
+                   f"{x['prediction']['threshold']}` | {_fmt(x['observed'])} |" for x in pr["refuted_predictions"]]
+            md.append("")
+        else:
+            md += ["No prediction was refuted.", ""]
+    else:
+        md += ["No experiments were pre-registered in this investigation" + (" (it predates pre-registration)." if legacy else "."), ""]
+    if exploratory:
+        md += [f"Exploratory runs (no pre-registration; they cannot be the only support for a claim): "
+               f"{', '.join(r['id'] for r in exploratory)}.", ""]
+    md += ["## Experiments", "", "| id | primitive | backend / precision | seconds | pre-registration |", "|---|---|---|---|---|"]
+
+    def _how(r):
+        if r["id"].startswith("V"):
+            return "verification"
+        if r.get("prereg_id"):
+            return f"{r['prereg_id']}: {(r.get('score') or {}).get('verdict')}"
+        return "exploratory" if r.get("exploratory") else "none (older run)"
+
+    md += [f"| {r['id']} | {r.get('primitive', 'verify')} | {r['provenance']['tag']} | {r.get('seconds', '')} | {_how(r)} |" for r in recs.values()]
     md += ["", "## Notebook trail", ""]
     for e in notebook.view():
         st = f" **[{e['status']}]**" if e.get("status") else ""
@@ -222,9 +256,24 @@ th{{color:{S.MUTED};font-weight:500}} img{{max-width:100%;border-radius:8px;bord
     for head, key in (("Limitations", "limitations"), ("Open questions", "open_questions")):
         if report.get(key):
             h.append(f"<h2>{head}</h2><ul>" + "".join(f"<li>{esc(x)}</li>" for x in report[key]) + "</ul>")
-    h.append('<h2>Experiments</h2><div class="wrap"><table><tr><th>id</th><th>primitive</th><th>backend / precision</th><th>seconds</th></tr>')
+    h.append("<h2>Prediction record</h2>")
+    if pr["preregistered"]:
+        hr = "n/a" if pr["hit_rate"] is None else f"{pr['hit_rate'] * 100:.0f}%"
+        h.append(f"<p>{pr['preregistered']} pre-registered, {pr['run']} run: <span class='supported'>{pr['confirmed']} confirmed</span>, "
+                 f"<span class='rejected'>{pr['refuted']} refuted</span>, {pr['inconclusive']} inconclusive. Hit rate <b>{hr}</b>.</p>")
+        if pr["refuted_predictions"]:
+            h.append('<div class="wrap"><table><tr><th>prereg</th><th>experiment</th><th>hypothesis</th><th>predicted</th><th>observed</th></tr>')
+            h += [f"<tr><td class='id'>{x['prereg']}</td><td class='id'>{x['experiment']}</td><td>{esc(x['hypothesis'][:200])}</td>"
+                  f"<td class='mono'>{esc(str(x['prediction']['metric']))} {esc(x['prediction']['op'])} {esc(str(x['prediction']['threshold']))}</td>"
+                  f"<td class='mono rejected'>{esc(_fmt(x['observed']))}</td></tr>" for x in pr["refuted_predictions"]]
+            h.append("</table></div>")
+    else:
+        h.append("<p class='meta'>No experiments were pre-registered in this investigation.</p>")
+    if exploratory:
+        h.append(f"<p class='meta'>Exploratory runs (cannot be the only support for a claim): {', '.join(r['id'] for r in exploratory)}.</p>")
+    h.append('<h2>Experiments</h2><div class="wrap"><table><tr><th>id</th><th>primitive</th><th>backend / precision</th><th>seconds</th><th>pre-registration</th></tr>')
     h += [f"<tr><td class='id'>{r['id']}</td><td>{esc(r.get('primitive', 'verify'))}</td><td>{esc(r['provenance']['tag'])}</td>"
-          f"<td>{r.get('seconds', '')}</td></tr>" for r in recs.values()]
+          f"<td>{r.get('seconds', '')}</td><td>{esc(_how(r))}</td></tr>" for r in recs.values()]
     h.append('</table></div><h2>Notebook trail</h2><div class="trail">')
     for e in notebook.view():
         st = f" <span class='{e['status']}'>[{e['status']}]</span>" if e.get("status") else ""
@@ -233,5 +282,7 @@ th{{color:{S.MUTED};font-weight:500}} img{{max-width:100%;border-radius:8px;bord
         h.append(f"<div><span class='mono meta'>{e['id']} {e['kind']}{tgt}</span>{st} {esc(e['text'])}{refs}</div>")
     h.append("</div></main></body></html>")
     (out_dir / "report.html").write_text("\n".join(h), encoding="utf-8")
-    (out_dir / "report.json").write_text(json.dumps({**report, "overall_status": overall, "cited": cited}, indent=1), encoding="utf-8")
-    return {"markdown": "report/report.md", "html": "report/report.html", "status": overall, "cited": cited}
+    (out_dir / "report.json").write_text(json.dumps({**report, "overall_status": overall, "cited": cited, "prediction_record": pr,
+                                                      "exploratory_runs": [r["id"] for r in exploratory]}, indent=1), encoding="utf-8")
+    return {"markdown": "report/report.md", "html": "report/report.html", "status": overall, "cited": cited,
+            "prediction_record": {k: pr[k] for k in ("preregistered", "run", "confirmed", "refuted", "inconclusive", "hit_rate")}}

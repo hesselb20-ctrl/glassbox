@@ -34,10 +34,10 @@ def test_notebook_is_append_only_and_tracks_hypothesis_status(tmp_path):
 def test_experiments_are_logged_and_budget_is_enforced(session):
     data = syn.copy_data()
     for _ in range(6):
-        r = session.run_experiment("baseline", data)
+        r = session.run_experiment("baseline", data, exploratory=True)
     assert r["budget"]["remaining"] == 0
     with pytest.raises(RuntimeError, match="budget"):
-        session.run_experiment("baseline", data)
+        session.run_experiment("baseline", data, exploratory=True)
     assert sum(e["kind"] == "experiment" for e in session.notebook.entries()) == 6
 
 
@@ -46,12 +46,12 @@ def test_results_must_cite_real_experiments(session):
         session.notebook_append("result", "it works", refs=["E0042"])
     with pytest.raises(ValueError):
         session.notebook_append("result", "it works")
-    r = session.run_experiment("baseline", syn.copy_data())
+    r = session.run_experiment("baseline", syn.copy_data(), exploratory=True)
     assert session.notebook_append("result", "model copies token 0", refs=[r["id"]])["refs"] == [r["id"]]
 
 
 def test_resume_reads_the_same_notebook(session, tmp_path):
-    session.run_experiment("baseline", syn.copy_data())
+    session.run_experiment("baseline", syn.copy_data(), exploratory=True)
     session.notebook_append("hypothesis", "copying happens in layer 0")
     again = Session(tmp_path).notebook_read("t")
     assert again["summary"]["experiments"] == 1 and len(again["summary"]["hypotheses"]["open"]) == 1
@@ -85,8 +85,15 @@ def test_quantized_backends_can_only_screen(session, monkeypatch):
     assert v["status"] == "screening-pass" and "screening" in v["note"]
 
 
+def _prereg_baseline(session, threshold=0.9):
+    p = session.preregister("the model copies token 0", {"primitive": "baseline", "params": syn.copy_data()},
+                            {"metric": "summary.clean_accuracy", "op": ">=", "threshold": threshold, "statement": "accuracy at least 0.9"},
+                            ["the model outputs a constant token"])
+    return session.run_experiment(prereg_id=p["prereg_id"])
+
+
 def test_report_refuses_unbacked_claims_and_writes_both_files(session):
-    r = session.run_experiment("baseline", syn.copy_data())
+    r = _prereg_baseline(session)
     with pytest.raises(UnbackedClaim):
         session.write_report({"claims": [{"text": "trust me", "evidence": []}]})
     with pytest.raises(UnbackedClaim):
@@ -98,5 +105,5 @@ def test_report_refuses_unbacked_claims_and_writes_both_files(session):
                                             "edges": [{"src": "in", "dst": "h", "label": "attend"}]},
                                 "key_plots": [r["id"]]})
     md = open(session._dir() / out["markdown"], encoding="utf-8").read()
-    assert "full precision (local)" in md and r["id"] in md and "Notebook trail" in md
+    assert "full precision (local)" in md and r["id"] in md and "Notebook trail" in md and "Prediction record" in md
     assert "<svg" in open(session._dir() / out["html"], encoding="utf-8").read()

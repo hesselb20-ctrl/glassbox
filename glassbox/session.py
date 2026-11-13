@@ -139,17 +139,69 @@ class Session:
         b = st.get("budget")
         return {"experiments_used": used, "budget": b, "remaining": None if b is None else max(0, b - used)}
 
-    def run_experiment(self, primitive: str, params: dict | None = None, note: str = "", detail: str = "auto") -> dict:
-        """Run one lab primitive. The result is written to disk and logged in the notebook automatically."""
+    def preregister(self, hypothesis: str, experiment_spec: dict, prediction: dict, alternatives: list[str] | None = None) -> dict:
+        """Pre-register one experiment before it runs: hypothesis, exact experiment, quantitative prediction, alternatives."""
+        from .lab import REGISTRY
+
+        self._open(None)
+        prim = (experiment_spec or {}).get("primitive")
+        if prim not in REGISTRY:
+            raise KeyError(f"unknown primitive '{prim}'. Known: {sorted(REGISTRY)}")
+        entry = self.notebook.prereg(hypothesis, experiment_spec, prediction, alternatives)
+        return {"prereg_id": entry["id"], "created_at": entry["created_at"], "prediction": entry["prediction"],
+                "next": f"run_experiment(prereg_id='{entry['id']}') runs exactly this experiment and scores it against the prediction"}
+
+    def _prereg_entry(self, prereg_id: str) -> dict:
+        hit = next((e for e in self.notebook.entries() if e["id"] == prereg_id), None)
+        if hit is None or hit["kind"] != "prereg":
+            raise KeyError(f"'{prereg_id}' is not a pre-registration in this notebook")
+        if any(e["kind"] == "experiment" and (e.get("data") or {}).get("prereg_id") == prereg_id for e in self.notebook.entries()):
+            raise RuntimeError(f"pre-registration {prereg_id} has already been run. A prediction is tested once; "
+                               "write a new pre-registration for a new experiment.")
+        return hit
+
+    def run_experiment(self, primitive: str | None = None, params: dict | None = None, note: str = "", detail: str = "auto",
+                       prereg_id: str | None = None, exploratory: bool = False) -> dict:
+        """Run one lab primitive. The result is written to disk and logged in the notebook automatically.
+
+        By default a run needs ``prereg_id``: the experiment that was pre-registered is run exactly as specified and its
+        result is scored against the prediction. ``exploratory=True`` allows a run without one; exploratory runs are
+        listed separately in the report and can never be the only support for a claim. Looking at a dataset is exempt.
+        """
+        from .notebook import score_prediction
+
         self._ensure_lab()
+        pre = None
+        if prereg_id:
+            pre = self._prereg_entry(prereg_id)
+            spec = pre["experiment_spec"]
+            if (primitive and primitive != spec["primitive"]) or (params and params != spec["params"]):
+                raise ValueError(f"{prereg_id} pre-registered {spec['primitive']} with fixed params. Run it with prereg_id only "
+                                 "(omit primitive and params); to run something else, pre-register that.")
+            primitive, params, exploratory = spec["primitive"], spec["params"], False
+        elif primitive == "dataset":
+            exploratory = True                      # inspecting inputs is not an experiment on the model
+        elif not exploratory:
+            raise ValueError("this run has no pre-registration. Call preregister(hypothesis, experiment_spec, prediction, "
+                             "alternatives) first and pass its prereg_id, or pass exploratory=true (exploratory runs are "
+                             "reported separately and cannot be the only support for a claim).")
+        if not primitive:
+            raise ValueError("give a prereg_id, or a primitive with exploratory=true")
         bud = self._budget()
         if bud["remaining"] == 0:
             raise RuntimeError(f"experiment budget of {bud['budget']} is used up. Write the report with what you have, "
                                "or ask the user to raise the budget.")
         rec = self.lab.run(primitive, params or {})
-        self.notebook.append("experiment", note or f"{primitive}", refs=[rec["id"]],
-                             data={"primitive": primitive, "seconds": rec["seconds"], "tag": rec["provenance"]["tag"]})
+        score = score_prediction(pre["prediction"], rec) if pre else None
+        rec.update({"prereg_id": prereg_id, "exploratory": bool(exploratory), "score": score})
+        (self._dir() / "experiments" / f"{rec['id']}_{primitive}.json").write_text(json.dumps(rec, indent=1), encoding="utf-8")
+        self.notebook.append("experiment", note or (pre["hypothesis"][:120] if pre else primitive), refs=[rec["id"]],
+                             data={"primitive": primitive, "seconds": rec["seconds"], "tag": rec["provenance"]["tag"],
+                                   "prereg_id": prereg_id, "exploratory": bool(exploratory), "score": score})
         out = {k: rec[k] for k in ("id", "primitive", "provenance", "summary", "plot", "seconds")}
+        out["exploratory"] = bool(exploratory)
+        if score:
+            out["prediction_score"] = score
         raw = json.dumps(rec["data"])
         if detail == "full" or (detail == "auto" and len(raw) <= DATA_LIMIT):
             out["data"] = rec["data"]
@@ -157,6 +209,11 @@ class Session:
             out["data"] = f"omitted ({len(raw)} chars); full record on disk: experiments/{rec['id']}_{primitive}.json"
         out["budget"] = self._budget()
         return out
+
+    def notebook_verify(self, investigation: str | None = None) -> dict:
+        """Recompute the notebook's hash chain and report the first tampered or reordered entry."""
+        self._open(investigation)
+        return {"investigation": self.investigation, **self.notebook.verify()}
 
     def get_plot(self, experiment_id: str) -> str:
         """Path of the PNG for an experiment (the MCP tool returns the image itself)."""
@@ -170,6 +227,8 @@ class Session:
                         target: str | None = None) -> dict:
         """Write a hypothesis, result, decision or note. ``target`` + ``status`` updates an earlier hypothesis."""
         self._open(None)
+        if kind == "prereg":
+            raise ValueError("use the preregister tool for pre-registrations")
         known = self._known_ids()
         missing = [r for r in (refs or []) if r not in known]
         if missing:

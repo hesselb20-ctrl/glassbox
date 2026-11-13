@@ -60,6 +60,9 @@ def run(name: str) -> None:
 
     r = RUNGS[name]
     s = Session(HERE)
+    _run = s.run_experiment
+    # this script predates pre-registration: its predictions are fixed in the code above, runs are marked exploratory
+    s.run_experiment = lambda *a, **k: _run(*a, **{**k, 'exploratory': True})
     t0 = time.time()
     info = s.load_model(r["backend"], r["model"], investigation=name, options=r.get("options"))["info"]
     L, feats = info["n_layers"], BACKENDS[r["backend"]]["features"]
