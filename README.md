@@ -6,12 +6,7 @@ An interpretability lab Claude Code drives over MCP.
 
 <sub>The repository's own recorded run on GPT-2 small: ablation sweep `E0014` (64 prompts), the circuit in `benchmarks/ioi/report/report.json` (12 of its 30 parts drawn) and verification `V0002` on 200 held-out prompts at full precision.</sub>
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-01-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-01-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-01-dark.svg">
-  <img src=".github/assets/rule-01-light.svg" width="100%" alt="01 What it is">
-</picture>
+## What it is
 
 Glassbox is a lab for reading what a neural network has learned. Claude Code plays the scientist: it runs
 experiments on an open-weights model through ten tools, writes down what it expects before each one, and
@@ -21,12 +16,7 @@ the investigation never used.
 It is a research prototype. Every investigation in this repository was run on one desktop PC or on the
 NDIF research service, and the planted-circuit benchmark it built is already at its ceiling.
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-02-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-02-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-02-dark.svg">
-  <img src=".github/assets/rule-02-light.svg" width="100%" alt="02 Why it exists">
-</picture>
+## Why it exists
 
 **The problem.** Models are deployed whose internal algorithms nobody has read. Reading one behavior by
 hand takes an expert a long time, and most of that time is a loop: guess, test, revise.
@@ -40,12 +30,7 @@ and test models whose circuit was planted from a seed and whose answer key the a
 **Who it is for.** Interpretability researchers who want an agent to do the repetitive part of circuit
 work, and who want every claim in the result tied to an experiment that ran.
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-03-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-03-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-03-dark.svg">
-  <img src=".github/assets/rule-03-light.svg" width="100%" alt="03 How it works">
-</picture>
+## How it works
 
 1. **Start.** The `/investigate` command in `.claude/commands/investigate.md` gives Claude Code a backend,
    a model, a behavior and an experiment budget. Claude Code reaches the lab only through the MCP server.
@@ -66,12 +51,7 @@ work, and who want every claim in the result tied to an experiment that ran.
 7. **Report.** `write_report` writes `report.md` and `report.html`. It fails if a claim cites nothing, cites
    an experiment that does not exist, or rests only on exploratory runs.
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-04-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-04-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-04-dark.svg">
-  <img src=".github/assets/rule-04-light.svg" width="100%" alt="04 Capabilities">
-</picture>
+## Capabilities
 
 What the code does today.
 
@@ -127,12 +107,7 @@ Known limits, from the repository's own records:
 - The 27B audit is a screening result on quantized files, and its localisation comes from an exploratory
   analysis after five pre-registered predictions failed.
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-05-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-05-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-05-dark.svg">
-  <img src=".github/assets/rule-05-light.svg" width="100%" alt="05 Quick start">
-</picture>
+## Quick start
 
 Requires Python 3.11 or newer. The commands below were run on Windows 11 with Python 3.11.18, uv 0.13.7
 and the CPU build of PyTorch, from a clone of this repository. On macOS or Linux use `.venv/bin/python`;
@@ -173,12 +148,7 @@ an `/investigate` session, a GPU, a GGUF file, NDIF (needs `NDIF_API_KEY` in the
 `glassbox bench generate` (needs Tracr in a second environment, see `GLASSBOX_TRACR_PYTHON` in
 `glassbox/bench/generate.py`). The server module was imported and lists its ten tools.
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-06-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-06-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-06-dark.svg">
-  <img src=".github/assets/rule-06-light.svg" width="100%" alt="06 Stack, status, roadmap">
-</picture>
+## Stack, status, roadmap
 
 **Stack**
 
@@ -227,12 +197,7 @@ an `/investigate` session, a GPU, a GGUF file, NDIF (needs `NDIF_API_KEY` in the
 | [`tutorial/README.md`](tutorial/README.md) | How the video and old figures are rendered |
 | [`media/tutorial.mp4`](media/tutorial.mp4?raw=true) | 132-second explainer video, no sound, 6.4 MB download |
 
-<picture>
-  <source media="(max-width: 600px) and (prefers-color-scheme: dark)" srcset=".github/assets/rule-mobile-07-dark.svg">
-  <source media="(max-width: 600px)" srcset=".github/assets/rule-mobile-07-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rule-07-dark.svg">
-  <img src=".github/assets/rule-07-light.svg" width="100%" alt="07 License">
-</picture>
+## License
 
 MIT. See [`LICENSE`](LICENSE).
 
