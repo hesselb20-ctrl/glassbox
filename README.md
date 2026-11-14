@@ -51,6 +51,10 @@ work, and who want every claim in the result tied to an experiment that ran.
 7. **Report.** `write_report` writes `report.md` and `report.html`. It fails if a claim cites nothing, cites
    an experiment that does not exist, or rests only on exploratory runs.
 
+<img src=".github/assets/figure-how.webp" width="100%" alt="A row of 37 notebook entries is drawn link by link; six exploratory runs drop into a grey lane, arcs join each prediction to its run, and gauges score each result as hit or miss against its predicted band.">
+
+<sub>Bench run seed-1/t1 notebook: 37 hash-chained entries, chain rechecked. Full precision; misses kept in the record.</sub>
+
 ## Capabilities
 
 What the code does today.
@@ -106,6 +110,10 @@ Known limits, from the repository's own records:
 - `verify_hypothesis` needs prompts of equal token length.
 - The 27B audit is a screening result on quantized files, and its localisation comes from an exploratory
   analysis after five pre-registered predictions failed.
+
+<img src=".github/assets/figure-more.webp" width="100%" alt="Three lanes of null-sample dots cluster near zero with their 95th percentile marked, the real circuit's effects land far right (0.935, 1.13, 0.994), then four backends show which may report verified and which only screening.">
+
+<sub>IOI null calibration (186 null samples, GPT-2 small) and V0002 (200 held-out prompts, full precision). Backends as used in committed runs, not re-run here.</sub>
 
 ## Quick start
 
